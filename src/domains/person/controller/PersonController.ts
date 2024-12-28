@@ -1,8 +1,8 @@
-import type {IPerson} from "../model/PersonModel.js";
 import BaseController, {
     type IBaseController,
     type IBaseControllerConstructor
 } from "../../../shared/controller/BaseController.js";
+import type {IPerson} from "../model/PersonInterfaces.js";
 
 
 interface IPersonControllerConstructor extends IBaseControllerConstructor<IPerson> {}

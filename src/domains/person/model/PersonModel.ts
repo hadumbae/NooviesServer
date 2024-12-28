@@ -1,22 +1,7 @@
-import {Schema, Types, model, type Model} from "mongoose";
-import type {IMovie} from "../../movie/model/MovieModel.js";
+import {model, type Model, Schema} from "mongoose";
+import type {IPerson} from "./PersonInterfaces.js";
 
 // TODO Add Awards and Nominations
-
-interface IPersonProfilePicture {
-    public_id: string,
-    secure_url: string,
-}
-
-export interface IPerson {
-    readonly _id: Types.ObjectId,
-    name: string,
-    biography: string,
-    dob: Date,
-    nationality: string,
-    profileImage?: IPersonProfilePicture,
-    movies: (Types.ObjectId | IMovie)[],
-}
 
 const PersonSchema = new Schema<IPerson>({
     name: {

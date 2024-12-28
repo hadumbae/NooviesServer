@@ -1,25 +1,7 @@
-import {Schema, Types, Model, model} from "mongoose";
+import {Model, model, Schema} from "mongoose";
+import type {ISeatMap, IShowing} from "./ShowingInterfaces.js";
 
-export interface ISeatMap {
-    seat: Types.ObjectId,
-    isAvailable: boolean,
-    price: number,
-}
-
-export interface IShowing {
-    movie: Types.ObjectId,
-    theatre: Types.ObjectId,
-    screen: Types.ObjectId,
-    startTime: Date,
-    endTime: Date,
-    seatMap: ISeatMap[],
-    ticketPrice: number,
-    language: string,
-    subtitleLanguages: string[],
-    isSpecialEvent: boolean,
-}
-
-const SeatMapSchema = new Schema({
+const SeatMapSchema = new Schema<ISeatMap>({
     seat: {
         type: Schema.Types.ObjectId,
         ref: "Seat",

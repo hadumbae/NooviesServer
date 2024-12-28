@@ -1,12 +1,5 @@
-import { Schema, Types, Model, model } from "mongoose";
-import type {IMovie} from "../../movie/model/MovieModel.js";
-
-export interface IGenre {
-    _id: Types.ObjectId;
-    name: string;
-    description: string;
-    movies: (Types.ObjectId | IMovie)[];
-}
+import {Model, model, Schema} from "mongoose";
+import type {IGenre} from "./GenreInterfaces.js";
 
 const GenreSchema = new Schema<IGenre>({
     name: {

@@ -1,17 +1,32 @@
 import {z, type ZodType} from 'zod';
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import type {IPerson} from "../model/PersonModel.js";
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
-import {PersonSubmitSchema} from "./PersonSubmitSchema.js";
+import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
+import {CoercedDate} from "../../../shared/schema/helpers/ZodDateHelpers.js";
+import {CountryEnum} from "../../../shared/schema/helpers/ZodEnumHelpers.js";
+import {CloudinaryImageObject} from "../../../shared/schema/helpers/ZodImageHelpers.js";
+import type {IPerson} from "../model/PersonInterfaces.js";
 
-export const PersonSchema: ZodType<IPerson> = PersonSubmitSchema.extend({
-    _id: IDInstance,
+export const PersonSchema: ZodType<IPerson> = z.object({
+    _id: IDInstance.readonly(),
+
+    name: RequiredString
+        .min(3, "Must be at least 3 characters.")
+        .max(255, "Name must not be more than 255 characters."),
+
+    biography: RequiredString
+        .min(1, "Required.")
+        .max(1000, "Must be 1000 characters or less."),
+
+    dob: CoercedDate,
+
+    nationality: CountryEnum,
+
+    profileImage: CloudinaryImageObject
+        .readonly(),
 
     movies: z
-        .array(z.union([
-            IDInstance,
-            z.lazy(() => MovieSchema),
-        ])),
+        .array(z.union([IDInstance, z.lazy(() => MovieSchema) ])),
 });
 
 export type ZPerson = z.infer<typeof PersonSchema>;

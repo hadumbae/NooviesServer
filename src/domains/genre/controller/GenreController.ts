@@ -1,8 +1,8 @@
-import type {IGenre} from "../model/GenreModel.js";
 import BaseController, {
     type IBaseController,
     type IBaseControllerConstructor
 } from "../../../shared/controller/BaseController.js";
+import type {IGenre} from "../model/GenreInterfaces.js";
 
 
 export interface IGenreController extends IBaseController {}

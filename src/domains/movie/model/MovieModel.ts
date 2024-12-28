@@ -4,9 +4,10 @@ import {
     Model,
     model,
 } from "mongoose";
-import type {IGenre} from "../../genre/model/GenreModel.js";
-import type {IPerson} from "../../person/model/PersonModel.js";
-import type {IShowing} from "../../showing/model/ShowingModel.js";
+
+import type {IShowing} from "../../showing/model/ShowingInterfaces.js";
+import type {IPerson} from "../../person/model/PersonInterfaces.js";
+import type {IGenre} from "../../genre/model/GenreInterfaces.js";
 
 interface IPosterImage {
     public_id: string,
@@ -14,20 +15,20 @@ interface IPosterImage {
 }
 
 export interface IMovie {
-    readonly _id: Types.ObjectId,
+    readonly _id?: Types.ObjectId | string,
     title: string,
     description: string,
-    genres: (Types.ObjectId | IGenre)[],
-    directors: (Types.ObjectId | IPerson)[],
-    cast: (Types.ObjectId | IPerson)[],
+    genres: (Types.ObjectId | string | IGenre)[],
+    directors?: (Types.ObjectId | string | IPerson)[],
+    cast?: (Types.ObjectId | string | IPerson)[],
     releaseDate?: Date | null,
     durationInMinutes: number,
-    languages: string[],
-    subtitles: string[],
+    languages?: string[],
+    subtitles?: string[],
     posterImage?: IPosterImage | null,
     trailerURL?: string | null,
     price: number,
-    showings: (Types.ObjectId | IShowing)[],
+    showings?: (Types.ObjectId | string | IShowing)[],
 }
 
 const MovieSchema = new Schema<IMovie>({
@@ -73,13 +74,11 @@ const MovieSchema = new Schema<IMovie>({
     languages: {
         type: [String],
         required: true,
-        validate: (langs: any) => Array.isArray(langs) && langs.length > 0,
     },
 
     subtitles: {
         type: [String],
         required: true,
-        validate: (subs: any) => Array.isArray(subs) && subs.length > 0,
     },
 
     posterImage: {
@@ -100,8 +99,7 @@ const MovieSchema = new Schema<IMovie>({
     },
 
     showings: {
-        type: [Schema.Types.ObjectId],
-        ref: "Showtime",
+        type: [{type: Schema.Types.ObjectId, ref: "Showtime"}],
         required: true,
     },
 }, {timestamps: true});

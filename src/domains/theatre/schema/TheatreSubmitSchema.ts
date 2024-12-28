@@ -4,12 +4,12 @@ import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js
 import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {ScreenSchema} from "../../screen/schema/ScreenSchema.js";
 import {SeatSchema} from "../../seat/schema/SeatSchema.js";
-import type {ITheatre} from "../model/TheatreInterface.js";
+import type {ITheatre, ITheatreSubmit} from "../model/TheatreInterface.js";
 import {TheatreSchemaBase} from "./TheatreSchemaBase.js";
+import {ScreenAsyncIDString, SeatAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 
-export const TheatreSchema: ZodType<ITheatre> = z.object({
+export const TheatreSubmitSchema: ZodType<ITheatreSubmit> = z.object({
     ...TheatreSchemaBase,
-    _id: IDInstance.readonly(),
-    screens: z.array(z.union([IDInstance,z.lazy(() => ScreenSchema)])),
-    seats: z.array(z.union([IDInstance,z.lazy(() => SeatSchema)])),
+    screens: z.array(ScreenAsyncIDString),
+    seats: z.array(SeatAsyncIDString),
 });

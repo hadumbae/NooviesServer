@@ -1,12 +1,11 @@
 import {z, type ZodType} from 'zod';
-import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import {Types} from "mongoose";
+import {IDString, RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
-import type {IGenre} from "../model/GenreModel.js";
+import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
+import type {IGenre} from "../model/GenreInterfaces.js";
 
 export const GenreSchema: ZodType<IGenre> = z.object({
-    _id: z
-        .instanceof(Types.ObjectId),
+    _id: IDInstance,
 
     name: RequiredString
         .min(3, "Must be 3 characters or longer.")
@@ -15,10 +14,8 @@ export const GenreSchema: ZodType<IGenre> = z.object({
     description: RequiredString
         .max(1000, "Must be 1000 characters or less."),
 
-    movies: z.array(z.union([
-        z.instanceof(Types.ObjectId),
-        z.lazy(() => MovieSchema),
-    ])),
+    movies: z
+        .array(z.union([IDInstance, z.lazy(() => MovieSchema)])),
 });
 
 export type ZGenre = z.infer<typeof GenreSchema>;

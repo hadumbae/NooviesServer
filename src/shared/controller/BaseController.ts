@@ -56,8 +56,8 @@ export default class BaseController<TModel> implements IBaseController {
     }
 
     async get(req: Request, res: Response): Promise<Response> {
-        const {_id} = req.body;
-        const item = this.repository.findById(_id);
+        const {_id} = req.params;
+        const item = await this.repository.findById({_id});
         return res.status(200).json({
            message: "Data fetched.",
            data: item,

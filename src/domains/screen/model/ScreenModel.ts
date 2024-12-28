@@ -1,18 +1,6 @@
-import {Schema, Types, Model, model} from "mongoose";
-import type {ITheatre} from "../../theatre/model/TheatreModel.js";
-import type {ISeat} from "../../seat/model/SeatModel.js";
-import type {ScreenTypeEnumType} from "../schema/enum/ScreenTypeEnum.js";
+import {Schema, Model, model} from "mongoose";
+import type {IScreen} from "./ScreenModel.interfaces.js";
 import ScreenTypeConstant from "../constant/ScreenTypeConstant.js";
-import * as sea from "node:sea";
-
-export interface IScreen {
-    readonly _id: Types.ObjectId,
-    name: string,
-    theatre: Types.ObjectId | ITheatre,
-    capacity: number,
-    seats: (Types.ObjectId | ISeat)[],
-    screenType: ScreenTypeEnumType,
-}
 
 const ScreenSchema: Schema<IScreen> = new Schema<IScreen>({
     name: {

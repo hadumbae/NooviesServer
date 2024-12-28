@@ -1,15 +1,5 @@
-import {Schema, Types, Model, model} from "mongoose";
-import type {ISeat} from "../../seat/model/SeatModel.js";
-import type {IScreen} from "../../screen/model/ScreenModel.js";
-
-export interface ITheatre {
-    _id: Types.ObjectId,
-    name: string,
-    location: string,
-    numberOfSeats: number,
-    screens: (Types.ObjectId | IScreen)[],
-    seats: (Types.ObjectId | ISeat)[],
-}
+import {Model, model, Schema} from "mongoose";
+import type {ITheatre} from "./TheatreInterface.js";
 
 const TheatreSchema = new Schema<ITheatre>({
     name: {

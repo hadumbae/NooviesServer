@@ -13,4 +13,5 @@ const baseConfig: IBaseRoutesConfig<IGenreController> = {
 };
 
 const routes = createBaseRoutes(baseConfig);
+
 export default routes;

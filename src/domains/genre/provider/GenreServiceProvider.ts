@@ -1,7 +1,8 @@
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import Genre, {type IGenre} from "../model/GenreModel.js";
+import Genre from "../model/GenreModel.js";
 import GenreController from "../controller/GenreController.js";
 import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
+import type {IGenre} from "../model/GenreInterfaces.js";
 
 export default class GenreServiceProvider {
     static register() {

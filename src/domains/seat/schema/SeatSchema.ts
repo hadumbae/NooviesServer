@@ -1,10 +1,13 @@
 import {z, type ZodType} from 'zod';
-import type {ISeat} from "../model/SeatModel.js";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import {SeatSubmitSchema} from "./SeatSubmitSchema.js";
+import {TheatreSchema} from "../../theatre/schema/TheatreSchema.js";
+import {SeatSchemaBase} from "./SeatSchemaBase.js";
+import type {ISeat} from "../model/SeatModel.interfaces.js";
 
-export const SeatSchema: ZodType<ISeat> = SeatSubmitSchema.extend({
+export const SeatSchema: ZodType<ISeat> = z.object({
+    ...SeatSchemaBase,
     _id: IDInstance,
+    theatre: z.union([IDInstance, z.lazy(() => TheatreSchema)]),
 });
 
 export type Seat = z.infer<typeof SeatSchema>;

@@ -1,17 +1,6 @@
-import {Schema, Types, Model, model} from "mongoose";
-import type {ITheatre} from "../../theatre/model/TheatreModel.js";
-import {type SeatTypeEnumType} from "../schema/enum/SeatTypeEnum.js";
+import {Model, model, Schema} from "mongoose";
 import SeatTypeConstant from "../constant/SeatTypeConstant.js";
-
-export interface ISeat {
-    readonly _id: Types.ObjectId,
-    theatre: Types.ObjectId | ITheatre,
-    row: string,
-    seatNumber: string,
-    seatType: SeatTypeEnumType,
-    isAvailable: boolean,
-    priceMultiplier: number,
-}
+import type {ISeat} from "./SeatModel.interfaces.js";
 
 
 const SeatSchema = new Schema<ISeat>({
