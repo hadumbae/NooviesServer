@@ -6,9 +6,11 @@ import ZodValidatorErrorHandler from "./ZodValidatorErrorHandler.js";
 export default (schema: ZodTypeAny) =>
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
         try {
+            console.log(req.body);
+
             req.validatedBody = await schema.parseAsync(req.body);
             next();
-        } catch (e) {
-            return ZodValidatorErrorHandler({res, error: e});
+        } catch (e: any) {
+            ZodValidatorErrorHandler(e);
         }
     });

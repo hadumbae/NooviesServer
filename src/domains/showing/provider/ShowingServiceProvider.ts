@@ -1,4 +1,4 @@
-import Showing from "../model/ShowingModel.js";
+import Showing from "../model/Showing.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
 import ShowingController from "../controller/ShowingController.js";

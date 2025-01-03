@@ -1,5 +1,7 @@
 import {z, type ZodType} from "zod";
-import type {ISeatSubmit} from "../model/SeatModel.interfaces.js";
+
+import type ISeatSubmit from "./interface/ISeatSubmit.js";
+
 import {SeatSchemaBase} from "./SeatSchemaBase.js";
 import {TheatreAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 

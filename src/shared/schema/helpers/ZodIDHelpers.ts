@@ -1,9 +1,9 @@
 import {IDString} from "./ZodStringHelpers.js";
-import Genre from "../../../domains/genre/model/GenreModel.js";
-import Person from "../../../domains/person/model/PersonModel.js";
-import Screen from "../../../domains/screen/model/ScreenModel.js";
-import Seat from "../../../domains/seat/model/SeatModel.js";
-import Theatre from "../../../domains/theatre/model/TheatreModel.js";
+import Genre from "../../../domains/genre/model/Genre.js";
+import Person from "../../../domains/person/model/Person.js";
+import Screen from "../../../domains/screen/model/Screen.js";
+import Seat from "../../../domains/seat/model/Seat.js";
+import Theatre from "../../../domains/theatre/model/Theatre.js";
 
 export const GenreAsyncIDString = IDString
     .refine(

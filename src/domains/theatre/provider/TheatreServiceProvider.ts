@@ -1,4 +1,4 @@
-import Theatre from "../model/TheatreModel.js";
+import Theatre from "../model/Theatre.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
 import TheatreController from "../controller/TheatreController.js";

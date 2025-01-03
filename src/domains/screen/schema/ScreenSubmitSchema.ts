@@ -1,11 +1,22 @@
 import {z, type ZodType} from "zod";
-import {IDString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import type {IScreenSubmit} from "../model/ScreenModel.interfaces.js";
-import {ScreenSchemaBase} from "./base/ScreenSchemaBase.js";
+import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
+import type {IScreenSubmit} from "../model/IScreen.js";
 import {SeatAsyncIDString, TheatreAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
+import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
+import {ScreenTypeEnum} from "./enum/ScreenTypeEnum.js";
 
 export const ScreenSubmitSchema: ZodType<IScreenSubmit> = z.object({
-    ...ScreenSchemaBase,
+    name: RequiredString
+        .min(1, "Required.")
+        .max(255, "Name must be 255 characters or less."),
+
+    capacity: PositiveNumber
+        .gt(0, "Capacity must be greater than 0"),
+
+    screenType: ScreenTypeEnum,
+
     theatre: TheatreAsyncIDString,
-    seats: z.array(SeatAsyncIDString),
-})
+
+    seats: z
+        .array(SeatAsyncIDString),
+});

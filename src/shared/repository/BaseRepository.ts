@@ -10,83 +10,57 @@ export default class BaseRepository<T> {
     private readonly model: Model<T>;
     private readonly populateRefs: string[];
 
-    constructor(
-        {model, populateRefs = []}: IBaseRepositoryConstructor<T>
-    ) {
+    constructor({model, populateRefs = []}: IBaseRepositoryConstructor<T>) {
         this.model = model;
         this.populateRefs = populateRefs;
     }
 
-    async count(
-        params?: {filters?: Record<string, unknown>}
-    ): Promise<number> {
+    async count(params?: { filters?: Record<string, unknown> }): Promise<number> {
         const {filters = {}} = params || {};
         return this.model
             .countDocuments(filters);
     }
 
-    async find(
-        params?: {filters?: Record<string, unknown>}
-    ): Promise<any> {
+    async find(params?: { filters?: Record<string, unknown> }): Promise<any> {
         const {filters = {}} = params || {};
-
         return this.model
             .find(filters)
             .populate(this.populateRefs)
             .lean();
     }
 
-    async findOne(
-        params?: {filters?: Record<string, unknown>}
-    ): Promise<any> {
-        const {filters = {}} = params || {};
-        return this.model
-            .findOne(filters)
-            .lean();
-    }
-
-    async findById(
-        params: {_id: Types.ObjectId | string}
-    ): Promise<any> {
-        const {_id} = params;
+    async findById({_id}: { _id: Types.ObjectId | string }): Promise<any> {
         return this.model
             .findById(_id)
             .lean();
     }
 
-    async exists404(
-        params: {_id: Types.ObjectId | string}
-    ): Promise<any> {
-        const {_id} = params;
+    async exists404({_id}: { _id: Types.ObjectId | string }): Promise<any> {
+        const doc = await this.model.findById(_id);
+        if (!doc) throw createHttpError(404, 'Not found!');
+        return doc;
+    }
+
+    async exists404Lean({_id}: { _id: Types.ObjectId | string }): Promise<any> {
         const doc = await this.model.findById(_id).lean();
         if (!doc) throw createHttpError(404, 'Not found!');
         return doc;
     }
 
-    async create(
-        params: {data: Partial<T>}
-    ): Promise<any> {
-        const {data} = params;
+    async create({data}: { data: Partial<T> }): Promise<any> {
         return this.model
             .create(data);
     }
 
-    async findByIdAndUpdate(
-        params: {_id: Types.ObjectId | string, data: Partial<T>}
-    ): Promise<any> {
-        const {_id, data} = params;
-        return this.model
-            .findByIdAndUpdate(_id, data, { new: true })
-            .lean();
+    async update({_id, data}: { _id: Types.ObjectId | string, data: Partial<T> }): Promise<any> {
+        const doc = await this.exists404({_id});
+        await doc.updateOne({_id}, data);
+        return this.exists404Lean({_id});
     }
 
-    async findByIdAndDelete(
-        params: {_id: Types.ObjectId | string}
-    ): Promise<any> {
-        const {_id} = params;
-        return this.model
-            .findByIdAndDelete(_id)
-            .lean();
+    async destroy({_id}: { _id: Types.ObjectId | string }): Promise<any> {
+        const doc = await this.exists404({_id});
+        await doc.deleteOne();
     }
 
     async paginate(
@@ -97,7 +71,7 @@ export default class BaseRepository<T> {
             filters?: Record<string, any>,
         }
     ) {
-        const { page = 1, perPage = 100, filters = {}, sort = {} } = params || {};
+        const {page = 1, perPage = 100, filters = {}, sort = {}} = params || {};
         return this.model
             .find(filters)
             .sort(sort)

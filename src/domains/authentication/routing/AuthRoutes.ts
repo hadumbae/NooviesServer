@@ -1,10 +1,14 @@
 import {Router as ExpressRouter} from "express";
 import  type {Router} from "express";
-import AuthServiceProvider from "../provider/AuthServiceProvider.js";
+
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 import zodAsyncValidator from "../../../shared/utility/zod/ZodAsyncValidator.js";
-import {UserLoginSchema, UserRegisterSchema} from "../schema/AuthSchema.js";
+
 import isAuth from "../middleware/isAuth.js";
+import AuthServiceProvider from "../provider/AuthServiceProvider.js";
+
+import {UserLoginSchema} from "../schema/UserLoginSchema.js";
+import {UserRegisterSchema} from "../schema/UserRegisterSchema.js";
 
 const router: Router = ExpressRouter();
 const { controller } = AuthServiceProvider.register();

@@ -1,6 +1,6 @@
 import BaseController, {type IBaseController, type IBaseControllerConstructor} from "../../../shared/controller/BaseController.js";
+import type ISeat from "../model/ISeat.js";
 
-import type {ISeat} from "../model/SeatModel.interfaces.js";
 
 export interface ISeatController extends IBaseController {}
 export interface ISeatControllerConstructor extends IBaseControllerConstructor<ISeat> {}

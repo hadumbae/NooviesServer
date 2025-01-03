@@ -1,6 +1,5 @@
 import BaseController, {type IBaseController, type IBaseControllerConstructor} from "../../../shared/controller/BaseController.js";
-
-import type {ITheatre} from "../model/TheatreInterface.js";
+import type ITheatre from "../model/ITheatre.js";
 
 export interface ITheatreController extends IBaseController{}
 export interface ITheatreControllerConstructor extends IBaseControllerConstructor<ITheatre> {}

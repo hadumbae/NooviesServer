@@ -1,15 +1,24 @@
 import {z, type ZodType} from "zod";
-import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
+import {ScreenAsyncIDString, SeatAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
+import type ITheatreSubmit from "./interface/ITheatreSubmit.js";
 import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
-import {ScreenSchema} from "../../screen/schema/ScreenSchema.js";
-import {SeatSchema} from "../../seat/schema/SeatSchema.js";
-import type {ITheatre, ITheatreSubmit} from "../model/TheatreInterface.js";
-import {TheatreSchemaBase} from "./TheatreSchemaBase.js";
-import {ScreenAsyncIDString, SeatAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 
 export const TheatreSubmitSchema: ZodType<ITheatreSubmit> = z.object({
-    ...TheatreSchemaBase,
-    screens: z.array(ScreenAsyncIDString),
-    seats: z.array(SeatAsyncIDString),
+    name: RequiredString
+        .min(1, "Required.")
+        .max(255, "Must be 255 characters or less."),
+
+    location: RequiredString
+        .min(1, "Required.")
+        .max(255, "Must be 255 characters or less."),
+
+    numberOfSeats: RequiredNumber
+        .gte(1, "Must be equal or greater than 0."),
+
+    screens: z
+        .array(ScreenAsyncIDString),
+
+    seats: z
+        .array(SeatAsyncIDString),
 });

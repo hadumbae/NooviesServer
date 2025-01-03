@@ -28,10 +28,7 @@ export default class BaseController<TModel> implements IBaseController {
 
     async all(_req: Request, res: Response): Promise<Response> {
         const items = await this.repository.find();
-        return res.status(200).json({
-            message: "Data fetched.",
-            data: items
-        });
+        return res.status(200).json(items);
     }
 
     async paginated(req: PaginationRequest, res: Response): Promise<Response> {
@@ -39,48 +36,34 @@ export default class BaseController<TModel> implements IBaseController {
         const totalItems = await this.repository.count();
         const items = await this.repository.paginate({page, perPage});
 
-        return res.status(200).json({
-            message: "Data fetched.",
-            data: {totalItems, items},
-        });
+        return res.status(200).json({totalItems, items});
     }
 
     async create(req: Request, res: Response): Promise<Response> {
         const data = req.body;
         const item = await this.repository.create({data})
 
-        return res.status(200).json({
-            message: "Created.",
-            data: item,
-        });
+        return res.status(200).json(item);
     }
 
     async get(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
         const item = await this.repository.findById({_id});
-        return res.status(200).json({
-           message: "Data fetched.",
-           data: item,
-        });
+        return res.status(200).json(item);
     }
 
     async update(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
         const data = req.body;
-        const item = await this.repository.findByIdAndUpdate({_id, data});
+        const item = await this.repository.update({_id, data});
 
-        return res.status(200).json({
-            message: "Updated.",
-            data: item,
-        });
+        return res.status(200).json(item);
     }
 
     async delete(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
-        await this.repository.findByIdAndDelete({_id});
+        await this.repository.destroy({_id});
 
-        return res.status(200).json({
-            message: "Deleted."
-        });
+        return res.status(200).json({ message: "Deleted." });
     }
 }

@@ -1,4 +1,4 @@
-import Screen from "../model/ScreenModel.js";
+import Screen from "../model/Screen.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
 import ScreenController from "../controller/ScreenController.js";

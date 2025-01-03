@@ -1,17 +1,20 @@
-import type {IAuthRegisterService, IAuthRegisterData} from "./AuthRegisterService.interface.js";
+import type {IAuthRegisterService, IAuthRegisterData} from "./IAuthRegisterService.js";
 import type {ZUser} from "../../users/schema/UserSchema.js";
-import {type UserRegisterData, UserRegisterSchema} from "../schema/AuthSchema.js";
 import {safeParseAsync} from "../../../shared/utility/zod/ZodParsers.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 
 import bcrypt from "bcryptjs";
-import User from "../../users/model/UserModel.js";
+import User from "../../users/model/User.js";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
+import {type UserRegisterData, UserRegisterSchema} from "../schema/UserRegisterSchema.js";
 
 const AuthRegisterService: IAuthRegisterService = {
     async register(params: IAuthRegisterData): Promise<ZUser> {
-        const {data, errors} = await safeParseAsync<typeof UserRegisterSchema, UserRegisterData>({
+        const {data, errors} = await safeParseAsync<
+            typeof UserRegisterSchema,
+            UserRegisterData
+        >({
             schema: UserRegisterSchema,
             data: params,
         });
@@ -20,10 +23,15 @@ const AuthRegisterService: IAuthRegisterService = {
             throw new ZodParseError({errors, message: "Invalid Register Details."});
         }
 
-        const {name, email, password} = data;
-
+        const {name, email, password} = data!;
         const hashedPassword = await bcrypt.hash(password, 12);
-        return User.create({name, email, password: hashedPassword, isAdmin: false});
+
+        return User.create({
+            name,
+            email,
+            password: hashedPassword,
+            isAdmin: false
+        });
     },
 
     async toggleAdmin({userID}: {userID: Types.ObjectId | string}): Promise<ZUser> {

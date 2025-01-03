@@ -1,6 +1,6 @@
 import type {Request, Response} from 'express';
-import type {IAuthRegisterData, IAuthRegisterService} from "../service/AuthRegisterService.interface.js";
-import type {IAuthLoginService} from "../service/AuthLoginService.interface.js";
+import type {IAuthRegisterData, IAuthRegisterService} from "../service/IAuthRegisterService.js";
+import type {IAuthLoginService} from "../service/IAuthLoginService.js";
 import createHttpError from "http-errors";
 
 interface IAuthControllerParams {
@@ -10,7 +10,9 @@ interface IAuthControllerParams {
 
 export interface IAuthController {
     login(req: Request, res: Response): Promise<Response>;
+
     register(req: Request, res: Response): Promise<Response>;
+
     toggleAdmin(req: Request, res: Response): Promise<Response>;
 }
 
@@ -30,7 +32,7 @@ export default class AuthController implements IAuthController {
         await this.registerService.register(data as IAuthRegisterData);
 
         return res.status(200).json({
-            message: "User registered successfully."
+            message: "Registered successfully. Proceed to Login."
         });
     }
 
@@ -40,11 +42,13 @@ export default class AuthController implements IAuthController {
 
         const {email, password} = data;
         const loginData = await this.loginService.login({email, password});
+        const cookieOptions = {secure: false, maxAge: 86400000};
 
-        return res.status(200).json({
-            message: "Logged In!",
-            data: loginData,
-        });
+        return res
+            .status(200)
+            .cookie("hasAuthToken", true, cookieOptions)
+            .cookie("authToken", loginData.token, {httpOnly: true, ...cookieOptions})
+            .json(loginData);
     }
 
     async toggleAdmin(req: Request, res: Response): Promise<Response> {

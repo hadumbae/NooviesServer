@@ -1,5 +1,5 @@
 import BaseController, {type IBaseController, type IBaseControllerConstructor} from "../../../shared/controller/BaseController.js";
-import type {IShowing} from "../model/ShowingInterfaces.js";
+import type IShowing from "../model/IShowing.js";
 
 export interface IShowingController extends IBaseController {}
 export interface IShowingControllerConstructor extends IBaseControllerConstructor<IShowing>{}

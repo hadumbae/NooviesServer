@@ -1,8 +1,10 @@
-import User from "../../users/model/UserModel.js";
+import User from "../../users/model/User.js";
 import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import type {IAuthLoginService, UserCredentials} from "./AuthLoginService.interface.js";
+import type {IAuthLoginService, UserCredentials} from "./IAuthLoginService.js";
+import type {ZodIssue} from "zod";
+import ZodParseError from "../../../shared/errors/ZodParseError.js";
 
 const AuthLoginService: IAuthLoginService = {
     // john@doe.com
@@ -15,7 +17,15 @@ const AuthLoginService: IAuthLoginService = {
         if (!user) throw createHttpError(404, "User not found!");
 
         const isEqual = await bcrypt.compare(password, user.password);
-        if (!isEqual) throw createHttpError(403, "Invalid password!");
+        if (!isEqual) {
+            const error = {
+                code: "invalid_string",
+                message: "Incorrect Password.",
+                path: ["password"]
+            };
+
+            throw new ZodParseError({message: "Authentication failed.", errors: [error as ZodIssue]});
+        }
 
         const tokenData = {
             user: user._id,
@@ -23,6 +33,7 @@ const AuthLoginService: IAuthLoginService = {
             email: user.email,
             isAdmin: user.isAdmin,
         };
+
 
         const token: string = jwt.sign(
             tokenData,

@@ -7,7 +7,7 @@ export default (schema: ZodTypeAny): RequestHandler =>
         try {
             req.validatedBody = schema.parse(req.body);
             next();
-        } catch (e) {
-            ZodValidatorErrorHandler({res, error: e});
+        } catch (e: any) {
+            ZodValidatorErrorHandler(e);
         }
     };

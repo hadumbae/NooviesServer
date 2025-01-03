@@ -1,5 +1,5 @@
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import Person from "../model/PersonModel.js";
+import Person from "../model/Person.js";
 import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
 import PersonController from "../controller/PersonController.js";
 

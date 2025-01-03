@@ -9,5 +9,4 @@ export default class ZodParseError extends Error {
         super(message);
         this.errors = errors;
     }
-
 }

@@ -2,7 +2,9 @@ import {z, type ZodType} from 'zod';
 import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {CoercedDate} from "../../../shared/schema/helpers/ZodDateHelpers.js";
 import {CountryEnum} from "../../../shared/schema/helpers/ZodEnumHelpers.js";
-import type {IPersonSubmit} from "../model/PersonInterfaces.js";
+
+import type {IPersonSubmit} from "./interface/IPersonSubmit.js";
+import {PersonAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 
 export const PersonSubmitSchema: ZodType<IPersonSubmit> = z.object({
     name: RequiredString
@@ -16,4 +18,8 @@ export const PersonSubmitSchema: ZodType<IPersonSubmit> = z.object({
     dob: CoercedDate,
 
     nationality: CountryEnum,
+
+    directors: z.array(PersonAsyncIDString),
+
+    cast: z.array(PersonAsyncIDString),
 });

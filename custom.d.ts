@@ -6,5 +6,6 @@ declare namespace Express {
         validatedBody?: Record<any, any>;
         validatedParams?: Record<any, any>;
         validatedQuery?: Record<any, any>;
+        validatedFiles?: [];
     }
 }

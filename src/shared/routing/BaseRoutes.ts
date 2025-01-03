@@ -1,13 +1,13 @@
 import express, {type RequestHandler} from "express";
 import asyncHandler from "../utility/AsyncHandler.js";
-import BaseController, {type IBaseController} from "../controller/BaseController.js";
+import {type IBaseController} from "../controller/BaseController.js";
+import isAuth from "../../domains/authentication/middleware/isAuth.js";
 
 export interface IBaseRoutesConfig<TController extends IBaseController> {
     controller: TController,
     createValidator: RequestHandler,
     updateValidator: RequestHandler,
 }
-
 
 export const createBaseRoutes = <TController extends IBaseController>(
     config: IBaseRoutesConfig<TController>
@@ -24,6 +24,7 @@ export const createBaseRoutes = <TController extends IBaseController>(
 
     router.get(
         '/paginated',
+        isAuth,
         asyncHandler(
             controller.paginated.bind(controller),
         ),

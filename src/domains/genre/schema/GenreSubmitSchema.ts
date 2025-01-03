@@ -1,6 +1,6 @@
 import {z, type ZodType} from 'zod';
 import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import type {IGenreSubmit} from "../model/GenreInterfaces.js";
+import type IGenreSubmit from "./interface/IGenreSubmit.js";
 
 export const GenreSubmitSchema: ZodType<IGenreSubmit> = z.object({
     name: RequiredString
@@ -8,5 +8,6 @@ export const GenreSubmitSchema: ZodType<IGenreSubmit> = z.object({
         .max(255, "Must be 255 characters or less."),
 
     description: RequiredString
+        .min(1, "Required.")
         .max(1000, "Must be 1000 characters or less."),
 });

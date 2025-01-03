@@ -5,7 +5,7 @@ import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js
 import {CoercedDate} from "../../../shared/schema/helpers/ZodDateHelpers.js";
 import {CountryEnum} from "../../../shared/schema/helpers/ZodEnumHelpers.js";
 import {CloudinaryImageObject} from "../../../shared/schema/helpers/ZodImageHelpers.js";
-import type {IPerson} from "../model/PersonInterfaces.js";
+import type {IPerson} from "../model/IPerson.js";
 
 export const PersonSchema: ZodType<IPerson> = z.object({
     _id: IDInstance.readonly(),

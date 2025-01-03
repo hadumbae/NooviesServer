@@ -1,8 +1,6 @@
-import {z} from "zod";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import Seat from "../model/SeatModel.js";
+import Seat from "../model/Seat.js";
 import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
-import GenreController from "../../genre/controller/GenreController.js";
 import SeatController from "../controller/SeatController.js";
 
 export default class SeatServiceProvider {

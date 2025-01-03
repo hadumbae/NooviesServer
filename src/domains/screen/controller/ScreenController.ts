@@ -2,7 +2,7 @@ import BaseController, {
     type IBaseController,
     type IBaseControllerConstructor
 } from "../../../shared/controller/BaseController.js";
-import type {IScreen} from "../model/ScreenModel.interfaces.js";
+import type {IScreen} from "../model/IScreen.js";
 
 export interface IScreenController extends IBaseController {}
 

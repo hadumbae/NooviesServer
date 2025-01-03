@@ -1,18 +1,13 @@
-import type {Response} from "express";
 import {ZodError} from "zod";
+import ZodParseError from "../../errors/ZodParseError.js";
 
-export default (params: {res: Response, error: any}) => {
-    const {res, error} = params;
-
+export default (error: Error) => {
     if (error instanceof ZodError) {
-        return res.status(400)
-            .json({
-                message: "Validation Failed",
-                errors: error.errors
-            });
+        throw new ZodParseError({
+            message: "Validation Failed.",
+            errors: (error as ZodError).errors,
+        });
     }
 
-    return res.status(500).json({
-        message: "Internal Server Error."
-    });
+    throw error;
 }
