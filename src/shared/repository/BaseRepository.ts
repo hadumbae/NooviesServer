@@ -32,17 +32,18 @@ export default class BaseRepository<T> {
     async findById({_id}: { _id: Types.ObjectId | string }): Promise<any> {
         return this.model
             .findById(_id)
+            .populate(this.populateRefs)
             .lean();
     }
 
     async exists404({_id}: { _id: Types.ObjectId | string }): Promise<any> {
-        const doc = await this.model.findById(_id);
+        const doc = await this.model.findById(_id).populate(this.populateRefs);
         if (!doc) throw createHttpError(404, 'Not found!');
         return doc;
     }
 
     async exists404Lean({_id}: { _id: Types.ObjectId | string }): Promise<any> {
-        const doc = await this.model.findById(_id).lean();
+        const doc = await this.model.findById(_id).populate(this.populateRefs).lean();
         if (!doc) throw createHttpError(404, 'Not found!');
         return doc;
     }
@@ -77,6 +78,7 @@ export default class BaseRepository<T> {
             .sort(sort)
             .skip((page - 1) * perPage)
             .limit(perPage)
+            .populate(this.populateRefs)
             .lean();
     }
 }

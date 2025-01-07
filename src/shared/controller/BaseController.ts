@@ -18,8 +18,8 @@ export interface IBaseControllerConstructor<TModel> {
 }
 
 export default class BaseController<TModel> implements IBaseController {
-    private readonly repository: BaseRepository<TModel>;
-    private readonly paginationUtils: IPaginationUtils;
+    protected readonly repository: BaseRepository<TModel>;
+    protected readonly paginationUtils: IPaginationUtils;
 
     constructor(params: IBaseControllerConstructor<TModel>) {
         this.repository = params.repository;

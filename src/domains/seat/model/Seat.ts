@@ -15,6 +15,12 @@ const SeatSchema = new Schema<ISeat>({
         required: [true, "Theatre is required."],
     },
 
+    screen: {
+        type: Schema.Types.ObjectId,
+        ref: 'Screen',
+        required: [true, "Screen is required."],
+    },
+
     row: {
         type: String,
         maxLength: [50, "Row must be 50 characters or less."],

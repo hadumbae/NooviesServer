@@ -6,7 +6,7 @@ import SeatController from "../controller/SeatController.js";
 export default class SeatServiceProvider {
     static register() {
         const model = Seat;
-        const populateRefs = ["threatre"];
+        const populateRefs = ["theatre", "screen"];
 
         const repository = new BaseRepository({model, populateRefs});
         const paginationUtils = PaginationUtils;

@@ -17,5 +17,4 @@ export interface IScreenSubmit{
     capacity: number,
     screenType: ScreenTypeEnumType,
     theatre: string,
-    seats: string[],
 }

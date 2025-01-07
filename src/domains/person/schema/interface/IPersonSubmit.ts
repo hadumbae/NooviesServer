@@ -3,6 +3,4 @@ export interface IPersonSubmit {
     biography: string,
     dob: Date,
     nationality: string,
-    directors: string[],
-    cast: string[],
 }

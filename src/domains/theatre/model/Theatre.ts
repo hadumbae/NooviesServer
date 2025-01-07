@@ -17,6 +17,7 @@ const TheatreSchema = new Schema<ITheatre>({
 
     numberOfSeats: {
         type: Number,
+        default: 0,
         required: [true, 'Number of Seats is required.'],
     },
 

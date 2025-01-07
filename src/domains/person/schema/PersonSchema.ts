@@ -22,8 +22,9 @@ export const PersonSchema: ZodType<IPerson> = z.object({
 
     nationality: CountryEnum,
 
-    profileImage: CloudinaryImageObject
-        .readonly(),
+    profileImage: z
+        .union([z.null(), CloudinaryImageObject.readonly()])
+        .optional(),
 
     movies: z
         .array(z.union([IDInstance, z.lazy(() => MovieSchema) ])),

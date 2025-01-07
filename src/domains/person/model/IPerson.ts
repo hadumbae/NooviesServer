@@ -8,7 +8,7 @@ export interface IPerson {
     biography: string,
     dob: Date,
     nationality: string,
-    profileImage?: ICloudinaryImage,
+    profileImage?: ICloudinaryImage | null,
     movies: (Types.ObjectId | IMovie)[],
 }
 

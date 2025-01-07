@@ -29,7 +29,6 @@ const ScreenSchema: Schema<IScreen> = new Schema<IScreen>({
     seats: {
         type: [{ type: Schema.Types.ObjectId, ref: 'Seat' }],
         required: true,
-        validate: (seats: any) => Array.isArray(seats) && seats.length > 0,
     },
 
     screenType: {
