@@ -1,6 +1,6 @@
 import {type ZodTypeAny} from "zod";
 import type {Request, Response, NextFunction, RequestHandler} from "express";
-import ZodValidatorErrorHandler from "./ZodValidatorErrorHandler.js";
+import ZodParseErrorHandler from "./ZodParseErrorHandler.js";
 
 export default (schema: ZodTypeAny): RequestHandler =>
     (req: Request, res: Response, next: NextFunction) => {
@@ -8,6 +8,6 @@ export default (schema: ZodTypeAny): RequestHandler =>
             req.validatedBody = schema.parse(req.body);
             next();
         } catch (e: any) {
-            ZodValidatorErrorHandler(e);
+            ZodParseErrorHandler(e);
         }
     };

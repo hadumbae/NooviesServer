@@ -1,14 +1,17 @@
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import Person from "../model/Person.js";
-import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
+import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import PersonController from "../controller/PersonController.js";
+import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 
 export default class PersonServiceProvider {
     static register() {
-        const repository = new BaseRepository({model: Person, populateRefs: ["movies"]});
-        const paginationUtils = PaginationUtils;
+        const model = Person;
+        const populateRefs = ["movies"];
 
-        const controller = new PersonController({repository, paginationUtils});
+        const queryUtils = QueryUtils;
+        const repository = new BaseRepository({model, populateRefs});
+
+        const controller = new PersonController({repository, queryUtils});
 
         return {
             repository,

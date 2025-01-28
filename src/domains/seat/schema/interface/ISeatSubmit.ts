@@ -1,9 +1,9 @@
-import type {SeatTypeEnumType} from "../enum/SeatTypeEnum.js";
+import type {SeatType} from "../enum/SeatTypeEnum.js";
 
 export default interface ISeatSubmit {
     row: string,
     seatNumber: string,
-    seatType: SeatTypeEnumType,
+    seatType: SeatType,
     isAvailable: boolean,
     priceMultiplier: number,
     theatre: string;

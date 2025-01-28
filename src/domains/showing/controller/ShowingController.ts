@@ -2,6 +2,7 @@ import BaseController, {type IBaseController, type IBaseControllerConstructor} f
 import type IShowing from "../model/IShowing.js";
 
 export interface IShowingController extends IBaseController {}
+
 export interface IShowingControllerConstructor extends IBaseControllerConstructor<IShowing>{}
 
 export default class ShowingController extends BaseController<IShowing> implements IShowingController {

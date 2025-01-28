@@ -5,6 +5,14 @@ import Showing from "../../showing/model/Showing.js";
 import type {Query} from "mongoose";
 import type {IScreen} from "../../screen/model/IScreen.js";
 
+// Save Movie Document Post Middleware
+
+// Save - Type
+// Movie - Model
+// Document - Query/Document
+// Post - Pre/Post
+// Middleware
+
 /**
  * Document Middleware
  */

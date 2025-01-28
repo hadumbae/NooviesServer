@@ -1,39 +1,36 @@
 import type {Request, Response} from 'express';
-import type {IAuthRegisterData, IAuthRegisterService} from "../service/IAuthRegisterService.js";
-import type {IAuthLoginService} from "../service/IAuthLoginService.js";
 import createHttpError from "http-errors";
-
-interface IAuthControllerParams {
-    registerService: IAuthRegisterService,
-    loginService: IAuthLoginService,
-}
+import type {IAuthService} from "../service/AuthService.js";
+import type {UserRegisterData} from "../schema/UserRegisterSubmitSchema.js";
 
 export interface IAuthController {
-    login(req: Request, res: Response): Promise<Response>;
-
     register(req: Request, res: Response): Promise<Response>;
 
+    login(req: Request, res: Response): Promise<Response>;
+
+    logout(req: Request, res: Response): Response;
+
     toggleAdmin(req: Request, res: Response): Promise<Response>;
+
+    verifyAdminStatus(req: Request, res: Response): Promise<Response>;
 }
 
 export default class AuthController implements IAuthController {
-    private registerService: IAuthRegisterService;
-    private loginService: IAuthLoginService;
+    private service: IAuthService;
 
-    constructor(params: IAuthControllerParams) {
-        this.registerService = params.registerService;
-        this.loginService = params.loginService;
+    constructor({service}: { service: IAuthService }) {
+        this.service = service;
     }
 
     async register(req: Request, res: Response): Promise<Response> {
-        const data = req.validatedBody;
+        const data = req.validatedBody as UserRegisterData;
         if (!data) throw createHttpError(400, "Missing Request Data.");
 
-        await this.registerService.register(data as IAuthRegisterData);
+        await this.service.register(data);
 
-        return res.status(200).json({
-            message: "Registered successfully. Proceed to Login."
-        });
+        return res
+            .status(200)
+            .json({message: "Registered successfully. Proceed to Login."});
     }
 
     async login(req: Request, res: Response): Promise<Response> {
@@ -41,7 +38,7 @@ export default class AuthController implements IAuthController {
         if (!data) throw createHttpError(400, "Missing Request Data.");
 
         const {email, password} = data;
-        const loginData = await this.loginService.login({email, password});
+        const loginData = await this.service.login({email, password});
         const cookieOptions = {secure: false, maxAge: 86400000};
 
         return res
@@ -51,9 +48,25 @@ export default class AuthController implements IAuthController {
             .json(loginData);
     }
 
+    logout(req: Request, res: Response): Response {
+        return res
+            .status(200)
+            .clearCookie("hasAuthToken")
+            .clearCookie("authToken")
+            .json({message: "Logged out."});
+    }
+
+    async verifyAdminStatus(req: Request, res: Response): Promise<Response> {
+        const {authUserID, authUserAdmin} = req;
+
+        return res
+            .status(200)
+            .json({userID: authUserID, isAdmin: authUserAdmin});
+    }
+
     async toggleAdmin(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
-        await this.registerService.toggleAdmin({userID: _id});
+        await this.service.toggleAdmin({userID: _id});
         return res.status(200).json({
             message: "User Admin Status toggled successfully."
         });

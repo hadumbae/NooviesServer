@@ -1,7 +1,7 @@
 import Theatre from "../model/Theatre.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
 import TheatreController from "../controller/TheatreController.js";
+import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 
 export default class TheatreServiceProvider {
     static register() {
@@ -9,9 +9,9 @@ export default class TheatreServiceProvider {
         const populateRefs = ['screens', 'seats'];
 
         const repository = new BaseRepository({model, populateRefs});
-        const paginationUtils = PaginationUtils;
+        const queryUtils = QueryUtils;
 
-        const controller = new TheatreController({repository, paginationUtils});
+        const controller = new TheatreController({repository, queryUtils});
 
         return {
             repository,

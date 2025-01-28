@@ -4,9 +4,7 @@ import BaseController, {
 } from "../../../shared/controller/BaseController.js";
 import type {IScreen} from "../model/IScreen.js";
 import type {Request, Response} from "express";
-import type {PaginationRequest} from "../../../shared/types/request/CustomRequestTypes.js";
 import type {IScreenQueryService} from "../service/ScreenQueryService.js";
-import type {IMovieImageService} from "../../movie/service/MovieImageService.js";
 
 export interface IScreenController extends IBaseController {}
 
@@ -19,7 +17,6 @@ export default class ScreenController extends BaseController<IScreen> implements
 
     constructor(params: IScreenControllerConstructor) {
         const {queryService, ...baseParams} = params;
-
         super({...baseParams});
 
         this.queryService = queryService;
@@ -32,7 +29,7 @@ export default class ScreenController extends BaseController<IScreen> implements
     }
 
     async paginated(req: Request, res: Response): Promise<Response> {
-        const {page, perPage} = this.paginationUtils.fetchPaginationFromQuery(req);
+        const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
         const filters = this.queryService.getQuery({req});
 
         const totalItems = await this.repository.count({filters});

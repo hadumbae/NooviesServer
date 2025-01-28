@@ -1,6 +1,7 @@
 import type {ErrorRequestHandler, NextFunction, Request, Response} from "express";
 import {isHttpError} from "http-errors";
 import ZodParseError from "../errors/ZodParseError.js";
+import {ZodError} from "zod";
 
 /**
  * Handles synchronous errors.
@@ -16,14 +17,18 @@ const errorHandler: ErrorRequestHandler = (error: Error, req: Request, res: Resp
         errorStatus = error.status;
     }
 
-    console.error("Has error!");
+    if (error instanceof ZodError) {
+        console.error("Has a ZodError!");
+        res.status(400).json({message: "Validation failed.", errors: error.errors});
+    }
 
     if (error instanceof ZodParseError) {
-        console.error("Has ZodParseError!");
+        console.error("Had a ZodParseError!");
         const {message, errors} = error;
         res.status(400).json({message, errors});
     }
 
+    console.error("Had a ZodParseError!");
     res.status(errorStatus).json({ message: errorMessage });
 }
 

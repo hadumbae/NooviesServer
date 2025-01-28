@@ -30,3 +30,5 @@ export const TheatreSchema: ZodType<ITheatre> = z.object({
         z.lazy(() => SeatSchema),
     ])),
 });
+
+export type ZTheatre = z.infer<typeof TheatreSchema>;

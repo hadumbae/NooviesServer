@@ -1,7 +1,7 @@
 import {type Request, type Response} from "express";
 import type BaseRepository from "../repository/BaseRepository.js";
-import type {IPaginationUtils} from "../utility/PaginationUtils.js";
 import type {PaginationRequest} from "../types/request/CustomRequestTypes.js";
+import queryUtils, {type IQueryUtils} from "../utility/query/QueryUtils.js";
 
 export interface IBaseController {
     all(req: Request, res: Response): Promise<Response>;
@@ -14,49 +14,57 @@ export interface IBaseController {
 
 export interface IBaseControllerConstructor<TModel> {
     repository: BaseRepository<TModel>;
-    paginationUtils: IPaginationUtils;
+    queryUtils: IQueryUtils;
 }
 
 export default class BaseController<TModel> implements IBaseController {
     protected readonly repository: BaseRepository<TModel>;
-    protected readonly paginationUtils: IPaginationUtils;
+    protected readonly queryUtils: IQueryUtils;
 
     constructor(params: IBaseControllerConstructor<TModel>) {
         this.repository = params.repository;
-        this.paginationUtils = params.paginationUtils;
+        this.queryUtils = params.queryUtils;
     }
 
-    async all(_req: Request, res: Response): Promise<Response> {
-        const items = await this.repository.find();
+    async all(req: Request, res: Response): Promise<Response> {
+        const populate = queryUtils.fetchPopulateFromQuery(req);
+        const items = await this.repository.find({populate});
         return res.status(200).json(items);
     }
 
-    async paginated(req: PaginationRequest, res: Response): Promise<Response> {
-        const {page, perPage} = this.paginationUtils.fetchPaginationFromQuery(req);
+    async paginated(req: Request, res: Response): Promise<Response> {
+        const populate = queryUtils.fetchPopulateFromQuery(req);
+        const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
+
         const totalItems = await this.repository.count();
-        const items = await this.repository.paginate({page, perPage});
+        const items = await this.repository.paginate({page, perPage, populate, lean: true});
 
         return res.status(200).json({totalItems, items});
     }
 
     async create(req: Request, res: Response): Promise<Response> {
+        const populate = queryUtils.fetchPopulateFromQuery(req);
         const data = req.body;
-        const item = await this.repository.create({data})
+
+        const item = await this.repository.create({data, populate});
 
         return res.status(200).json(item);
     }
 
     async get(req: Request, res: Response): Promise<Response> {
+        const populate = queryUtils.fetchPopulateFromQuery(req);
         const {_id} = req.params;
-        const item = await this.repository.findById({_id});
+
+        const item = await this.repository.findById({_id, populate, lean: true});
+
         return res.status(200).json(item);
     }
 
     async update(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
-        const data = req.body;
-        const item = await this.repository.update({_id, data});
+        const data = req.validatedBody;
 
+        const item = await this.repository.update({_id, data, lean: true});
         return res.status(200).json(item);
     }
 

@@ -1,20 +1,13 @@
-import AuthRegisterService from "../service/AuthRegisterService.js";
-import AuthLoginService from "../service/AuthLoginService.js";
 import AuthController from "../controller/AuthController.js";
+import AuthService from "../service/AuthService.js";
 
 export default class AuthServiceProvider {
     static register() {
-        const registerService = AuthRegisterService;
-        const loginService = AuthLoginService;
-
-        const controller = new AuthController({
-            registerService,
-            loginService
-        });
+        const service = new AuthService();
+        const controller = new AuthController({service});
 
         return {
-            registerService,
-            loginService,
+            service,
             controller,
         };
     }

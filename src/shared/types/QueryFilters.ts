@@ -1,0 +1,1 @@
+export type QueryFilters = Record<string, any>;

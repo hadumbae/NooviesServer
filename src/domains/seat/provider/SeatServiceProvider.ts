@@ -1,7 +1,10 @@
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import Seat from "../model/Seat.js";
-import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
+
+import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import SeatController from "../controller/SeatController.js";
+
+import SeatQueryService from "../service/SeatQueryService.js";
+import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 
 export default class SeatServiceProvider {
     static register() {
@@ -9,12 +12,15 @@ export default class SeatServiceProvider {
         const populateRefs = ["theatre", "screen"];
 
         const repository = new BaseRepository({model, populateRefs});
-        const paginationUtils = PaginationUtils;
+        const queryUtils = QueryUtils;
 
-        const controller = new SeatController({repository, paginationUtils});
+        const queryService = new SeatQueryService();
+
+        const controller = new SeatController({repository, queryUtils, queryService});
 
         return {
             repository,
+            queryService,
             controller,
         };
     }

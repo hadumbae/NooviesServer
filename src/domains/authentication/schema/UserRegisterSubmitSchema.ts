@@ -1,7 +1,8 @@
-import {z} from "zod";
+import {z, type ZodType} from "zod";
 import User from "../../users/model/User.js";
+import type IUserRegisterSubmit from "./interfaces/IUserRegisterSubmit.js";
 
-export const UserRegisterSchema = z.object({
+export const UserRegisterSubmitSchema: ZodType<IUserRegisterSubmit> = z.object({
     name: z
         .string({required_error: "Name is required.", invalid_type_error: "Name must be a string."})
         .min(3, "Name must be at least 3 characters.")
@@ -31,4 +32,4 @@ export const UserRegisterSchema = z.object({
     if (checkUser) ctx.addIssue({code: z.ZodIssueCode.custom, message: "Email already taken.", path: ['email']});
 });
 
-export type UserRegisterData = z.infer<typeof UserRegisterSchema>;
+export type UserRegisterData = z.infer<typeof UserRegisterSubmitSchema>;

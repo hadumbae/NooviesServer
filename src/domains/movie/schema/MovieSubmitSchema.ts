@@ -23,9 +23,7 @@ export const MovieSubmitSchema: ZodType<IMovieSubmit> = z.object({
     cast: z
         .array(PersonAsyncIDString),
 
-    releaseDate: z
-        .union([z.null(), CoercedDate])
-        .optional(),
+    releaseDate: CoercedDate,
 
     durationInMinutes: PositiveNumber,
 

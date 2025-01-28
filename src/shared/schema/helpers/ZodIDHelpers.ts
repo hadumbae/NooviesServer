@@ -4,6 +4,7 @@ import Person from "../../../domains/person/model/Person.js";
 import Screen from "../../../domains/screen/model/Screen.js";
 import Seat from "../../../domains/seat/model/Seat.js";
 import Theatre from "../../../domains/theatre/model/Theatre.js";
+import Showing from "../../../domains/showing/model/Showing.js";
 
 export const GenreAsyncIDString = IDString
     .refine(
@@ -48,4 +49,13 @@ export const ScreenAsyncIDString = IDString
             return !!screen;
         },
         "404. Screen not found."
+    );
+
+export const ShowingAsyncIDString = IDString
+    .refine(
+        async (showingID) => {
+            const showing = await Showing.findById(showingID);
+            return !!showing;
+        },
+        "404. Showing not found."
     );

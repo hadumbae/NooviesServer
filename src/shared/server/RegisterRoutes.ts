@@ -8,19 +8,21 @@ import TheatreRoutes from "../../domains/theatre/routing/TheatreRoutes.js";
 import ShowingRoutes from "../../domains/showing/routing/ShowingRoutes.js";
 import GenreRoutes from "../../domains/genre/routing/GenreRoutes.js";
 import UserRoutes from "../../domains/users/routing/UserRoutes.js";
+import SeatMapRoutes from "../../domains/seatmap/routing/SeatMapRoutes.js";
 
 const registerRoutes = (app: Express) => {
     app.use("/auth", AuthRoutes);
-
     app.use("/api/v1/users", UserRoutes);
-    app.use("/api/v1/persons", PersonRoutes);
-    app.use("/api/v1/movies", MovieRoutes);
-    app.use("/api/v1/genres", GenreRoutes);
 
-    app.use("/api/v1/seats", SeatRoutes);
-    app.use("/api/v1/screens", ScreenRoutes);
-    app.use("/api/v1/theatres", TheatreRoutes);
-    app.use("/api/v1/showings", ShowingRoutes);
+    app.use("/api/v1/admin/persons", PersonRoutes);
+    app.use("/api/v1/admin/movies", MovieRoutes);
+    app.use("/api/v1/admin/genres", GenreRoutes);
+    app.use("/api/v1/admin/showings", ShowingRoutes);
+
+    app.use("/api/v1/admin/seats", SeatRoutes);
+    app.use("/api/v1/admin/screens", ScreenRoutes);
+    app.use("/api/v1/admin/theatres", TheatreRoutes);
+    app.use("/api/v1/admin/seatmaps", SeatMapRoutes);
 };
 
 export default registerRoutes;

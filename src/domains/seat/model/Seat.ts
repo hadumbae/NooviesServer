@@ -42,7 +42,6 @@ const SeatSchema = new Schema<ISeat>({
 
     isAvailable: {
         type: Boolean,
-        default: true,
         required: [true, "Is Available is required."],
     },
 

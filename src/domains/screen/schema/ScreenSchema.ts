@@ -25,3 +25,5 @@ export const ScreenSchema: ZodType<IScreen> = z.object({
     seats: z
         .array(z.union([IDInstance, z.lazy(() => SeatSchema)])),
 });
+
+export type ZScreen = z.infer<typeof ScreenSchema>;

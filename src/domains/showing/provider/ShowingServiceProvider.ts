@@ -1,17 +1,22 @@
 import Showing from "../model/Showing.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import PaginationUtils from "../../../shared/utility/PaginationUtils.js";
 import ShowingController from "../controller/ShowingController.js";
+import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 
 export default class ShowingServiceProvider {
     static register() {
         const model = Showing;
-        const populateRefs = ["movie", "theatre", "screen", "seatMap.seat"];
+        const populateRefs= [
+            {path: "movie"},
+            {path: "theatre"},
+            {path: "screen"},
+            {path: "seating", populate: {path: "seat"}},
+        ];
 
         const repository = new BaseRepository({model, populateRefs});
-        const paginationUtils = PaginationUtils;
+        const queryUtils = QueryUtils;
 
-        const controller = new ShowingController({repository, paginationUtils});
+        const controller = new ShowingController({repository, queryUtils: queryUtils});
 
         return {
             repository,

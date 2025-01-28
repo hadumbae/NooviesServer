@@ -1,6 +1,13 @@
+// TODO - Add `status` to Showing Schema
+//  If `inactive`, prevent modifications to `seatmap` and `reservations`
+
 import {Model, model, Schema} from "mongoose";
 import type IShowing from "./IShowing.js";
-import {SeatMapSchema} from "./SeatMap.js";
+import {
+    DeleteOneShowingDocumentPostMiddleware,
+    DeleteShowingQueryPostMiddleware,
+    SaveShowingDocumentPostMiddleware
+} from "./ShowingMiddleware.js";
 
 const ShowingSchema = new Schema<IShowing>({
     movie: {
@@ -32,8 +39,8 @@ const ShowingSchema = new Schema<IShowing>({
         required: false,
     },
 
-    seatMap: {
-        type: [SeatMapSchema],
+    seating: {
+        type: [{type: Schema.Types.ObjectId, ref: "SeatMap"}],
         required: true,
     },
 
@@ -60,6 +67,15 @@ const ShowingSchema = new Schema<IShowing>({
         required: true,
     },
 }, {timestamps: true});
+
+ShowingSchema.pre("save", {document: true, query: false}, function (next) {
+    this.wasNew = this.isNew;
+    next();
+});
+
+ShowingSchema.post("save", {document: true, query: false}, SaveShowingDocumentPostMiddleware);
+ShowingSchema.post("deleteOne", {document: true, query: false}, DeleteOneShowingDocumentPostMiddleware);
+ShowingSchema.post(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteShowingQueryPostMiddleware);
 
 const Showing: Model<IShowing> = model<IShowing>("Showing", ShowingSchema);
 export default Showing;

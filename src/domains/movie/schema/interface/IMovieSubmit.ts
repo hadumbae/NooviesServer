@@ -4,7 +4,7 @@ export default interface IMovieSubmit {
     genres: string[],
     directors: string[],
     cast: string[],
-    releaseDate?: Date | null,
+    releaseDate: Date,
     durationInMinutes: number,
     languages?: string[],
     subtitles?: string[],

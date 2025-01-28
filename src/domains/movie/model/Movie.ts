@@ -36,14 +36,14 @@ const MovieSchema = new Schema<IMovie>({
 
     releaseDate: {
         type: Date,
-        required: false,
-        default: null
+        default: new Date(),
+        required: [true, "Release Date is required."],
     },
 
     durationInMinutes: {
         type: Number,
+        min: [1, "Duration must be at least 1 minute."],
         required: [true, "Duration In Minutes is required."],
-        min: [1, "Duration must be at least 1 minute."]
     },
 
     languages: {
@@ -70,7 +70,8 @@ const MovieSchema = new Schema<IMovie>({
 
     price: {
         type: Number,
-        required: [true, "Price is required."]
+        min: [0, "Price must be 0 or greater."],
+        required: [true, "Price is required."],
     },
 
     showings: {

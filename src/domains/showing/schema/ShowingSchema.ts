@@ -7,7 +7,7 @@ import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
 import {TheatreSchema} from "../../theatre/schema/TheatreSchema.js";
 import {ScreenSchema} from "../../screen/schema/ScreenSchema.js";
-import {SeatMapSchema} from "./SeatMapSchema.js";
+import {SeatMapSchema} from "../../seatmap/schema/SeatMapSchema.js";
 import type IShowing from "../model/IShowing.js";
 
 export const ShowingSchema: ZodType<IShowing> = z.object({
@@ -41,6 +41,8 @@ export const ShowingSchema: ZodType<IShowing> = z.object({
     screen: z
         .union([IDInstance, z.lazy(() => ScreenSchema)]),
 
-    seatMap: z
+    seating: z
         .array(SeatMapSchema),
 });
+
+export type ZShowing = z.infer<typeof ShowingSchema>;
