@@ -1,6 +1,8 @@
 import {model, type Model, Schema} from "mongoose";
 import type {IPerson} from "./IPerson.js";
-import Movie from "../../movie/model/Movie.js";
+
+import {DeletePersonQueryPreMiddleware} from "./middleware/PersonQueryMiddleware.js";
+import {DeletePersonDocumentPreMiddleware} from "./middleware/PersonDocumentMiddleware.js";
 
 // TODO Add Awards and Nominations
 
@@ -42,10 +44,8 @@ const PersonSchema = new Schema<IPerson>({
     },
 }, {timestamps: true});
 
-PersonSchema.pre("findOneAndDelete", {query: true}, async function () {
-    const {_id} = this.getFilter();
-    await Movie.updateMany({}, {directors: {$pull: _id}, cast: {$pull: _id}});
-});
+PersonSchema.pre("deleteOne", {query: false, document: true}, DeletePersonDocumentPreMiddleware);
+PersonSchema.pre(["deleteOne", "deleteMany"], {query: true, document: false}, DeletePersonQueryPreMiddleware);
 
 const Person: Model<IPerson> = model<IPerson>("Person", PersonSchema);
 export default Person;

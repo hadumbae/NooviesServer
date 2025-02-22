@@ -1,5 +1,5 @@
 import {Types} from "mongoose";
-import type {IScreen} from "../../screen/model/IScreen.js";
+import type {IScreen} from "../../screen/interface/IScreen.js";
 import type ITheatre from "../../theatre/model/ITheatre.js";
 import type ISeatMap from "../../seatmap/model/ISeatMap.js";
 import type IMovie from "../../movie/model/IMovie.js";

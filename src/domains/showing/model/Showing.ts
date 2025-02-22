@@ -4,10 +4,13 @@
 import {Model, model, Schema} from "mongoose";
 import type IShowing from "./IShowing.js";
 import {
-    DeleteOneShowingDocumentPostMiddleware,
-    DeleteShowingQueryPostMiddleware,
-    SaveShowingDocumentPostMiddleware
-} from "./ShowingMiddleware.js";
+    DeleteShowingQueryPreMiddleware,
+    UpdateShowingQueryPostMiddleware, UpdateShowingQueryPreMiddleware
+} from "./middleware/ShowingQueryMiddleware.js";
+import {
+    DeleteOneShowingDocumentPreMiddleware,
+    SaveShowingDocumentPostMiddleware, SaveShowingDocumentPreMiddleware
+} from "./middleware/ShowingDocumentMiddleware.js";
 
 const ShowingSchema = new Schema<IShowing>({
     movie: {
@@ -73,9 +76,14 @@ ShowingSchema.pre("save", {document: true, query: false}, function (next) {
     next();
 });
 
+ShowingSchema.pre("save", {document: true, query: false}, SaveShowingDocumentPreMiddleware);
 ShowingSchema.post("save", {document: true, query: false}, SaveShowingDocumentPostMiddleware);
-ShowingSchema.post("deleteOne", {document: true, query: false}, DeleteOneShowingDocumentPostMiddleware);
-ShowingSchema.post(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteShowingQueryPostMiddleware);
+
+ShowingSchema.pre("findOneAndUpdate", {document: false, query: true}, UpdateShowingQueryPreMiddleware);
+ShowingSchema.post("findOneAndUpdate", {document: false, query: true}, UpdateShowingQueryPostMiddleware);
+
+ShowingSchema.post("deleteOne", {document: true, query: false}, DeleteOneShowingDocumentPreMiddleware);
+ShowingSchema.post(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteShowingQueryPreMiddleware);
 
 const Showing: Model<IShowing> = model<IShowing>("Showing", ShowingSchema);
 export default Showing;

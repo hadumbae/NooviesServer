@@ -1,7 +1,6 @@
 import createHttpError from "http-errors";
-import {type FilterQuery, Types} from "mongoose";
+import {Types} from "mongoose";
 
-import type ISeatMap from "../model/ISeatMap.js";
 import Seat from "../../seat/model/Seat.js";
 import SeatMap from "../model/SeatMap.js";
 import Showing from "../../showing/model/Showing.js";
@@ -9,25 +8,19 @@ import Showing from "../../showing/model/Showing.js";
 import type {ZSeatMap} from "../schema/SeatMapSchema.js";
 import type {ZMovie} from "../../movie/schema/MovieSchema.js";
 
-import type {PopulateQueryFilters} from "../../../shared/types/mongoose/CustomMongooseAggregateTypes.js";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
+
 import type ISeatMapService from "./ISeatMapService.js";
+import type {GetShowingSeatMapParams} from "./ISeatMapService.js";
 
 
 export default class SeatMapService implements ISeatMapService {
-    async getShowingSeatMap(
-        params: {
-            showingID: string,
-            page: number,
-            perPage: number,
-            matchFilters?: FilterQuery<ISeatMap>,
-            populateFilters?: PopulateQueryFilters,
-        }
-    ): Promise<PaginationReturns<ZSeatMap>> {
+    async getShowingSeatMap(params: GetShowingSeatMapParams): Promise<PaginationReturns<ZSeatMap>> {
         const {showingID, page = 1, perPage = 100, matchFilters = {}, populateFilters = []} = params;
 
         const matchPipeline = {$match: {showing: new Types.ObjectId(showingID), ...matchFilters}};
         const [{totalItems = 0} = {}] = await SeatMap.aggregate([matchPipeline, {$count: "totalItems"}]);
+
         const items = await SeatMap.aggregate([
             matchPipeline,
             ...populateFilters,
@@ -82,8 +75,6 @@ export default class SeatMapService implements ISeatMapService {
         const updatedSeatMap = await SeatMap
             .findByIdAndUpdate(seatMapID, {isAvailable: !seatMap.isAvailable}, {new: true})
             .populate(['seat', 'showing']);
-
-        console.log("Updated Seat Map: ", updatedSeatMap);
 
         return updatedSeatMap!;
     }

@@ -1,18 +1,17 @@
 import type {Request} from "express";
 
 import type {FilterQuery} from "mongoose";
-import type ISeatFilters from "../schema/interface/ISeatFilters.js";
-import {SeatFilterQuerySchema} from "../schema/query/SeatFilterQuerySchema.js";
+import {type SeatQuery, SeatQuerySchema} from "../schema/query/SeatQuerySchema.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import type {SeatQueryRequest} from "../type/SeatQueryRequest.js";
 
 export interface ISeatQueryService {
-    getMatchFilters({req}: {req: Request<any, any, any, ISeatFilters>}): FilterQuery<any>;
+    getMatchFilters({req}: {req: SeatQueryRequest}): FilterQuery<SeatQuery>;
 }
 
 export default class SeatQueryService implements ISeatQueryService {
-    getMatchFilters({req}: { req: Request<any, any, any, ISeatFilters> }): FilterQuery<ISeatFilters> {
-        const {theatre, screen, row, seatNumber, seatType, isAvailable} = SeatFilterQuerySchema.parse(req.query);
-        const conditions: FilterQuery<ISeatFilters> = {theatre, screen, row, seatNumber, seatType, isAvailable};
+    getMatchFilters({req}: { req: SeatQueryRequest }): FilterQuery<SeatQuery> {
+        const conditions: FilterQuery<SeatQuery> = SeatQuerySchema.parse(req.query);
         return filterNullArray(conditions);
     }
 }

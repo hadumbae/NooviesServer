@@ -11,8 +11,8 @@ export default class SeatServiceProvider {
         const model = Seat;
         const populateRefs = ["theatre", "screen"];
 
-        const repository = new BaseRepository({model, populateRefs});
         const queryUtils = QueryUtils;
+        const repository = new BaseRepository({model, populateRefs});
 
         const queryService = new SeatQueryService();
 

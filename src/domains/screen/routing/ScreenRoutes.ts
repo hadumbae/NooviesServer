@@ -1,7 +1,7 @@
 import ScreenServiceProvider from "../provider/ScreenServiceProvider.js";
 import {createBaseRoutes, type IBaseRoutesConfig} from "../../../shared/routing/BaseRoutes.js";
 import type {IScreenController} from "../controller/ScreenController.js";
-import ZodAsyncValidator from "../../../shared/utility/zod/ZodAsyncValidator.js";
+import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 import {ScreenSubmitSchema} from "../schema/ScreenSubmitSchema.js";
 
 const {controller} = ScreenServiceProvider.register();

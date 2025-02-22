@@ -1,10 +1,12 @@
 import {Model, model, Schema,} from "mongoose";
 import type IMovie from "./IMovie.js";
 import {
-    DeleteMovieQueryPostMiddleware,
-    DeleteOneMovieDocumentPostMiddleware,
-    SaveMovieDocumentPostMiddleware
-} from "./MovieMiddleware.js";
+    DeleteMovieQueryPostMiddleware, FindOneAndUpdateMovieQueryPostMiddleware, FindOneAndUpdateMovieQueryPreMiddleware
+} from "./middleware/MovieQueryMiddleware.js";
+import {
+    DeleteOneMovieDocumentPreMiddleware,
+    SaveMovieDocumentPostMiddleware, SaveMovieDocumentPreMiddleware
+} from "./middleware/MovieDocumentMiddleware.js";
 
 const MovieSchema = new Schema<IMovie>({
     title: {
@@ -84,8 +86,13 @@ const MovieSchema = new Schema<IMovie>({
  * Middleware
  */
 
+MovieSchema.pre("save", {document: true, query: false}, SaveMovieDocumentPreMiddleware);
 MovieSchema.post("save", {document: true, query: false}, SaveMovieDocumentPostMiddleware);
-MovieSchema.pre("deleteOne", {document: true, query: false}, DeleteOneMovieDocumentPostMiddleware);
+
+MovieSchema.pre("findOneAndUpdate", {document: false, query: true}, FindOneAndUpdateMovieQueryPreMiddleware);
+MovieSchema.post("findOneAndUpdate", {document: false, query: true}, FindOneAndUpdateMovieQueryPostMiddleware);
+
+MovieSchema.pre("deleteOne", {document: true, query: false}, DeleteOneMovieDocumentPreMiddleware);
 MovieSchema.pre(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteMovieQueryPostMiddleware);
 
 const Movie: Model<IMovie> = model<IMovie>("Movie", MovieSchema);

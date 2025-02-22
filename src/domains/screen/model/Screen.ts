@@ -1,11 +1,22 @@
 import {Schema, Model, model} from "mongoose";
-import type {IScreen} from "./IScreen.js";
+import type {IScreen} from "../interface/IScreen.js";
 import ScreenTypeConstant from "../constant/ScreenTypeConstant.js";
+
 import {
+    SaveScreenDocumentPreMiddleware,
+    SaveScreenDocumentPostMiddleware,
     DeleteOneScreenDocumentPostMiddleware,
+} from "./middleware/ScreenDocumentMiddleware.js";
+
+import {
     DeleteScreenQueryPostMiddleware,
-    SaveScreenDocumentPostMiddleware
-} from "./ScreenMiddleware.js";
+    FindOneAndUpdateScreenQueryPreMiddleware,
+    FindOneAndUpdateScreenQueryPostMiddleware,
+} from "./middleware/ScreenQueryMiddleware.js";
+
+/**
+ * Schema
+ */
 
 const ScreenSchema: Schema<IScreen> = new Schema<IScreen>({
     name: {
@@ -39,7 +50,16 @@ const ScreenSchema: Schema<IScreen> = new Schema<IScreen>({
     },
 }, {timestamps: true});
 
+/**
+ * Middleware
+ */
+
+ScreenSchema.pre("save", {document: true, query: false}, SaveScreenDocumentPreMiddleware);
 ScreenSchema.post("save", {document: true, query: false}, SaveScreenDocumentPostMiddleware);
+
+ScreenSchema.pre("findOneAndUpdate", {document: false, query: true}, FindOneAndUpdateScreenQueryPreMiddleware);
+ScreenSchema.post("findOneAndUpdate", {document: false, query: true}, FindOneAndUpdateScreenQueryPostMiddleware);
+
 ScreenSchema.post("deleteOne", {document: true, query: false}, DeleteOneScreenDocumentPostMiddleware);
 ScreenSchema.post(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteScreenQueryPostMiddleware);
 

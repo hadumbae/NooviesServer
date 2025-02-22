@@ -1,11 +1,18 @@
-import {Model, model, Schema} from "mongoose";
-import SeatTypeConstant from "../constant/SeatTypeConstant.js";
+import {Schema, Model, model} from "mongoose";
 import type ISeat from "./ISeat.js";
+import SeatTypeConstant from "../constant/SeatTypeConstant.js";
+
 import {
-    DeleteOneSeatDocumentPostMiddleware,
-    DeleteSeatQueryPostMiddleware,
-    SaveSeatDocumentPostMiddleware
-} from "./SeatMiddleware.js";
+    SaveSeatDocumentPreMiddleware,
+    SaveSeatDocumentPostMiddleware,
+    DeleteOneSeatDocumentPreMiddleware,
+} from "./middleware/SeatDocumentMiddleware.js";
+
+import {
+    FindOneAndUpdateSeatQueryPreMiddleware,
+    FindOneAndUpdateSeatQueryPostMiddleware,
+    DeleteSeatQueryPreMiddleware,
+} from "./middleware/SeatQueryMiddleware.js";
 
 
 const SeatSchema = new Schema<ISeat>({
@@ -56,9 +63,14 @@ const SeatSchema = new Schema<ISeat>({
  * Middleware
  */
 
+SeatSchema.pre('save', {document: true, query: false}, SaveSeatDocumentPreMiddleware);
 SeatSchema.post('save', {document: true, query: false}, SaveSeatDocumentPostMiddleware);
-SeatSchema.post('deleteOne', {document: true, query: false}, DeleteOneSeatDocumentPostMiddleware);
-SeatSchema.post(['deleteOne', 'deleteMany'], {document: false, query: true}, DeleteSeatQueryPostMiddleware);
+
+SeatSchema.pre('findOneAndUpdate', {document: false, query: true}, FindOneAndUpdateSeatQueryPreMiddleware);
+SeatSchema.post('findOneAndUpdate', {document: false, query: true}, FindOneAndUpdateSeatQueryPostMiddleware);
+
+SeatSchema.pre('deleteOne', {document: true, query: false}, DeleteOneSeatDocumentPreMiddleware);
+SeatSchema.pre(['deleteOne', 'deleteMany'], {document: false, query: true}, DeleteSeatQueryPreMiddleware);
 
 const Seat: Model<ISeat> = model<ISeat>("Seat", SeatSchema);
 export default Seat;

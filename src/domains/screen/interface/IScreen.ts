@@ -12,9 +12,3 @@ export interface IScreen {
     seats: (Types.ObjectId | ISeat)[],
 }
 
-export interface IScreenSubmit{
-    name: string,
-    capacity: number,
-    screenType: ScreenTypeEnumType,
-    theatre: string,
-}

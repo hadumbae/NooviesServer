@@ -1,6 +1,14 @@
 import {Model, model, Schema} from "mongoose";
 import type ITheatre from "./ITheatre.js";
-import {DeleteOneTheatreDocumentPostMiddleware, DeleteTheatreQueryPostMiddleware} from "./TheatreMiddleware.js";
+
+import {
+    DeleteTheatreQueryPostMiddleware,
+    DeleteOneTheatreDocumentPostMiddleware,
+} from "./middleware/TheatreMiddleware.js";
+
+/**
+ * Schema
+ */
 
 const TheatreSchema = new Schema<ITheatre>({
     name: {
@@ -15,10 +23,10 @@ const TheatreSchema = new Schema<ITheatre>({
         required: [true, "Location is required."]
     },
 
-    numberOfSeats: {
+    seatCapacity: {
         type: Number,
         default: 0,
-        required: [true, 'Number of Seats is required.'],
+        required: [true, 'Seat Capacity is required.'],
     },
 
     screens: {

@@ -1,7 +1,7 @@
 import {Types} from "mongoose";
 import type {SeatType} from "../schema/enum/SeatTypeEnum.js";
 import type ITheatre from "../../theatre/model/ITheatre.js";
-import type {IScreen} from "../../screen/model/IScreen.js";
+import type {IScreen} from "../../screen/interface/IScreen.js";
 
 export default interface ISeat {
     readonly _id: Types.ObjectId,

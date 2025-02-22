@@ -4,26 +4,16 @@ import type {PopulateQueryFilters} from "../../../shared/types/mongoose/CustomMo
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
 import type {ZSeatMap} from "../schema/SeatMapSchema.js";
 
+export interface GetShowingSeatMapParams {
+    showingID: string,
+    page: number,
+    perPage: number,
+    matchFilters?: FilterQuery<ISeatMap>,
+    populateFilters?: PopulateQueryFilters,
+}
+
 export default interface ISeatMapService {
-    getShowingSeatMap(
-        params: {
-            showingID: string,
-            page: number,
-            perPage: number,
-            matchFilters?: FilterQuery<ISeatMap>,
-            populateFilters?: PopulateQueryFilters,
-        }
-    ): Promise<PaginationReturns<ZSeatMap>>
-
-    createShowingSeatMap(
-        params: {
-            showingID: string
-        }
-    ): Promise<void>;
-
-    toggleSeatMapAvailability(
-        params: {
-            seatMapID: string,
-        }
-    ): Promise<ZSeatMap>;
+    getShowingSeatMap(params: GetShowingSeatMapParams): Promise<PaginationReturns<ZSeatMap>>
+    createShowingSeatMap(params: {showingID: string}): Promise<void>;
+    toggleSeatMapAvailability(params: {seatMapID: string}): Promise<ZSeatMap>;
 }

@@ -1,7 +1,7 @@
 import {type Request, type Response} from "express";
 import type BaseRepository from "../repository/BaseRepository.js";
 import type {PaginationRequest} from "../types/request/CustomRequestTypes.js";
-import queryUtils, {type IQueryUtils} from "../utility/query/QueryUtils.js";
+import {type IQueryUtils} from "../utility/query/QueryUtils.js";
 
 export interface IBaseController {
     all(req: Request, res: Response): Promise<Response>;
@@ -27,13 +27,13 @@ export default class BaseController<TModel> implements IBaseController {
     }
 
     async all(req: Request, res: Response): Promise<Response> {
-        const populate = queryUtils.fetchPopulateFromQuery(req);
+        const populate = this.queryUtils.fetchPopulateFromQuery(req);
         const items = await this.repository.find({populate});
         return res.status(200).json(items);
     }
 
     async paginated(req: Request, res: Response): Promise<Response> {
-        const populate = queryUtils.fetchPopulateFromQuery(req);
+        const populate = this.queryUtils.fetchPopulateFromQuery(req);
         const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
 
         const totalItems = await this.repository.count();
@@ -43,7 +43,7 @@ export default class BaseController<TModel> implements IBaseController {
     }
 
     async create(req: Request, res: Response): Promise<Response> {
-        const populate = queryUtils.fetchPopulateFromQuery(req);
+        const populate = this.queryUtils.fetchPopulateFromQuery(req);
         const data = req.body;
 
         const item = await this.repository.create({data, populate});
@@ -52,7 +52,7 @@ export default class BaseController<TModel> implements IBaseController {
     }
 
     async get(req: Request, res: Response): Promise<Response> {
-        const populate = queryUtils.fetchPopulateFromQuery(req);
+        const populate = this.queryUtils.fetchPopulateFromQuery(req);
         const {_id} = req.params;
 
         const item = await this.repository.findById({_id, populate, lean: true});

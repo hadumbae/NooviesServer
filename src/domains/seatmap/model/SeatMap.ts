@@ -1,7 +1,13 @@
 import {Model, model, Schema} from "mongoose";
 import type ISeatMap from "./ISeatMap.js";
-import {SaveSeatDocumentPostMiddleware} from "../../seat/model/SeatMiddleware.js";
-import {DeleteOneSeatMapDocumentPostMiddleware, DeleteSeatMapQueryPostMiddleware} from "./SeatMapMiddleware.js";
+import {
+    DeleteSeatMapQueryPostMiddleware,
+    FindOneAndUpdateSeatMapQueryPostMiddleware, FindOneAndUpdateSeatMapQueryPreMiddleware
+} from "./middleware/SeatMapQueryMiddleware.js";
+import {
+    DeleteOneSeatMapDocumentPostMiddleware, SaveSeatMapDocumentPostMiddleware,
+    SaveSeatMapDocumentPreMiddleware
+} from "./middleware/SeatMapDocumentMiddleware.js";
 
 const SeatMapSchema = new Schema<ISeatMap>({
     showing: {
@@ -31,9 +37,15 @@ const SeatMapSchema = new Schema<ISeatMap>({
     },
 });
 
-SeatMapSchema.post("save", {document: true, query: false}, SaveSeatDocumentPostMiddleware);
+SeatMapSchema.pre("save", {document: true, query: false}, SaveSeatMapDocumentPreMiddleware);
+SeatMapSchema.post("save", {document: true, query: false}, SaveSeatMapDocumentPostMiddleware);
+
+SeatMapSchema.pre("findOneAndUpdate", {document: false, query: true}, FindOneAndUpdateSeatMapQueryPreMiddleware);
+SeatMapSchema.post("findOneAndUpdate", {document: false, query: true}, FindOneAndUpdateSeatMapQueryPostMiddleware);
+
 SeatMapSchema.post("deleteOne", {document: true, query: false}, DeleteOneSeatMapDocumentPostMiddleware);
 SeatMapSchema.post(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteSeatMapQueryPostMiddleware);
 
 const SeatMap: Model<ISeatMap> = model<ISeatMap>("SeatMap", SeatMapSchema);
+
 export default SeatMap;

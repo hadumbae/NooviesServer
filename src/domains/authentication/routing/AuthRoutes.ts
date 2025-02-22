@@ -2,7 +2,7 @@ import {Router as ExpressRouter} from "express";
 import  type {Router} from "express";
 
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
-import zodAsyncValidator from "../../../shared/utility/zod/ZodAsyncValidator.js";
+import zodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 
 import isAuth from "../middleware/isAuth.js";
 import AuthServiceProvider from "../provider/AuthServiceProvider.js";

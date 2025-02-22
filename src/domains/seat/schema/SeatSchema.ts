@@ -33,4 +33,4 @@ export const SeatSchema: ZodType<ISeat> = z.object({
         .union([IDInstance, z.lazy(() => ScreenSchema)]),
 });
 
-export type Seat = z.infer<typeof SeatSchema>;
+export type ZSeat = z.infer<typeof SeatSchema>;

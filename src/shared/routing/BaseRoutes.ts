@@ -12,46 +12,18 @@ export interface IBaseRoutesConfig<TController extends IBaseController> {
 export const createBaseRoutes = <TController extends IBaseController>(
     config: IBaseRoutesConfig<TController>
 ) => {
-    const { controller, createValidator, updateValidator } = config;
+    const {controller, createValidator, updateValidator} = config;
     const router = express.Router();
 
-    router.get(
-        '/all',
-        asyncHandler(
-            controller.all.bind(controller),
-        ),
-    );
+    router.get('/all', asyncHandler(controller.all.bind(controller)));
 
-    router.get(
-        '/paginated',
-        isAuth,
-        asyncHandler(
-            controller.paginated.bind(controller),
-        ),
-    );
+    router.get('/paginated', isAuth, asyncHandler(controller.paginated.bind(controller)));
 
-    router.post(
-        '/create',
-        [createValidator],
-        asyncHandler(
-            controller.create.bind(controller),
-        ),
-    );
+    router.post('/create', [createValidator], asyncHandler(controller.create.bind(controller)));
 
-    router.get(
-        '/get/:_id',
-        asyncHandler(
-            controller.get.bind(controller),
-        ),
-    );
+    router.get('/get/:_id', asyncHandler(controller.get.bind(controller)));
 
-    router.patch(
-        '/update/:_id',
-        [updateValidator],
-        asyncHandler(
-            controller.update.bind(controller),
-        ),
-    );
+    router.patch('/update/:_id', [updateValidator], asyncHandler(controller.update.bind(controller)));
 
     router.delete(
         '/delete/:_id',

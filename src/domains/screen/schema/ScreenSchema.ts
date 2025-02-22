@@ -2,7 +2,7 @@ import {z, type ZodType} from "zod";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {TheatreSchema} from "../../theatre/schema/TheatreSchema.js";
 import {SeatSchema} from "../../seat/schema/SeatSchema.js";
-import type {IScreen} from "../model/IScreen.js";
+import type {IScreen} from "../interface/IScreen.js";
 import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {ScreenTypeEnum} from "./enum/ScreenTypeEnum.js";

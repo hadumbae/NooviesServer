@@ -1,6 +1,7 @@
 import {Model, model, Schema} from "mongoose";
 import type IGenre from "./IGenre.js";
-import {DeleteGenreDocumentPostMiddleware} from "./GenreMiddleware.js";
+import {DeleteGenreDocumentPreMiddleware} from "./middleware/GenreDocumentMiddleware.js";
+import {DeleteGenreQueryPreMiddleware} from "./middleware/GenreQueryMiddleware.js";
 
 const GenreSchema = new Schema<IGenre>({
     name: {
@@ -19,7 +20,8 @@ const GenreSchema = new Schema<IGenre>({
     },
 }, {timestamps: true});
 
-GenreSchema.pre(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteGenreDocumentPostMiddleware);
+GenreSchema.pre("deleteOne", {document: true, query: false}, DeleteGenreDocumentPreMiddleware);
+GenreSchema.pre(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteGenreQueryPreMiddleware);
 
 const Genre: Model<IGenre> = model<IGenre>("Genre", GenreSchema);
 export default Genre;

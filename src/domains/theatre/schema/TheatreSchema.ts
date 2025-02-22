@@ -17,7 +17,7 @@ export const TheatreSchema: ZodType<ITheatre> = z.object({
         .min(1, "Required.")
         .max(255, "Must be 255 characters or less."),
 
-    numberOfSeats: RequiredNumber
+    seatCapacity: RequiredNumber
         .gte(1, "Must be equal or greater than 0."),
 
     screens: z.array(z.union([

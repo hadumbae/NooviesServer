@@ -1,6 +1,6 @@
 import {createBaseRoutes, type IBaseRoutesConfig} from "../../../shared/routing/BaseRoutes.js";
 import type {ISeatMapController} from "../controller/SeatMapController.js";
-import ZodAsyncValidator from "../../../shared/utility/zod/ZodAsyncValidator.js";
+import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 import {SeatMapSubmitSchema} from "../schema/SeatMapSubmitSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
