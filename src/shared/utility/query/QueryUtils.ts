@@ -1,9 +1,9 @@
 import type {PaginationRequest, PopulateRequest} from "../../types/request/CustomRequestTypes.js";
 import {PaginationSchema} from "../../schema/PaginationSchemas.js";
 import ZodParseError from "../../errors/ZodParseError.js";
-import {RequiredBoolean} from "../../schema/helpers/ZodBooleanHelpers.js";
+import {ParamBoolean} from "../../schema/helpers/ZodBooleanHelpers.js";
 
-type PopulateQueryReturn = boolean;
+type PopulateQueryReturn = boolean | undefined;
 type PaginationQueryReturns = {page: number, perPage: number};
 
 export interface IQueryUtils {
@@ -13,8 +13,8 @@ export interface IQueryUtils {
 
 const QueryUtils: IQueryUtils = {
     fetchPopulateFromQuery(req: PopulateRequest): PopulateQueryReturn {
-        const populate = req.query.populate || false;
-        const result = RequiredBoolean.safeParse(populate);
+        const populate =  req.query.populate;
+        const result = ParamBoolean.safeParse(populate);
 
         if (!result.success) {
             throw new ZodParseError({

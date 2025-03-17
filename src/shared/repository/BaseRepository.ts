@@ -54,7 +54,7 @@ export default class BaseRepository<T> {
         params: { _id: Types.ObjectId | string, populatePath?: PopulatePath[], populate?: boolean, lean?: boolean }
     ): Promise<any> {
         const {_id, populatePath, populate = false, lean = false} = params;
-        if (!Types.ObjectId.isValid(_id)) throw createHttpError(404, "Not found!");
+        if (!Types.ObjectId.isValid(_id)) throw createHttpError(404, "Invalid ID!");
 
         let query = this.model.findById(_id);
 
@@ -93,7 +93,7 @@ export default class BaseRepository<T> {
             lean?: boolean
         }
     ): Promise<any> {
-        const {_id, data, populatePath, populate = false, lean = false} = params;
+        const {_id, data, populatePath, populate, lean} = params;
         const doc = await this.exists404({_id, lean: true});
 
         const query = this.model.findByIdAndUpdate(doc._id, data, {new: true});
@@ -105,6 +105,7 @@ export default class BaseRepository<T> {
     }
 
     async destroy({_id}: { _id: Types.ObjectId | string }): Promise<any> {
+        console.log("Destroy ID: ", _id);
         const doc = await this.exists404({_id});
         await doc.deleteOne();
     }
@@ -126,8 +127,8 @@ export default class BaseRepository<T> {
             filters = {},
             sort = {},
             populatePath,
-            populate = false,
-            lean = false,
+            populate,
+            lean,
         } = params || {};
 
         const query = this.model

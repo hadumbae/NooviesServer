@@ -52,8 +52,8 @@ export default class BaseController<TModel> implements IBaseController {
     }
 
     async get(req: Request, res: Response): Promise<Response> {
-        const populate = this.queryUtils.fetchPopulateFromQuery(req);
         const {_id} = req.params;
+        const populate = this.queryUtils.fetchPopulateFromQuery(req);
 
         const item = await this.repository.findById({_id, populate, lean: true});
 
@@ -63,8 +63,10 @@ export default class BaseController<TModel> implements IBaseController {
     async update(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
         const data = req.validatedBody;
+        const populate = this.queryUtils.fetchPopulateFromQuery(req);
 
-        const item = await this.repository.update({_id, data, lean: true});
+        const item = await this.repository.update({_id, data, populate, lean: true});
+
         return res.status(200).json(item);
     }
 
