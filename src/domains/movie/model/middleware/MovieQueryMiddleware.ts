@@ -12,12 +12,12 @@ export async function FindOneAndUpdateMovieQueryPreMiddleware(this: Query<any, I
     const movie = await Movie.findById(_id);
     if (!movie) return;
 
-    await Promise.all([
-        Person.updateMany({movies: _id}, {$pull: {movies: _id}}),
-        Genre.updateMany({movies: _id}, {$pull: {movies: _id}}),
-    ]);
-
     (this as any)._movie = movie;
+
+    await Promise.all([
+        Person.updateMany({movies: _id}, {$pull: {movies: movie._id}}),
+        Genre.updateMany({movies: _id}, {$pull: {movies: movie._id}}),
+    ]);
 }
 
 export async function FindOneAndUpdateMovieQueryPostMiddleware(this: Query<any, IMovie>) {
@@ -28,10 +28,9 @@ export async function FindOneAndUpdateMovieQueryPostMiddleware(this: Query<any, 
     const personIDs = [...(new Set([...directors, ...cast]))];
 
     await Promise.all([
-        Person.updateMany({_id: {$in: personIDs}}, {$push: {movies: _id}}),
-        Genre.updateMany({_id: {$in: genres}}, {$push: {movies: this}}),
+        Person.updateMany({_id: {$in: personIDs}}, {$push: {movies: movie}}),
+        Genre.updateMany({_id: {$in: genres}}, {$push: {movies: movie}}),
     ]);
-
 }
 
 export async function DeleteMovieQueryPostMiddleware(this: Query<any, IMovie>) {
@@ -43,5 +42,4 @@ export async function DeleteMovieQueryPostMiddleware(this: Query<any, IMovie>) {
         Genre.updateMany({movies: _id}, {$pull: {movies: _id}}),
         Showing.deleteMany({movie: _id}),
     ]);
-
 }

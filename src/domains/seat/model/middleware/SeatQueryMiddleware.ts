@@ -21,13 +21,12 @@ export async function FindOneAndUpdateSeatQueryPreMiddleware(this: Query<any, IS
 
 export async function FindOneAndUpdateSeatQueryPostMiddleware(this: Query<any, ISeat>) {
     const seat = (this as any)._seat;
+    if (!seat || (this as any)._wasUpdated) return;
 
-    if (seat && !(this as any)._wasUpdated) {
-        await Promise.all([
-            Theatre.updateOne({_id: seat.theatre}, {$push: {seats: seat}}),
-            Screen.updateOne({_id: seat.screen}, {$push: {seats: seat}}),
-        ]);
-    }
+    await Promise.all([
+        Theatre.updateOne({_id: seat.theatre}, {$push: {seats: seat}}),
+        Screen.updateOne({_id: seat.screen}, {$push: {seats: seat}}),
+    ]);
 }
 
 export async function DeleteSeatQueryPreMiddleware(this: Query<any, ISeat>) {

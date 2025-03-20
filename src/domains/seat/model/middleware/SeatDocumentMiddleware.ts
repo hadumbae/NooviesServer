@@ -15,8 +15,11 @@ export async function SaveSeatDocumentPostMiddleware(this: HydratedDocument<ISea
     if ((this as any)._wasNew) {
         (this as any)._wasUpdated = true;
 
-        await Theatre.findByIdAndUpdate(this.theatre, {$push: {seats: this}});
-        await Screen.findByIdAndUpdate(this.screen, {$push: {seats: this}});
+        await Promise.all([
+            Theatre.findByIdAndUpdate(this.theatre, {$push: {seats: this}}),
+            Screen.findByIdAndUpdate(this.screen, {$push: {seats: this}}),
+        ]);
+
     }
 }
 
