@@ -29,7 +29,7 @@ export async function SaveSeatDocumentPostMiddleware(this: HydratedDocument<ISea
  */
 
 export async function DeleteOneSeatDocumentPreMiddleware (this: HydratedDocument<ISeat>) {
-    await Screen.updateMany({}, {$pull: {seats: this}});
-    await Theatre.updateMany({}, {$pull: {seats: this}, $inc: {seatCapacity: -1}});
+    await Screen.updateMany({}, {$pull: {seats: this._id}});
+    await Theatre.updateMany({}, {$pull: {seats: this._id}});
 }
 

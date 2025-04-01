@@ -12,10 +12,7 @@ export async function SaveScreenDocumentPostMiddleware(this: HydratedDocument<IS
     if (!(this as any)._wasNew) return;
     (this as any)._wasUpdated = true;
 
-    await Promise.all([
-        Theatre.updateMany({screens: this._id}, {screens: {$pull: this._id}}),
-        Theatre.updateOne({_id: this._id}, {screens: {$push: this}}),
-    ]);
+    await Theatre.updateOne({_id: this._id}, {$push: {screens: this}});
 }
 
 export async function DeleteOneScreenDocumentPostMiddleware(this: HydratedDocument<IScreen>) {
