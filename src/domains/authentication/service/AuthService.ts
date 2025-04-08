@@ -16,6 +16,10 @@ export interface IAuthService {
     toggleAdmin(params: { userID: Types.ObjectId | string }): Promise<ZUser>;
 }
 
+// Admin Account Credentials
+// john@doe.com
+// K&]B94U32P'L+h$<~n>&N7*'
+
 export default class AuthService implements IAuthService {
     async register(params: UserRegisterData): Promise<ZUser> {
         const {data, errors} = await safeParseAsync<typeof UserRegisterSubmitSchema, UserRegisterData>({
@@ -36,27 +40,19 @@ export default class AuthService implements IAuthService {
         });
     }
 
-    // john@doe.com
-    // K&]B94U32P'L+h$<~n>&N7*'
-
     async login(params: { email: string, password: string }): Promise<UserCredentials> {
-        const {email, password} = params;
-
-        const user = await User.findOne({email});
+        const user = await User.findOne({email: params.email});
         if (!user) throw createHttpError(404, "User not found!");
 
-        const isValid = await bcrypt.compare(password, user.password);
+        const isValid = await bcrypt.compare(params.password, user.password);
+
         if (!isValid) {
             const error = {code: "invalid_string", message: "Incorrect Password.", path: ["password"]};
             throw new ZodParseError({message: "Authentication failed.", errors: [error as ZodIssue]});
         }
 
-        const tokenData = {
-            user: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-        };
+        const {_id, name, email, isAdmin = false} = user;
+        const tokenData = {name, email, isAdmin, user: _id};
 
         const key = "somesupersecretsecretsecret";
         const token: string = jwt.sign(tokenData, key, {expiresIn: "24h"});
