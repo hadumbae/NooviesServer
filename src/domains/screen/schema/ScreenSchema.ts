@@ -6,6 +6,7 @@ import type {IScreen} from "../interface/IScreen.js";
 import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {ScreenTypeEnum} from "./enum/ScreenTypeEnum.js";
+import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
 
 export const ScreenSchema: ZodType<IScreen> = z.object({
     _id: IDInstance,
@@ -24,6 +25,9 @@ export const ScreenSchema: ZodType<IScreen> = z.object({
 
     seats: z
         .array(z.union([IDInstance, z.lazy(() => SeatSchema)])),
+
+    showings: z
+        .array(z.union([IDInstance, z.lazy(() => ShowingSchema)])),
 });
 
 export type ZScreen = z.infer<typeof ScreenSchema>;

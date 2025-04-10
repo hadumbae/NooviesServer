@@ -18,7 +18,7 @@ import {
  * Schema
  */
 
-const ScreenSchema: Schema<IScreen> = new Schema<IScreen>({
+const ScreenSchema = new Schema<IScreen>({
     name: {
         type: String,
         maxLength: [255, "Name must be 255 characters or less."],
@@ -48,6 +48,11 @@ const ScreenSchema: Schema<IScreen> = new Schema<IScreen>({
         default: '2D',
         required: [true, "Screen Type is required."],
     },
+
+    showings: {
+        type: [{type: Schema.Types.ObjectId, ref: "Showing"}],
+        required: [true, "Showings is required."],
+    }
 }, {timestamps: true});
 
 /**

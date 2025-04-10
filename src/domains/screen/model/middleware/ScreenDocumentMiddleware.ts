@@ -23,6 +23,5 @@ export async function DeleteOneScreenDocumentPostMiddleware(this: HydratedDocume
         Seat.deleteMany({screen: this._id}),
         Showing.deleteMany({screen: this._id}),
     ]);
-
 }
 

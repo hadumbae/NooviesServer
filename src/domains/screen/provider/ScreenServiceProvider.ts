@@ -9,7 +9,7 @@ import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 export default class ScreenServiceProvider {
     static register() {
        const model = Screen;
-       const populateRefs = ["theatre", "seats"];
+       const populateRefs = ["theatre", "seats", "showings"];
 
        const repository = new BaseRepository({model, populateRefs});
        const queryUtils = QueryUtils;
