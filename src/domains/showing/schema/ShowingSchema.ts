@@ -26,9 +26,9 @@ export const ShowingSchema: ZodType<IShowing> = z.object({
         .array(RequiredString)
         .nonempty({message: "Must not be empty."}),
 
-    isSpecialEvent: RequiredBoolean
-        .optional()
-        .default(false),
+    isSpecialEvent: RequiredBoolean,
+
+    isActive: RequiredBoolean,
 
     movie: z.union([
         IDInstance,

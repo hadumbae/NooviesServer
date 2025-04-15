@@ -69,6 +69,12 @@ const ShowingSchema = new Schema<IShowing>({
         default: false,
         required: true,
     },
+
+    isActive: {
+        type: Boolean,
+        default: true,
+        required: true,
+    },
 }, {timestamps: true});
 
 ShowingSchema.pre("save", {document: true, query: false}, function (next) {

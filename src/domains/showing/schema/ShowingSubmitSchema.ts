@@ -23,6 +23,10 @@ export const ShowingSubmitSchema: ZodType<IShowingSubmit> = z.object({
         .optional()
         .default(false),
 
+    isActive: RequiredBoolean
+        .optional()
+        .default(true),
+
     movie: IDString,
 
     theatre: IDString,

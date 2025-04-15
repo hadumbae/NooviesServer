@@ -5,6 +5,7 @@ export default interface IShowingSubmit {
     language: string,
     subtitleLanguages: string[],
     isSpecialEvent?: boolean,
+    isActive?: boolean,
 
     movie: string,
     theatre: string,
