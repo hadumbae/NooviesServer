@@ -1,22 +1,21 @@
-import type {Request} from "express";
-import {ScreenQuerySchema} from "../schema/ScreenQuerySchema.js";
+import {type ScreenQuery, ScreenQuerySchema} from "../schema/query/ScreenQuerySchema.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import type {FilterQuery} from "mongoose";
-
-interface ScreenQuery {
-    theatre?: string;
-}
+import type {ScreenQueryRequest, ScreenShowingQueryRequest} from "../type/request/CustomScreenRequests.js";
+import {type ScreenShowingQuery, ScreenShowingQuerySchema} from "../schema/query/ScreenShowingQuerySchema.js";
 
 export interface IScreenQueryService {
-    getQuery({req}: {req: Request}): Record<string, any>;
+    fetchQuery(req: ScreenQueryRequest): ScreenQuery;
+    fetchShowingQuery(req: ScreenShowingQueryRequest): ScreenShowingQuery;
 }
 
 export default class ScreenQueryService implements IScreenQueryService {
-    getQuery({req}: {req: Request<any, any, any, ScreenQuery>}): FilterQuery<ScreenQuery> {
-        const { theatre } = ScreenQuerySchema.parse(req.query);
+    fetchQuery(req: ScreenQueryRequest): ScreenQuery {
+        const conditions = ScreenQuerySchema.parse(req.query);
+        return filterNullArray(conditions);
+    }
 
-        let conditions: Record<string, any> = {theatre};
-
+    fetchShowingQuery(req: ScreenShowingQueryRequest): ScreenShowingQuery {
+        const conditions = ScreenShowingQuerySchema.parse(req.query);
         return filterNullArray(conditions);
     }
 }

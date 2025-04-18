@@ -12,7 +12,9 @@ import type {UserCredentials} from "../types/UserCredentials.js";
 
 export interface IAuthService {
     login(params: { email: string, password: string }): Promise<UserCredentials>;
+
     register(params: UserRegisterData): Promise<ZUser>;
+
     toggleAdmin(params: { userID: Types.ObjectId | string }): Promise<ZUser>;
 }
 
@@ -32,12 +34,7 @@ export default class AuthService implements IAuthService {
         const {name, email, password} = data!;
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        return User.create({
-            name,
-            email,
-            password: hashedPassword,
-            isAdmin: false
-        });
+        return User.create({name, email, password: hashedPassword, isAdmin: false});
     }
 
     async login(params: { email: string, password: string }): Promise<UserCredentials> {

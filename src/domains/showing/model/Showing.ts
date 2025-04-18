@@ -77,11 +77,6 @@ const ShowingSchema = new Schema<IShowing>({
     },
 }, {timestamps: true});
 
-ShowingSchema.pre("save", {document: true, query: false}, function (next) {
-    this.wasNew = this.isNew;
-    next();
-});
-
 ShowingSchema.pre("save", {document: true, query: false}, SaveShowingDocumentPreMiddleware);
 ShowingSchema.post("save", {document: true, query: false}, SaveShowingDocumentPostMiddleware);
 

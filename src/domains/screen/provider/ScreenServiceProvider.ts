@@ -5,6 +5,7 @@ import ScreenController from "../controller/ScreenController.js";
 
 import ScreenQueryService from "../service/ScreenQueryService.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
+import ScreenService from "../service/ScreenService.js";
 
 export default class ScreenServiceProvider {
     static register() {
@@ -14,9 +15,10 @@ export default class ScreenServiceProvider {
        const repository = new BaseRepository({model, populateRefs});
        const queryUtils = QueryUtils;
 
+       const service = new ScreenService();
        const queryService = new ScreenQueryService();
 
-       const controller = new ScreenController({repository, queryUtils, queryService});
+       const controller = new ScreenController({repository, queryUtils, service, queryService});
 
        return {
          repository,
