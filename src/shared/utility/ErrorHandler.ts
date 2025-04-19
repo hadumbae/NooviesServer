@@ -9,17 +9,10 @@ import {ZodError} from "zod";
 const errorHandler: ErrorRequestHandler = (error: Error, req: Request, res: Response, next: NextFunction ) => {
     console.error("ERROR HANDLER | ", error);
 
-    let errorMessage = "Oops. Something went wrong!";
-    let errorStatus = 500;
-
-    if (isHttpError(error)) {
-        errorMessage = error.message;
-        errorStatus = error.status;
-    }
-
     if (error instanceof ZodError) {
         console.error("Has a ZodError!");
-        res.status(400).json({message: "Validation failed.", errors: error.errors});
+        const {message, errors} = {message: "Validation failed.", errors: error.errors}
+        res.status(400).json({message, errors});
     }
 
     if (error instanceof ZodParseError) {
@@ -28,7 +21,14 @@ const errorHandler: ErrorRequestHandler = (error: Error, req: Request, res: Resp
         res.status(400).json({message, errors});
     }
 
-    console.error("Had a ZodParseError!");
+    let errorMessage = "Oops. Something went wrong!";
+    let errorStatus = 500;
+
+    if (isHttpError(error)) {
+        errorMessage = error.message;
+        errorStatus = error.status;
+    }
+
     res.status(errorStatus).json({ message: errorMessage });
 }
 
