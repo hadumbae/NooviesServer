@@ -2,7 +2,7 @@ import {Router as ExpressRouter} from "express";
 import  type {Router} from "express";
 
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
-import zodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import validateZodSchema from "../../../shared/utility/zod/validateZodSchema.js";
 
 import isAuth from "../middleware/isAuth.js";
 import AuthServiceProvider from "../provider/AuthServiceProvider.js";
@@ -16,14 +16,14 @@ const { controller } = AuthServiceProvider.register();
 // API - /auth/register
 router.post(
     "/register",
-    zodAsyncValidator(UserRegisterSubmitSchema),
+    validateZodSchema(UserRegisterSubmitSchema),
     asyncHandler(controller.register.bind(controller)),
 );
 
 // API - /auth/login
 router.post(
     "/login",
-    zodAsyncValidator(UserLoginSchema),
+    validateZodSchema(UserLoginSchema),
     asyncHandler(controller.login.bind(controller)),
 );
 

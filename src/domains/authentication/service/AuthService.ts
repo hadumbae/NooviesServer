@@ -1,12 +1,12 @@
 import type {ZUser} from "../../users/schema/UserSchema.js";
-import {safeParseAsync} from "../../../shared/utility/zod/ZodParsers.js";
+import {safeParse} from "../../../shared/utility/zod/ZodParsers.js";
 import {type UserRegisterData, UserRegisterSubmitSchema} from "../schema/UserRegisterSubmitSchema.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import bcrypt from "bcryptjs";
 import User from "../../users/model/User.js";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
-import type {ZodIssue} from "zod";
+import {z, type ZodIssue} from "zod";
 import jwt from "jsonwebtoken";
 import type {UserCredentials} from "../types/UserCredentials.js";
 
@@ -24,17 +24,18 @@ export interface IAuthService {
 
 export default class AuthService implements IAuthService {
     async register(params: UserRegisterData): Promise<ZUser> {
-        const {data, errors} = await safeParseAsync<typeof UserRegisterSubmitSchema, UserRegisterData>({
-            schema: UserRegisterSubmitSchema,
-            data: params,
-        });
-
-        if (errors) throw new ZodParseError({errors, message: "Invalid Register Details."});
-
+        const data = this.validateUserRegisterData(params);
         const {name, email, password} = data!;
+
+        await this.checkForExistingEmail({email});
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        return User.create({name, email, password: hashedPassword, isAdmin: false});
+        return User.create({
+            name,
+            email,
+            password: hashedPassword,
+            isAdmin: false,
+        });
     }
 
     async login(params: { email: string, password: string }): Promise<UserCredentials> {
@@ -63,5 +64,25 @@ export default class AuthService implements IAuthService {
 
         user.isAdmin = !user.isAdmin;
         return user.save();
+    }
+    
+    validateUserRegisterData(userData: UserRegisterData): UserRegisterData {
+        const {data, errors} = safeParse<typeof UserRegisterSubmitSchema, UserRegisterData>({
+            schema: UserRegisterSubmitSchema,
+            data: userData,
+        });
+
+        if (errors) throw new ZodParseError({errors, message: "Invalid Register Details."});
+
+        return data!;
+    }
+
+    async checkForExistingEmail({email}: {email: string}) {
+        const emailCount = await User.countDocuments({email});
+
+        if (emailCount > 0) {
+            const errors: ZodIssue[] = [{code: z.ZodIssueCode.custom, path: ['email'], message: "Email is already in use!"}];
+            throw new ZodParseError({errors: errors});
+        }
     }
 };

@@ -1,5 +1,4 @@
 import {z, type ZodType} from "zod";
-import User from "../../users/model/User.js";
 import type IUserRegisterSubmit from "./interfaces/IUserRegisterSubmit.js";
 
 export const UserRegisterSubmitSchema: ZodType<IUserRegisterSubmit> = z.object({
@@ -22,14 +21,9 @@ export const UserRegisterSubmitSchema: ZodType<IUserRegisterSubmit> = z.object({
         .string({required_error: "Confirm is required.", invalid_type_error: "Confirm must be a string."})
         .min(16, "Confirm must be at least 16 characters.")
         .max(255, "Confirm must not be more than 255 characters."),
-}).superRefine(async (user, ctx) => {
-    if (user.password !== user.confirm) {
-        ctx.addIssue({code: z.ZodIssueCode.custom, message: "Passwords do not match", path: ['password']});
-        ctx.addIssue({code: z.ZodIssueCode.custom, message: "Passwords do not match", path: ['confirm']});
-    }
-
-    const checkUser = await User.findOne({email: user.email});
-    if (checkUser) ctx.addIssue({code: z.ZodIssueCode.custom, message: "Email already taken.", path: ['email']});
-});
+}).refine(
+    (data) => (data.password !== data.confirm),
+    {message: "Passwords do not match", path: ['confirm']}
+);
 
 export type UserRegisterData = z.infer<typeof UserRegisterSubmitSchema>;
