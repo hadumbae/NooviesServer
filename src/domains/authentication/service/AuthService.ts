@@ -22,6 +22,10 @@ export interface IAuthService {
 // john@doe.com
 // K&]B94U32P'L+h$<~n>&N7*'
 
+// Client Account Credentials
+// jane@doe.com
+// D^iR8_{n$`jZ:>9qK:=$E/4u+=N0$?2L
+
 export default class AuthService implements IAuthService {
     async register(params: UserRegisterData): Promise<ZUser> {
         const data = this.validateUserRegisterData(params);
