@@ -23,7 +23,7 @@ export interface IAuthService {
 // K&]B94U32P'L+h$<~n>&N7*'
 
 // Client Account Credentials
-// jane@doe.com
+// bane@doe.com
 // D^iR8_{n$`jZ:>9qK:=$E/4u+=N0$?2L
 
 export default class AuthService implements IAuthService {

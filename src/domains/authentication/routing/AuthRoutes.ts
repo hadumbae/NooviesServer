@@ -9,6 +9,7 @@ import AuthServiceProvider from "../provider/AuthServiceProvider.js";
 
 import {UserLoginSchema} from "../schema/UserLoginSchema.js";
 import {UserRegisterSubmitSchema} from "../schema/UserRegisterSubmitSchema.js";
+import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 
 const router: Router = ExpressRouter();
 const { controller } = AuthServiceProvider.register();
@@ -23,7 +24,7 @@ router.post(
 // API - /auth/login
 router.post(
     "/login",
-    validateZodSchema(UserLoginSchema),
+    validateZodSchemaAsync(UserLoginSchema),
     asyncHandler(controller.login.bind(controller)),
 );
 
