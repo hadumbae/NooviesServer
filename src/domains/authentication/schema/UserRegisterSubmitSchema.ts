@@ -21,14 +21,6 @@ export const UserRegisterSubmitSchema: ZodType<IUserRegisterSubmit> = z.object({
         .string({required_error: "Confirm is required.", invalid_type_error: "Confirm must be a string."})
         .min(16, "Confirm must be at least 16 characters.")
         .max(255, "Confirm must not be more than 255 characters."),
-}).refine(
-    (data) => {
-        console.log("Password: ", data.password);
-        console.log("Confirm: ", data.confirm);
-
-        return (data.password === data.confirm)
-    },
-    {message: "Passwords do not match", path: ['confirm']}
-);
+}).refine((data) => data.password === data.confirm, {message: "Passwords do not match", path: ['confirm']});
 
 export type UserRegisterData = z.infer<typeof UserRegisterSubmitSchema>;

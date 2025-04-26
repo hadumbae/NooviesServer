@@ -1,6 +1,8 @@
-declare namespace Express {
+import {Types} from "mongoose";
+
+declare module "express" {
     export interface Request {
-        authUserID?: string;
+        authUserID?: Types.ObjectId | string;
         authUserAdmin?: boolean;
 
         validatedBody?: any;
