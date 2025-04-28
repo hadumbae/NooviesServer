@@ -25,6 +25,7 @@ export interface IAuthService {
 // Client Account Credentials
 // bane@doe.com
 // D^iR8_{n$`jZ:>9qK:=$E/4u+=N0$?2L
+// 6'Q7a0)7,M_j£$JHA)\7Tq[1!0RehgHQ
 
 export default class AuthService implements IAuthService {
     async register(params: UserRegisterData): Promise<ZUser> {
