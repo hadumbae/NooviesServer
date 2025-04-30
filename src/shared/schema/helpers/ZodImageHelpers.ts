@@ -1,7 +1,7 @@
 import {z} from "zod";
-import {RequiredString} from "./ZodStringHelpers.js";
+import {RequiredStringSchema} from "./ZodStringHelpers.js";
 
 export const CloudinaryImageObject = z.object({
-    public_id: RequiredString,
-    secure_url: RequiredString.url("Must be a valid URL."),
+    public_id: RequiredStringSchema,
+    secure_url: RequiredStringSchema.url("Must be a valid URL."),
 });

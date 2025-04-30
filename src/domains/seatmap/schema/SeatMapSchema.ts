@@ -1,14 +1,14 @@
 import {z, type ZodType} from "zod";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
 import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
-import {IDString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
+import {ObjectIdStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {SeatSchema} from "../../seat/schema/SeatSchema.js";
 import type ISeatMap from "../model/ISeatMap.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
 
 export const SeatMapSchema: ZodType<ISeatMap> = z.object({
-    _id: z.union([IDString, IDInstance]),
+    _id: z.union([ObjectIdStringSchema, IDInstance]),
 
     isAvailable: RequiredBoolean
         .optional()

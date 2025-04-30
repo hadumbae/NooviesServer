@@ -1,22 +1,22 @@
 import {z, type ZodType} from "zod";
-import {IDString, RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import {CoercedDate} from "../../../shared/schema/helpers/ZodDateHelpers.js";
+import {ObjectIdStringSchema, RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
+import {CoercedDateSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js";
 import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
 import type IShowingSubmit from "./interface/IShowingSubmit.js";
 
 export const ShowingSubmitSchema: ZodType<IShowingSubmit> = z.object({
-    startTime: CoercedDate,
+    startTime: CoercedDateSchema,
 
-    endTime: CoercedDate.optional(),
+    endTime: CoercedDateSchema.optional(),
 
     ticketPrice: RequiredNumber
         .gt(0, "Must be greater than 0"),
 
-    language: RequiredString,
+    language: RequiredStringSchema,
 
     subtitleLanguages: z
-        .array(RequiredString)
+        .array(RequiredStringSchema)
         .nonempty({message: "Must not be empty."}),
 
     isSpecialEvent: RequiredBoolean
@@ -27,9 +27,9 @@ export const ShowingSubmitSchema: ZodType<IShowingSubmit> = z.object({
         .optional()
         .default(true),
 
-    movie: IDString,
+    movie: ObjectIdStringSchema,
 
-    theatre: IDString,
+    theatre: ObjectIdStringSchema,
 
-    screen: IDString,
+    screen: ObjectIdStringSchema,
 });

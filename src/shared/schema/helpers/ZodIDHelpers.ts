@@ -1,4 +1,4 @@
-import {IDString} from "./ZodStringHelpers.js";
+import {ObjectIdStringSchema} from "./ZodStringHelpers.js";
 import Genre from "../../../domains/genre/model/Genre.js";
 import Person from "../../../domains/person/model/Person.js";
 import Screen from "../../../domains/screen/model/Screen.js";
@@ -6,7 +6,7 @@ import Seat from "../../../domains/seat/model/Seat.js";
 import Theatre from "../../../domains/theatre/model/Theatre.js";
 import Showing from "../../../domains/showing/model/Showing.js";
 
-export const GenreAsyncIDString = IDString
+export const GenreAsyncIDString = ObjectIdStringSchema
     .refine(
         async (genreID) => {
             const genre = await Genre.findById(genreID);
@@ -15,7 +15,7 @@ export const GenreAsyncIDString = IDString
         "404. Invalid ID."
     );
 
-export const PersonAsyncIDString = IDString
+export const PersonAsyncIDString = ObjectIdStringSchema
     .refine(
         async (personID) => {
             const genre = await Person.findById(personID);
@@ -24,7 +24,7 @@ export const PersonAsyncIDString = IDString
         "404. Invalid ID."
     );
 
-export const TheatreAsyncIDString = IDString
+export const TheatreAsyncIDString = ObjectIdStringSchema
     .refine(
         async (theatreID) => {
             const theatre = await Theatre.findById(theatreID);
@@ -33,7 +33,7 @@ export const TheatreAsyncIDString = IDString
         "404. Screen not found."
     );
 
-export const SeatAsyncIDString = IDString
+export const SeatAsyncIDString = ObjectIdStringSchema
     .refine(
         async (seatID) => {
             const seat = await Seat.findById(seatID);
@@ -42,7 +42,7 @@ export const SeatAsyncIDString = IDString
         "404. Screen not found."
     );
 
-export const ScreenAsyncIDString = IDString
+export const ScreenAsyncIDString = ObjectIdStringSchema
     .refine(
         async (screenID) => {
             const screen = await Screen.findById(screenID);
@@ -51,7 +51,7 @@ export const ScreenAsyncIDString = IDString
         "404. Screen not found."
     );
 
-export const ShowingAsyncIDString = IDString
+export const ShowingAsyncIDString = ObjectIdStringSchema
     .refine(
         async (showingID) => {
             const showing = await Showing.findById(showingID);

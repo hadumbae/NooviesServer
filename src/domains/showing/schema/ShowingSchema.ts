@@ -1,7 +1,7 @@
 import {z, type ZodType} from "zod";
-import {RequiredString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
+import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import {CoercedDate} from "../../../shared/schema/helpers/ZodDateHelpers.js";
+import {CoercedDateSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js";
 import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
@@ -13,17 +13,17 @@ import type IShowing from "../model/IShowing.js";
 export const ShowingSchema: ZodType<IShowing> = z.object({
     _id: IDInstance,
 
-    startTime: CoercedDate,
+    startTime: CoercedDateSchema,
 
-    endTime: CoercedDate,
+    endTime: CoercedDateSchema,
 
     ticketPrice: RequiredNumber
         .gt(0, "Must be greater than 0"),
 
-    language: RequiredString,
+    language: RequiredStringSchema,
 
     subtitleLanguages: z
-        .array(RequiredString)
+        .array(RequiredStringSchema)
         .nonempty({message: "Must not be empty."}),
 
     isSpecialEvent: RequiredBoolean,
