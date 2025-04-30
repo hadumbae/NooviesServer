@@ -37,9 +37,7 @@ const MovieSchema = new Schema<IMovie>({
     },
 
     releaseDate: {
-        type: Date,
-        default: new Date(),
-        required: [true, "Release Date is required."],
+        type: String,
     },
 
     durationInMinutes: {
@@ -60,14 +58,10 @@ const MovieSchema = new Schema<IMovie>({
 
     posterImage: {
         type: {public_id: String, secure_url: String},
-        required: false,
-        default: null,
     },
 
     trailerURL: {
         type: String,
-        required: false,
-        default: null,
     },
 
     price: {

@@ -3,56 +3,41 @@ import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {GenreSchema} from "../../genre/schema/GenreSchema.js";
 import {PersonSchema} from "../../person/schema/PersonSchema.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
-import {RequiredString, URLString} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import {CoercedDate} from "../../../shared/schema/helpers/ZodDateHelpers.js";
+import {RequiredStringSchema, ValidURLStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
+import {DateStringSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js";
 import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import type IMovie from "../model/IMovie.js";
 
 export const MovieSchema: ZodType<IMovie> = z.object({
     _id: IDInstance,
 
-    title: RequiredString
+    title: RequiredStringSchema
         .min(1, "Title must be at least 1 character long.")
         .max(1000, "Title must be 1000 characters or less."),
 
-    description: RequiredString
-        .trim()
-        .max(2000, "Description must be 2000 characters or less."),
+    description: RequiredStringSchema.trim().max(2000, "Description must be 2000 characters or less."),
 
-    genres: z
-        .array(z.union([IDInstance, z.lazy(() => GenreSchema)])),
+    genres: z.array(z.union([IDInstance, z.lazy(() => GenreSchema)])),
 
-    directors: z
-        .array(z.union([IDInstance,z.lazy(() => PersonSchema)])),
+    directors: z.array(z.union([IDInstance, z.lazy(() => PersonSchema)])),
 
-    cast: z
-        .array(z.union([IDInstance, z.lazy(() => PersonSchema)])),
+    cast: z.array(z.union([IDInstance, z.lazy(() => PersonSchema)])),
 
-    releaseDate: z
-        .union([z.null(), CoercedDate])
-        .optional(),
+    releaseDate: DateStringSchema.optional().nullable(),
 
     durationInMinutes: PositiveNumber,
 
-    languages: z
-        .array(RequiredString),
+    languages: z.array(RequiredStringSchema),
 
-    subtitles: z
-        .array(RequiredString),
+    subtitles: z.array(RequiredStringSchema),
 
-    posterImage: z
-        .object({
-            public_id: RequiredString,
-            secure_url: URLString,
-        }),
+    posterImage: z.object({public_id: RequiredStringSchema, secure_url: ValidURLStringSchema}).optional().nullable(),
 
-    trailerURL: z
-        .union([z.null(), URLString]),
+    trailerURL: ValidURLStringSchema.optional().nullable(),
 
     price: PositiveNumber,
 
-    showings: z
-        .array(z.union([IDInstance, z.lazy(() => ShowingSchema)])),
+    showings: z.array(z.union([IDInstance, z.lazy(() => ShowingSchema)])),
 });
 
 export type ZMovie = z.infer<typeof MovieSchema>
