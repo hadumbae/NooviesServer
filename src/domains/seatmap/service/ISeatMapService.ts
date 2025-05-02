@@ -1,6 +1,6 @@
 import type {FilterQuery} from "mongoose";
 import type ISeatMap from "../model/ISeatMap.js";
-import type {PopulateQueryFilters} from "../../../shared/types/mongoose/CustomMongooseAggregateTypes.js";
+import type {PopulateQueryFilters} from "../../../shared/types/mongoose/MongooseAggregateTypes.js";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
 import type {ZSeatMap} from "../schema/SeatMapSchema.js";
 
