@@ -2,7 +2,7 @@ import type {Request} from "express";
 import {SeatMapFilterQuerySchema} from "../schema/SeatMapFilterQuerySchema.js";
 import type {FilterQuery} from "mongoose";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import type {PopulateQueryFilters} from "../../../shared/types/mongoose/CustomMongooseAggregateTypes.js";
+import type {PopulateQueryFilters} from "../../../shared/types/mongoose/MongooseAggregateTypes.js";
 
 interface RequestFilters {
     isAvailable?: string;

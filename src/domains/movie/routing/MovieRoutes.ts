@@ -8,7 +8,7 @@ import {upload} from "../../../shared/config/multr.js";
 import hasPosterImage from "../middleware/hasPosterImage.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 
-const { controller } = MovieServiceProvider.register();
+const {controller} = MovieServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IMovieController> = {
     controller,
@@ -18,12 +18,7 @@ const baseConfig: IBaseRoutesConfig<IMovieController> = {
 
 const routes = createBaseRoutes(baseConfig);
 
-routes.patch(
-    '/update/:_id/poster_image',
-    [isAuth, upload.single("image"), hasPosterImage],
-    asyncHandler(
-        controller.updatePosterPicture.bind(controller),
-    )
-);
+routes.get('/query/populated', [isAuth], asyncHandler(controller.fetchMoviesByQueryWithData.bind(controller)));
+routes.patch('/update/:_id/poster_image', [isAuth, upload.single("image"), hasPosterImage], asyncHandler(controller.updatePosterPicture.bind(controller)));
 
 export default routes;
