@@ -1,7 +1,7 @@
 import {type Request, type Response} from "express";
 import type BaseRepository from "../repository/BaseRepository.js";
 import type {PaginationRequest} from "../types/request/CustomRequestTypes.js";
-import {type IQueryUtils} from "../utility/query/QueryUtils.js";
+import BaseController, {type IBaseControllerConstructor} from "./BaseController.js";
 
 export interface IBaseCRUDController {
     all(req: Request, res: Response): Promise<Response>;
@@ -12,18 +12,16 @@ export interface IBaseCRUDController {
     delete(req: Request, res: Response): Promise<Response>;
 }
 
-export interface IBaseCRUDControllerConstructor<TModel> {
+export interface IBaseCRUDControllerConstructor<TModel> extends IBaseControllerConstructor {
     repository: BaseRepository<TModel>;
-    queryUtils: IQueryUtils;
 }
 
-export default class BaseCRUDController<TModel> implements IBaseCRUDController {
+export default class BaseCRUDController<TModel> extends BaseController implements IBaseCRUDController {
     protected readonly repository: BaseRepository<TModel>;
-    protected readonly queryUtils: IQueryUtils;
 
-    constructor(params: IBaseCRUDControllerConstructor<TModel>) {
-        this.repository = params.repository;
-        this.queryUtils = params.queryUtils;
+    constructor({repository, queryUtils}: IBaseCRUDControllerConstructor<TModel>) {
+        super({queryUtils});
+        this.repository = repository;
     }
 
     async all(req: Request, res: Response): Promise<Response> {
