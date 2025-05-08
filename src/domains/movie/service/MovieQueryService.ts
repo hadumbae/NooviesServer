@@ -21,7 +21,7 @@ export default class MovieQueryService implements IMovieQueryService {
     getFilterQuery(req: MovieQueryRequest): FilterQuery<any> {
         try {
             const {title, releaseDate, genres} = MovieQueryParamSchema.parse(req.query);
-            const conditions = {title, releaseDate, genres: {$all: genres}};
+            const conditions = {title, releaseDate, genres: genres && {$all: genres}};
             return filterNullArray(conditions);
         } catch (error: any) {
             ZodParseErrorHandler(error, "Invalid URL Query Params.");
