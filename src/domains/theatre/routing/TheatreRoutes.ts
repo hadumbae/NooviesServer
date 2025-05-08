@@ -10,7 +10,7 @@ const { controller: theatreController } = TheatreServiceProvider.register();
 const { controller: screenController } = ScreenServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<ITheatreController> = {
-    controller: theatreController,
+    crudController: theatreController,
     createValidator: ZodAsyncValidator(TheatreSubmitSchema),
     updateValidator: ZodAsyncValidator(TheatreSubmitSchema),
 };

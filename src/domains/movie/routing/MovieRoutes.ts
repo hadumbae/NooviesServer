@@ -4,14 +4,14 @@ import type {IMovieController} from "../controller/MovieController.js";
 import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 import {MovieSubmitSchema} from "../schema/MovieSubmitSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
-import {upload} from "../../../shared/config/multr.js";
+import {upload} from "@config/multr.js";
 import hasPosterImage from "../middleware/hasPosterImage.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 
 const {controller} = MovieServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IMovieController> = {
-    controller,
+    crudController: controller,
     createValidator: ZodAsyncValidator(MovieSubmitSchema),
     updateValidator: ZodAsyncValidator(MovieSubmitSchema),
 };

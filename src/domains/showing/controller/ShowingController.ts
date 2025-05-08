@@ -1,22 +1,22 @@
-import BaseController, {
-    type IBaseController,
-    type IBaseControllerConstructor
-} from "../../../shared/controller/BaseController.js";
+import BaseCRUDController, {
+    type IBaseCRUDController,
+    type IBaseCRUDControllerConstructor
+} from "../../../shared/controller/BaseCRUDController.js";
 import type IShowing from "../model/IShowing.js";
 import type {Request, Response} from "express";
 import type {IShowingSeatingService} from "../service/ShowingSeatingService.js";
 import type {IShowingQueryService} from "../service/ShowingQueryService.js";
 import type {ShowingSeatQuery} from "../schema/query/ShowingSeatQuerySchema.js";
 
-export interface IShowingController extends IBaseController {
+export interface IShowingController extends IBaseCRUDController {
 }
 
-export interface IShowingControllerConstructor extends IBaseControllerConstructor<IShowing> {
+export interface IShowingControllerConstructor extends IBaseCRUDControllerConstructor<IShowing> {
     queryService: IShowingQueryService;
     seatService: IShowingSeatingService;
 }
 
-export default class ShowingController extends BaseController<IShowing> implements IShowingController {
+export default class ShowingController extends BaseCRUDController<IShowing> implements IShowingController {
     queryService: IShowingQueryService;
     seatService: IShowingSeatingService;
 

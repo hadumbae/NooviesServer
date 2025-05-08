@@ -1,21 +1,21 @@
 import type {Request, Response} from "express";
-import BaseController, {
-    type IBaseController,
-    type IBaseControllerConstructor
-} from "../../../shared/controller/BaseController.js";
+import BaseCRUDController, {
+    type IBaseCRUDController,
+    type IBaseCRUDControllerConstructor
+} from "../../../shared/controller/BaseCRUDController.js";
 import type IUser from "../model/IUser.js";
 import type UserService from "../service/UserService.js";
 import createHttpError from "http-errors";
 
-export interface IUserControllerConstructor extends IBaseControllerConstructor<IUser> {
+export interface IUserControllerConstructor extends IBaseCRUDControllerConstructor<IUser> {
     service: UserService;
 }
 
-export interface IUserController extends IBaseController {
+export interface IUserController extends IBaseCRUDController {
     updateUserPassword(req: Request, res: Response): Promise<Response>,
 }
 
-export default class UserController extends BaseController<IUser> implements IUserController {
+export default class UserController extends BaseCRUDController<IUser> implements IUserController {
     service: UserService;
 
     constructor(params: IUserControllerConstructor) {

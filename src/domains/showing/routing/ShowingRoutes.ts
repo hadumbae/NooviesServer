@@ -9,7 +9,7 @@ import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 const {controller} = ShowingServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IShowingController> = {
-    controller,
+    crudController: controller,
     createValidator: ZodAsyncValidator(ShowingSubmitSchema),
     updateValidator: ZodAsyncValidator(ShowingSubmitSchema),
 };

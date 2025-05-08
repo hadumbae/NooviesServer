@@ -7,7 +7,7 @@ import {PersonSubmitSchema} from "../schema/PersonSubmitSchema.js";
 const { controller } = PersonServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IPersonController> = {
-    controller,
+    crudController: controller,
     createValidator: ZodValidator(PersonSubmitSchema),
     updateValidator: ZodValidator(PersonSubmitSchema),
 };

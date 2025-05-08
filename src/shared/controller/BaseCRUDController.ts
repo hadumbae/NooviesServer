@@ -3,7 +3,7 @@ import type BaseRepository from "../repository/BaseRepository.js";
 import type {PaginationRequest} from "../types/request/CustomRequestTypes.js";
 import {type IQueryUtils} from "../utility/query/QueryUtils.js";
 
-export interface IBaseController {
+export interface IBaseCRUDController {
     all(req: Request, res: Response): Promise<Response>;
     paginated(req: PaginationRequest, res: Response): Promise<Response>;
     create(req: Request, res: Response): Promise<Response>;
@@ -12,16 +12,16 @@ export interface IBaseController {
     delete(req: Request, res: Response): Promise<Response>;
 }
 
-export interface IBaseControllerConstructor<TModel> {
+export interface IBaseCRUDControllerConstructor<TModel> {
     repository: BaseRepository<TModel>;
     queryUtils: IQueryUtils;
 }
 
-export default class BaseController<TModel> implements IBaseController {
+export default class BaseCRUDController<TModel> implements IBaseCRUDController {
     protected readonly repository: BaseRepository<TModel>;
     protected readonly queryUtils: IQueryUtils;
 
-    constructor(params: IBaseControllerConstructor<TModel>) {
+    constructor(params: IBaseCRUDControllerConstructor<TModel>) {
         this.repository = params.repository;
         this.queryUtils = params.queryUtils;
     }

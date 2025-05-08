@@ -1,19 +1,18 @@
-import BaseController, {
-    type IBaseController,
-    type IBaseControllerConstructor
-} from "../../../shared/controller/BaseController.js";
+import BaseCRUDController, {
+    type IBaseCRUDController,
+    type IBaseCRUDControllerConstructor
+} from "../../../shared/controller/BaseCRUDController.js";
 import type IGenre from "../model/IGenre.js";
 import type {IGenreService} from "../service/GenreService.js";
 import type {Request, Response} from "express";
-import type IGenreSubmit from "../schema/interface/IGenreSubmit.js";
 import type {ZGenreSubmit} from "../schema/GenreSubmitSchema.js";
 
-export interface IGenreController extends IBaseController {}
-export interface IGenreControllerConstructor extends IBaseControllerConstructor<IGenre> {
+export interface IGenreController extends IBaseCRUDController {}
+export interface IGenreControllerConstructor extends IBaseCRUDControllerConstructor<IGenre> {
     genreService: IGenreService;
 }
 
-export default class GenreController extends BaseController<IGenre> implements IGenreController {
+export default class GenreController extends BaseCRUDController<IGenre> implements IGenreController {
     genreService: IGenreService;
 
     constructor(params: IGenreControllerConstructor) {

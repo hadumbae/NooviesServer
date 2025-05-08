@@ -1,26 +1,26 @@
 import type {Request, Response} from "express";
 
-import BaseController, {
-    type IBaseController,
-    type IBaseControllerConstructor
-} from "../../../shared/controller/BaseController.js";
+import BaseCRUDController, {
+    type IBaseCRUDController,
+    type IBaseCRUDControllerConstructor
+} from "../../../shared/controller/BaseCRUDController.js";
 
 import type ISeatMap from "../model/ISeatMap.js";
 import type {ISeatMapQueryService} from "../service/SeatMapQueryService.js";
 import type ISeatMapService from "../service/ISeatMapService.js";
 
-export interface ISeatMapControllerConstructor extends IBaseControllerConstructor<ISeatMap> {
+export interface ISeatMapControllerConstructor extends IBaseCRUDControllerConstructor<ISeatMap> {
     service: ISeatMapService;
     queryService: ISeatMapQueryService;
 }
 
-export interface ISeatMapController extends IBaseController {
+export interface ISeatMapController extends IBaseCRUDController {
     createSeatMap(req: Request, res: Response): Promise<Response>;
     getShowingSeatMap(req: Request, res: Response): Promise<Response>;
     toggleSeatMapAvailability(req: Request, res: Response): Promise<Response>;
 }
 
-export default class SeatMapController extends BaseController<ISeatMap> implements ISeatMapController {
+export default class SeatMapController extends BaseCRUDController<ISeatMap> implements ISeatMapController {
     protected service: ISeatMapService;
     protected queryService: ISeatMapQueryService;
 

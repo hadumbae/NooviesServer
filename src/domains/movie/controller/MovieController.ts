@@ -1,7 +1,7 @@
-import BaseController, {
-    type IBaseController,
-    type IBaseControllerConstructor
-} from "../../../shared/controller/BaseController.js";
+import BaseCRUDController, {
+    type IBaseCRUDController,
+    type IBaseCRUDControllerConstructor
+} from "../../../shared/controller/BaseCRUDController.js";
 
 import type {Request, Response} from "express";
 import type IMovie from "../model/IMovie.js";
@@ -11,19 +11,19 @@ import type IMovieQueryService from "../interface/service/IMovieQueryService.js"
 import type MovieService from "../service/MovieService.js";
 import type MovieQueryService from "../service/MovieQueryService.js";
 
-export interface IMovieControllerConstructor extends IBaseControllerConstructor<IMovie> {
+export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<IMovie> {
     service: IMovieService;
     queryService: IMovieQueryService;
     imageService: IMovieImageService,
 }
 
-export interface IMovieController extends IBaseController {
+export interface IMovieController extends IBaseCRUDController {
     updatePosterPicture(req: Request, res: Response): Promise<Response>,
 
     fetchMoviesByQueryWithData(req: Request, res: Response): Promise<Response>,
 }
 
-export default class MovieController extends BaseController<IMovie> implements IMovieController {
+export default class MovieController extends BaseCRUDController<IMovie> implements IMovieController {
     private service: MovieService;
     private queryService: MovieQueryService;
     private imageService: MovieImageService;

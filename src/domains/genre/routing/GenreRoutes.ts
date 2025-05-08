@@ -7,7 +7,7 @@ import {GenreSubmitSchema} from "../schema/GenreSubmitSchema.js";
 const { controller } = GenreServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IGenreController> = {
-    controller,
+    crudController: controller,
     createValidator: ZodAsyncValidator(GenreSubmitSchema),
     updateValidator: ZodAsyncValidator(GenreSubmitSchema),
 };

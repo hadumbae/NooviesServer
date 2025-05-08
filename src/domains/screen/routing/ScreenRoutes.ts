@@ -7,7 +7,7 @@ import {ScreenSubmitSchema} from "../schema/ScreenSubmitSchema.js";
 const {controller} = ScreenServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IScreenController> = {
-    controller,
+    crudController: controller,
     createValidator: ZodAsyncValidator(ScreenSubmitSchema),
     updateValidator: ZodAsyncValidator(ScreenSubmitSchema),
 };

@@ -1,22 +1,22 @@
-import BaseController, {
-    type IBaseController,
-    type IBaseControllerConstructor
-} from "../../../shared/controller/BaseController.js";
+import BaseCRUDController, {
+    type IBaseCRUDController,
+    type IBaseCRUDControllerConstructor
+} from "../../../shared/controller/BaseCRUDController.js";
 import type {IScreen} from "../interface/IScreen.js";
 import type {Request, Response} from "express";
 import type {IScreenQueryService} from "../service/ScreenQueryService.js";
 import type {IScreenService} from "../service/ScreenService.js";
 
-export interface IScreenController extends IBaseController {
+export interface IScreenController extends IBaseCRUDController {
     getScreensByTheatre(req: Request, res: Response): Promise<Response>;
 }
 
-export interface IScreenControllerConstructor extends IBaseControllerConstructor<IScreen> {
+export interface IScreenControllerConstructor extends IBaseCRUDControllerConstructor<IScreen> {
     service: IScreenService;
     queryService: IScreenQueryService;
 }
 
-export default class ScreenController extends BaseController<IScreen> implements IScreenController {
+export default class ScreenController extends BaseCRUDController<IScreen> implements IScreenController {
     protected service: IScreenService;
     protected queryService: IScreenQueryService;
 

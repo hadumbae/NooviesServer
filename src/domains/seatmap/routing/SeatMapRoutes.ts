@@ -8,7 +8,7 @@ import SeatMapServiceProvider from "../provider/SeatMapServiceProvider.js";
 
 const {controller} = SeatMapServiceProvider.register();
 const baseConfig: IBaseRoutesConfig<ISeatMapController> = {
-    controller,
+    crudController: controller,
     createValidator: ZodAsyncValidator(SeatMapSubmitSchema),
     updateValidator: ZodAsyncValidator(SeatMapSubmitSchema),
 }

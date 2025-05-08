@@ -1,10 +1,10 @@
-import BaseController, {type IBaseController, type IBaseControllerConstructor} from "../../../shared/controller/BaseController.js";
+import BaseCRUDController, {type IBaseCRUDController, type IBaseCRUDControllerConstructor} from "../../../shared/controller/BaseCRUDController.js";
 import type ITheatre from "../model/ITheatre.js";
 
-export interface ITheatreController extends IBaseController{}
-export interface ITheatreControllerConstructor extends IBaseControllerConstructor<ITheatre> {}
+export interface ITheatreController extends IBaseCRUDController{}
+export interface ITheatreControllerConstructor extends IBaseCRUDControllerConstructor<ITheatre> {}
 
-export default class TheatreController extends BaseController<ITheatre> implements ITheatreController {
+export default class TheatreController extends BaseCRUDController<ITheatre> implements ITheatreController {
     constructor(params: ITheatreControllerConstructor) {
         super({...params});
     }
