@@ -23,7 +23,12 @@ const UserSchema = new Schema<IUser>({
         type: Boolean,
         required: [true, "IsAdmin is required."],
         default: false,
-    }
+    },
+
+    favourites: [{
+        type: Schema.Types.ObjectId,
+        ref: "Movie",
+    }],
 }, {timestamps: true});
 
 const User: Model<IUser> = model<IUser>("User", UserSchema);
