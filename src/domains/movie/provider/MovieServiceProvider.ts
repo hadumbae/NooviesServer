@@ -9,7 +9,9 @@ import MovieImageService from "../service/MovieImageService.js";
 import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import MovieService from "../service/MovieService.js";
-import MovieQueryService from "../service/MovieQueryService.js";
+import MovieURLService from "../service/MovieURLService.js";
+import MovieFavouriteService from "../service/user/MovieFavouriiteService.js";
+import MovieFavouriteController from "../controller/MovieFavouriteController.js";
 
 export default class MovieServiceProvider {
     static register() {
@@ -19,24 +21,36 @@ export default class MovieServiceProvider {
         const queryUtils = QueryUtils;
         const cloudinaryUtils = CloudinaryUtils;
 
-        const service = new MovieService();
-        const queryService = new MovieQueryService();
-
         const repository = new BaseRepository<IMovie>({model, populateRefs});
+
+        const service = new MovieService();
+        const urlService = new MovieURLService();
+        const favouriteService = new MovieFavouriteService();
         const imageService = new MovieImageService({repository, cloudinaryUtils});
 
-        const controller = new MovieController({
+        const crudController = new MovieController({
             repository,
             queryUtils,
             service,
-            queryService,
+            urlService,
             imageService,
+        });
+
+        const favouriteController = new MovieFavouriteController({
+            queryUtils,
+            urlService,
+            favouriteService,
         });
 
         return {
             repository,
+
             imageService,
-            controller,
+            urlService,
+            favouriteService,
+
+            crudController,
+            favouriteController,
         }
     }
 }

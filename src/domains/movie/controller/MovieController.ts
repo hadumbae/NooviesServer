@@ -7,13 +7,13 @@ import type {Request, Response} from "express";
 import type IMovie from "../model/IMovie.js";
 import MovieImageService, {type IMovieImageService} from "../service/MovieImageService.js";
 import type IMovieService from "../interface/service/IMovieService.js";
-import type IMovieQueryService from "../interface/service/IMovieQueryService.js";
+import type IMovieURLService from "../interface/service/IMovieURLService.js";
 import type MovieService from "../service/MovieService.js";
-import type MovieQueryService from "../service/MovieQueryService.js";
+import type MovieURLService from "../service/MovieURLService.js";
 
 export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<IMovie> {
     service: IMovieService;
-    queryService: IMovieQueryService;
+    urlService: IMovieURLService;
     imageService: IMovieImageService,
 }
 
@@ -25,13 +25,13 @@ export interface IMovieController extends IBaseCRUDController {
 
 export default class MovieController extends BaseCRUDController<IMovie> implements IMovieController {
     private service: MovieService;
-    private queryService: MovieQueryService;
+    private urlService: MovieURLService;
     private imageService: MovieImageService;
 
     constructor(params: IMovieControllerConstructor) {
         const {
             service,
-            queryService,
+            urlService,
             imageService,
             ...constructorParams
         } = params;
@@ -39,7 +39,7 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
         super(constructorParams);
 
         this.service = service;
-        this.queryService = queryService;
+        this.urlService = urlService;
         this.imageService = imageService;
     }
 
@@ -58,8 +58,8 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
     async fetchMoviesByQueryWithData(req: Request, res: Response): Promise<Response> {
         const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
 
-        const query = this.queryService.getFilterQuery(req);
-        const sort = this.queryService.getSortQuery(req);
+        const query = this.urlService.getFilterQuery(req);
+        const sort = this.urlService.getSortQuery(req);
 
         const {items, totalItems} = await this.service.fetchPaginatedMoviesByQueryWithData({
             page,
