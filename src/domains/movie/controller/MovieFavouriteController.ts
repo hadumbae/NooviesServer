@@ -8,7 +8,7 @@ interface IMovieFavouriteController {
 
     removeFromFavourites(req: Request, res: Response): Promise<Response>;
 
-    fetchMovieWithFavourites(req: Request, res: Response): Promise<Response>;
+    fetchFavouriteMovieWithShowings(req: Request, res: Response): Promise<Response>;
 }
 
 interface IMovieFavouriteConstructor extends IBaseControllerConstructor {
@@ -32,7 +32,7 @@ export default class MovieFavouriteController extends BaseController implements 
         const movieID = this.urlService.getIDParam(req);
 
         const movie = await this.favouriteService.addMovieToFavourite({movieID, userID: userID!});
-        return res.status(200).json({movie, message: "Movie added to user's favourites."});
+        return res.status(200).json(movie);
     }
 
     async removeFromFavourites(req: Request, res: Response): Promise<Response> {
@@ -40,10 +40,10 @@ export default class MovieFavouriteController extends BaseController implements 
         const movieID = this.urlService.getIDParam(req);
 
         const movie = await this.favouriteService.removeMovieFromFavourite({movieID, userID: userID!});
-        return res.status(200).json({movie, message: "Movie removed from user's favourites."});
+        return res.status(200).json(movie);
     }
 
-    async fetchMovieWithFavourites(req: Request, res: Response): Promise<Response> {
+    async fetchFavouriteMovieWithShowings(req: Request, res: Response): Promise<Response> {
         const userID = req.authUserID;
         const movieID = this.urlService.getIDParam(req);
 

@@ -7,19 +7,19 @@ const router = Router();
 const {favouriteController} = MovieServiceProvider.register();
 
 router.get(
-    "/:_id/favourites",
+    "/get/:_id/favourites",
     [isAuth],
-    asyncHandler(favouriteController.fetchMovieWithFavourites.bind(favouriteController)),
+    asyncHandler(favouriteController.fetchFavouriteMovieWithShowings.bind(favouriteController)),
 );
 
 router.patch(
-    "/:_id/favourites/add",
+    "/edit/:_id/favourites/add",
     [isAuth],
     asyncHandler(favouriteController.addToFavourites.bind(favouriteController)),
 );
 
 router.patch(
-    "/:_id/favourites/remove",
+    "/edit/:_id/favourites/remove",
     [isAuth],
     asyncHandler(favouriteController.removeFromFavourites.bind(favouriteController)),
 );
