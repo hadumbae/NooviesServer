@@ -6,18 +6,37 @@ import type ICloudinaryImage from "../../../shared/interfaces/ICloudinaryImage.j
 
 export default interface IMovie {
     readonly _id: Types.ObjectId,
+    // title
     title: string,
-    description: string,
+    // * originalTitle
+    originalTitle: string,
+    // * tagline
+    tagline?: string,
+    // * country
+    country: string,
+    // description => synopsis
+    synopsis: string,
+    // genres
     genres: (Types.ObjectId | IGenre)[],
-    directors: (Types.ObjectId | IPerson)[],
+    // directors => staff
+    staff: (Types.ObjectId | IPerson)[],
+    // cast
     cast: (Types.ObjectId | IPerson)[],
+    // releaseDate
     releaseDate?: string | null,
-    durationInMinutes: number,
+    // durationInMinutes => runtime
+    runtime: number,
+    // * originalLanguage
+    originalLanguage: string,
+    // languages
     languages: string[],
+    // subtitles
     subtitles: string[],
+    // posterImage
     posterImage?: ICloudinaryImage | null,
+    // trailerURL
     trailerURL?: string | null,
-    price: number,
+    // showings
     showings: (Types.ObjectId | IShowing)[],
 }
 

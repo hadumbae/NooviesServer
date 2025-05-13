@@ -10,8 +10,8 @@ export async function SaveMovieDocumentPreMiddleware(this: HydratedDocument<IMov
 
 export async function SaveMovieDocumentPostMiddleware(this: IMovie) {
     if ((this as any)._wasNew) {
-        const {_id, directors, cast, genres} = this;
-        const personIDs = [...(new Set([...directors, ...cast]))];
+        const {_id, staff, cast, genres} = this;
+        const personIDs = [...(new Set([...staff, ...cast]))];
 
         await Promise.all([
             Person.updateMany({_id: {$in: personIDs}}, {$push: {movies: _id}}),

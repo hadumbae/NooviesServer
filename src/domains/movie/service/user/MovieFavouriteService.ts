@@ -32,10 +32,10 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
         const movie = await Movie.findById(movieID).lean();
         if (!movie) throw createHttpError(404, "Movie not found!");
 
-        const res = User.findByIdAndUpdate(
+        const res = await User.findByIdAndUpdate(
             userID,
-            {$addToSet: {favourites: movie._id}},
-            {new: true, select: "_id"},
+            {$addToSet: {favourites: movie}},
+            {new: true, select: "_id favourites"},
         ).lean();
 
         if (!res) throw createHttpError(404, "User not found!");
@@ -47,7 +47,9 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
         const movie = await Movie.findById(movieID).lean();
         if (!movie) throw createHttpError(404, "Movie not found!");
 
-        const res = User.findByIdAndUpdate(
+        console.log("movie: ", movie._id);
+
+        const res = await User.findByIdAndUpdate(
             userID,
             {$pull: {favourites: movie._id}},
             {new: true, select: "_id"}
@@ -61,7 +63,7 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
     async fetchMovieWithDetails({userID, movieID}: UserMovieParams): Promise<{ showings: IShowing[], movie: IMovie }> {
         const [user, movie] = await Promise.all([
             User.findById(userID).select("_id favourites").lean(),
-            Movie.findById(movieID).lean(),
+            Movie.findById(movieID).populate(["genres", "cast", "staff"]).lean(),
         ]);
 
         if (!user) throw createHttpError(404, "User not found!");

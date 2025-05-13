@@ -23,3 +23,5 @@ router.patch(
     [isAuth],
     asyncHandler(favouriteController.removeFromFavourites.bind(favouriteController)),
 );
+
+export default router;

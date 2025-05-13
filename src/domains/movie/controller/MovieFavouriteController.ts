@@ -1,7 +1,7 @@
 import BaseController, {type IBaseControllerConstructor} from "../../../shared/controller/BaseController.js";
 import type {Request, Response} from "express";
 import type MovieURLService from "../service/MovieURLService.js";
-import type MovieFavouriteService from "../service/user/MovieFavouriiteService.js";
+import type MovieFavouriteService from "../service/user/MovieFavouriteService.js";
 
 interface IMovieFavouriteController {
     addToFavourites(req: Request, res: Response): Promise<Response>;
@@ -32,6 +32,7 @@ export default class MovieFavouriteController extends BaseController implements 
         const movieID = this.urlService.getIDParam(req);
 
         const movie = await this.favouriteService.addMovieToFavourite({movieID, userID: userID!});
+        console.log("Added!");
         return res.status(200).json(movie);
     }
 
@@ -40,6 +41,7 @@ export default class MovieFavouriteController extends BaseController implements 
         const movieID = this.urlService.getIDParam(req);
 
         const movie = await this.favouriteService.removeMovieFromFavourite({movieID, userID: userID!});
+        console.log("Removed!");
         return res.status(200).json(movie);
     }
 

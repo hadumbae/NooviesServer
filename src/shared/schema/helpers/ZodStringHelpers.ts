@@ -12,6 +12,7 @@ import {Types} from "mongoose";
  */
 export const RequiredStringSchema = z
     .string({required_error: "Required", invalid_type_error: "Must be a valid string."})
+    .min(1, "Must be at least 1 character long.")
     .trim();
 
 /**

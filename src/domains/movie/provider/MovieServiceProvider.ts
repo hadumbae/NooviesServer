@@ -10,13 +10,13 @@ import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import MovieService from "../service/MovieService.js";
 import MovieURLService from "../service/MovieURLService.js";
-import MovieFavouriteService from "../service/user/MovieFavouriiteService.js";
+import MovieFavouriteService from "../service/user/MovieFavouriteService.js";
 import MovieFavouriteController from "../controller/MovieFavouriteController.js";
 
 export default class MovieServiceProvider {
     static register() {
         const model = Movie;
-        const populateRefs = ["genres", "directors", "cast", "showings"];
+        const populateRefs = ["genres", "staff", "cast", "showings"];
 
         const queryUtils = QueryUtils;
         const cloudinaryUtils = CloudinaryUtils;

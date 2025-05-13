@@ -4,6 +4,7 @@ import Showing from "../../../showing/model/Showing.js";
 import type {Query} from "mongoose";
 import type IMovie from "../IMovie.js";
 import Movie from "../Movie.js";
+import User from "@models/User.js";
 
 export async function FindOneAndUpdateMovieQueryPreMiddleware(this: Query<any, IMovie>) {
     const {_id} = this.getFilter();
@@ -24,8 +25,8 @@ export async function FindOneAndUpdateMovieQueryPostMiddleware(this: Query<any, 
     const movie = (this as any)._movie;
     if (!movie) return;
 
-    const {_id, directors, cast, genres} = movie;
-    const personIDs = [...(new Set([...directors, ...cast]))];
+    const {staff, cast, genres} = movie;
+    const personIDs = [...(new Set([...staff, ...cast]))];
 
     await Promise.all([
         Person.updateMany({_id: {$in: personIDs}}, {$push: {movies: movie}}),
@@ -38,6 +39,7 @@ export async function DeleteMovieQueryPostMiddleware(this: Query<any, IMovie>) {
     if (!_id) return;
 
     await Promise.all([
+        User.updateMany({favourites: _id}, {$pull: {favourites: _id}}),
         Person.updateMany({movies: _id}, {$pull: {movies: _id}}),
         Genre.updateMany({movies: _id}, {$pull: {movies: _id}}),
         Showing.deleteMany({movie: _id}),

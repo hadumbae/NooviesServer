@@ -9,13 +9,17 @@ import ShowingRoutes from "../../domains/showing/routing/ShowingRoutes.js";
 import GenreRoutes from "../../domains/genre/routing/GenreRoutes.js";
 import UserRoutes from "../../domains/users/routing/UserRoutes.js";
 import SeatMapRoutes from "../../domains/seatmap/routing/SeatMapRoutes.js";
+import MovieFavouriteRoutes from "../../domains/movie/routing/MovieFavouriteRoutes.js";
 
 const registerRoutes = (app: Express) => {
     app.use("/auth", AuthRoutes);
     app.use("/api/v1/users", UserRoutes);
 
     app.use("/api/v1/admin/persons", PersonRoutes);
+
     app.use("/api/v1/admin/movies", MovieRoutes);
+    app.use("/api/v1/admin/movies", MovieFavouriteRoutes);
+
     app.use("/api/v1/admin/genres", GenreRoutes);
     app.use("/api/v1/admin/showings", ShowingRoutes);
 
