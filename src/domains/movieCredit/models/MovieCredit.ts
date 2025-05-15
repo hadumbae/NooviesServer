@@ -67,7 +67,7 @@ const MovieCreditSchema = new Schema<IMovieCredit>({
         type: Boolean,
         default: false,
     },
-});
+}, {timestamps: true});
 
 const MovieCredit: Model<IMovieCredit> = model<IMovieCredit>("MovieCredit", MovieCreditSchema);
 export default MovieCredit
