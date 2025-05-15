@@ -15,22 +15,17 @@ export const createBaseRoutes = <TController extends IBaseCRUDController>(
     const {crudController, createValidator, updateValidator} = config;
     const router = express.Router();
 
-    router.get('/all', asyncHandler(crudController.all.bind(crudController)));
+    router.get('/all', isAuth, asyncHandler(crudController.all.bind(crudController)));
 
     router.get('/paginated', isAuth, asyncHandler(crudController.paginated.bind(crudController)));
 
-    router.post('/create', [createValidator], asyncHandler(crudController.create.bind(crudController)));
+    router.post('/create', [isAuth, createValidator], asyncHandler(crudController.create.bind(crudController)));
 
-    router.get('/get/:_id', asyncHandler(crudController.get.bind(crudController)));
+    router.get('/get/:_id', isAuth, asyncHandler(crudController.get.bind(crudController)));
 
-    router.patch('/update/:_id', [updateValidator], asyncHandler(crudController.update.bind(crudController)));
+    router.patch('/update/:_id', [isAuth, updateValidator], asyncHandler(crudController.update.bind(crudController)));
 
-    router.delete(
-        '/delete/:_id',
-        asyncHandler(
-            crudController.delete.bind(crudController),
-        ),
-    );
+    router.delete('/delete/:_id', isAuth, asyncHandler(crudController.delete.bind(crudController)));
 
     return router;
 };

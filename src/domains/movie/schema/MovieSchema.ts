@@ -8,8 +8,6 @@ import {DateStringSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js
 import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import type IMovie from "../model/IMovie.js";
 
-// / price => remove
-
 export const MovieSchema: ZodType<IMovie> = z.object({
     _id: IDInstance,
 
