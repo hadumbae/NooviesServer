@@ -12,11 +12,17 @@ import MovieService from "../service/MovieService.js";
 import MovieURLService from "../service/MovieURLService.js";
 import MovieFavouriteService from "../service/user/MovieFavouriteService.js";
 import MovieFavouriteController from "../controller/MovieFavouriteController.js";
+import type {PopulatePath} from "../../../shared/types/PopulatePath.js";
 
 export default class MovieServiceProvider {
     static register() {
         const model = Movie;
-        const populateRefs = ["genres", "showings"];
+        const populateRefs: PopulatePath[] = [
+            {path: "genres"},
+            {path: "showings"},
+            {path: "crew", populate: {path: "person"}},
+            {path: "cast", populate: {path: "person"}},
+        ];
 
         const queryUtils = QueryUtils;
         const cloudinaryUtils = CloudinaryUtils;

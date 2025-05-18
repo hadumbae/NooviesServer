@@ -7,6 +7,7 @@ import {
     DeleteOneMovieDocumentPreMiddleware,
     SaveMovieDocumentPostMiddleware, SaveMovieDocumentPreMiddleware
 } from "./middleware/MovieDocumentMiddleware.js";
+import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const MovieSchema = new Schema<IMovie>({
     title: {
@@ -95,6 +96,28 @@ MovieSchema.post("findOneAndUpdate", {document: false, query: true}, FindOneAndU
 
 MovieSchema.pre("deleteOne", {document: true, query: false}, DeleteOneMovieDocumentPreMiddleware);
 MovieSchema.pre(["deleteOne", "deleteMany"], {document: false, query: true}, DeleteMovieQueryPostMiddleware);
+
+/**
+ * Virtuals
+ */
+
+MovieSchema.virtual("cast", {
+    ref: "MovieCredit",
+    localField: "_id",
+    foreignField: "movie",
+    justOne: false,
+    match: {roleType: "CAST"},
+});
+
+MovieSchema.virtual("crew", {
+    ref: "MovieCredit",
+    localField: "_id",
+    foreignField: "movie",
+    justOne: false,
+    match: {roleType: "CREW"},
+});
+
+MovieSchema.plugin(mongooseLeanVirtuals);
 
 const Movie: Model<IMovie> = model<IMovie>("Movie", MovieSchema);
 export default Movie;

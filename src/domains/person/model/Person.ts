@@ -3,6 +3,7 @@ import type {IPerson} from "./IPerson.js";
 
 import {DeletePersonQueryPreMiddleware} from "./middleware/PersonQueryMiddleware.js";
 import {DeletePersonDocumentPreMiddleware} from "./middleware/PersonDocumentMiddleware.js";
+import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 // TODO Add Awards and Nominations
 
@@ -38,8 +39,20 @@ const PersonSchema = new Schema<IPerson>({
     },
 }, {timestamps: true});
 
+/**
+ * Middleware
+ */
+
 PersonSchema.pre("deleteOne", {query: false, document: true}, DeletePersonDocumentPreMiddleware);
 PersonSchema.pre(["deleteOne", "deleteMany"], {query: true, document: false}, DeletePersonQueryPreMiddleware);
+
+/**
+ * Virtuals
+ */
+
+PersonSchema.virtual("movies", {ref: "MovieCredit", localField: "_id", foreignField: "person", justOne: false});
+
+PersonSchema.plugin(mongooseLeanVirtuals);
 
 const Person: Model<IPerson> = model<IPerson>("Person", PersonSchema);
 export default Person;

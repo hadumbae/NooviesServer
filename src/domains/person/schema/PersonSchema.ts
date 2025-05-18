@@ -5,6 +5,7 @@ import {CoercedDateSchema} from "../../../shared/schema/helpers/ZodDateHelpers.j
 import {CountryEnum} from "../../../shared/schema/helpers/ZodEnumHelpers.js";
 import {CloudinaryImageObject} from "../../../shared/schema/helpers/ZodImageHelpers.js";
 import type {IPerson} from "../model/IPerson.js";
+import {MovieCreditSchema} from "../../movieCredit/schemas/MovieCreditSchema.js";
 
 export const PersonSchema: ZodType<IPerson> = z.object({
     _id: IDInstance.readonly(),
@@ -24,6 +25,8 @@ export const PersonSchema: ZodType<IPerson> = z.object({
     profileImage: z
         .union([z.null(), CloudinaryImageObject.readonly()])
         .optional(),
+
+    movies: z.array(z.lazy(() => MovieCreditSchema), {message: "Must be an array of movie credits."}).optional(),
 });
 
 export type ZPerson = z.infer<typeof PersonSchema>;

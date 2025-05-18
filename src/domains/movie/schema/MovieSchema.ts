@@ -6,6 +6,7 @@ import {RequiredStringSchema, ValidURLStringSchema} from "../../../shared/schema
 import {DateStringSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js";
 import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import type IMovie from "../model/IMovie.js";
+import {MovieCreditSchema} from "../../movieCredit/schemas/MovieCreditSchema.js";
 
 export const MovieSchema: ZodType<IMovie> = z.object({
     _id: IDInstance,
@@ -37,6 +38,10 @@ export const MovieSchema: ZodType<IMovie> = z.object({
     languages: z.array(RequiredStringSchema),
 
     subtitles: z.array(RequiredStringSchema),
+
+    cast: z.array(z.lazy(() => MovieCreditSchema), {message: "Must be an array of movie credits."}).optional(),
+
+    crew: z.array(z.lazy(() => MovieCreditSchema), {message: "Must be an array of movie credits."}).optional(),
 
     posterImage: z.object({public_id: RequiredStringSchema, secure_url: ValidURLStringSchema}).optional().nullable(),
 
