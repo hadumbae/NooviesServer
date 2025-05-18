@@ -1,7 +1,6 @@
 import {z, ZodType} from "zod";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {GenreSchema} from "../../genre/schema/GenreSchema.js";
-import {PersonSchema} from "../../person/schema/PersonSchema.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
 import {RequiredStringSchema, ValidURLStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {DateStringSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js";
@@ -26,10 +25,6 @@ export const MovieSchema: ZodType<IMovie> = z.object({
         .max(2000, "Must be 2000 characters or less."),
 
     genres: z.array(z.union([IDInstance, z.lazy(() => GenreSchema)])),
-
-    staff: z.array(z.union([IDInstance, z.lazy(() => PersonSchema)])),
-
-    cast: z.array(z.union([IDInstance, z.lazy(() => PersonSchema)])),
 
     releaseDate: DateStringSchema.optional().nullable(),
 

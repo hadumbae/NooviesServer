@@ -9,8 +9,6 @@ export default interface IMovieSubmit {
     tagline?: string,
     synopsis: string,
     genres: string[],
-    staff: string[],
-    cast: string[],
     releaseDate?: string | null,
     runtime: number,
     country: string,

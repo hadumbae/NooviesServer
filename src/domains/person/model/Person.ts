@@ -36,12 +36,6 @@ const PersonSchema = new Schema<IPerson>({
         required: false,
         default: null,
     },
-
-    movies: {
-        type: [Schema.Types.ObjectId],
-        ref: "Movie",
-        required: true,
-    },
 }, {timestamps: true});
 
 PersonSchema.pre("deleteOne", {query: false, document: true}, DeletePersonDocumentPreMiddleware);

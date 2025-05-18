@@ -16,7 +16,7 @@ import MovieFavouriteController from "../controller/MovieFavouriteController.js"
 export default class MovieServiceProvider {
     static register() {
         const model = Movie;
-        const populateRefs = ["genres", "staff", "cast", "showings"];
+        const populateRefs = ["genres", "showings"];
 
         const queryUtils = QueryUtils;
         const cloudinaryUtils = CloudinaryUtils;

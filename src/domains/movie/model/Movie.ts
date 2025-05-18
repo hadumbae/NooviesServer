@@ -37,16 +37,6 @@ const MovieSchema = new Schema<IMovie>({
         required: true,
     },
 
-    staff: {
-        type: [{type: Schema.Types.ObjectId, ref: "Person"}],
-        required: true,
-    },
-
-    cast: {
-        type: [{type: Schema.Types.ObjectId, ref: "Person"}],
-        required: true,
-    },
-
     releaseDate: {
         type: String,
     },

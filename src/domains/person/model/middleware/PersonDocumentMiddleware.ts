@@ -1,11 +1,10 @@
 import type {HydratedDocument} from "mongoose";
 import type {IPerson} from "../IPerson.js";
-import Movie from "../../../movie/model/Movie.js";
+import MovieCredit from "../../../movieCredit/models/MovieCredit.js";
 
 export async function DeletePersonDocumentPreMiddleware(this: HydratedDocument<IPerson>) {
     const {_id} = this;
-    await Movie.updateMany(
-        {$or: [{staff: _id}, {cast: _id}]},
-        {$pull: {staff: _id, cast: _id}}
-    );
+    if (!_id) return;
+
+    await MovieCredit.deleteMany({person: _id});
 }

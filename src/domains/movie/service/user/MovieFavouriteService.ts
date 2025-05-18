@@ -63,7 +63,7 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
     async fetchMovieWithDetails({userID, movieID}: UserMovieParams): Promise<{ showings: IShowing[], movie: IMovie }> {
         const [user, movie] = await Promise.all([
             User.findById(userID).select("_id favourites").lean(),
-            Movie.findById(movieID).populate(["genres", "cast", "staff"]).lean(),
+            Movie.findById(movieID).populate(["genres"]).lean(),
         ]);
 
         if (!user) throw createHttpError(404, "User not found!");

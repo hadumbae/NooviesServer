@@ -6,7 +6,7 @@ import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 export default class PersonServiceProvider {
     static register() {
         const model = Person;
-        const populateRefs = ["movies"];
+        const populateRefs: string[] = [];
 
         const queryUtils = QueryUtils;
         const repository = new BaseRepository({model, populateRefs});

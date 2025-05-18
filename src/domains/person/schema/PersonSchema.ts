@@ -1,6 +1,5 @@
 import {z, type ZodType} from 'zod';
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import {MovieSchema} from "../../movie/schema/MovieSchema.js";
 import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {CoercedDateSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js";
 import {CountryEnum} from "../../../shared/schema/helpers/ZodEnumHelpers.js";
@@ -25,9 +24,6 @@ export const PersonSchema: ZodType<IPerson> = z.object({
     profileImage: z
         .union([z.null(), CloudinaryImageObject.readonly()])
         .optional(),
-
-    movies: z
-        .array(z.union([IDInstance, z.lazy(() => MovieSchema) ])),
 });
 
 export type ZPerson = z.infer<typeof PersonSchema>;
