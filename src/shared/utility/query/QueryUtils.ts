@@ -1,10 +1,12 @@
-import type {PaginationRequest, PopulateRequest} from "../../types/request/CustomRequestTypes.js";
+import type {PaginationRequest, PopulateRequest, QueryOptionsRequest} from "../../types/request/CustomRequestTypes.js";
 import {PaginationSchema} from "../../schema/PaginationSchemas.js";
 import ZodParseError from "../../errors/ZodParseError.js";
 import {ParamBoolean} from "../../schema/helpers/ZodBooleanHelpers.js";
+import {QueryOptionsSchema} from "../../schema/query/QueryOptionsSchema.js";
 
 type PopulateQueryReturn = boolean | undefined;
 type PaginationQueryReturns = { page: number, perPage: number };
+type OptionsQueryReturns = { populate?: boolean, virtuals?: boolean };
 
 /**
  * Interface defining utility methods for query parameter extraction and validation.
@@ -27,6 +29,19 @@ export interface IQueryUtils {
      * @throws ZodParseError if the pagination parameters are invalid.
      */
     fetchPaginationFromQuery(req: PaginationRequest): PaginationQueryReturns;
+
+    /**
+     * Extracts and validates Mongoose-specific query options such as `populate` and `virtuals` from the request.
+     *
+     * This method is intended for repository-level logic where options like `populate` and `virtuals`
+     * influence how documents are retrieved from Mongoose. Additional query parameters may be present
+     * in the request but will be ignored by this method.
+     *
+     * @param req - The HTTP request containing potential Mongoose query options.
+     * @returns An object with validated `populate` and `virtuals` values as booleans or `undefined`.
+     * @throws ZodParseError if any of the recognized parameters are present but invalid.
+     */
+    fetchOptionsFromQuery(req: QueryOptionsRequest): OptionsQueryReturns;
 }
 
 /**
@@ -46,14 +61,9 @@ export interface IQueryUtils {
  */
 const QueryUtils: IQueryUtils = {
     fetchPopulateFromQuery(req: PopulateRequest): PopulateQueryReturn {
-        const populate = req.query.populate;
-        const result = ParamBoolean.safeParse(populate);
-
-        if (!result.success) {
-            throw new ZodParseError({message: "Invalidate `Populate` Query.", errors: result.error.errors});
-        }
-
-        return result.data;
+        const {success, data, error} = ParamBoolean.safeParse(req.query.populate);
+        if (!success) throw new ZodParseError({message: "Invalidate `Populate` Query.", errors: error?.errors});
+        return data;
     },
 
     fetchPaginationFromQuery(req: PaginationRequest): PaginationQueryReturns {
@@ -67,6 +77,12 @@ const QueryUtils: IQueryUtils = {
         }
 
         return result.data!;
+    },
+
+    fetchOptionsFromQuery(req: QueryOptionsRequest): OptionsQueryReturns {
+        const {success, data, error} = QueryOptionsSchema.safeParse(req.query);
+        if (!success) throw new ZodParseError({message: "Validation Failed.", errors: error?.errors});
+        return data!;
     }
 }
 

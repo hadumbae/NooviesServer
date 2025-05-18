@@ -11,7 +11,6 @@ export async function SaveMovieDocumentPostMiddleware(this: IMovie) {
     if ((this as any)._wasNew) {
         const {genres} = this;
         await Genre.updateMany({_id: {$in: genres}}, {$push: {movies: this}});
-
     }
 }
 

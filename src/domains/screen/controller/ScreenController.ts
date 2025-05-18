@@ -29,20 +29,20 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
     }
 
     async all(req: Request, res: Response): Promise<Response> {
-        const populate = this.queryUtils.fetchPopulateFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const filters = this.queryService.fetchQuery(req);
 
-        const items = await this.repository.find({filters, populate});
+        const items = await this.repository.find({filters, populate, virtuals});
         return res.status(200).json(items);
     }
 
     async paginated(req: Request, res: Response): Promise<Response> {
-        const populate = this.queryUtils.fetchPopulateFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
         const filters = this.queryService.fetchQuery(req);
 
         const totalItems = await this.repository.count({filters});
-        const items = await this.repository.paginate({page, perPage, filters, populate});
+        const items = await this.repository.paginate({page, perPage, filters, populate, virtuals});
 
         return res.status(200).json({totalItems, items});
     }
@@ -59,7 +59,6 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
             perPage,
             theatreID,
             showingsPerScreen,
-            lean: true
         });
 
         return res.status(200).json({totalItems, items: screens});

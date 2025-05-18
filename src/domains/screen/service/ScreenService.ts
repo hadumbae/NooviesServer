@@ -11,7 +11,6 @@ export interface IScreenService {
             perPage?: number,
             showingsPerScreen?: number,
             sort?: Record<string, any>,
-            lean?: boolean,
         }
     ): Promise<PaginationReturns<ZScreen>>;
 }
@@ -23,12 +22,11 @@ export default class ScreenService implements IScreenService {
         perPage?: number,
         showingsPerScreen?: number,
         sort?: Record<string, any>,
-        lean?: boolean,
     }): Promise<any> {
         const {
             theatreID,
             page = 1, perPage = 10, showingsPerScreen = 3,
-            sort = {}, lean
+            sort = {},
         } = params;
 
         const query = Screen
@@ -43,8 +41,6 @@ export default class ScreenService implements IScreenService {
                 options: {sort: {startTime: -1}, limit: showingsPerScreen},
             });
 
-        if (lean) query.lean();
-
-        return query;
+        return query.lean({virtuals: true});
     }
 }

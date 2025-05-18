@@ -40,7 +40,7 @@ export default class MovieImageService implements IMovieImageService{
     }
 
     async deleteMoviePosterImage({movieID}: { movieID: string }): Promise<any> {
-        const movie = await this.repository.exists404({_id: movieID, lean: true});
+        const movie = await this.repository.exists404({_id: movieID, virtuals: true});
         const {_id, posterImage} = movie;
 
         if (posterImage) {

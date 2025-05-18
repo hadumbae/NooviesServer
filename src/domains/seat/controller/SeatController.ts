@@ -25,18 +25,20 @@ export default class SeatController extends BaseCRUDController<ISeat> implements
     }
 
     async all(req: Request, res: Response): Promise<Response> {
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const filters = this.queryService.getMatchFilters({req}) as SeatQuery;
-        const items = await this.repository.find({filters});
+        const items = await this.repository.find({filters, populate, virtuals});
 
         return res.status(200).json(items);
     }
 
     async paginated(req: Request, res: Response): Promise<Response> {
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
         const filters = this.queryService.getMatchFilters({req});
 
         const totalItems = await this.repository.count();
-        const items = await this.repository.paginate({filters, page, perPage});
+        const items = await this.repository.paginate({filters, page, perPage, populate, virtuals});
 
         return res.status(200).json({totalItems, items});
     }

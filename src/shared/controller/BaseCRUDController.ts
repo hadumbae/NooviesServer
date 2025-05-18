@@ -5,10 +5,15 @@ import BaseController, {type IBaseControllerConstructor} from "./BaseController.
 
 export interface IBaseCRUDController {
     all(req: Request, res: Response): Promise<Response>;
+
     paginated(req: PaginationRequest, res: Response): Promise<Response>;
+
     create(req: Request, res: Response): Promise<Response>;
+
     get(req: Request, res: Response): Promise<Response>;
+
     update(req: Request, res: Response): Promise<Response>;
+
     delete(req: Request, res: Response): Promise<Response>;
 }
 
@@ -25,35 +30,35 @@ export default class BaseCRUDController<TModel> extends BaseController implement
     }
 
     async all(req: Request, res: Response): Promise<Response> {
-        const populate = this.queryUtils.fetchPopulateFromQuery(req);
-        const items = await this.repository.find({populate});
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
+        const items = await this.repository.find({populate, virtuals});
         return res.status(200).json(items);
     }
 
     async paginated(req: Request, res: Response): Promise<Response> {
-        const populate = this.queryUtils.fetchPopulateFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
 
         const totalItems = await this.repository.count();
-        const items = await this.repository.paginate({page, perPage, populate, lean: true});
+        const items = await this.repository.paginate({page, perPage, populate, virtuals});
 
         return res.status(200).json({totalItems, items});
     }
 
     async create(req: Request, res: Response): Promise<Response> {
-        const populate = this.queryUtils.fetchPopulateFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const data = req.body;
 
-        const item = await this.repository.create({data, populate});
+        const item = await this.repository.create({data, populate, virtuals});
 
         return res.status(200).json(item);
     }
 
     async get(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
-        const populate = this.queryUtils.fetchPopulateFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
-        const item = await this.repository.findById({_id, populate, lean: true});
+        const item = await this.repository.findById({_id, populate, virtuals});
 
         return res.status(200).json(item);
     }
@@ -61,9 +66,9 @@ export default class BaseCRUDController<TModel> extends BaseController implement
     async update(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
         const data = req.validatedBody;
-        const populate = this.queryUtils.fetchPopulateFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
-        const item = await this.repository.update({_id, data, populate, lean: true});
+        const item = await this.repository.update({_id, data, populate, virtuals});
 
         return res.status(200).json(item);
     }
@@ -72,6 +77,6 @@ export default class BaseCRUDController<TModel> extends BaseController implement
         const {_id} = req.params;
         await this.repository.destroy({_id});
 
-        return res.status(200).json({ message: "Deleted." });
+        return res.status(200).json({message: "Deleted."});
     }
 }

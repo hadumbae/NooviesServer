@@ -23,65 +23,82 @@ export default class BaseRepository<T> {
     }
 
     async find(
-        params?: { filters?: FilterQuery<any>, populatePath?: PopulatePath[], populate?: boolean, lean?: boolean }
+        params?: {
+            filters?: FilterQuery<any>,
+            populatePath?: PopulatePath[],
+            populate?: boolean,
+            virtuals?: boolean,
+        }
     ): Promise<any> {
-        const {populate = false, lean = false, filters = {}, populatePath} = params || {};
+        const {populate = false, virtuals = false, filters = {}, populatePath} = params || {};
 
         const query = this.model.find(filters);
 
         if (populate) query.populate(populatePath || this.populateRefs);
-        if (lean) query.lean();
 
-        return query;
+        return query.lean({virtuals});
     }
 
     async findById(
-        params: { _id: Types.ObjectId | string, lean?: boolean, populate?: boolean, populatePath?: PopulatePath[] }
+        params: {
+            _id: Types.ObjectId | string,
+            virtuals?: boolean,
+            populate?: boolean,
+            populatePath?: PopulatePath[],
+        }
     ): Promise<any> {
-        const {_id, populatePath, populate = false, lean = false} = params;
+        const {_id, populatePath, populate, virtuals = false} = params;
         if (!Types.ObjectId.isValid(_id)) throw createHttpError(404, "Not found!");
         const query = this.model.findById(_id);
 
-        if (populate) query.populate(populatePath || this.populateRefs);
-        if (lean) query.lean();
+        if (populate) {
+            query.populate(populatePath || this.populateRefs);
+        }
 
-        const doc = await query;
+        const doc = await query.lean({virtuals});
         if (!doc) throw createHttpError(404, "Not found!");
+
         return doc;
     }
 
     async exists404(
-        params: { _id: Types.ObjectId | string, populatePath?: PopulatePath[], populate?: boolean, lean?: boolean }
+        params: {
+            _id: Types.ObjectId | string,
+            populatePath?: PopulatePath[],
+            populate?: boolean,
+            virtuals?: boolean,
+        }
     ): Promise<any> {
-        const {_id, populatePath, populate = false, lean = false} = params;
+        const {_id, populatePath, populate = false, virtuals = false} = params;
         if (!Types.ObjectId.isValid(_id)) throw createHttpError(404, "Invalid ID!");
 
         let query = this.model.findById(_id);
 
         if (populate) query.populate(populatePath || this.populateRefs);
-        if (lean) query.lean();
 
-        const doc = await query;
+        const doc = await query.lean({virtuals});
         if (!doc) throw createHttpError(404, 'Not found!');
 
         return doc;
     }
 
     async create(
-        params: { data: Partial<T>, populatePath?: PopulatePath[], populate?: boolean }
+        params: {
+            data: Partial<T>,
+            populatePath?: PopulatePath[],
+            populate?: boolean,
+            virtuals?: boolean,
+        }
     ): Promise<any> {
-        const {data, populatePath, populate = false} = params;
+        const {data, populatePath, populate, virtuals = false} = params;
 
         const doc = new this.model(data);
         await doc.save();
 
-        if (populate) {
-            return this.model
-                .findById(doc._id)
-                .populate(populatePath || this.populateRefs);
-        }
+        const query = this.model.findById(doc._id);
+        if (populate) query.populate(populatePath || this.populateRefs);
 
-        return doc;
+        return query.lean({virtuals});
     }
 
     async update(
@@ -90,56 +107,58 @@ export default class BaseRepository<T> {
             data: Partial<T>,
             populatePath?: string[],
             populate?: boolean,
-            lean?: boolean
+            virtuals?: boolean
         }
     ): Promise<any> {
-        const {_id, data, populatePath, populate, lean} = params;
-        const doc = await this.exists404({_id, lean: true});
+        const {_id, data, populatePath, populate, virtuals = false} = params;
 
+        const doc = await this.exists404({_id, virtuals: true});
         const query = this.model.findByIdAndUpdate(doc._id, data, {new: true});
 
-        if (populate) query.populate(populatePath || this.populateRefs);
-        if (lean) query.lean();
+        if (populate) {
+            query.populate(populatePath || this.populateRefs);
+        }
 
-        return query;
+        return query.lean({virtuals});
     }
 
-    async destroy({_id}: { _id: Types.ObjectId | string }): Promise<any> {
-        console.log("Destroy ID: ", _id);
+    async destroy(params: { _id: Types.ObjectId | string }): Promise<any> {
+        const {_id} = params;
         const doc = await this.exists404({_id});
         await doc.deleteOne();
     }
 
     async paginate(
-        params?: {
-            page?: number,
-            perPage?: number,
+        params: {
+            page: number,
+            perPage: number,
             sort?: Record<string, any>,
             filters?: Record<string, any>,
             populatePath?: string[],
             populate?: boolean,
-            lean?: boolean,
+            virtuals?: boolean,
         }
     ) {
         const {
-            page = 1,
-            perPage = 100,
+            page,
+            perPage,
             filters = {},
             sort = {},
+            virtuals = false,
             populatePath,
             populate,
-            lean,
-        } = params || {};
+        } = params;
 
         const query = this.model
             .find(filters)
             .sort(sort)
             .skip((page - 1) * perPage)
-            .limit(perPage)
+            .limit(perPage);
 
-        if (populate) query.populate(populatePath || this.populateRefs);
-        if (lean) query.lean();
+        if (populate) {
+            query.populate(populatePath || this.populateRefs);
+        }
 
-        return query;
+        return query.lean({virtuals});
     }
 }
