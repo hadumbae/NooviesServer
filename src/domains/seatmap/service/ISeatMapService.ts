@@ -1,6 +1,6 @@
 import type {FilterQuery} from "mongoose";
 import type ISeatMap from "../model/ISeatMap.js";
-import type {PopulateQueryFilters} from "../../../shared/types/mongoose/MongooseAggregateTypes.js";
+import type {PopulatePipelineStages} from "../../../shared/types/mongoose/PopulatePipelineStages.js";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
 import type {ZSeatMap} from "../schema/SeatMapSchema.js";
 
@@ -9,7 +9,7 @@ export interface GetShowingSeatMapParams {
     page: number,
     perPage: number,
     matchFilters?: FilterQuery<ISeatMap>,
-    populateFilters?: PopulateQueryFilters,
+    populateFilters?: PopulatePipelineStages,
 }
 
 export default interface ISeatMapService {

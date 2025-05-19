@@ -2,7 +2,7 @@ import type {Request} from "express";
 import {SeatMapFilterQuerySchema} from "../schema/SeatMapFilterQuerySchema.js";
 import type {FilterQuery} from "mongoose";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import type {PopulateQueryFilters} from "../../../shared/types/mongoose/MongooseAggregateTypes.js";
+import type {PopulatePipelineStages} from "../../../shared/types/mongoose/PopulatePipelineStages.js";
 
 interface RequestFilters {
     isAvailable?: string;
@@ -15,7 +15,7 @@ interface RequestFilters {
 
 export interface ISeatMapQueryService {
     getSeatMapMatchFilters(params: {req: Request<any, any, any, RequestFilters>}): FilterQuery<any>;
-    getSeatMapPopulateFilters(params: {req: Request<any, any, any, RequestFilters>}): PopulateQueryFilters;
+    getSeatMapPopulateFilters(params: {req: Request<any, any, any, RequestFilters>}): PopulatePipelineStages;
 }
 
 export default class SeatMapQueryService implements ISeatMapQueryService{
@@ -35,7 +35,7 @@ export default class SeatMapQueryService implements ISeatMapQueryService{
         return filterNullArray(conditions) as FilterQuery<RequestFilters>;
     }
 
-    getSeatMapPopulateFilters({req}: {req: Request<any, any, any, RequestFilters>}): PopulateQueryFilters {
+    getSeatMapPopulateFilters({req}: {req: Request<any, any, any, RequestFilters>}): PopulatePipelineStages {
         const {
             seatRow,
             seatNumber,
