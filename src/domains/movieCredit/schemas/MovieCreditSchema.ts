@@ -49,4 +49,4 @@ export const MovieCreditSchema = z.discriminatedUnion("roleType", [CrewSchema, C
  * TypeScript type inferred from the `MovieCreditSchema`.
  * Represents a validated movie credit for use in backend logic or API responses.
  */
-export type MovieCredit = z.infer<typeof MovieCreditSchema>;
+export type ZMovieCredit = z.infer<typeof MovieCreditSchema>;
