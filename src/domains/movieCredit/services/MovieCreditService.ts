@@ -78,8 +78,8 @@ export default class MovieCreditService implements IMovieCreditService {
         return [
             {$lookup: {from: "Movie", localField: "movie", foreignField: "_id", as: "movie"}},
             {$lookup: {from: "Person", localField: "person", foreignField: "_id", as: "person"}},
-            {$unwind: {path: "movies", preserveNullAndEmptyArrays: true}},
-            {$unwind: {path: "person", preserveNullAndEmptyArrays: true}},
+            {$unwind: {path: "$movies", preserveNullAndEmptyArrays: true}},
+            {$unwind: {path: "$person", preserveNullAndEmptyArrays: true}},
         ];
     }
 }
