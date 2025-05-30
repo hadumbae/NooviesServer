@@ -31,7 +31,9 @@ const MovieCreditSchema = new Schema<IMovieCredit>({
     job: {
         type: String,
         maxlength: [150, "Must be 500 characters or less."],
-        required: [true, "Required."],
+        required: function () {
+            return this.roleType === "CREW";
+        },
     },
 
     // Cast
@@ -39,11 +41,17 @@ const MovieCreditSchema = new Schema<IMovieCredit>({
     characterName: {
         type: String,
         maxlength: [150, "Must be 150 characters or less."],
+        required: function () {
+            return this.roleType === "CAST";
+        }
     },
 
     billingOrder: {
         type: Number,
         min: [1, "Must be 1 or more."],
+        required: function () {
+            return this.roleType === "CAST";
+        }
     },
 
     // Boolean Flags

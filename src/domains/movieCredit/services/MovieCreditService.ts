@@ -76,9 +76,9 @@ export default class MovieCreditService implements IMovieCreditService {
 
     populatePipelines(): PopulatePipelineStages {
         return [
-            {$lookup: {from: "Movie", localField: "movie", foreignField: "_id", as: "movie"}},
-            {$lookup: {from: "Person", localField: "person", foreignField: "_id", as: "person"}},
-            {$unwind: {path: "$movies", preserveNullAndEmptyArrays: true}},
+            {$lookup: {from: "movies", localField: "movie", foreignField: "_id", as: "movie"}},
+            {$lookup: {from: "people", localField: "person", foreignField: "_id", as: "person"}},
+            {$unwind: {path: "$movie", preserveNullAndEmptyArrays: true}},
             {$unwind: {path: "$person", preserveNullAndEmptyArrays: true}},
         ];
     }
