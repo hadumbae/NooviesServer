@@ -1,6 +1,9 @@
 import {z} from "zod";
 import transformZodParsedJSON from "../../../../shared/utility/zod/transformZodParsedJSON.js";
-import {ObjectIdStringSchema, RequiredStringSchema} from "../../../../shared/schema/helpers/ZodStringHelpers.js";
+import {
+    ParsedObjectIdStringSchema,
+    RequiredStringSchema
+} from "../../../../shared/schema/helpers/ZodStringHelpers.js";
 import {RoleTypeEnumSchema} from "../enums/RoleTypeEnumSchema.js";
 import {PositiveNumber} from "../../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {ParamBoolean} from "../../../../shared/schema/helpers/ZodBooleanHelpers.js";
@@ -11,12 +14,12 @@ export const MovieCreditMatchQueryParamsSchema = z.object({
     movie: z
         .string({invalid_type_error: "Must be a valid URL string."})
         .optional()
-        .transform(transformZodParsedJSON(ObjectIdStringSchema)),
+        .transform(transformZodParsedJSON(ParsedObjectIdStringSchema)),
 
     person: z
         .string({invalid_type_error: "Must be a valid URL string."})
         .optional()
-        .transform(transformZodParsedJSON(ObjectIdStringSchema)),
+        .transform(transformZodParsedJSON(ParsedObjectIdStringSchema)),
 
     roleType: z
         .string({invalid_type_error: "Must be a valid URL string."})

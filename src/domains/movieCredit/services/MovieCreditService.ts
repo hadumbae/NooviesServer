@@ -52,6 +52,7 @@ export default class MovieCreditService implements IMovieCreditService {
             {$match: matchFilters},
             ...pipelineFilters,
             ...populatePipelines,
+            {$sort: {billingOrder: 1}},
         ]);
     }
 
@@ -71,6 +72,7 @@ export default class MovieCreditService implements IMovieCreditService {
             {$skip: (page - 1) * perPage},
             {$limit: perPage},
             ...populatePipelines,
+            {$sort: {billingOrder: 1}},
         ]);
     }
 
