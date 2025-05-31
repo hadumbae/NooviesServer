@@ -1,59 +1,44 @@
-import {type FilterQuery, type Model, Types} from "mongoose";
+import {type Model} from "mongoose";
 import createHttpError from "http-errors";
 import type {PopulatePath} from "../types/PopulatePath.js";
+import type IBaseRepository from "../interfaces/IBaseRepository.js";
+import type {
+    BaseRepositoryCountParams, BaseRepositoryCreateParams, BaseRepositoryDestroyParams,
+    BaseRepositoryFindByIDParams,
+    BaseRepositoryFindParams, BaseRepositoryPaginationParams, BaseRepositoryUpdateParams
+} from "../types/BaseRepositoryTypes.js";
 
-interface IBaseRepositoryConstructor<T> {
-    model: Model<T>;
+interface IBaseRepositoryConstructor<TSchema> {
+    model: Model<TSchema>;
     populateRefs: PopulatePath[];
 }
 
-export default class BaseRepository<T> {
-    private readonly model: Model<T>;
+export default class BaseRepository<TSchema extends Record<string, any>> implements IBaseRepository<TSchema> {
+    private readonly model: Model<TSchema>;
     private readonly populateRefs: PopulatePath[];
 
-    constructor({model, populateRefs = []}: IBaseRepositoryConstructor<T>) {
+    constructor({model, populateRefs = []}: IBaseRepositoryConstructor<TSchema>) {
         this.model = model;
         this.populateRefs = populateRefs;
     }
 
-    async count(params?: { filters?: Record<string, unknown> }): Promise<number> {
+    async count(params?: BaseRepositoryCountParams<TSchema>): Promise<number> {
         const {filters = {}} = params || {};
-        return this.model
-            .countDocuments(filters);
+        return this.model.countDocuments(filters);
     }
 
-    async find(
-        params?: {
-            filters?: FilterQuery<any>,
-            populatePath?: PopulatePath[],
-            populate?: boolean,
-            virtuals?: boolean,
-        }
-    ): Promise<any> {
+    async find(params?: BaseRepositoryFindParams<TSchema>): Promise<any> {
         const {populate = false, virtuals = false, filters = {}, populatePath} = params || {};
 
         const query = this.model.find(filters);
-
         if (populate) query.populate(populatePath || this.populateRefs);
 
         return query.lean({virtuals});
     }
 
-    async findById(
-        params: {
-            _id: Types.ObjectId | string,
-            virtuals?: boolean,
-            populate?: boolean,
-            populatePath?: PopulatePath[],
-        }
-    ): Promise<any> {
-        const {_id, populatePath, populate, virtuals = false} = params;
-        if (!Types.ObjectId.isValid(_id)) throw createHttpError(404, "Not found!");
+    async findById({_id, populatePath, populate, virtuals = false}: BaseRepositoryFindByIDParams): Promise<any> {
         const query = this.model.findById(_id);
-
-        if (populate) {
-            query.populate(populatePath || this.populateRefs);
-        }
+        if (populate) query.populate(populatePath || this.populateRefs);
 
         const doc = await query.lean({virtuals});
         if (!doc) throw createHttpError(404, "Not found!");
@@ -61,35 +46,7 @@ export default class BaseRepository<T> {
         return doc;
     }
 
-    async exists404(
-        params: {
-            _id: Types.ObjectId | string,
-            populatePath?: PopulatePath[],
-            populate?: boolean,
-            virtuals?: boolean,
-        }
-    ): Promise<any> {
-        const {_id, populatePath, populate = false, virtuals = false} = params;
-        if (!Types.ObjectId.isValid(_id)) throw createHttpError(404, "Invalid ID!");
-
-        let query = this.model.findById(_id);
-
-        if (populate) query.populate(populatePath || this.populateRefs);
-
-        const doc = await query.lean({virtuals});
-        if (!doc) throw createHttpError(404, 'Not found!');
-
-        return doc;
-    }
-
-    async create(
-        params: {
-            data: Partial<T>,
-            populatePath?: PopulatePath[],
-            populate?: boolean,
-            virtuals?: boolean,
-        }
-    ): Promise<any> {
+    async create(params: BaseRepositoryCreateParams<TSchema>): Promise<any> {
         const {data, populatePath, populate, virtuals = false} = params;
 
         const doc = new this.model(data);
@@ -101,53 +58,27 @@ export default class BaseRepository<T> {
         return query.lean({virtuals});
     }
 
-    async update(
-        params: {
-            _id: Types.ObjectId | string,
-            data: Partial<T>,
-            populatePath?: string[],
-            populate?: boolean,
-            virtuals?: boolean
-        }
-    ): Promise<any> {
+    async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<any> {
         const {_id, data, populatePath, populate, virtuals = false} = params;
 
-        const doc = await this.exists404({_id, virtuals: true});
-        const query = this.model.findByIdAndUpdate(doc._id, data, {new: true});
+        const query = this.model.findByIdAndUpdate(_id, data, {new: true});
+        if (populate) query.populate(populatePath || this.populateRefs);
 
-        if (populate) {
-            query.populate(populatePath || this.populateRefs);
-        }
+        const doc = await query.lean({virtuals});
+        if (!doc) throw createHttpError(404, "Not found!");
 
-        return query.lean({virtuals});
+        return doc;
     }
 
-    async destroy(params: { _id: Types.ObjectId | string }): Promise<any> {
-        const {_id} = params;
-        const doc = await this.exists404({_id});
+    async destroy({_id}: BaseRepositoryDestroyParams): Promise<any> {
+        const doc = await this.model.findById({_id});
+        if (!doc) throw createHttpError(404, "Not found!");
+
         await doc.deleteOne();
     }
 
-    async paginate(
-        params: {
-            page: number,
-            perPage: number,
-            sort?: Record<string, any>,
-            filters?: Record<string, any>,
-            populatePath?: string[],
-            populate?: boolean,
-            virtuals?: boolean,
-        }
-    ) {
-        const {
-            page,
-            perPage,
-            filters = {},
-            sort = {},
-            virtuals = false,
-            populatePath,
-            populate,
-        } = params;
+    async paginate(params: BaseRepositoryPaginationParams<TSchema>): Promise<any> {
+        const {page, perPage, filters = {}, sort = {}, virtuals = false, populatePath, populate} = params;
 
         const query = this.model
             .find(filters)
@@ -155,10 +86,7 @@ export default class BaseRepository<T> {
             .skip((page - 1) * perPage)
             .limit(perPage);
 
-        if (populate) {
-            query.populate(populatePath || this.populateRefs);
-        }
-
+        if (populate) query.populate(populatePath || this.populateRefs);
         return query.lean({virtuals});
     }
 }
