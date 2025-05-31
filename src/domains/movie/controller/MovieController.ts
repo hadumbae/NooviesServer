@@ -10,6 +10,7 @@ import type IMovieService from "../interface/service/IMovieService.js";
 import type IMovieURLService from "../interface/service/IMovieURLService.js";
 import type MovieService from "../service/MovieService.js";
 import type MovieURLService from "../service/MovieURLService.js";
+import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
 
 export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<IMovie> {
     service: IMovieService;
@@ -45,9 +46,11 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
 
     async updatePosterPicture(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
-        const file = req.file as Express.Multer.File;
 
-        const movie = await this.imageService.updateMoviePosterImage({movieID: _id, image: file});
+        const movieID = isValidObjectId(_id);
+        const image = req.file as Express.Multer.File;
+
+        const movie = await this.imageService.updateMoviePosterImage({movieID, image});
 
         return res.status(200).json({
             message: "Poster Image Updated.",
