@@ -32,7 +32,7 @@ export default class MovieServiceProvider {
         const service = new MovieService();
         const urlService = new MovieURLService();
         const favouriteService = new MovieFavouriteService();
-        const imageService = new MovieImageService({repository, cloudinaryUtils});
+        const imageService = new MovieImageService({cloudinaryUtils});
 
         const crudController = new MovieController({
             repository,

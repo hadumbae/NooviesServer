@@ -1,31 +1,26 @@
 import createHttpError from "http-errors";
 import {type ICloudinaryUtils} from "../../../shared/utility/CloudinaryUtils.js";
 import Movie from "../model/Movie.js";
-import type BaseRepository from "../../../shared/repository/BaseRepository.js";
-import type IMovie from "../model/IMovie.js";
+import {Types} from "mongoose";
 
 interface IMovieImageServiceConstructor {
-    repository: BaseRepository<IMovie>,
     cloudinaryUtils: ICloudinaryUtils,
 }
 
 export interface IMovieImageService {
-    repository: BaseRepository<IMovie>;
     cloudinaryUtils: ICloudinaryUtils;
-    updateMoviePosterImage(params: {movieID: string, image: Express.Multer.File}): Promise<any>;
-    deleteMoviePosterImage(params: {movieID: string}): Promise<any>;
+    updateMoviePosterImage(params: {movieID: Types.ObjectId, image: Express.Multer.File}): Promise<any>;
+    deleteMoviePosterImage(params: {movieID: Types.ObjectId}): Promise<any>;
 }
 
 export default class MovieImageService implements IMovieImageService{
-    repository: BaseRepository<IMovie>;
     cloudinaryUtils: ICloudinaryUtils;
 
-    constructor({repository, cloudinaryUtils}: IMovieImageServiceConstructor) {
-        this.repository = repository;
+    constructor({cloudinaryUtils}: IMovieImageServiceConstructor) {
         this.cloudinaryUtils = cloudinaryUtils;
     }
 
-    async updateMoviePosterImage({movieID, image}: { movieID: string; image: Express.Multer.File }): Promise<any> {
+    async updateMoviePosterImage({movieID, image}: { movieID: Types.ObjectId; image: Express.Multer.File }): Promise<any> {
         const movie = await Movie.findById(movieID);
         if (!movie) throw createHttpError(404, "Not found.");
 
@@ -39,13 +34,15 @@ export default class MovieImageService implements IMovieImageService{
         return movie;
     }
 
-    async deleteMoviePosterImage({movieID}: { movieID: string }): Promise<any> {
-        const movie = await this.repository.exists404({_id: movieID, virtuals: true});
+    async deleteMoviePosterImage({movieID}: { movieID: Types.ObjectId }): Promise<any> {
+        const movie = await Movie.findById({_id: movieID});
+        if (!movie) throw createHttpError(404, "Not found.");
+
         const {_id, posterImage} = movie;
 
         if (posterImage) {
             await this.cloudinaryUtils.delete(posterImage.public_id);
-            return this.repository.update({_id, data: {posterImage: null}});
+            return Movie.findByIdAndUpdate(_id, {posterImage: null}, {new: true});
         }
 
         return movie;
