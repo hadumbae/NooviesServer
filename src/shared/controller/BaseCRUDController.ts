@@ -26,8 +26,8 @@ export default class BaseCRUDController<TSchema extends Record<string, any>> ext
     }
 
     async all(req: Request, res: Response): Promise<Response> {
-        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
-        const items = await this.repository.find({populate, virtuals});
+        const {populate, virtuals, limit} = this.queryUtils.fetchOptionsFromQuery(req);
+        const items = await this.repository.find({populate, virtuals, limit});
         return res.status(200).json(items);
     }
 

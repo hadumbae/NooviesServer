@@ -28,9 +28,11 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
     }
 
     async find(params?: BaseRepositoryFindParams<TSchema>): Promise<any> {
-        const {populate = false, virtuals = false, filters = {}, populatePath} = params || {};
+        const {populate = false, virtuals = false, filters = {}, populatePath, limit} = params || {};
 
         const query = this.model.find(filters);
+
+        if (typeof limit === "number") query.limit(limit);
         if (populate) query.populate(populatePath || this.populateRefs);
 
         return query.lean({virtuals});

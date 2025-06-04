@@ -1,8 +1,8 @@
 import type {PaginationRequest, PopulateRequest, QueryOptionsRequest} from "../../types/request/CustomRequestTypes.js";
 import {PaginationSchema} from "../../schema/PaginationSchemas.js";
 import ZodParseError from "../../errors/ZodParseError.js";
-import {ParamBoolean} from "../../schema/helpers/ZodBooleanHelpers.js";
 import {QueryOptionsSchema} from "../../schema/query/QueryOptionsSchema.js";
+import {URLParamBooleanSchema} from "../../schema/url/URLParamBooleanSchema.js";
 
 type PopulateQueryReturn = boolean | undefined;
 type PaginationQueryReturns = { page: number, perPage: number };
@@ -61,7 +61,7 @@ export interface IQueryUtils {
  */
 const QueryUtils: IQueryUtils = {
     fetchPopulateFromQuery(req: PopulateRequest): PopulateQueryReturn {
-        const {success, data, error} = ParamBoolean.safeParse(req.query.populate);
+        const {success, data, error} = URLParamBooleanSchema.safeParse(req.query.populate);
         if (!success) throw new ZodParseError({message: "Invalidate `Populate` Query.", errors: error?.errors});
         return data;
     },

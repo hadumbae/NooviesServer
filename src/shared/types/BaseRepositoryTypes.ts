@@ -10,6 +10,7 @@ export type BaseRepositoryFindParams<TSchema = Record<string, any>> = {
     populatePath?: PopulatePath[],
     populate?: boolean,
     virtuals?: boolean,
+    limit?: number,
 };
 
 export type BaseRepositoryFindByIDParams = {
