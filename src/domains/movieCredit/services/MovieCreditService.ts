@@ -41,9 +41,10 @@ export default class MovieCreditService implements IMovieCreditService {
         return aggregate[0]?.docCount ?? 0;
     }
 
-    async all({matchFilters, pipelineFilters, populate = false}: {
+    async all({matchFilters, pipelineFilters, limit, populate = false}: {
         matchFilters: FilterQuery<MovieCreditMatchQueryParams>,
         pipelineFilters: PopulatePipelineStages,
+        limit?: number,
         populate?: boolean,
     }): Promise<IMovieCredit[]> {
         const populatePipelines = populate ? this.populatePipelines() : [];
@@ -52,7 +53,10 @@ export default class MovieCreditService implements IMovieCreditService {
             {$match: matchFilters},
             ...pipelineFilters,
             ...populatePipelines,
-            {$sort: {billingOrder: 1}},
+            {
+                $sort: {billingOrder: 1},
+                $limit: limit,
+            },
         ]);
     }
 

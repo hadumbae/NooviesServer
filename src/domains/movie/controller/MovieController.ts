@@ -44,6 +44,14 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
         this.imageService = imageService;
     }
 
+    async all(req: Request, res: Response): Promise<Response> {
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
+        const filterQuery  = this.urlService.getFilterQuery(req);
+
+        const items = await this.repository.find({populate, virtuals, filters: filterQuery});
+        return res.status(200).json(items);
+    }
+
     async updatePosterPicture(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
 

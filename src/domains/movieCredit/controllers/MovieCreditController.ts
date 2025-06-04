@@ -34,13 +34,13 @@ export default class MovieCreditController extends BaseCRUDController<IMovieCred
     }
 
     async all(req: Request, res: Response): Promise<Response> {
-        const {populate} = this.queryUtils.fetchOptionsFromQuery(req);
+        const {populate, limit} = this.queryUtils.fetchOptionsFromQuery(req);
         const queryParams  = this.queryService.fetchQueryParams(req);
 
         const matchFilters = this.queryService.generateMatchFilters(queryParams);
         const pipelineFilters = this.queryService.generatePopulateFilters(queryParams);
 
-        const credits = await this.service.all({matchFilters, pipelineFilters, populate});
+        const credits = await this.service.all({matchFilters, pipelineFilters, populate, limit});
 
         return res.status(200).json(credits);
     }

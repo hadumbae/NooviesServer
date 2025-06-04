@@ -23,7 +23,7 @@ const MovieCreditSchema = new Schema<IMovieCredit>({
 
     notes: {
         type: String,
-        maxlength: [1000, "Notes must be 1000 characters or less."]
+        maxlength: [1000, "Notes must be 1000 characters or less."],
     },
 
     // Crew

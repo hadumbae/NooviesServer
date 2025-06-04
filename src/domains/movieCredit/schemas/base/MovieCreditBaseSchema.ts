@@ -32,7 +32,7 @@ import {CoercedBooleanSchema} from "../../../../shared/schema/boolean/CoercedBoo
  */
 export const MovieCreditBaseSchema = z.object({
     roleType: RoleTypeEnumSchema,
-    notes: RequiredStringSchema.optional(),
+    notes: RequiredStringSchema.nullable().optional(),
 
     job: RequiredStringSchema.optional(),
 

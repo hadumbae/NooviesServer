@@ -6,7 +6,7 @@ import {QueryOptionsSchema} from "../../schema/query/QueryOptionsSchema.js";
 
 type PopulateQueryReturn = boolean | undefined;
 type PaginationQueryReturns = { page: number, perPage: number };
-type OptionsQueryReturns = { populate?: boolean, virtuals?: boolean };
+type OptionsQueryReturns = { populate?: boolean, virtuals?: boolean, limit?: number };
 
 /**
  * Interface defining utility methods for query parameter extraction and validation.
