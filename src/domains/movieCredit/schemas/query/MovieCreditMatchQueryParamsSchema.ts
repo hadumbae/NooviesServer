@@ -1,71 +1,65 @@
 import {z} from "zod";
 import transformZodParsedJSON from "../../../../shared/utility/zod/transformZodParsedJSON.js";
-import {
-    ParsedObjectIdStringSchema,
-    RequiredStringSchema
-} from "../../../../shared/schema/helpers/ZodStringHelpers.js";
 import {RoleTypeEnumSchema} from "../enums/RoleTypeEnumSchema.js";
-import {PositiveNumber} from "../../../../shared/schema/helpers/ZodNumberHelpers.js";
-import {ParamBoolean} from "../../../../shared/schema/helpers/ZodBooleanHelpers.js";
+import {URLParamBooleanSchema} from "../../../../shared/schema/url/URLParamBooleanSchema.js";
+import {URLParamNumberSchema} from "../../../../shared/schema/url/URLParamNumberSchema.js";
+import {URLParamObjectIDSchema} from "../../../../shared/schema/url/URLParamObjectIDSchema.js";
+import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
 
+/**
+ * Schema for validating query parameters used when matching movie credits.
+ *
+ * This is used to filter or search for credits related to a movie and/or person,
+ * with optional role, job, or character-related details.
+ *
+ * All fields are optional and are typically passed as URL query parameters.
+ *
+ * ## Fields:
+ * - `movie`: MongoDB ObjectId of the movie. Optional.
+ * - `person`: MongoDB ObjectId of the person. Optional.
+ * - `roleType`: Enum string (e.g., "cast", "crew") parsed from a JSON-encoded string.
+ * - `job`: Crew job name, trimmed and normalized string. Optional.
+ * - `characterName`: Character name played, trimmed and normalized string. Optional.
+ * - `billingOrder`: Numeric billing order (e.g., cast order). Optional.
+ * - `uncredited`: Boolean flag if the person is uncredited. Optional.
+ * - `voiceOnly`: Boolean flag if the performance is voice-only. Optional.
+ * - `cameo`: Boolean flag if the role is a cameo. Optional.
+ * - `motionCapture`: Boolean flag if motion capture was used. Optional.
+ */
 export const MovieCreditMatchQueryParamsSchema = z.object({
-    // Base
+    /** MongoDB ObjectId of the movie (from query param). */
+    movie: URLParamObjectIDSchema,
 
-    movie: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(ParsedObjectIdStringSchema)),
+    /** MongoDB ObjectId of the person (from query param). */
+    person: URLParamObjectIDSchema,
 
-    person: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(ParsedObjectIdStringSchema)),
-
+    /** Role type enum parsed from a JSON string (e.g., `"\"cast\""`). */
     roleType: z
-        .string({invalid_type_error: "Must be a valid URL string."})
+        .string({ invalid_type_error: "Must be a valid URL string." })
         .optional()
         .transform(transformZodParsedJSON(RoleTypeEnumSchema)),
 
-    // Crew
+    /** Crew job title (e.g., "director"), trimmed string or undefined. */
+    job: URLParamStringSchema,
 
-    job: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(RequiredStringSchema)),
+    /** Character name (for cast), trimmed string or undefined. */
+    characterName: URLParamStringSchema,
 
-    // Cast
+    /** Billing order number for cast listing. */
+    billingOrder: URLParamNumberSchema,
 
-    characterName: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(RequiredStringSchema)),
+    /** Whether the person is uncredited. */
+    uncredited: URLParamBooleanSchema,
 
-    billingOrder: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(PositiveNumber)),
+    /** Whether the role was voice-only. */
+    voiceOnly: URLParamBooleanSchema,
 
-    // Flags
+    /** Whether the role was a cameo. */
+    cameo: URLParamBooleanSchema,
 
-    uncredited: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(ParamBoolean)),
-
-    voiceOnly: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(ParamBoolean)),
-
-    cameo: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(ParamBoolean)),
-
-    motionCapture: z
-        .string({invalid_type_error: "Must be a valid URL string."})
-        .optional()
-        .transform(transformZodParsedJSON(ParamBoolean)),
+    /** Whether the role involved motion capture. */
+    motionCapture: URLParamBooleanSchema,
 });
 
+/** Type inferred from {@link MovieCreditMatchQueryParamsSchema}. */
 export type MovieCreditMatchQueryParams = z.infer<typeof MovieCreditMatchQueryParamsSchema>;
