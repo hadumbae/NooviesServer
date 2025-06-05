@@ -1,5 +1,4 @@
 import {z} from "zod";
-import transformZodParsedJSON from "../../../../shared/utility/zod/transformZodParsedJSON.js";
 import {RoleTypeEnumSchema} from "../enums/RoleTypeEnumSchema.js";
 import {URLParamBooleanSchema} from "../../../../shared/schema/url/URLParamBooleanSchema.js";
 import {URLParamNumberSchema} from "../../../../shared/schema/url/URLParamNumberSchema.js";
@@ -8,58 +7,78 @@ import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamString
 
 /**
  * Schema for validating query parameters used when matching movie credits.
- *
- * This is used to filter or search for credits related to a movie and/or person,
- * with optional role, job, or character-related details.
- *
- * All fields are optional and are typically passed as URL query parameters.
- *
- * ## Fields:
- * - `movie`: MongoDB ObjectId of the movie. Optional.
- * - `person`: MongoDB ObjectId of the person. Optional.
- * - `roleType`: Enum string (e.g., "cast", "crew") parsed from a JSON-encoded string.
- * - `job`: Crew job name, trimmed and normalized string. Optional.
- * - `characterName`: Character name played, trimmed and normalized string. Optional.
- * - `billingOrder`: Numeric billing order (e.g., cast order). Optional.
- * - `uncredited`: Boolean flag if the person is uncredited. Optional.
- * - `voiceOnly`: Boolean flag if the performance is voice-only. Optional.
- * - `cameo`: Boolean flag if the role is a cameo. Optional.
- * - `motionCapture`: Boolean flag if motion capture was used. Optional.
+ * All fields are expected to come from URL parameters and are validated/coerced accordingly.
  */
 export const MovieCreditMatchQueryParamsSchema = z.object({
-    /** MongoDB ObjectId of the movie (from query param). */
+    /**
+     * The unique identifier of the movie credit. Optional.
+     * Expected to be a valid ObjectId string if present.
+     */
+    _id: URLParamObjectIDSchema,
+
+    /**
+     * The unique identifier of the movie.
+     * Expected to be a valid ObjectId string.
+     */
     movie: URLParamObjectIDSchema,
 
-    /** MongoDB ObjectId of the person (from query param). */
+    /**
+     * The unique identifier of the person associated with the credit.
+     * Expected to be a valid ObjectId string.
+     */
     person: URLParamObjectIDSchema,
 
-    /** Role type enum parsed from a JSON string (e.g., `"\"cast\""`). */
-    roleType: z
-        .string({ invalid_type_error: "Must be a valid URL string." })
-        .optional()
-        .transform(transformZodParsedJSON(RoleTypeEnumSchema)),
+    /**
+     * The type of role (e.g., CAST or CREW). Optional.
+     * Must be one of the values defined in {@link RoleTypeEnumSchema}.
+     */
+    roleType: RoleTypeEnumSchema.optional(),
 
-    /** Crew job title (e.g., "director"), trimmed string or undefined. */
+    /**
+     * The job title for crew members (e.g., "Producer", "Director"). Optional.
+     * If provided, must be a non-empty trimmed string.
+     */
     job: URLParamStringSchema,
 
-    /** Character name (for cast), trimmed string or undefined. */
+    /**
+     * The name of the character portrayed (for cast roles). Optional.
+     * If provided, must be a non-empty trimmed string.
+     */
     characterName: URLParamStringSchema,
 
-    /** Billing order number for cast listing. */
+    /**
+     * The billing order of the credit (e.g., for cast listings). Optional.
+     * Expected to be a numeric value if present.
+     */
     billingOrder: URLParamNumberSchema,
 
-    /** Whether the person is uncredited. */
+    /**
+     * Whether the credit is uncredited (i.e., not shown in the final movie credits). Optional.
+     * Expected to be a boolean value (true/false).
+     */
     uncredited: URLParamBooleanSchema,
 
-    /** Whether the role was voice-only. */
+    /**
+     * Whether the credit is for voice-only performance (e.g., voice acting). Optional.
+     * Expected to be a boolean value (true/false).
+     */
     voiceOnly: URLParamBooleanSchema,
 
-    /** Whether the role was a cameo. */
+    /**
+     * Whether the credit is for a cameo appearance. Optional.
+     * Expected to be a boolean value (true/false).
+     */
     cameo: URLParamBooleanSchema,
 
-    /** Whether the role involved motion capture. */
+    /**
+     * Whether the credit involves motion capture performance. Optional.
+     * Expected to be a boolean value (true/false).
+     */
     motionCapture: URLParamBooleanSchema,
 });
 
-/** Type inferred from {@link MovieCreditMatchQueryParamsSchema}. */
+/**
+ * Type representing the shape of validated movie credit match query parameters.
+ * Inferred from {@link MovieCreditMatchQueryParamsSchema}.
+ */
 export type MovieCreditMatchQueryParams = z.infer<typeof MovieCreditMatchQueryParamsSchema>;

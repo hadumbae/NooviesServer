@@ -17,6 +17,7 @@ import {z} from "zod";
  * URLParamStringSchema.parse(undefined);   // -> undefined
  */
 export const URLParamStringSchema = z
+    .coerce
     .string({invalid_type_error: "Must be a string."})
     .optional()
     .transform((value) => typeof value === "string" && value.trim() !== "" ? value.trim() : undefined);

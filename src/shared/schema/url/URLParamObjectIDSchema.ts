@@ -15,7 +15,8 @@ import {Types} from "mongoose";
  * URLParamObjectID.parse(undefined); // -> undefined
  * URLParamObjectID.parse("invalid-id"); // -> throws ZodError: "Invalid ObjectId format."
  */
-export const URLParamObjectIDSchema = z.string({invalid_type_error: "Must be a valid ID string."})
+export const URLParamObjectIDSchema = z
+    .string({invalid_type_error: "Must be a valid ID string."})
     .optional()
     .refine((value) => value === undefined || Types.ObjectId.isValid(value), {message: "Invalid ID string."})
     .transform((value) => (value ? new Types.ObjectId(value) : undefined))
