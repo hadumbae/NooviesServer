@@ -1,11 +1,11 @@
 import {z, type ZodType} from 'zod';
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import {CoercedDateSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js";
-import {CountryEnum} from "../../../shared/schema/helpers/ZodEnumHelpers.js";
 import {CloudinaryImageObject} from "../../../shared/schema/helpers/ZodImageHelpers.js";
 import type {IPerson} from "../model/IPerson.js";
 import {MovieCreditSchema} from "../../movieCredit/schemas/MovieCreditSchema.js";
+import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import {DateStringSchema} from "../../../shared/schema/date/DateStringSchema.js";
 
 export const PersonSchema: ZodType<IPerson> = z.object({
     _id: IDInstance.readonly(),
@@ -18,9 +18,9 @@ export const PersonSchema: ZodType<IPerson> = z.object({
         .min(1, "Required.")
         .max(1000, "Must be 1000 characters or less."),
 
-    dob: CoercedDateSchema,
+    dob: DateStringSchema,
 
-    nationality: CountryEnum,
+    nationality: ISO3166Alpha2CodeEnumSchema,
 
     profileImage: z
         .union([z.null(), CloudinaryImageObject.readonly()])

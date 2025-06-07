@@ -12,3 +12,11 @@ import {z} from "zod";
 export const DateStringSchema = z
     .string({required_error: "Required.", invalid_type_error: "Date must be a string."})
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format.");
+
+/**
+ * Type representing a valid date string in the "YYYY-MM-DD" format.
+ *
+ * Inferred from {@link DateStringSchema}. Does not guarantee calendar validity,
+ * only that the string conforms to the expected format.
+ */
+export type DateString = z.infer<typeof DateStringSchema>;

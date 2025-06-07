@@ -22,8 +22,9 @@ const PersonSchema = new Schema<IPerson>({
     },
 
     dob: {
-        type: Date,
+        type: String,
         required: [true, "Date Of Birth is required."],
+        match: [/^\d{4}-\d{2}-\d{2}$/, "Must be in YYYY-MM-DD format."]
     },
 
     nationality: {
