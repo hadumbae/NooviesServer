@@ -7,7 +7,7 @@ export interface IMovieCredit {
     movie: Types.ObjectId | IMovie;
     person: Types.ObjectId | IPerson;
     roleType: "CAST" | "CREW";
-    notes?: string;
+    notes?: string | null;
 
     // Crew
     job?: string;

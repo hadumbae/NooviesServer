@@ -22,7 +22,7 @@ export default class MovieURLService implements IMovieURLService {
         try {
             const {sortByReleaseDate, sortByTitle} = MovieSortParamSchema.parse(req.query);
             const conditions = {releaseDate: sortByReleaseDate, title: sortByTitle};
-            return filterNullArray(conditions);
+            return filterNullArray(conditions) as Record<string, SortOrder>;
         } catch (error: any) {
             ZodParseErrorHandler(error, "Invalid URL Query Params.");
             throw error;
