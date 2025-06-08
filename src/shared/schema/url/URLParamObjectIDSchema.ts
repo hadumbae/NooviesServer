@@ -19,4 +19,4 @@ export const URLParamObjectIDSchema = z
     .string({invalid_type_error: "Must be a valid ID string."})
     .optional()
     .refine((value) => value === undefined || Types.ObjectId.isValid(value), {message: "Invalid ID string."})
-    .transform((value) => (value ? new Types.ObjectId(value) : undefined))
+    .transform((value) => (value ? new Types.ObjectId(value) : undefined));
