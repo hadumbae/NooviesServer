@@ -15,7 +15,7 @@ import {z} from "zod";
  * MongooseNumericSortSchema.parse("1"); // => 1
  * ```
  */
-export const MongooseNumericSortSchema = z.enum(["1", "-1"]).transform(v => Number(v));
+export const MongooseNumericSortSchema = z.enum(["1", "-1"]).transform(v => Number(v) as 1 | -1);
 
 /**
  * A Zod schema for validating string-based Mongoose sort values.

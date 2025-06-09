@@ -1,5 +1,5 @@
 import type {FilterQuery, SortOrder} from "mongoose";
-import type {MovieQueryParams} from "../../schema/query/MovieQueryParamSchema.js";
+import type {MovieQueryParams} from "../../schema/query/MovieQueryMatchParamSchema.js";
 import type IMovie from "../../model/IMovie.js";
 
 export interface fetchPaginatedMoviesByQueryParams {

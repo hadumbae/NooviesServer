@@ -9,7 +9,7 @@ import MovieImageService from "../service/MovieImageService.js";
 import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import MovieService from "../service/MovieService.js";
-import MovieURLService from "../service/MovieURLService.js";
+import MovieQueryService from "../service/MovieQueryService.js";
 import MovieFavouriteService from "../service/user/MovieFavouriteService.js";
 import MovieFavouriteController from "../controller/MovieFavouriteController.js";
 import type {PopulatePath} from "../../../shared/types/PopulatePath.js";
@@ -30,7 +30,7 @@ export default class MovieServiceProvider {
         const repository = new BaseRepository<IMovie>({model, populateRefs});
 
         const service = new MovieService();
-        const urlService = new MovieURLService();
+        const queryService = new MovieQueryService();
         const favouriteService = new MovieFavouriteService();
         const imageService = new MovieImageService({cloudinaryUtils});
 
@@ -38,13 +38,13 @@ export default class MovieServiceProvider {
             repository,
             queryUtils,
             service,
-            urlService,
+            queryService,
             imageService,
         });
 
         const favouriteController = new MovieFavouriteController({
             queryUtils,
-            urlService,
+            queryService,
             favouriteService,
         });
 
@@ -52,7 +52,7 @@ export default class MovieServiceProvider {
             repository,
 
             imageService,
-            urlService,
+            queryService,
             favouriteService,
 
             crudController,

@@ -7,46 +7,40 @@ import type {Request, Response} from "express";
 import type IMovie from "../model/IMovie.js";
 import MovieImageService, {type IMovieImageService} from "../service/MovieImageService.js";
 import type IMovieService from "../interface/service/IMovieService.js";
-import type IMovieURLService from "../interface/service/IMovieURLService.js";
+import type IMovieQueryService from "../interface/service/IMovieQueryService.js";
 import type MovieService from "../service/MovieService.js";
-import type MovieURLService from "../service/MovieURLService.js";
+import type MovieQueryService from "../service/MovieQueryService.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
 
 export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<IMovie> {
     service: IMovieService;
-    urlService: IMovieURLService;
+    queryService: IMovieQueryService;
     imageService: IMovieImageService,
 }
 
 export interface IMovieController extends IBaseCRUDController {
     updatePosterPicture(req: Request, res: Response): Promise<Response>,
-
     fetchMoviesByQueryWithData(req: Request, res: Response): Promise<Response>,
 }
 
 export default class MovieController extends BaseCRUDController<IMovie> implements IMovieController {
     private service: MovieService;
-    private urlService: MovieURLService;
+    private queryService: MovieQueryService;
     private imageService: MovieImageService;
 
     constructor(params: IMovieControllerConstructor) {
-        const {
-            service,
-            urlService,
-            imageService,
-            ...constructorParams
-        } = params;
+        const {service, queryService, imageService, ...constructorParams} = params;
 
         super(constructorParams);
 
         this.service = service;
-        this.urlService = urlService;
+        this.queryService = queryService;
         this.imageService = imageService;
     }
 
     async all(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
-        const filterQuery  = this.urlService.getFilterQuery(req);
+        const filterQuery  = this.queryService.getFilterQuery(req);
 
         const items = await this.repository.find({populate, virtuals, filters: filterQuery});
         return res.status(200).json(items);
@@ -69,8 +63,8 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
     async fetchMoviesByQueryWithData(req: Request, res: Response): Promise<Response> {
         const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
 
-        const query = this.urlService.getFilterQuery(req);
-        const sort = this.urlService.getSortQuery(req);
+        const query = this.queryService.getFilterQuery(req);
+        const sort = this.queryService.getSortQuery(req);
 
         const {items, totalItems} = await this.service.fetchPaginatedMoviesByQueryWithData({
             page,
