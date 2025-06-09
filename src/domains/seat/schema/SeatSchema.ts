@@ -5,8 +5,8 @@ import type ISeat from "../model/ISeat.js";
 import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {SeatTypeEnum} from "./enum/SeatTypeEnum.js";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
-import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {ScreenSchema} from "../../screen/schema/ScreenSchema.js";
+import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 
 export const SeatSchema: ZodType<ISeat> = z.object({
     _id: IDInstance,
@@ -23,7 +23,7 @@ export const SeatSchema: ZodType<ISeat> = z.object({
 
     isAvailable: RequiredBoolean,
 
-    priceMultiplier: RequiredNumber
+    priceMultiplier: CoercedNumberSchema
         .gte(0, "Must be 0 or greater."),
 
     theatre: z

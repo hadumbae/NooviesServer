@@ -2,13 +2,13 @@ import {z, type ZodType} from "zod";
 import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {CoercedDateSchema} from "../../../shared/schema/helpers/ZodDateHelpers.js";
-import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
 import {TheatreSchema} from "../../theatre/schema/TheatreSchema.js";
 import {ScreenSchema} from "../../screen/schema/ScreenSchema.js";
 import {SeatMapSchema} from "../../seatmap/schema/SeatMapSchema.js";
 import type IShowing from "../model/IShowing.js";
+import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 
 export const ShowingSchema: ZodType<IShowing> = z.object({
     _id: IDInstance,
@@ -17,7 +17,7 @@ export const ShowingSchema: ZodType<IShowing> = z.object({
 
     endTime: CoercedDateSchema,
 
-    ticketPrice: RequiredNumber
+    ticketPrice: CoercedNumberSchema
         .gt(0, "Must be greater than 0"),
 
     language: RequiredStringSchema,

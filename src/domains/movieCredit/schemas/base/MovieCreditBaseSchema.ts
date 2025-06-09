@@ -1,8 +1,8 @@
 import {z} from "zod";
 import {RoleTypeEnumSchema} from "../enums/RoleTypeEnumSchema.js";
 import {RequiredStringSchema} from "../../../../shared/schema/helpers/ZodStringHelpers.js";
-import {RequiredNumber} from "../../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {CoercedBooleanSchema} from "../../../../shared/schema/boolean/CoercedBooleanSchema.js";
+import {CoercedNumberSchema} from "../../../../shared/schema/numbers/CoercedNumberSchema.js";
 
 /**
  * Base schema for both cast and crew movie credits.
@@ -37,7 +37,7 @@ export const MovieCreditBaseSchema = z.object({
     job: RequiredStringSchema.optional(),
 
     characterName: RequiredStringSchema.optional(),
-    billingOrder: RequiredNumber.min(1, "Billing Order must be at least 1.").optional(),
+    billingOrder: CoercedNumberSchema.min(1, "Billing Order must be at least 1.").optional(),
 
     uncredited: CoercedBooleanSchema.optional(),
     voiceOnly: CoercedBooleanSchema.optional(),

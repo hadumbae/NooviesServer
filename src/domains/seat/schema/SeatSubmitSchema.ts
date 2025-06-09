@@ -6,7 +6,8 @@ import {ScreenAsyncIDString, TheatreAsyncIDString} from "../../../shared/schema/
 import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {SeatTypeEnum} from "./enum/SeatTypeEnum.js";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
-import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
+
+import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 
 export const SeatSubmitSchema: ZodType<ISeatSubmit> = z.object({
     row: RequiredStringSchema
@@ -21,7 +22,7 @@ export const SeatSubmitSchema: ZodType<ISeatSubmit> = z.object({
 
     isAvailable: RequiredBoolean,
 
-    priceMultiplier: RequiredNumber
+    priceMultiplier: CoercedNumberSchema
         .gte(0, "Must be 0 or greater."),
 
     theatre: TheatreAsyncIDString,

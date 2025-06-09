@@ -1,9 +1,9 @@
 import {z} from "zod";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
-import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import ZodJSONParseTransform from "../../../shared/utility/zod/transformZodParsedJSON.js";
 import {type SeatType, SeatTypeEnum} from "../../seat/schema/enum/SeatTypeEnum.js";
+import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 
 export const SeatMapFilterQuerySchema = z.object({
     isAvailable: z.string().optional()
@@ -13,7 +13,7 @@ export const SeatMapFilterQuerySchema = z.object({
         .transform(ZodJSONParseTransform<boolean>(RequiredBoolean)),
 
     price: z.string().optional()
-        .transform(ZodJSONParseTransform<number>(RequiredNumber)),
+        .transform(ZodJSONParseTransform<number>(CoercedNumberSchema)),
 
     seatRow: z.string().optional()
         .transform(ZodJSONParseTransform<string>(RequiredStringSchema)),

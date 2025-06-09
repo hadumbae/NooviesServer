@@ -1,11 +1,11 @@
 import {z, type ZodType} from "zod";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
-import {RequiredNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {ObjectIdStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {SeatSchema} from "../../seat/schema/SeatSchema.js";
 import type ISeatMap from "../model/ISeatMap.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
+import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 
 export const SeatMapSchema: ZodType<ISeatMap> = z.object({
     _id: z.union([ObjectIdStringSchema, IDInstance]),
@@ -18,7 +18,7 @@ export const SeatMapSchema: ZodType<ISeatMap> = z.object({
         .optional()
         .default(false),
 
-    price: RequiredNumber
+    price: CoercedNumberSchema
         .gt(0, "Must be greater than 0."),
 
     seat: z
