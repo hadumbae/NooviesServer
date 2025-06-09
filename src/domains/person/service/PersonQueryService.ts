@@ -16,12 +16,13 @@ export default class PersonQueryService implements IPersonQueryService {
     }
 
     generateMatchFilters(queries: PersonQueryParams): FilterQuery<PersonQueryParams> {
-        const {_id, name, nationality} = queries
+        const {name, ...matchQueries} = queries;
+        const filters: Record<string, any> = matchQueries;
 
-        return {
-            _id,
-            nationality,
-            name: {$regex: name, $options: "i"},
-        };
+        if (name) {
+            filters["name"] = {$regex: name, $options: "i"};
+        }
+
+        return filters satisfies FilterQuery<PersonQueryParams>;
     }
 }
