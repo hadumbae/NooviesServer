@@ -4,6 +4,7 @@ import type {IPerson} from "./IPerson.js";
 import {DeletePersonQueryPreMiddleware} from "./middleware/PersonQueryMiddleware.js";
 import {DeletePersonDocumentPreMiddleware} from "./middleware/PersonDocumentMiddleware.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
+import {CloudinaryImageSchema} from "../../../shared/model/CloudinaryImage.js";
 
 // TODO Add Awards and Nominations
 
@@ -34,7 +35,7 @@ const PersonSchema = new Schema<IPerson>({
     },
 
     profileImage: {
-        type: {public_id: String, secure_url: String},
+        type: CloudinaryImageSchema,
         required: false,
         default: null,
     },

@@ -11,7 +11,7 @@ import {Types} from "mongoose";
  * const result = RequiredString.parse("  Hello  "); // "Hello"
  */
 export const RequiredStringSchema = z
-    .string({required_error: "Required", invalid_type_error: "Must be a valid string."})
+    .string({required_error: "Required.", invalid_type_error: "Must be a valid string."})
     .min(1, "Must be at least 1 character long.")
     .trim();
 
@@ -25,7 +25,7 @@ export const RequiredStringSchema = z
  * const result = ValidURLStringSchema.parse("https://example.com"); // "https://example.com"
  */
 export const ValidURLStringSchema = z
-    .string()
+    .string({required_error: "Required.", invalid_type_error: "Must be a valid URL string."})
     .url({message: "Must be a valid URL."});
 
 /**

@@ -8,6 +8,7 @@ import {
     SaveMovieDocumentPostMiddleware, SaveMovieDocumentPreMiddleware
 } from "./middleware/MovieDocumentMiddleware.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
+import {CloudinaryImageSchema} from "../../../shared/model/CloudinaryImage.js";
 
 const MovieSchema = new Schema<IMovie>({
     title: {
@@ -71,7 +72,8 @@ const MovieSchema = new Schema<IMovie>({
     },
 
     posterImage: {
-        type: {public_id: String, secure_url: String},
+        type: CloudinaryImageSchema,
+        default: null,
     },
 
     trailerURL: {
