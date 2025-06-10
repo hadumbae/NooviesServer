@@ -135,10 +135,10 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
     }
 
     fetchURLPopulateFilters(req: Request): PopulatePipelineStages {
-        return []
+        return [];
     }
 
     fetchPopulatePipelines(): PopulatePipelineStages {
-        return []
+        return [];
     }
 }

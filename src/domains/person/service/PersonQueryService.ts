@@ -11,7 +11,12 @@ interface IPersonQueryService {
 export default class PersonQueryService implements IPersonQueryService {
     fetchQueryParams(req: Request): PersonQueryParams {
         const {success, data, error} = PersonQueryParamsSchema.safeParse(req.query);
-        if (!success) throw new ZodParseError({message: "Failed To Parse Person Params.", errors: error.errors});
+
+        if (!success) {
+            const message = "Invalid Query Parameters.";
+            throw new ZodParseError({message, errors: error.errors});
+        }
+
         return data;
     }
 
