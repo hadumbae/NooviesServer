@@ -6,12 +6,12 @@ import MovieCredit from "../models/MovieCredit.js";
 
 type FetchCountParams = {
     matchFilters: FilterQuery<MovieCreditMatchQueryParams>,
-    pipelineFilters: PopulatePipelineStages
+    populateFilters: PopulatePipelineStages
 };
 
 type FetchAllParams = {
     matchFilters: FilterQuery<MovieCreditMatchQueryParams>,
-    pipelineFilters: PopulatePipelineStages,
+    populateFilters: PopulatePipelineStages,
     limit?: number,
     populate?: boolean,
 };
@@ -20,7 +20,7 @@ type FetchPaginationParams = {
     page: number,
     perPage: number,
     matchFilters: FilterQuery<MovieCreditMatchQueryParams>,
-    pipelineFilters: PopulatePipelineStages,
+    populateFilters: PopulatePipelineStages,
     populate?: boolean,
 };
 
@@ -32,10 +32,10 @@ interface IMovieCreditService {
 }
 
 export default class MovieCreditService implements IMovieCreditService {
-    async count({matchFilters, pipelineFilters}: FetchCountParams): Promise<number> {
+    async count({matchFilters, populateFilters}: FetchCountParams): Promise<number> {
         const aggregate = await MovieCredit.aggregate([
             {$match: matchFilters},
-            ...pipelineFilters,
+            ...populateFilters,
             {$count: "docCount"},
         ]);
 
@@ -43,14 +43,14 @@ export default class MovieCreditService implements IMovieCreditService {
     }
 
     async all(params: FetchAllParams): Promise<IMovieCredit[]> {
-        const {matchFilters, pipelineFilters, limit, populate = false} = params;
+        const {matchFilters, populateFilters, limit, populate = false} = params;
 
         const populatePipelines = populate ? this.populatePipelines() : [];
         const limitPipeline = limit !== undefined ? [{$limit: limit!}] : [];
 
         return MovieCredit.aggregate([
             {$match: matchFilters},
-            ...pipelineFilters,
+            ...populateFilters,
             ...populatePipelines,
             {$sort: {billingOrder: 1}},
             ...limitPipeline,
@@ -58,12 +58,12 @@ export default class MovieCreditService implements IMovieCreditService {
     }
 
     async paginate(params: FetchPaginationParams): Promise<IMovieCredit[]>{
-        const {page, perPage, matchFilters, pipelineFilters, populate = false} = params;
+        const {page, perPage, matchFilters, populateFilters, populate = false} = params;
         const populatePipelines = populate ? this.populatePipelines() : [];
 
         return MovieCredit.aggregate([
             {$match: matchFilters},
-            ...pipelineFilters,
+            ...populateFilters,
             {$skip: (page - 1) * perPage},
             {$limit: perPage},
             ...populatePipelines,

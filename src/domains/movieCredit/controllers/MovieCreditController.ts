@@ -38,9 +38,9 @@ export default class MovieCreditController extends BaseCRUDController<IMovieCred
         const queryParams  = this.queryService.fetchQueryParams(req);
 
         const matchFilters = this.queryService.generateMatchFilters(queryParams);
-        const pipelineFilters = this.queryService.generatePopulateFilters(queryParams);
+        const populateFilters = this.queryService.generatePopulateFilters(queryParams);
 
-        const credits = await this.service.all({matchFilters, pipelineFilters, populate, limit});
+        const credits = await this.service.all({matchFilters, populateFilters, populate, limit});
 
         return res.status(200).json(credits);
     }
@@ -51,14 +51,14 @@ export default class MovieCreditController extends BaseCRUDController<IMovieCred
 
         const queryParams  = this.queryService.fetchQueryParams(req);
         const matchFilters = this.queryService.generateMatchFilters(queryParams);
-        const pipelineFilters = this.queryService.generatePopulateFilters(queryParams);
+        const populateFilters = this.queryService.generatePopulateFilters(queryParams);
 
-        const count = await this.service.count({matchFilters, pipelineFilters});
+        const count = await this.service.count({matchFilters, populateFilters});
         const credits = await this.service.paginate({
             page,
             perPage,
             matchFilters,
-            pipelineFilters,
+            populateFilters,
             populate,
         });
 
