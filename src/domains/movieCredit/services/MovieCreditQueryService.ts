@@ -7,6 +7,7 @@ import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import  {type FilterQuery, type PipelineStage} from "mongoose";
 import type {MovieCreditMatchQueryParams} from "../schemas/query/MovieCreditMatchQueryParamsSchema.js";
 import type {PopulatePipelineStages} from "../../../shared/types/mongoose/PopulatePipelineStages.js";
+import filterNullArray from "../../../shared/utility/filterNullArray.js";
 
 interface IMovieCreditQueryService {
     fetchQueryParams(req: Request<any, any, any, MovieCreditQueryParams>): MovieCreditQueryParams;
@@ -29,7 +30,7 @@ export default class MovieCreditQueryService implements IMovieCreditQueryService
 
     generateMatchFilters(params: MovieCreditQueryParams): FilterQuery<MovieCreditMatchQueryParams> {
         const {name, title, ...matchFilters} = params;
-        return matchFilters;
+        return filterNullArray(matchFilters);
     }
 
     generatePopulateFilters(params: MovieCreditQueryParams): PopulatePipelineStages {
