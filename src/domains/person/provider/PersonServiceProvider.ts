@@ -4,6 +4,7 @@ import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import type {PopulatePath} from "../../../shared/types/PopulatePath.js";
 import PersonQueryService from "../service/PersonQueryService.js";
+import AggregateQueryService from "../../../shared/services/AggregateQueryService.js";
 
 export default class PersonServiceProvider {
     static register() {
@@ -15,8 +16,9 @@ export default class PersonServiceProvider {
         const queryUtils = QueryUtils;
         const repository = new BaseRepository({model, populateRefs});
         const queryService = new PersonQueryService();
+        const aggregateService = new AggregateQueryService({_model: model});
 
-        const controller = new PersonController({repository, queryUtils, queryService});
+        const controller = new PersonController({repository, queryUtils, queryService, aggregateService});
 
         return {
             repository,

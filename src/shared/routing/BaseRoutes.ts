@@ -27,5 +27,7 @@ export const createBaseRoutes = <TController extends IBaseCRUDController>(
 
     router.delete('/delete/:_id', isAuth, asyncHandler(crudController.delete.bind(crudController)));
 
+    router.get('/query', isAuth, asyncHandler(crudController.query.bind(crudController)));
+
     return router;
 };

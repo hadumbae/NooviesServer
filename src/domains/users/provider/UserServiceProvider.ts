@@ -6,6 +6,7 @@ import UserController from "../controller/UserController.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import UserService from "../service/UserService.js";
+import AggregateQueryService from "../../../shared/services/AggregateQueryService.js";
 
 export default class UserServiceProvider {
     static register() {
@@ -15,8 +16,9 @@ export default class UserServiceProvider {
         const repository = new BaseRepository<IUser>({model, populateRefs});
         const queryUtils = QueryUtils;
         const service = new UserService();
+        const aggregateService = new AggregateQueryService({_model: model});
 
-        const controller = new UserController({repository, queryUtils, service});
+        const controller = new UserController({repository, queryUtils, service, aggregateService});
 
         return {
             repository,

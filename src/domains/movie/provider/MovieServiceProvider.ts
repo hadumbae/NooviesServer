@@ -13,6 +13,7 @@ import MovieQueryService from "../service/MovieQueryService.js";
 import MovieFavouriteService from "../service/user/MovieFavouriteService.js";
 import MovieFavouriteController from "../controller/MovieFavouriteController.js";
 import type {PopulatePath} from "../../../shared/types/PopulatePath.js";
+import AggregateQueryService from "../../../shared/services/AggregateQueryService.js";
 
 export default class MovieServiceProvider {
     static register() {
@@ -33,6 +34,7 @@ export default class MovieServiceProvider {
         const queryService = new MovieQueryService();
         const favouriteService = new MovieFavouriteService();
         const imageService = new MovieImageService({cloudinaryUtils});
+        const aggregateService = new AggregateQueryService({_model: model});
 
         const crudController = new MovieController({
             repository,
@@ -40,6 +42,7 @@ export default class MovieServiceProvider {
             service,
             queryService,
             imageService,
+            aggregateService,
         });
 
         const favouriteController = new MovieFavouriteController({

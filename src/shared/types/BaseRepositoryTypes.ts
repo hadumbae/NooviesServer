@@ -36,7 +36,7 @@ export type BaseRepositoryUpdateParams<TSchema = Record<string, any>> = {
 }
 
 export type BaseRepositoryDestroyParams = {
-    _id: Types.ObjectId | string,
+    _id: Types.ObjectId,
 }
 
 export type BaseRepositoryPaginationParams<TSchema = Record<string, any>> = {
