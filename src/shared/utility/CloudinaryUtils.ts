@@ -1,9 +1,11 @@
 import cloudinary from "../config/cloudinary.js";
+
+import ZodParseError from "../errors/ZodParseError.js";
+
 import {
     type CloudinaryImageObject,
     CloudinaryImageObjectSchema
 } from "../schema/cloudinary/CloudinaryImageObjectSchema.js";
-import ZodParseError from "../errors/ZodParseError.js";
 
 export interface ICloudinaryUtils {
     upload(image: Express.Multer.File): Promise<CloudinaryImageObject>,
@@ -11,7 +13,10 @@ export interface ICloudinaryUtils {
     delete(imageID: string): Promise<void>,
 }
 
-const CloudinaryUtils: ICloudinaryUtils = {
+export default class CloudinaryUtils implements ICloudinaryUtils {
+    constructor(private cloudinaryInstance: typeof cloudinary = cloudinary) {
+    }
+
     async upload(image: Express.Multer.File): Promise<CloudinaryImageObject> {
         const imageBuffer = image.buffer;
         const imageArray = Array.from(new Uint8Array(imageBuffer));
@@ -20,7 +25,7 @@ const CloudinaryUtils: ICloudinaryUtils = {
 
         const uploadFile = `data:image/png;base64,${imageBase64}`;
         const uploadOptions = {folder: 'propertypulse'};
-        const response = await cloudinary.uploader.upload(uploadFile, uploadOptions);
+        const response = await this.cloudinaryInstance.uploader.upload(uploadFile, uploadOptions);
 
         const {error, success, data} = CloudinaryImageObjectSchema.safeParse(response);
 
@@ -30,11 +35,9 @@ const CloudinaryUtils: ICloudinaryUtils = {
         }
 
         return data!;
-    },
+    }
 
     async delete(imageID: string): Promise<void> {
-        await cloudinary.uploader.destroy(imageID);
+        await this.cloudinaryInstance.uploader.destroy(imageID);
     }
 }
-
-export default CloudinaryUtils;
