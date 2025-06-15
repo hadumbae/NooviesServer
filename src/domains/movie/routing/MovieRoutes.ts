@@ -30,4 +30,10 @@ routes.patch(
     asyncHandler(crudController.updatePosterPicture.bind(crudController)),
 );
 
+routes.delete(
+    '/delete/:_id/poster_image',
+    [isAuth, upload.single("image"), hasPosterImage],
+    asyncHandler(crudController.updatePosterPicture.bind(crudController)),
+);
+
 export default routes;

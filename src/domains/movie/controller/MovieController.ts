@@ -5,17 +5,17 @@ import BaseCRUDController, {
 
 import type {Request, Response} from "express";
 import type IMovie from "../model/IMovie.js";
-import MovieImageService, {type IMovieImageService} from "../service/MovieImageService.js";
+import MovieImageService from "../service/MovieImageService.js";
 import type IMovieService from "../interface/service/IMovieService.js";
-import type IMovieQueryService from "../interface/service/IMovieQueryService.js";
 import type MovieService from "../service/MovieService.js";
 import type MovieQueryService from "../service/MovieQueryService.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import type {FilterQuery} from "mongoose";
 
 export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<IMovie> {
     service: IMovieService;
-    queryService: IMovieQueryService;
-    imageService: IMovieImageService,
+    queryService: MovieQueryService;
+    imageService: MovieImageService,
 }
 
 export interface IMovieController extends IBaseCRUDController {
@@ -46,18 +46,31 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
         return res.status(200).json(items);
     }
 
+    fetchURLMatchFilters(req: Request): FilterQuery<any> {
+        return this.queryService.getFilterQuery(req);
+    }
+
     async updatePosterPicture(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
 
         const movieID = isValidObjectId(_id);
         const image = req.file as Express.Multer.File;
+        await this.imageService.updateMoviePosterImage({movieID, image});
 
-        const movie = await this.imageService.updateMoviePosterImage({movieID, image});
+        return res
+            .status(200)
+            .json({message: "Poster Image Updated."});
+    }
 
-        return res.status(200).json({
-            message: "Poster Image Updated.",
-            data: movie,
-        });
+    async deletePosterPicture(req: Request, res: Response): Promise<Response> {
+        const {_id} = req.params;
+
+        const movieID = isValidObjectId(_id);
+        await this.imageService.deleteMoviePosterImage({movieID});
+
+        return res
+            .status(200)
+            .json({message: "Poster Image Removed."});
     }
 
     async fetchMoviesByQueryWithData(req: Request, res: Response): Promise<Response> {

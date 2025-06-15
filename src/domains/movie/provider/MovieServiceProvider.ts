@@ -26,7 +26,7 @@ export default class MovieServiceProvider {
         ];
 
         const queryUtils = QueryUtils;
-        const cloudinaryUtils = CloudinaryUtils;
+        const cloudinaryUtils = new CloudinaryUtils();
 
         const repository = new BaseRepository<IMovie>({model, populateRefs});
 

@@ -1,28 +1,31 @@
 import createHttpError from "http-errors";
-import {type ICloudinaryUtils} from "../../../shared/utility/CloudinaryUtils.js";
+import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
 import Movie from "../model/Movie.js";
-import {Types} from "mongoose";
+import {type Document, Types} from "mongoose";
+import type IMovie from "../model/IMovie.js";
+import type {ZMovie} from "../schema/MovieSchema.js";
+import type {IMovieImageService} from "../interface/service/IMovieImageService.js";
+import type {
+    DeletePosterImageParams,
+    UploadPosterImageParams
+} from "../type/services/MovieImageServiceTypes.js";
 
-interface IMovieImageServiceConstructor {
-    cloudinaryUtils: ICloudinaryUtils,
-}
+export default class MovieImageService implements IMovieImageService {
+    private cloudinaryUtils: CloudinaryUtils;
 
-export interface IMovieImageService {
-    cloudinaryUtils: ICloudinaryUtils;
-    updateMoviePosterImage(params: {movieID: Types.ObjectId, image: Express.Multer.File}): Promise<any>;
-    deleteMoviePosterImage(params: {movieID: Types.ObjectId}): Promise<any>;
-}
-
-export default class MovieImageService implements IMovieImageService{
-    cloudinaryUtils: ICloudinaryUtils;
-
-    constructor({cloudinaryUtils}: IMovieImageServiceConstructor) {
+    constructor({cloudinaryUtils}: { cloudinaryUtils: CloudinaryUtils }) {
         this.cloudinaryUtils = cloudinaryUtils;
     }
 
-    async updateMoviePosterImage({movieID, image}: { movieID: Types.ObjectId; image: Express.Multer.File }): Promise<any> {
+    async fetchMovie(movieID: Types.ObjectId): Promise<IMovie & Document> {
         const movie = await Movie.findById(movieID);
         if (!movie) throw createHttpError(404, "Not found.");
+        return movie;
+    }
+
+    async updateMoviePosterImage(params: UploadPosterImageParams): Promise<ZMovie> {
+        const {movieID, image} = params;
+        const movie = await this.fetchMovie(movieID);
 
         if (movie.posterImage) {
             await this.cloudinaryUtils.delete(movie.posterImage.public_id);
@@ -34,15 +37,16 @@ export default class MovieImageService implements IMovieImageService{
         return movie;
     }
 
-    async deleteMoviePosterImage({movieID}: { movieID: Types.ObjectId }): Promise<any> {
-        const movie = await Movie.findById({_id: movieID});
-        if (!movie) throw createHttpError(404, "Not found.");
+    async deleteMoviePosterImage(params: DeletePosterImageParams): Promise<ZMovie> {
+        const {movieID} = params;
+        const movie = await this.fetchMovie(movieID);
 
-        const {_id, posterImage} = movie;
+        const {posterImage} = movie;
 
         if (posterImage) {
             await this.cloudinaryUtils.delete(posterImage.public_id);
-            return Movie.findByIdAndUpdate(_id, {posterImage: null}, {new: true});
+            movie.posterImage = null;
+            await movie.save();
         }
 
         return movie;
