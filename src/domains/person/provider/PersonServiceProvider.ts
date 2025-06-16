@@ -3,8 +3,10 @@ import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import type {PopulatePath} from "../../../shared/types/PopulatePath.js";
-import PersonQueryService from "../service/PersonQueryService.js";
+import PersonQueryService from "../services/PersonQueryService.js";
 import AggregateQueryService from "../../../shared/services/AggregateQueryService.js";
+import PersonImageService from "../services/image-service/PersonImageService.js";
+import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
 
 export default class PersonServiceProvider {
     static register() {
@@ -14,11 +16,20 @@ export default class PersonServiceProvider {
         ];
 
         const queryUtils = QueryUtils;
+        const cloudinaryUtils = new CloudinaryUtils();
         const repository = new BaseRepository({model, populateRefs});
+
         const queryService = new PersonQueryService();
+        const imageService = new PersonImageService({cloudinaryUtils});
         const aggregateService = new AggregateQueryService({_model: model});
 
-        const controller = new PersonController({repository, queryUtils, queryService, aggregateService});
+        const controller = new PersonController({
+            repository,
+            queryUtils,
+            queryService,
+            aggregateService,
+            imageService,
+        });
 
         return {
             repository,
