@@ -11,5 +11,4 @@ export default interface ICloudinaryImage {
     etag: string,
     url: string,
     signature: string,
-    original_filename: string,
 }

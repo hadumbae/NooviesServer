@@ -1,14 +1,15 @@
 import {z, type ZodType} from "zod";
 import type ICloudinaryImage from "../../interfaces/ICloudinaryImage.js";
 import {RequiredStringSchema, ValidURLStringSchema} from "../helpers/ZodStringHelpers.js";
-import {RequiredNumberSchema} from "../numbers/RequiredNumberSchema.js";
 import {NonNegativeNumberSchema} from "../numbers/NonNegativeNumberSchema.js";
+
+import {PositiveNumberSchema} from "../numbers/PositiveNumberSchema.js";
 
 /**
  * Zod schema defining the expected shape of a Cloudinary image upload response.
  *
  * Each field is required and validated:
- * - `public_id`, `format`, `resource_type`, `type`, `etag`, `signature`, `original_filename` must be non-empty strings.
+ * - `public_id`, `format`, `resource_type`, `type`, `etag`, `signature` must be non-empty strings.
  * - `secure_url`, `url` must be valid URLs.
  * - `version` must be a finite UNIX number.
  * - `width`, `height`, `bytes` are non-negative numbers (>= 0).
@@ -31,7 +32,7 @@ import {NonNegativeNumberSchema} from "../numbers/NonNegativeNumberSchema.js";
 const CloudinaryImageObjectRawSchema = z.object({
     public_id: RequiredStringSchema,
     secure_url: ValidURLStringSchema,
-    version: RequiredNumberSchema,
+    version: PositiveNumberSchema,
     width: NonNegativeNumberSchema,
     height: NonNegativeNumberSchema,
     format: RequiredStringSchema,
@@ -41,9 +42,7 @@ const CloudinaryImageObjectRawSchema = z.object({
     etag: RequiredStringSchema,
     url: ValidURLStringSchema,
     signature: RequiredStringSchema,
-    original_filename: RequiredStringSchema,
 });
-
 
 /**
  * Zod schema statically ensured to match the TypeScript interface `ICloudinaryImage`.

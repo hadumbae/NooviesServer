@@ -1,7 +1,6 @@
 import {Schema} from "mongoose";
 import type ICloudinaryImage from "../interfaces/ICloudinaryImage.js";
 import {ValidURLStringSchema} from "../schema/helpers/ZodStringHelpers.js";
-import {UnixTimestampSchema} from "../schema/date/UnixTimestampSchema.js";
 
 export const CloudinaryImageSchema = new Schema<ICloudinaryImage>({
     public_id: {
@@ -22,12 +21,8 @@ export const CloudinaryImageSchema = new Schema<ICloudinaryImage>({
 
     version: {
         type: Number,
-        min: [946684800, "Timestamp is too old."],
+        min: [1, "Must be a positive number."],
         required: [true, "Required."],
-        validate: {
-            validator: (v: any) => UnixTimestampSchema.safeParse(v).success,
-            message: (props) => `"${props.value}" is not a valid Unix timestamp.`
-        }
     },
 
     width: {
@@ -82,12 +77,6 @@ export const CloudinaryImageSchema = new Schema<ICloudinaryImage>({
     },
 
     signature: {
-        type: String,
-        minlength: [1, "Empty strings are not allowed."],
-        required: [true, "Required."],
-    },
-
-    original_filename: {
         type: String,
         minlength: [1, "Empty strings are not allowed."],
         required: [true, "Required."],
