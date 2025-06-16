@@ -4,7 +4,7 @@ import type {IMovieController} from "../controller/MovieController.js";
 import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 import {MovieSubmitSchema} from "../schema/MovieSubmitSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
-import {upload} from "@config/multr.js";
+import {uploadImage} from "@config/image-multr.js";
 import hasPosterImage from "../middleware/hasPosterImage.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 
@@ -26,13 +26,13 @@ routes.get(
 
 routes.patch(
     '/update/:_id/poster_image',
-    [isAuth, upload.single("image"), hasPosterImage],
+    [isAuth, uploadImage.single("image"), hasPosterImage],
     asyncHandler(crudController.updatePosterPicture.bind(crudController)),
 );
 
 routes.delete(
     '/delete/:_id/poster_image',
-    [isAuth, upload.single("image"), hasPosterImage],
+    [isAuth, uploadImage.single("image"), hasPosterImage],
     asyncHandler(crudController.updatePosterPicture.bind(crudController)),
 );
 
