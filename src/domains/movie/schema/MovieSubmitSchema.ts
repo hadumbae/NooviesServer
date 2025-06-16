@@ -1,9 +1,9 @@
 import {z, ZodType} from "zod";
 import {RequiredStringSchema, ValidURLStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {GenreAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 import type IMovieSubmit from "./interface/IMovieSubmit.js";
 import {DateStringSchema} from "../../../shared/schema/date/DateStringSchema.js";
+import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 
 // * originalTitle
 // * tagline
@@ -30,7 +30,7 @@ export const MovieSubmitSchema: ZodType<IMovieSubmit> = z.object({
 
     releaseDate: DateStringSchema.optional().nullable(),
 
-    runtime: PositiveNumber,
+    runtime: PositiveNumberSchema,
 
     originalLanguage: RequiredStringSchema.max(10, "Must be 10 characters or less."),
 

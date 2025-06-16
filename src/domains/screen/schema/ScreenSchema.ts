@@ -4,9 +4,9 @@ import {TheatreSchema} from "../../theatre/schema/TheatreSchema.js";
 import {SeatSchema} from "../../seat/schema/SeatSchema.js";
 import type {IScreen} from "../interface/IScreen.js";
 import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import {ScreenTypeEnum} from "./enum/ScreenTypeEnum.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
+import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 
 export const ScreenSchema: ZodType<IScreen> = z.object({
     _id: IDInstance,
@@ -15,7 +15,7 @@ export const ScreenSchema: ZodType<IScreen> = z.object({
         .min(1, "Required.")
         .max(255, "Name must be 255 characters or less."),
 
-    capacity: PositiveNumber
+    capacity: PositiveNumberSchema
         .gt(0, "Capacity must be greater than 0"),
 
     screenType: ScreenTypeEnum,

@@ -4,7 +4,8 @@ import {MovieCreditBaseSchema} from "./base/MovieCreditBaseSchema.js";
 import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
 import {PersonSchema} from "../../person/schema/PersonSchema.js";
-import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
+
+import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 
 const MovieCreditReadSchema = MovieCreditBaseSchema.extend({
     _id: z.instanceof(Types.ObjectId).readonly(),
@@ -20,7 +21,7 @@ const CrewSchema = MovieCreditReadSchema.extend({
 const CastSchema = MovieCreditReadSchema.extend({
     roleType: z.literal("CAST"),
     characterName: RequiredStringSchema.max(150, "Job must be 150 characters or less."),
-    billingOrder: PositiveNumber,
+    billingOrder: PositiveNumberSchema,
 }).omit({job: true});
 
 /**

@@ -3,11 +3,11 @@ import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {GenreSchema} from "../../genre/schema/GenreSchema.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
 import {RequiredStringSchema, ValidURLStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
-import {PositiveNumber} from "../../../shared/schema/helpers/ZodNumberHelpers.js";
 import type IMovie from "../model/IMovie.js";
 import {MovieCreditSchema} from "../../movieCredit/schemas/MovieCreditSchema.js";
 import {DateStringSchema} from "../../../shared/schema/date/DateStringSchema.js";
 import {CloudinaryImageObjectSchema} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
+import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 
 export const MovieSchema: ZodType<IMovie> = z.object({
     _id: IDInstance,
@@ -30,7 +30,7 @@ export const MovieSchema: ZodType<IMovie> = z.object({
 
     releaseDate: DateStringSchema.optional().nullable(),
 
-    runtime: PositiveNumber,
+    runtime: PositiveNumberSchema,
 
     originalLanguage: RequiredStringSchema.max(10, "Must be 10 characters or less."),
 
