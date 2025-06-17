@@ -1,8 +1,3 @@
-// * originalTitle
-// * tagline
-// * country
-// * originalLanguage
-
 export default interface IMovieSubmit {
     title: string,
     originalTitle: string,
