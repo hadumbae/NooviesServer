@@ -1,8 +1,8 @@
 import {z, type ZodType} from 'zod';
-import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import type IGenre from "../model/IGenre.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 export const GenreSchema: ZodType<IGenre> = z.object({
     _id: IDInstance,

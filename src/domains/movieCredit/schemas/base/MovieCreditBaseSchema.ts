@@ -1,8 +1,8 @@
 import {z} from "zod";
 import {RoleTypeEnumSchema} from "../enums/RoleTypeEnumSchema.js";
-import {RequiredStringSchema} from "../../../../shared/schema/helpers/ZodStringHelpers.js";
 import {CoercedBooleanSchema} from "../../../../shared/schema/boolean/CoercedBooleanSchema.js";
 import {CoercedNumberSchema} from "../../../../shared/schema/numbers/CoercedNumberSchema.js";
+import {RequiredStringSchema} from "../../../../shared/schema/strings/RequiredStringSchema.js";
 
 /**
  * Base schema for both cast and crew movie credits.

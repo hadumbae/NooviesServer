@@ -1,10 +1,10 @@
 import {z, type ZodType} from "zod";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {ScreenSchema} from "../../screen/schema/ScreenSchema.js";
 import {SeatSchema} from "../../seat/schema/SeatSchema.js";
 import type ITheatre from "../model/ITheatre.js";
 import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 export const TheatreSchema: ZodType<ITheatre> = z.object({
     _id: IDInstance.readonly(),

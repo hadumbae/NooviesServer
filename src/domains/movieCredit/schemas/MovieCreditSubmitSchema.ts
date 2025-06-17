@@ -1,8 +1,9 @@
 import {MovieCreditBaseSchema} from "./base/MovieCreditBaseSchema.js";
 import {z} from "zod";
-import {ObjectIdStringSchema, RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 const MovieCreditWriteSchema = MovieCreditBaseSchema.extend({
     movie: ObjectIdStringSchema,

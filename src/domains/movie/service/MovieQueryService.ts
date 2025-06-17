@@ -4,9 +4,9 @@ import {MovieQueryMatchParamSchema} from "../schema/query/MovieQueryMatchParamSc
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
 import {MovieQuerySortParamSchema} from "../schema/query/MovieQuerySortParamSchema.js";
 import type IMovieQueryService from "../interface/service/IMovieQueryService.js";
-import {ParsedObjectIdStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import type {MovieQueryRequest} from "../type/requests/MovieQueryRequest.js";
+import {ParsedObjectIdStringSchema} from "../../../shared/schema/strings/ParsedObjectIdStringSchema.js";
 
 export default class MovieQueryService implements IMovieQueryService {
     getIDParam(req: Request): Types.ObjectId {

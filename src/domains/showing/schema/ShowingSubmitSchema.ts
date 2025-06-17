@@ -1,9 +1,10 @@
 import {z, type ZodType} from "zod";
-import {ObjectIdStringSchema, RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
 import type IShowingSubmit from "./interface/IShowingSubmit.js";
 import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 import {CoercedDateSchema} from "../../../shared/schema/date/CoercedDateSchema.js";
+import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 export const ShowingSubmitSchema: ZodType<IShowingSubmit> = z.object({
     startTime: CoercedDateSchema,

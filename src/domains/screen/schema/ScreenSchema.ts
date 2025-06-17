@@ -3,10 +3,10 @@ import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {TheatreSchema} from "../../theatre/schema/TheatreSchema.js";
 import {SeatSchema} from "../../seat/schema/SeatSchema.js";
 import type {IScreen} from "../interface/IScreen.js";
-import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {ScreenTypeEnum} from "./enum/ScreenTypeEnum.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 export const ScreenSchema: ZodType<IScreen> = z.object({
     _id: IDInstance,

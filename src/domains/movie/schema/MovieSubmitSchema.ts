@@ -1,9 +1,10 @@
 import {z, ZodType} from "zod";
-import {RequiredStringSchema, ValidURLStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {GenreAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 import type IMovieSubmit from "./interface/IMovieSubmit.js";
 import {DateStringSchema} from "../../../shared/schema/date/DateStringSchema.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStringSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 // * originalTitle
 // * tagline

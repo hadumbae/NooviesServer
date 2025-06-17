@@ -2,12 +2,13 @@ import {z, ZodType} from "zod";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {GenreSchema} from "../../genre/schema/GenreSchema.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
-import {RequiredStringSchema, ValidURLStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import type IMovie from "../model/IMovie.js";
 import {MovieCreditSchema} from "../../movieCredit/schemas/MovieCreditSchema.js";
 import {DateStringSchema} from "../../../shared/schema/date/DateStringSchema.js";
 import {CloudinaryImageObjectSchema} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStringSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 export const MovieSchema: ZodType<IMovie> = z.object({
     _id: IDInstance,

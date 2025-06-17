@@ -1,10 +1,10 @@
-import {ObjectIdStringSchema} from "./ZodStringHelpers.js";
 import Genre from "../../../domains/genre/model/Genre.js";
 import Person from "../../../domains/person/model/Person.js";
 import Screen from "../../../domains/screen/model/Screen.js";
 import Seat from "../../../domains/seat/model/Seat.js";
 import Theatre from "../../../domains/theatre/model/Theatre.js";
 import Showing from "../../../domains/showing/model/Showing.js";
+import {ObjectIdStringSchema} from "../strings/ObjectIdStringSchema.js";
 
 export const GenreAsyncIDString = ObjectIdStringSchema
     .refine(

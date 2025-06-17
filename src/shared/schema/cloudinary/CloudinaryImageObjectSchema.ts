@@ -1,9 +1,10 @@
 import {z, type ZodType} from "zod";
 import type ICloudinaryImage from "../../interfaces/ICloudinaryImage.js";
-import {RequiredStringSchema, ValidURLStringSchema} from "../helpers/ZodStringHelpers.js";
 import {NonNegativeNumberSchema} from "../numbers/NonNegativeNumberSchema.js";
 
 import {PositiveNumberSchema} from "../numbers/PositiveNumberSchema.js";
+import {ValidURLStringSchema} from "../strings/ValidURLStringSchema.js";
+import {RequiredStringSchema} from "../strings/RequiredStringSchema.js";
 
 /**
  * Zod schema defining the expected shape of a Cloudinary image upload response.

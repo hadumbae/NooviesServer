@@ -1,6 +1,6 @@
 import {z, type ZodType} from 'zod';
-import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import type IGenreSubmit from "./interface/IGenreSubmit.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 export const GenreSubmitSchema: ZodType<IGenreSubmit> = z.object({
     name: RequiredStringSchema

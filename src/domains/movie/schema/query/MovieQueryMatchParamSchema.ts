@@ -1,11 +1,9 @@
 import {z} from "zod";
-import {
-    ParsedObjectIdStringSchema,
-} from "../../../../shared/schema/helpers/ZodStringHelpers.js";
 import {URLParamObjectIDSchema} from "../../../../shared/schema/url/URLParamObjectIDSchema.js";
 import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
 import {URLParamDateStringSchema} from "../../../../shared/schema/url/URLParamDateStringSchema.js";
 import generateURLParamArraySchema from "../../../../shared/utility/zod/generateURLParamArraySchema.js";
+import {ParsedObjectIdStringSchema} from "../../../../shared/schema/strings/ParsedObjectIdStringSchema.js";
 
 /**
  * Schema for matching query parameters used to filter movies in a URL-based query.

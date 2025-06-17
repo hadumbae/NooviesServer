@@ -1,5 +1,4 @@
 import {z, type ZodType} from "zod";
-import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
@@ -9,6 +8,7 @@ import {SeatMapSchema} from "../../seatmap/schema/SeatMapSchema.js";
 import type IShowing from "../model/IShowing.js";
 import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 import {CoercedDateSchema} from "../../../shared/schema/date/CoercedDateSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 export const ShowingSchema: ZodType<IShowing> = z.object({
     _id: IDInstance,

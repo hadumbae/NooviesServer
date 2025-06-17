@@ -1,9 +1,9 @@
 import {z, type ZodType} from "zod";
-import {RequiredStringSchema} from "../../../shared/schema/helpers/ZodStringHelpers.js";
 import {TheatreAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 import {ScreenTypeEnum} from "./enum/ScreenTypeEnum.js";
 import type {IScreenSubmit} from "../interface/IScreenSubmit.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 
 export const ScreenSubmitSchema: ZodType<IScreenSubmit> = z.object({
     name: RequiredStringSchema
