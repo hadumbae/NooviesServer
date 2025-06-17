@@ -1,9 +1,9 @@
 import {z, type ZodType} from 'zod';
-import {CountryEnum} from "../../../shared/schema/helpers/ZodEnumHelpers.js";
 
 import type {IPersonSubmit} from "./interface/IPersonSubmit.js";
 import {CoercedDateSchema} from "../../../shared/schema/date/CoercedDateSchema.js";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
+import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
 
 export const PersonSubmitSchema: ZodType<IPersonSubmit> = z.object({
     name: RequiredStringSchema
@@ -16,5 +16,5 @@ export const PersonSubmitSchema: ZodType<IPersonSubmit> = z.object({
 
     dob: CoercedDateSchema,
 
-    nationality: CountryEnum,
+    nationality: ISO3166Alpha2CodeEnumSchema,
 });
