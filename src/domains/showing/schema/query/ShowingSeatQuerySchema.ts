@@ -1,6 +1,7 @@
 import {z} from "zod";
 import ZodJSONParseTransform from "../../../../shared/utility/zod/transformZodParsedJSON.js";
-import {RequiredBoolean} from "../../../../shared/schema/helpers/ZodBooleanHelpers.js";
+
+import {RequiredBoolean} from "../../../../shared/schema/booleans/RequiredBoolean.js";
 
 export const ShowingSeatQuerySchema = z.object({
     populate: z.string().optional().transform(ZodJSONParseTransform<boolean>(RequiredBoolean)),

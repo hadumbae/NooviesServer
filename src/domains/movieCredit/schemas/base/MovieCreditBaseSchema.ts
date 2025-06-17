@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {RoleTypeEnumSchema} from "../enums/RoleTypeEnumSchema.js";
-import {CoercedBooleanSchema} from "../../../../shared/schema/boolean/CoercedBooleanSchema.js";
+import {CoercedBooleanSchema} from "../../../../shared/schema/booleans/CoercedBooleanSchema.js";
 import {CoercedNumberSchema} from "../../../../shared/schema/numbers/CoercedNumberSchema.js";
 import {RequiredStringSchema} from "../../../../shared/schema/strings/RequiredStringSchema.js";
 

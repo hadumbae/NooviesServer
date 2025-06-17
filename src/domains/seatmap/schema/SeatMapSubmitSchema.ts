@@ -1,8 +1,8 @@
 import {z, type ZodType} from "zod";
-import {RequiredBoolean} from "../../../shared/schema/helpers/ZodBooleanHelpers.js";
 import {SeatAsyncIDString, ShowingAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 import type ISeatMapSubmit from "./interface/ISeatMapSubmit.js";
 import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
+import {RequiredBoolean} from "../../../shared/schema/booleans/RequiredBoolean.js";
 
 export const SeatMapSubmitSchema: ZodType<ISeatMapSubmit> = z.object({
     isAvailable: RequiredBoolean
