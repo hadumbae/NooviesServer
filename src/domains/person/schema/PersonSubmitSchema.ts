@@ -1,9 +1,9 @@
 import {z, type ZodType} from 'zod';
 
 import type {IPersonSubmit} from "./interface/IPersonSubmit.js";
-import {CoercedDateSchema} from "../../../shared/schema/date/CoercedDateSchema.js";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import {DateStringSchema} from "../../../shared/schema/date/DateStringSchema.js";
 
 export const PersonSubmitSchema: ZodType<IPersonSubmit> = z.object({
     name: RequiredStringSchema
@@ -14,7 +14,7 @@ export const PersonSubmitSchema: ZodType<IPersonSubmit> = z.object({
         .min(1, "Required.")
         .max(1000, "Must be 1000 characters or less."),
 
-    dob: CoercedDateSchema,
+    dob: DateStringSchema,
 
     nationality: ISO3166Alpha2CodeEnumSchema,
 });

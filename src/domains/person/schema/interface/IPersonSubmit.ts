@@ -1,6 +1,6 @@
 export interface IPersonSubmit {
     name: string,
     biography: string,
-    dob: Date,
+    dob: string,
     nationality: string,
 }

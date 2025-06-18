@@ -1,17 +1,23 @@
 import {z} from "zod";
+import {isValid, parse} from "date-fns";
 
 /**
- * Schema for validating date strings in the "YYYY-MM-DD" format.
+ * Schema for date strings in the format `YYYY-MM-DD`.
  *
- * This schema ensures that the input is a string matching the ISO 8601 date format without time or timezone components.
+ * Validates that the input is:
+ * 1. A string
+ * 2. Matches the `YYYY-MM-DD` regex
+ * 3. Represents a real calendar date (e.g. no February 30th)
  *
- * @remarks
- * - The schema does not check for the validity of the date itself (e.g., "2025-02-30" would pass).
- * - For full date validation, consider combining with a refinement or transformation.
+ * @example
+ * DateStringSchema.parse("2023-04-15"); // ✅ pass
+ * DateStringSchema.parse("2023-02-30"); // ❌ fail (invalid date)
+ * DateStringSchema.parse("2023-4-5");   // ❌ fail (wrong format)
  */
 export const DateStringSchema = z
     .string({required_error: "Required.", invalid_type_error: "Date must be a string."})
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format.");
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format.")
+    .refine(val => isValid(parse(val, "yyyy-MM-dd", new Date())), {message: "Must be a valid YYYY-MM-DD date."});
 
 /**
  * Type representing a valid date string in the "YYYY-MM-DD" format.
