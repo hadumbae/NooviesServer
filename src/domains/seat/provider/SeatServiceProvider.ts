@@ -5,7 +5,7 @@ import SeatController from "../controller/SeatController.js";
 
 import SeatQueryService from "../service/SeatQueryService.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
-import AggregateQueryService from "../../../shared/services/AggregateQueryService.js";
+import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 
 export default class SeatServiceProvider {
     static register() {
@@ -16,7 +16,7 @@ export default class SeatServiceProvider {
         const repository = new BaseRepository({model, populateRefs});
 
         const queryService = new SeatQueryService();
-        const aggregateService = new AggregateQueryService({_model: model});
+        const aggregateService = new AggregateQueryService({model, populateRefs});
 
         const controller = new SeatController({repository, queryUtils, queryService, aggregateService});
 

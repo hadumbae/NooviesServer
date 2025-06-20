@@ -6,7 +6,7 @@ import ScreenController from "../controller/ScreenController.js";
 import ScreenQueryService from "../service/ScreenQueryService.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import ScreenService from "../service/ScreenService.js";
-import AggregateQueryService from "../../../shared/services/AggregateQueryService.js";
+import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 
 export default class ScreenServiceProvider {
     static register() {
@@ -18,7 +18,7 @@ export default class ScreenServiceProvider {
 
         const service = new ScreenService();
         const queryService = new ScreenQueryService();
-        const aggregateService = new AggregateQueryService({_model: model});
+        const aggregateService = new AggregateQueryService({model, populateRefs});
 
         const controller = new ScreenController({repository, queryUtils, service, queryService, aggregateService});
 

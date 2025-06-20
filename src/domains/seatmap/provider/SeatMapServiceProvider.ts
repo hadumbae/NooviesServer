@@ -4,7 +4,7 @@ import SeatMapController from "../controller/SeatMapController.js";
 import SeatMapService from "../service/SeatMapService.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import SeatMapQueryService from "../service/SeatMapQueryService.js";
-import AggregateQueryService from "../../../shared/services/AggregateQueryService.js";
+import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 
 export default class SeatMapServiceProvider {
     static register() {
@@ -16,7 +16,7 @@ export default class SeatMapServiceProvider {
 
         const service = new SeatMapService();
         const queryService = new SeatMapQueryService();
-        const aggregateService = new AggregateQueryService({_model: model});
+        const aggregateService = new AggregateQueryService({model, populateRefs});
 
         const controller = new SeatMapController({repository, service, queryService, queryUtils, aggregateService});
 
