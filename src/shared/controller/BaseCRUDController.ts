@@ -4,7 +4,8 @@ import BaseController, {type IBaseControllerConstructor} from "./BaseController.
 import isValidObjectId from "../utility/query/isValidObjectId.js";
 import type {FilterQuery} from "mongoose";
 import type {PopulatePipelineStages} from "../types/mongoose/PopulatePipelineStages.js";
-import type AggregateQueryService from "../services/AggregateQueryService.js";
+import type AggregateQueryService from "../services/aggregate/AggregateQueryService.js";
+import type {AggregateQueryParams} from "../services/aggregate/AggregateQueryServiceTypes.js";
 
 export interface IBaseCRUDController<TSchema = Record<string, any>, TMatchFilters = any> {
     all(req: Request, res: Response): Promise<Response>;
@@ -30,12 +31,12 @@ export interface IBaseCRUDController<TSchema = Record<string, any>, TMatchFilter
 
 export interface IBaseCRUDControllerConstructor<TSchema extends Record<string, any>, TMatchFilters = any> extends IBaseControllerConstructor {
     repository: BaseRepository<TSchema>;
-    aggregateService: AggregateQueryService<TSchema, TMatchFilters>;
+    aggregateService: AggregateQueryService<TSchema>;
 }
 
 export default class BaseCRUDController<TSchema extends Record<string, any>, TMatchFilters = any> extends BaseController implements IBaseCRUDController<TSchema, TMatchFilters> {
     protected readonly repository: BaseRepository<TSchema>;
-    protected readonly aggregateService: AggregateQueryService<TSchema, TMatchFilters>;
+    protected readonly aggregateService: AggregateQueryService<TSchema>;
 
     constructor({repository, queryUtils, aggregateService}: IBaseCRUDControllerConstructor<TSchema, TMatchFilters>) {
         super({queryUtils});
@@ -104,26 +105,23 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
     }
 
     async query(req: Request, res: Response): Promise<Response> {
-        const optionParams = this.queryUtils.fetchOptionsFromQuery(req);
+        const {paginated, ...optionParams} = this.queryUtils.fetchOptionsFromQuery(req);
         const paginationParams = this.queryUtils.fetchPaginationFromQuery(req);
-        const {paginated} = optionParams;
 
         const matchFilters = this.fetchURLMatchFilters(req);
         const populateFilters = this.fetchURLPopulateFilters(req);
         const populatePipelines = this.fetchPopulatePipelines();
 
-        const aggregateParams = this.aggregateService.fetchAggregateParams({
-            ...optionParams,
-            ...paginationParams,
-            matchFilters,
-            populateFilters,
-            populatePipelines
-        });
+        const countParams = {matchFilters, populateFilters};
+        const baseParams = {...optionParams, ...countParams, populatePipelines}
+        const queryParams: AggregateQueryParams = paginated
+            ? {...baseParams, paginated: true, ...paginationParams}
+            : {...baseParams, paginated: false};
 
-        const data = await this.aggregateService.aggregate(aggregateParams);
+        const data = await this.aggregateService.query(queryParams);
 
         if (paginated) {
-            const totalItems = await this.aggregateService.count({matchFilters, populateFilters});
+            const totalItems = await this.aggregateService.count(countParams);
             return res.status(200).json({totalItems, items: data});
         }
 
