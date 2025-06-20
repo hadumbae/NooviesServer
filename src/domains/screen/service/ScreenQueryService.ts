@@ -1,21 +1,40 @@
-import {type ScreenQuery, ScreenQuerySchema} from "../schema/query/ScreenQuerySchema.js";
+import type {Request} from "express";
+import {type ScreenQueryParams, ScreenQueryParamsSchema} from "../schema/query/ScreenQueryParamsSchema.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import type {ScreenQueryRequest, ScreenShowingQueryRequest} from "../type/request/CustomScreenRequests.js";
-import {type ScreenShowingQuery, ScreenShowingQuerySchema} from "../schema/query/ScreenShowingQuerySchema.js";
+import {type ScreenQueryOptionParams} from "../schema/query/ScreenQueryOptionParamsSchema.js";
+import type {ScreenQueryMatchParams} from "../schema/query/ScreenQueryMatchParamsSchema.js";
+import ZodParseError from "../../../shared/errors/ZodParseError.js";
 
 export interface IScreenQueryService {
-    fetchQuery(req: ScreenQueryRequest): ScreenQuery;
-    fetchShowingQuery(req: ScreenShowingQueryRequest): ScreenShowingQuery;
+    fetchQueryParams(req: Request): ScreenQueryParams;
+    generateMatchFilters(params: ScreenQueryParams): ScreenQueryMatchParams;
+    generateOptions(params: ScreenQueryParams): ScreenQueryOptionParams;
 }
 
 export default class ScreenQueryService implements IScreenQueryService {
-    fetchQuery(req: ScreenQueryRequest): ScreenQuery {
-        const conditions = ScreenQuerySchema.parse(req.query);
-        return filterNullArray(conditions);
+    fetchQueryParams(req: Request): ScreenQueryParams {
+        const {success, data, error} = ScreenQueryParamsSchema.safeParse(req.query);
+        if (!success) throw new ZodParseError({message: "Invalid Query Params.", errors: error.errors});
+        return filterNullArray(data);
     }
 
-    fetchShowingQuery(req: ScreenShowingQueryRequest): ScreenShowingQuery {
-        const conditions = ScreenShowingQuerySchema.parse(req.query);
-        return filterNullArray(conditions);
+    generateMatchFilters(params: ScreenQueryParams): ScreenQueryMatchParams {
+        const {theatre} = params;
+
+        const filters = {
+            theatre,
+        };
+
+        return filterNullArray(filters);
+    }
+
+    generateOptions(params: ScreenQueryParams): ScreenQueryOptionParams {
+        const {showingsPerScreen} = params;
+
+        const filters = {
+            showingsPerScreen,
+        };
+
+        return filterNullArray(filters);
     }
 }
