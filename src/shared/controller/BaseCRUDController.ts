@@ -75,7 +75,6 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
     async get(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
         const parsedID = isValidObjectId(_id);
-
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
         const item = await this.repository.findById({_id: parsedID, populate, virtuals});
@@ -119,11 +118,6 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
             : {...baseParams, paginated: false};
 
         const data = await this.aggregateService.query(queryParams);
-
-        if (paginated) {
-            const totalItems = await this.aggregateService.count(countParams);
-            return res.status(200).json({totalItems, items: data});
-        }
 
         return res.status(200).json(data);
     }
