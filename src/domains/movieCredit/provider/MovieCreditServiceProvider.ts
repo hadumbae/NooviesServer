@@ -4,6 +4,7 @@ import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import MovieCreditController from "../controllers/MovieCreditController.js";
 import MovieCreditQueryService from "../services/MovieCreditQueryService.js";
 import MovieCreditService from "../services/MovieCreditService.js";
+import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 
 export default class MovieCreditServiceProvider {
     static register() {
@@ -15,8 +16,15 @@ export default class MovieCreditServiceProvider {
 
         const service = new MovieCreditService();
         const queryService = new MovieCreditQueryService();
+        const aggregateService = new AggregateQueryService({model, populateRefs});
 
-        const crudController = new MovieCreditController({repository, queryUtils, service, queryService});
+        const crudController = new MovieCreditController({
+            repository,
+            queryUtils,
+            service,
+            queryService,
+            aggregateService,
+        });
 
         return {
             repository,
