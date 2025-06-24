@@ -35,14 +35,14 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
         if (typeof limit === "number") query.limit(limit);
         if (populate) query.populate(populatePath || this.populateRefs);
 
-        return query.lean({virtuals});
+        return query.lean(virtuals && { virtuals });
     }
 
     async findById({_id, populatePath, populate, virtuals = false}: BaseRepositoryFindByIDParams): Promise<any> {
         const query = this.model.findById(_id);
         if (populate) query.populate(populatePath || this.populateRefs);
 
-        const doc = await query.lean({virtuals});
+        const doc = await query.lean(virtuals && { virtuals: true });
         if (!doc) throw createHttpError(404, "Not found!");
 
         return doc;
@@ -57,7 +57,10 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
         const query = this.model.findById(doc._id);
         if (populate) query.populate(populatePath || this.populateRefs);
 
-        return query.lean({virtuals});
+        const newDoc = await query.lean(virtuals && { virtuals });
+        if (!newDoc) throw createHttpError(500, "Something went wrong!");
+
+        return newDoc;
     }
 
     async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<any> {
@@ -66,7 +69,7 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
         const query = this.model.findByIdAndUpdate(_id, data, {new: true});
         if (populate) query.populate(populatePath || this.populateRefs);
 
-        const doc = await query.lean({virtuals});
+        const doc = query.lean(virtuals && { virtuals });
         if (!doc) throw createHttpError(404, "Not found!");
 
         return doc;
@@ -75,7 +78,6 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
     async destroy({_id}: BaseRepositoryDestroyParams): Promise<any> {
         const doc = await this.model.findById({_id});
         if (!doc) throw createHttpError(404, "Not found!");
-
         await doc.deleteOne();
     }
 
@@ -89,6 +91,6 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
             .limit(perPage);
 
         if (populate) query.populate(populatePath || this.populateRefs);
-        return query.lean({virtuals});
+        return query.lean(virtuals && { virtuals });
     }
 }
