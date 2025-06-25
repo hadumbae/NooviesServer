@@ -1,10 +1,10 @@
 import {Model, model, Schema} from "mongoose";
+import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 import type ITheatre from "./ITheatre.js";
 
-import {
-    DeleteTheatreQueryPostMiddleware,
-    DeleteOneTheatreDocumentPostMiddleware,
-} from "./middleware/TheatreMiddleware.js";
+import {DeleteOneDocumentPost} from "./middleware/DeleteTheatre.document.middleware.js";
+import {DeleteQueryPost} from "./middleware/DeleteTheatre.query.middleware.js";
+import {FindQueryPre} from "./middleware/FindTheatre.query.middleware.js";
 
 /**
  * Schema
@@ -28,24 +28,35 @@ const TheatreSchema = new Schema<ITheatre>({
         default: 0,
         required: [true, 'Seat Capacity is required.'],
     },
-
-    screens: {
-        type: [{type: Schema.Types.ObjectId, ref: 'Seat'}],
-        required: [true, "Screens is required."],
-    },
-
-    seats: {
-        type: [{ type: Schema.Types.ObjectId, ref: 'Seat' }],
-        required: [true, "Seats is required."],
-    },
 }, {timestamps: true});
+
+/**
+ * Virtuals
+ */
+
+TheatreSchema.virtual("screens", {
+    ref: "Screen",
+    localField: "_id",
+    foreignField: "theatre",
+    justOne: false,
+});
+
+TheatreSchema.virtual("showings", {
+    ref: "Showing",
+    localField: "_id",
+    foreignField: "theatre",
+    justOne: false,
+});
+
+TheatreSchema.plugin(mongooseLeanVirtuals);
 
 /**
  * Middleware
  */
 
-TheatreSchema.post("deleteOne", {query: false, document: true}, DeleteOneTheatreDocumentPostMiddleware);
-TheatreSchema.post(["deleteOne", "deleteMany"], {query: true, document: false}, DeleteTheatreQueryPostMiddleware);
+TheatreSchema.pre(["find", "findOne", "findOneAndUpdate"], {query: true, document: false}, FindQueryPre);
+TheatreSchema.post("deleteOne", {query: false, document: true}, DeleteOneDocumentPost);
+TheatreSchema.post(["deleteOne", "deleteMany"], {query: true, document: false}, DeleteQueryPost);
 
 const Theatre: Model<ITheatre> = model<ITheatre>("Theatre", TheatreSchema);
 export default Theatre;
