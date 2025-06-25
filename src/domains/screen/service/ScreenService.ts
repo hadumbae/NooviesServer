@@ -1,7 +1,7 @@
-import type {ZScreen} from "../schema/ScreenSchema.js";
 import {Types} from "mongoose";
 import Screen from "../model/Screen.js";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
+import type {ZScreen} from "../schema/screen/Screen.types.js";
 
 export interface IScreenService {
     fetchPaginatedScreensByTheatre(

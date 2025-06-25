@@ -3,7 +3,7 @@ import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {TheatreSchema} from "../../theatre/schema/TheatreSchema.js";
 import type ISeat from "../model/ISeat.js";
 import {SeatTypeEnum} from "./enum/SeatTypeEnum.js";
-import {ScreenSchema} from "../../screen/schema/ScreenSchema.js";
+import {ScreenSchema} from "../../screen/schema/screen/Screen.schema.js";
 import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 import {RequiredBoolean} from "../../../shared/schema/booleans/RequiredBoolean.js";

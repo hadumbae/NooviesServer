@@ -13,6 +13,7 @@ import {
     FindOneAndUpdateScreenQueryPreMiddleware,
     FindOneAndUpdateScreenQueryPostMiddleware,
 } from "./middleware/ScreenQueryMiddleware.js";
+import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 /**
  * Schema
@@ -37,23 +38,33 @@ const ScreenSchema = new Schema<IScreen>({
         required: [true, "Capacity is required."],
     },
 
-    seats: {
-        type: [{ type: Schema.Types.ObjectId, ref: 'Seat' }],
-        required: true,
-    },
-
     screenType: {
         type: String,
         enum: ScreenTypeConstant,
         default: '2D',
         required: [true, "Screen Type is required."],
-    },
-
-    showings: {
-        type: [{type: Schema.Types.ObjectId, ref: "Showing"}],
-        required: [true, "Showings is required."],
     }
 }, {timestamps: true});
+
+/**
+ * Virtuals
+ */
+
+ScreenSchema.virtual("showings", {
+    ref: "Showing",
+    localField: "_id",
+    foreignField: "screen",
+    justOne: false,
+});
+
+ScreenSchema.virtual("seats", {
+    ref: "Seat",
+    localField: "_id",
+    foreignField: "screen",
+    justOne: false,
+});
+
+ScreenSchema.plugin(mongooseLeanVirtuals);
 
 /**
  * Middleware

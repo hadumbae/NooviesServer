@@ -2,7 +2,7 @@ import {z, type ZodType} from "zod";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {MovieSchema} from "../../movie/schema/MovieSchema.js";
 import {TheatreSchema} from "../../theatre/schema/TheatreSchema.js";
-import {ScreenSchema} from "../../screen/schema/ScreenSchema.js";
+import {ScreenSchema} from "../../screen/schema/screen/Screen.schema.js";
 import {SeatMapSchema} from "../../seatmap/schema/SeatMapSchema.js";
 import type IShowing from "../model/IShowing.js";
 import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";

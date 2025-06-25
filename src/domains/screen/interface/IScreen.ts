@@ -1,16 +1,37 @@
 import {Types} from "mongoose";
 import type {ScreenTypeEnumType} from "../schema/enum/ScreenTypeEnum.js";
-import type ISeat from "../../seat/model/ISeat.js";
 import type ITheatre from "../../theatre/model/ITheatre.js";
-import type IShowing from "../../showing/model/IShowing.js";
 
+/**
+ * Interface representing a cinema screen within a theatre.
+ */
 export interface IScreen {
-    readonly _id: Types.ObjectId,
-    name: string,
-    capacity: number,
-    screenType: ScreenTypeEnumType,
-    theatre: Types.ObjectId | ITheatre,
-    seats: (Types.ObjectId | ISeat)[],
-    showings: (Types.ObjectId | IShowing)[],
+    /**
+     * Unique identifier for the screen (MongoDB ObjectId).
+     */
+    readonly _id: Types.ObjectId;
+
+    /**
+     * Human-readable name of the screen.
+     *
+     * Example: "Screen 1", "IMAX Hall"
+     */
+    name: string;
+
+    /**
+     * Seating capacity of the screen. Must be a non-negative integer.
+     */
+    capacity: number;
+
+    /**
+     * Type of screen (e.g., standard, IMAX, 3D), defined by an enum.
+     */
+    screenType: ScreenTypeEnumType;
+
+    /**
+     * Reference to the theatre this screen belongs to.
+     * Can be either the theatre's ObjectId or a full ITheatre object if populated.
+     */
+    theatre: Types.ObjectId | ITheatre;
 }
 
