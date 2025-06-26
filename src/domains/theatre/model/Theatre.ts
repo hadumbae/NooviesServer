@@ -34,18 +34,25 @@ const TheatreSchema = new Schema<ITheatre>({
  * Virtuals
  */
 
-TheatreSchema.virtual("screens", {
+TheatreSchema.virtual("screenCount", {
     ref: "Screen",
     localField: "_id",
     foreignField: "theatre",
-    justOne: false,
+    count: true,
 });
 
-TheatreSchema.virtual("showings", {
+TheatreSchema.virtual("seatCount", {
+    ref: "Seat",
+    localField: "_id",
+    foreignField: "theatre",
+    count: true,
+});
+
+TheatreSchema.virtual("futureShowingCount", {
     ref: "Showing",
     localField: "_id",
     foreignField: "theatre",
-    justOne: false,
+    count: true,
 });
 
 TheatreSchema.plugin(mongooseLeanVirtuals);
