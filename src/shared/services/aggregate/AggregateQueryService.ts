@@ -61,15 +61,18 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
         if (!paginated && limit) query.limit(limit);
         if (paginated) query.skip(perPage * (page - 1)).limit(perPage);
         if (populate) query.populate(this._populateRefs);
+        if (populate) query.populate(this._populateRefs);
+        if (virtuals) query.lean(virtuals && {virtuals: true});
+
 
         if (paginated) {
             return {
                 totalItems: await this._model.countDocuments(matchFilters),
-                items: (await query.lean(virtuals)) as TResult[],
+                items: (await query) as TResult[],
             };
         }
 
-        return (await query.lean(virtuals)) as TResult[];
+        return (await query) as TResult[];
     }
 
     /**
