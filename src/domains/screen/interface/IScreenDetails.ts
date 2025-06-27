@@ -1,25 +1,17 @@
-import type ISeat from "../../seat/model/ISeat.js";
-import type IShowing from "../../showing/model/IShowing.js";
 import type {IScreen} from "./IScreen.js";
 import type ITheatre from "../../theatre/model/ITheatre.js";
 
 /**
- * Extended interface of `IScreen` that includes full relational details
- * such as populated theatre, seat, and showing data.
+ * Extended interface of `IScreen` that includes enriched details
+ * about the theatre it belongs to and aggregated data.
  */
 export interface IScreenDetails extends IScreen {
-    /**
-     * The full theatre object that owns this screen.
-     */
+    /** The full theatre object this screen belongs to. */
     theatre: ITheatre;
 
-    /**
-     * List of all seats available in this screen.
-     */
-    seats: ISeat[];
+    /** The total number of seats available in the screen. */
+    seatCount: number;
 
-    /**
-     * List of showings (movie sessions) scheduled in this screen.
-     */
-    showings: IShowing[];
+    /** The number of future showings scheduled for this screen. */
+    futureShowingCount: number;
 }

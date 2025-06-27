@@ -1,13 +1,12 @@
 import {z, type ZodType} from "zod";
 import {IDInstance} from "../../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {TheatreSchema} from "../../../theatre/schema/TheatreSchema.js";
-import {SeatSchema} from "../../../seat/schema/SeatSchema.js";
 import type {IScreen} from "../../interface/IScreen.js";
 import {ScreenTypeEnum} from "../enum/ScreenTypeEnum.js";
-import {ShowingSchema} from "../../../showing/schema/ShowingSchema.js";
 import {PositiveNumberSchema} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {RequiredStringSchema} from "../../../../shared/schema/strings/RequiredStringSchema.js";
 import type {IScreenDetails} from "../../interface/IScreenDetails.js";
+import {NonNegativeNumberSchema} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
 
 /**
  * Base schema for a screen object, defining its core properties such as ID,
@@ -34,24 +33,20 @@ export const ScreenBaseRawSchema = z.object({
 });
 
 /**
- * Extended schema that includes full screen details, including a populated
- * theatre object, associated seats, and scheduled showings.
+ * Extended schema for a screen that includes detailed information
+ * such as the full theatre object, total seat count, and future showing count.
+ *
+ * This schema is typically used for enriched API responses or admin views.
  */
 export const ScreenDetailsRawSchema = ScreenBaseRawSchema.extend({
-    /** Fully populated theatre object this screen belongs to */
+    /** Fully populated theatre object that the screen belongs to. */
     theatre: z.lazy(() => TheatreSchema),
 
-    /** Array of seat objects in this screen */
-    seats: z.array(
-        z.lazy(() => SeatSchema),
-        { required_error: "Required.", invalid_type_error: "Must be an array." },
-    ),
+    /** Total number of seats in the screen. */
+    seatCount: NonNegativeNumberSchema,
 
-    /** Array of showings (movie sessions) scheduled for this screen */
-    showings: z.array(
-        z.lazy(() => ShowingSchema),
-        { required_error: "Required.", invalid_type_error: "Must be an array." },
-    ),
+    /** Number of showings scheduled in the future for this screen. */
+    futureShowingCount: NonNegativeNumberSchema,
 });
 
 /**
@@ -60,8 +55,6 @@ export const ScreenDetailsRawSchema = ScreenBaseRawSchema.extend({
 export const ScreenSchema = ScreenBaseRawSchema as ZodType<IScreen>;
 
 /**
- * Zod schema for validating `IScreenDetails` objects that include
- * full theatre, seat, and showing data.
+ * Zod schema for validating a fully detailed `IScreenDetails` object.
  */
 export const ScreenDetailsSchema = ScreenDetailsRawSchema as ZodType<IScreenDetails>;
-
