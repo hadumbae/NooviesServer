@@ -2,7 +2,7 @@ import {Model, model, Schema} from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 import type ITheatre from "./ITheatre.js";
 
-import {DeleteOneDocumentPost} from "./middleware/DeleteTheatre.document.middleware.js";
+import {DeleteDocumentPost} from "./middleware/DeleteTheatre.document.middleware.js";
 import {DeleteQueryPost} from "./middleware/DeleteTheatre.query.middleware.js";
 import {FindQueryPre} from "./middleware/FindTheatre.query.middleware.js";
 
@@ -62,7 +62,7 @@ TheatreSchema.plugin(mongooseLeanVirtuals);
  */
 
 TheatreSchema.pre(["find", "findOne", "findOneAndUpdate"], {query: true, document: false}, FindQueryPre);
-TheatreSchema.post("deleteOne", {query: false, document: true}, DeleteOneDocumentPost);
+TheatreSchema.post("deleteOne", {query: false, document: true}, DeleteDocumentPost);
 TheatreSchema.post(["deleteOne", "deleteMany"], {query: true, document: false}, DeleteQueryPost);
 
 const Theatre: Model<ITheatre> = model<ITheatre>("Theatre", TheatreSchema);

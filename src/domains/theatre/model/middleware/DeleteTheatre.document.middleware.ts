@@ -3,7 +3,7 @@ import Screen from "../../../screen/model/Screen.js";
 import Seat from "../../../seat/model/Seat.js";
 import Showing from "../../../showing/model/Showing.js";
 
-export async function DeleteOneDocumentPost(this: ITheatre) {
+export async function DeleteDocumentPost(this: ITheatre) {
     await Promise.all([
         Screen.deleteMany({theatre: this._id}),
         Seat.deleteMany({theatre: this._id}),
