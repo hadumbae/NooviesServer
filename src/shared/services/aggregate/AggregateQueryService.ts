@@ -29,13 +29,9 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
      * @returns Aggregated or standard query results.
      */
     async query<TResult = any>(params: AggregateQueryParams): Promise<AggregateQueryResults<TResult>> {
-        const {populateFilters} = params;
-
-        if (populateFilters?.length) {
-            return this.aggregate(params);
-        }
-
-        return this.find(params);
+        const {populateFilters, populatePipelines} = params;
+        const useAggregate = populateFilters?.length || populatePipelines?.length;
+        return useAggregate ? this.aggregate(params) : this.find(params);
     }
 
     /**
