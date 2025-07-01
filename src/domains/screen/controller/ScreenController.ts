@@ -33,30 +33,7 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
         const queryParams = this.queryService.fetchQueryParams(req);
         return this.queryService.generateMatchFilters(queryParams);
     }
-
-    async all(req: Request, res: Response): Promise<Response> {
-        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
-
-        const queryParams = this.queryService.fetchQueryParams(req);
-        const filters = this.queryService.generateMatchFilters(queryParams);
-
-        const items = await this.repository.find({filters, populate, virtuals});
-        return res.status(200).json(items);
-    }
-
-    async paginated(req: Request, res: Response): Promise<Response> {
-        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
-        const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
-
-        const queryParams = this.queryService.fetchQueryParams(req);
-        const filters = this.queryService.generateMatchFilters(queryParams);
-
-        const totalItems = await this.repository.count({filters});
-        const items = await this.repository.paginate({page, perPage, filters, populate, virtuals});
-
-        return res.status(200).json({totalItems, items});
-    }
-
+    
     async getScreensByTheatre(req: Request, res: Response): Promise<Response> {
         const {_id: theatreID} = req.params;
 

@@ -11,7 +11,7 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 export default class ScreenServiceProvider {
     static register() {
         const model = Screen;
-        const populateRefs = ["theatre", "seats", "showings"];
+        const populateRefs = ["theatre"];
 
         const repository = new BaseRepository({model, populateRefs});
         const queryUtils = QueryUtils;
