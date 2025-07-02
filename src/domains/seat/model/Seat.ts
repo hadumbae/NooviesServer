@@ -30,14 +30,19 @@ const SeatSchema = new Schema<ISeat>({
 
     row: {
         type: String,
-        maxLength: [50, "Row must be 50 characters or less."],
+        maxLength: [10, "Row must be 10 characters or less."],
         required: [true, "Row is required."],
     },
 
     seatNumber: {
-        type: String,
-        maxLength: [50, "Seat Number be 50 characters or less."],
+        type: Number,
+        min: [0, "Seat Number must be 0 or more."],
         required: [true, "Seat Number is required."],
+    },
+
+    seatLabel: {
+        type: String,
+        maxLength: [50, "Seat Label must be 50 characters or less."],
     },
 
     seatType: {
@@ -50,6 +55,16 @@ const SeatSchema = new Schema<ISeat>({
     isAvailable: {
         type: Boolean,
         required: [true, "Is Available is required."],
+    },
+
+    x: {
+        type: Number,
+        min: [1, "X must be 1 or more."]
+    },
+
+    y: {
+        type: Number,
+        min: [1, "Y must be 1 or more."]
     },
 
     priceMultiplier: {

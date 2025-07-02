@@ -1,8 +1,8 @@
-import type {ZSeat} from "../../seat/schema/SeatSchema.js";
 import Showing from "../model/Showing.js";
 import createHttpError from "http-errors";
 import {Types} from "mongoose";
 import Seat from "../../seat/model/Seat.js";
+import type {ZSeat} from "../../seat/schema/seats/Seat.types.js";
 
 interface FetchSeatsForShowingParams {
     showingID: string;

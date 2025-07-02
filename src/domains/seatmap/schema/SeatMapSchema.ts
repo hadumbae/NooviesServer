@@ -1,6 +1,6 @@
 import {z, type ZodType} from "zod";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import {SeatSchema} from "../../seat/schema/SeatSchema.js";
+import {SeatSchema} from "../../seat/schema/seats/Seat.schema.js";
 import type ISeatMap from "../model/ISeatMap.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
 import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";

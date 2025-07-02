@@ -1,16 +1,20 @@
 import {Types} from "mongoose";
-import type {SeatType} from "../schema/enum/SeatTypeEnum.js";
 import type ITheatre from "../../theatre/model/ITheatre.js";
 import type {IScreen} from "../../screen/interface/IScreen.js";
+import type ISeatBase from "./ISeatBase.js";
 
-export default interface ISeat {
-    readonly _id: Types.ObjectId,
-    row: string,
-    seatNumber: string,
-    seatType: SeatType,
-    isAvailable: boolean,
-    priceMultiplier: number,
+/**
+ * Interface representing a seat with its associated screen and theatre.
+ * Extends the base seat properties from ISeatBase.
+ */
+export default interface ISeat extends ISeatBase {
+    /**
+     * The screen (or its ObjectId) this seat belongs to.
+     */
+    screen: Types.ObjectId | IScreen;
 
-    screen: Types.ObjectId | IScreen,
-    theatre: Types.ObjectId | ITheatre,
+    /**
+     * The theatre (or its ObjectId) this seat belongs to.
+     */
+    theatre: Types.ObjectId | ITheatre;
 }
