@@ -30,6 +30,7 @@ export const SeatSubmitRawSchema = SeatSubmitBaseSchema.extend({
 
 export const SeatsByRowSubmitRawSchema = SeatSubmitBaseSchema.extend({
     row: RequiredStringSchema.max(10, "Must be 10 characters or less."),
+    y: PositiveNumberSchema.optional(),
     numberOfSeats: PositiveNumberSchema,
 });
 

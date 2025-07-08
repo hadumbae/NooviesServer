@@ -11,6 +11,11 @@ export default interface ISeatsByRowSubmit extends ISeatSubmitBase {
     row: string;
 
     /**
+     * Optional Y coordinate for seat layout positioning.
+     */
+    y?: number;
+
+    /**
      * The total number of seats to create in the specified row.
      */
     numberOfSeats: number;
