@@ -64,6 +64,6 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
         const {populate} = this.queryUtils.fetchOptionsFromQuery(req);
         const seatsByRow = await this.seatService.fetchSeatsByRow({screenID, populate});
 
-        return res.status(200).json({seatsByRow});
+        return res.status(200).json(seatsByRow);
     }
 }
