@@ -5,6 +5,7 @@ import type ITheatre from "./ITheatre.js";
 import {DeleteDocumentPost} from "./middleware/DeleteTheatre.document.middleware.js";
 import {DeleteQueryPost} from "./middleware/DeleteTheatre.query.middleware.js";
 import {FindQueryPre} from "./middleware/FindTheatre.query.middleware.js";
+import {LocationSchema} from "../../../shared/model/location/Location.js";
 
 /**
  * Schema
@@ -13,20 +14,23 @@ import {FindQueryPre} from "./middleware/FindTheatre.query.middleware.js";
 const TheatreSchema = new Schema<ITheatre>({
     name: {
         type: String,
+        trim: true,
         maxlength: [255, "Name must be 255 characters or less."],
         required: [true, "Name is required"],
-    },
-
-    location: {
-        type: String,
-        maxlength: [255, "Location must be 255 characters or less."],
-        required: [true, "Location is required."]
     },
 
     seatCapacity: {
         type: Number,
         default: 0,
-        required: [true, 'Seat Capacity is required.'],
+        validate: {
+            validator: Number.isInteger,
+            message: "Seat Capacity must be an integer"
+        }
+    },
+
+    location: {
+        type: LocationSchema,
+        required: [true, "Location is required."],
     },
 }, {timestamps: true});
 
