@@ -8,7 +8,7 @@ import {
     SaveMovieDocumentPostMiddleware, SaveMovieDocumentPreMiddleware
 } from "./middleware/MovieDocumentMiddleware.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
-import {CloudinaryImageSchema} from "../../../shared/model/CloudinaryImage.js";
+import {CloudinaryImageSchema} from "../../../shared/model/cloudinary-image/CloudinaryImage.js";
 
 const MovieSchema = new Schema<IMovie>({
     title: {

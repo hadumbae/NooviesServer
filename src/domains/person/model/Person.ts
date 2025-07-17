@@ -4,7 +4,7 @@ import type {IPerson} from "./IPerson.js";
 import {DeletePersonQueryPreMiddleware} from "./middleware/PersonQueryMiddleware.js";
 import {DeletePersonDocumentPreMiddleware} from "./middleware/PersonDocumentMiddleware.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
-import {CloudinaryImageSchema} from "../../../shared/model/CloudinaryImage.js";
+import {CloudinaryImageSchema} from "../../../shared/model/cloudinary-image/CloudinaryImage.js";
 
 // TODO Add Awards and Nominations
 

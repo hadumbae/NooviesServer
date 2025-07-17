@@ -1,7 +1,7 @@
 import {Schema} from "mongoose";
-import type ICloudinaryImage from "../interfaces/ICloudinaryImage.js";
+import type ICloudinaryImage from "./ICloudinaryImage.js";
 
-import {ValidURLStringSchema} from "../schema/strings/ValidURLStringSchema.js";
+import {ValidURLStringSchema} from "../../schema/strings/ValidURLStringSchema.js";
 
 export const CloudinaryImageSchema = new Schema<ICloudinaryImage>({
     public_id: {

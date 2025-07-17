@@ -1,5 +1,5 @@
 import {z, type ZodType} from "zod";
-import type ICloudinaryImage from "../../interfaces/ICloudinaryImage.js";
+import type ICloudinaryImage from "../../model/cloudinary-image/ICloudinaryImage.js";
 import {NonNegativeNumberSchema} from "../numbers/NonNegativeNumberSchema.js";
 
 import {PositiveNumberSchema} from "../numbers/PositiveNumberSchema.js";
