@@ -1,5 +1,5 @@
 import type {IANATimezone} from "../../schema/timezones/IANATimezone.enum.js";
-import type ICoordinate from "../../interfaces/ICoordinate.js";
+import type ICoordinate from "../coordinate/ICoordinate.js";
 
 /**
  * Interface representing a physical location.

@@ -1,5 +1,5 @@
 import {Schema} from "mongoose";
-import type ICoordinate from "../../interfaces/ICoordinate.js";
+import type ICoordinate from "./ICoordinate.js";
 
 /**
  * Mongoose schema for a GeoJSON Point coordinate,
