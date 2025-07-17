@@ -1,11 +1,9 @@
 import {z, type ZodType} from "zod";
 import {IDInstance} from "../../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import {TheatreSchema} from "../../../theatre/schema/TheatreSchema.js";
 import type {IScreen} from "../../interface/IScreen.js";
 import {ScreenTypeEnum} from "../enum/ScreenTypeEnum.js";
 import {PositiveNumberSchema} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {RequiredStringSchema} from "../../../../shared/schema/strings/RequiredStringSchema.js";
-import type {IScreenDetails} from "../../interface/IScreenDetails.js";
 import {NonNegativeNumberSchema} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
 
 /**
@@ -29,7 +27,7 @@ export const ScreenBaseRawSchema = z.object({
      * Reference to the theatre the screen belongs to.
      * Can be an ObjectId or a fully populated Theatre object.
      */
-    theatre: z.union([IDInstance, z.lazy(() => TheatreSchema)]),
+    theatre: IDInstance,
 });
 
 /**
@@ -38,9 +36,9 @@ export const ScreenBaseRawSchema = z.object({
  *
  * This schema is typically used for enriched API responses or admin views.
  */
-export const ScreenDetailsRawSchema = ScreenBaseRawSchema.extend({
+export const ScreenDetailsSchema = ScreenBaseRawSchema.extend({
     /** Fully populated theatre object that the screen belongs to. */
-    theatre: z.lazy(() => TheatreSchema),
+    theatre: IDInstance,
 
     /** Total number of seats in the screen. */
     seatCount: NonNegativeNumberSchema,
@@ -54,7 +52,3 @@ export const ScreenDetailsRawSchema = ScreenBaseRawSchema.extend({
  */
 export const ScreenSchema = ScreenBaseRawSchema as ZodType<IScreen>;
 
-/**
- * Zod schema for validating a fully detailed `IScreenDetails` object.
- */
-export const ScreenDetailsSchema = ScreenDetailsRawSchema as ZodType<IScreenDetails>;
