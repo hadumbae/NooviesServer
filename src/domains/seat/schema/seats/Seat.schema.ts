@@ -1,70 +1,64 @@
-import {z, type ZodType} from 'zod';
-import {IDInstance} from "../../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import type ISeat from "../../model/ISeat.js";
+import {z} from 'zod';
 import {SeatTypeEnum} from "../enum/SeatTypeEnum.js";
-import {CoercedNumberSchema} from "../../../../shared/schema/numbers/CoercedNumberSchema.js";
 import {RequiredStringSchema} from "../../../../shared/schema/strings/RequiredStringSchema.js";
 import {RequiredBoolean} from "../../../../shared/schema/booleans/RequiredBoolean.js";
 import {PositiveNumberSchema} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {NonNegativeNumberSchema} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
+import {ObjectIdStringSchema} from "../../../../shared/schema/strings/ObjectIdStringSchema.js";
 
 /**
- * Base schema for a seat object.
- * Includes common fields shared across all seat types.
+ * 🎯 Base input fields for creating or updating a seat.
+ * Contains IDs, availability status, and price multiplier.
  */
-export const SeatBaseSchema = z.object({
-    /** Unique MongoDB ObjectId of the seat. */
-    _id: IDInstance,
+export const SeatInputBaseSchema = z.object({
+    /** ID of the theatre this seat belongs to, as a MongoDB ObjectId string. */
+    theatre: ObjectIdStringSchema,
 
-    /** Row label the seat is in (e.g., "A", "B"). */
-    row: RequiredStringSchema.min(1, "Required.").max(10, "Must be 10 characters or less."),
-
-    /** Number within the row (e.g., 1, 5, 12). */
-    seatNumber: NonNegativeNumberSchema,
-
-    /** Optional display label for the seat (e.g., "A5", "VIP-3"). */
-    seatLabel: RequiredStringSchema.max(50, "Must be 50 characters or less").optional(),
+    /** ID of the screen this seat belongs to, as a MongoDB ObjectId string. */
+    screen: ObjectIdStringSchema,
 
     /** Type of seat (e.g., standard, VIP, couple). */
     seatType: SeatTypeEnum,
 
-    /** Whether the seat is currently available for booking. */
+    /** Availability status of the seat: `true` if bookable, otherwise `false`. */
     isAvailable: RequiredBoolean,
 
-    /** Multiplier applied to the base price for this seat. */
-    priceMultiplier: CoercedNumberSchema.gte(0, "Must be 0 or greater."),
+    /** Non-negative multiplier applied to a base ticket price (e.g., 1.0, 1.5). */
+    priceMultiplier: NonNegativeNumberSchema,
+});
 
-    /** Optional X coordinate for layout rendering. */
+/**
+ * 🪑 Input schema for individual seat creation or update.
+ * Extends `SeatInputBaseSchema` with placement and labeling fields.
+ */
+export const SeatInputSchema = SeatInputBaseSchema.extend({
+    /** Row label (e.g., "A", "B", up to 10 characters). */
+    row: RequiredStringSchema.max(10, "Must be 10 characters or less."),
+
+    /** Seat number within the row (0 or greater). */
+    seatNumber: NonNegativeNumberSchema,
+
+    /** Optional display label (e.g., "A5", "VIP‑3", max 50 chars). */
+    seatLabel: RequiredStringSchema.max(50, "Must be 50 characters or less").optional(),
+
+    /** Optional X-coordinate for seating layout visualizations. */
     x: PositiveNumberSchema.optional(),
 
-    /** Optional Y coordinate for layout rendering. */
+    /** Optional Y-coordinate for seating layout visualizations. */
     y: PositiveNumberSchema.optional(),
 });
 
 /**
- * Schema for a raw seat, referencing screen and theatre either by ID or populated object.
+ * 📋 Input schema for submitting multiple seats in a given row.
+ * Useful when adding seats en masse (e.g., "10 seats in row C").
  */
-export const SeatRawSchema = SeatBaseSchema.extend({
-    /** The theatre the seat belongs to (ID or full object). */
-    theatre: IDInstance,
+export const SeatsByRowInputSchema = SeatInputBaseSchema.extend({
+    /** Row label for the batch of seats (up to 10 characters). */
+    row: RequiredStringSchema.max(10, "Must be 10 characters or less."),
 
-    /** The screen the seat belongs to (ID or full object). */
-    screen: IDInstance,
+    /** Optional Y-coordinate for the row, for layout rendering. */
+    y: PositiveNumberSchema.optional(),
+
+    /** Number of seats to create in the specified row (must be ≥ 1). */
+    numberOfSeats: PositiveNumberSchema,
 });
-
-/**
- * Schema for a seat with full screen and theatre population.
- * Functionally similar to SeatRawSchema, intended for populated use cases.
- */
-export const SeatDetailsSchema = SeatBaseSchema.extend({
-    /** Fully populated theatre object (or ID). */
-    theatre: IDInstance,
-
-    /** Fully populated screen object (or ID). */
-    screen: IDInstance,
-});
-
-/**
- * Final Zod schema for a seat object, typed with ISeat interface.
- */
-export const SeatSchema = SeatRawSchema as ZodType<ISeat>;

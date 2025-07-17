@@ -1,14 +1,10 @@
 import {z} from "zod";
-import {SeatDetailsSchema, SeatSchema} from "./Seat.schema.js";
+import {SeatsByRowInputSchema} from "./Seat.schema.js";
 
 /**
- * Inferred TypeScript type from {@link SeatSchema}.
- * Represents a seat object with optional ID or populated screen/theatre references.
+ * 🎟️ Data for submitting seats by row.
+ *
+ * Inferred from `SeatsByRowInputSchema` using Zod, this type represents
+ * the validated shape expected by your service or controller.
  */
-export type ZSeat = z.infer<typeof SeatSchema>;
-
-/**
- * Inferred TypeScript type from {@link SeatDetailsSchema}.
- * Represents a seat object with fully populated screen and theatre objects.
- */
-export type ZSeatDetails = z.infer<typeof SeatDetailsSchema>;
+export type SeatsByRowSubmitData = z.infer<typeof SeatsByRowInputSchema>;

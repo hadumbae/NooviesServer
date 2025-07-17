@@ -2,7 +2,7 @@ import Showing from "../model/Showing.js";
 import createHttpError from "http-errors";
 import {Types} from "mongoose";
 import Seat from "../../seat/model/Seat.js";
-import type {ZSeat} from "../../seat/schema/seats/Seat.types.js";
+import type ISeat from "../../seat/model/ISeat.js";
 
 interface FetchSeatsForShowingParams {
     showingID: string;
@@ -12,17 +12,12 @@ interface FetchSeatsForShowingParams {
 }
 
 export interface IShowingSeatingService {
-    fetchSeatsForShowing(params: FetchSeatsForShowingParams): Promise<ZSeat[]>;
+    fetchSeatsForShowing(params: FetchSeatsForShowingParams): Promise<ISeat[]>;
 }
 
-export default class ShowingSeatingService implements IShowingSeatingService{
-    async fetchSeatsForShowing(params: FetchSeatsForShowingParams): Promise<ZSeat[]> {
-        const {
-            showingID,
-            populate = false,
-            mapped = false,
-            lean = false,
-        } = params;
+export default class ShowingSeatingService implements IShowingSeatingService {
+    async fetchSeatsForShowing(params: FetchSeatsForShowingParams): Promise<ISeat[]> {
+        const {showingID, populate = false, mapped = false, lean = false} = params;
 
         const showing = await Showing.findById(showingID).populate("seating");
         if (!showing) throw createHttpError(404, "Showing not found!");
@@ -33,10 +28,6 @@ export default class ShowingSeatingService implements IShowingSeatingService{
             (acc, {seat}) => [...acc, seat as Types.ObjectId],
             [] as Types.ObjectId[],
         );
-
-        console.log(params);
-        console.log(seatIDs);
-        console.log(seating);
 
         const query = mapped
             ? Seat.find({_id: {$in: seatIDs}})

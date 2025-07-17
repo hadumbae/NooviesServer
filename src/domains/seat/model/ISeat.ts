@@ -1,6 +1,4 @@
 import {Types} from "mongoose";
-import type ITheatre from "../../theatre/model/ITheatre.js";
-import type {IScreen} from "../../screen/interface/IScreen.js";
 import type ISeatBase from "./ISeatBase.js";
 
 /**
@@ -9,12 +7,12 @@ import type ISeatBase from "./ISeatBase.js";
  */
 export default interface ISeat extends ISeatBase {
     /**
-     * The screen (or its ObjectId) this seat belongs to.
+     * The ObjectId of the screen this seat belongs to.
      */
-    screen: Types.ObjectId | IScreen;
+    screen: Types.ObjectId;
 
     /**
-     * The theatre (or its ObjectId) this seat belongs to.
+     * The ObjectId of the theatre this seat belongs to.
      */
-    theatre: Types.ObjectId | ITheatre;
+    theatre: Types.ObjectId;
 }
