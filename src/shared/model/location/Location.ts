@@ -2,7 +2,7 @@ import {Schema} from "mongoose";
 import type ILocation from "./ILocation.js";
 import {CoordinateSchema} from "../coordinate/Coordinate.js";
 import {IANAZone} from "luxon";
-import ISO3166Alpha2CountryConstant from "../../constants/country/ISO3166Alpha2CountryConstant.js";
+import ISO3166Alpha2CodeConstant from "../../constants/country/ISO3166Alpha2CodeConstant.js";
 
 /**
  * Mongoose schema for embedding a physical location into documents.
@@ -46,7 +46,7 @@ export const LocationSchema = new Schema<ILocation>({
      */
     country: {
         type: String,
-        enum: ISO3166Alpha2CountryConstant,
+        enum: ISO3166Alpha2CodeConstant,
         required: [true, "`Country` is required."],
     },
 
