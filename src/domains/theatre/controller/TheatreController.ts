@@ -1,11 +1,32 @@
-import BaseCRUDController, {type IBaseCRUDController, type IBaseCRUDControllerConstructor} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController, {
+    type IBaseCRUDController,
+    type IBaseCRUDControllerConstructor
+} from "../../../shared/controller/BaseCRUDController.js";
 import type ITheatre from "../model/ITheatre.js";
+import type TheatreQueryOptionService from "../services/query/option-service/TheatreQueryOptionService.js";
+import type {FilterQuery} from "mongoose";
+import type {Request} from "express";
+import type {TheatreMatchFilters} from "../schema/query/TheatreQueryOptions.types.js";
 
-export interface ITheatreController extends IBaseCRUDController{}
-export interface ITheatreControllerConstructor extends IBaseCRUDControllerConstructor<ITheatre> {}
+export interface ITheatreController extends IBaseCRUDController {
+}
+
+export interface ITheatreControllerConstructor extends IBaseCRUDControllerConstructor<ITheatre> {
+    optionService: TheatreQueryOptionService;
+}
 
 export default class TheatreController extends BaseCRUDController<ITheatre> implements ITheatreController {
+    protected optionService: TheatreQueryOptionService;
+
     constructor(params: ITheatreControllerConstructor) {
-        super({...params});
+        const {optionService, ...superParams} = params;
+        super(superParams);
+
+        this.optionService = optionService;
+    }
+
+    fetchURLMatchFilters(req: Request): FilterQuery<TheatreMatchFilters> {
+        const queries = this.optionService.fetchQueryParams(req);
+        return this.optionService.generateMatchFilters(queries);
     }
 }
