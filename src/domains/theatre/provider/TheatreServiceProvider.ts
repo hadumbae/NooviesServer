@@ -4,6 +4,7 @@ import TheatreController from "../controller/TheatreController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import type {PopulatePath} from "../../../shared/types/PopulatePath.js";
+import TheatreQueryOptionService from "../services/query/option-service/TheatreQueryOptionService.js";
 
 export default class TheatreServiceProvider {
     static register() {
@@ -12,9 +13,11 @@ export default class TheatreServiceProvider {
 
         const repository = new BaseRepository({model, populateRefs});
         const queryUtils = QueryUtils;
-        const aggregateService = new AggregateQueryService({model, populateRefs});
 
-        const controller = new TheatreController({repository, queryUtils, aggregateService});
+        const aggregateService = new AggregateQueryService({model, populateRefs});
+        const optionService = new TheatreQueryOptionService();
+
+        const controller = new TheatreController({repository, queryUtils, aggregateService, optionService});
 
         return {
             repository,
