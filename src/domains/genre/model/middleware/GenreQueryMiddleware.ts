@@ -1,6 +1,6 @@
 import type {Query} from "mongoose";
 
-import type IGenre from "../IGenre.js";
+import type IGenre from "../Genre.interface.js";
 import Movie from "../../../movie/model/Movie.js";
 
 export async function DeleteGenreQueryPreMiddleware(this: Query<any, IGenre>) {

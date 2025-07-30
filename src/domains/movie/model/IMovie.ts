@@ -1,5 +1,5 @@
 import {Types} from "mongoose";
-import type IGenre from "../../genre/model/IGenre.js";
+import type IGenre from "../../genre/model/Genre.interface.js";
 import type IShowing from "../../showing/model/IShowing.js";
 import type ICloudinaryImage from "../../../shared/model/cloudinary-image/ICloudinaryImage.js";
 import type {IMovieCredit} from "../../movieCredit/models/IMovieCredit.js";

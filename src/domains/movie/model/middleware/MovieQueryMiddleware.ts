@@ -1,4 +1,4 @@
-import Genre from "../../../genre/model/Genre.js";
+import GenreModel from "../../../genre/model/Genre.model.js";
 import Showing from "../../../showing/model/Showing.js";
 import type {Query} from "mongoose";
 import type IMovie from "../IMovie.js";
@@ -14,7 +14,7 @@ export async function FindOneAndUpdateMovieQueryPreMiddleware(this: Query<any, I
 
     (this as any)._movie = movie;
 
-    await Genre.updateMany({movies: _id}, {$pull: {movies: movie._id}});
+    await GenreModel.updateMany({movies: _id}, {$pull: {movies: movie._id}});
 }
 
 export async function FindOneAndUpdateMovieQueryPostMiddleware(this: Query<any, IMovie>) {
@@ -23,7 +23,7 @@ export async function FindOneAndUpdateMovieQueryPostMiddleware(this: Query<any, 
 
     const {genres} = movie;
 
-    await Genre.updateMany({_id: {$in: genres}}, {$push: {movies: movie}});
+    await GenreModel.updateMany({_id: {$in: genres}}, {$push: {movies: movie}});
 }
 
 export async function DeleteMovieQueryPostMiddleware(this: Query<any, IMovie>) {
@@ -32,7 +32,7 @@ export async function DeleteMovieQueryPostMiddleware(this: Query<any, IMovie>) {
 
     await Promise.all([
         User.updateMany({favourites: _id}, {$pull: {favourites: _id}}),
-        Genre.updateMany({movies: _id}, {$pull: {movies: _id}}),
+        GenreModel.updateMany({movies: _id}, {$pull: {movies: _id}}),
         Showing.deleteMany({movie: _id}),
     ]);
 }

@@ -1,6 +1,6 @@
 import {z, ZodType} from "zod";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import {GenreSchema} from "../../genre/schema/GenreSchema.js";
+import {GenreInputSchema} from "../../genre/schema/GenreInputSchema.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
 import type IMovie from "../model/IMovie.js";
 import {MovieCreditSchema} from "../../movieCredit/schemas/MovieCreditSchema.js";
@@ -40,7 +40,7 @@ export const MovieRawSchema = z.object({
      * An array of genre references or embedded genre documents
      * Accepts both ID references and fully populated genre schemas
      */
-    genres: z.array(z.union([IDInstance, z.lazy(() => GenreSchema)])),
+    genres: z.array(z.union([IDInstance, z.lazy(() => GenreInputSchema)])),
 
     /** Optional release date (ISO string), nullable */
     releaseDate: DateStringSchema.optional().nullable(),

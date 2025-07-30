@@ -1,4 +1,4 @@
-import Genre from "../../../domains/genre/model/Genre.js";
+import GenreModel from "../../../domains/genre/model/Genre.model.js";
 import Person from "../../../domains/person/model/Person.js";
 import Screen from "../../../domains/screen/model/Screen.js";
 import Seat from "../../../domains/seat/model/Seat.js";
@@ -9,7 +9,7 @@ import {ObjectIdStringSchema} from "../strings/ObjectIdStringSchema.js";
 export const GenreAsyncIDString = ObjectIdStringSchema
     .refine(
         async (genreID) => {
-            const genre = await Genre.findById(genreID);
+            const genre = await GenreModel.findById(genreID);
             return !!genre;
         },
         "404. Invalid ID."
