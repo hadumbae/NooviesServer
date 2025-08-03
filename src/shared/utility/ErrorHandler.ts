@@ -12,13 +12,13 @@ const errorHandler: ErrorRequestHandler = (error: Error, req: Request, res: Resp
     if (error instanceof ZodError) {
         console.error("Has a ZodError!");
         const {message, errors} = {message: "Validation failed.", errors: error.errors}
-        res.status(400).json({message, errors});
+        res.status(422).json({message, errors});
     }
 
     if (error instanceof ZodParseError) {
         console.error("Had a ZodParseError!");
         const {message, errors} = error;
-        res.status(400).json({message, errors});
+        res.status(422).json({message, errors});
     }
 
     let errorMessage = "Oops. Something went wrong!";
