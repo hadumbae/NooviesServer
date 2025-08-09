@@ -9,14 +9,19 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 export default class GenreServiceProvider {
     static register() {
         const model = GenreModel;
-        const populateRefs = ['movies'];
+        const populateRefs: string[] = [];
 
         const repository = new BaseRepository<IGenre>({model, populateRefs});
         const genreService = new GenreService();
         const queryUtils = QueryUtils;
         const aggregateService = new AggregateQueryService({model, populateRefs});
 
-        const controller = new GenreController({repository, genreService, queryUtils, aggregateService});
+        const controller = new GenreController({
+            repository,
+            genreService,
+            queryUtils,
+            aggregateService,
+        });
 
         return {
             repository,
