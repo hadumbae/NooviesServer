@@ -5,20 +5,32 @@ import BaseCRUDController, {
 import type IGenre from "../model/Genre.interface.js";
 import GenreService from "../service/GenreService.js";
 import type {Request, Response} from "express";
+import type GenreQueryOptionService from "../service/GenreQueryOptionService.js";
+import type {FilterQuery} from "mongoose";
+import type {GenreQueryFilters} from "../schema/options/GenreFilters.types.js";
 
 export interface IGenreController extends IBaseCRUDController {
 }
 
 export interface IGenreControllerConstructor extends IBaseCRUDControllerConstructor<IGenre> {
     genreService: GenreService;
+    optionService: GenreQueryOptionService;
 }
 
 export default class GenreController extends BaseCRUDController<IGenre> implements IGenreController {
     genreService: GenreService;
+    optionService: GenreQueryOptionService;
 
-    constructor(params: IGenreControllerConstructor) {
-        super({...params});
-        this.genreService = params.genreService;
+    constructor({genreService, optionService, ...superParams}: IGenreControllerConstructor) {
+        super(superParams);
+
+        this.genreService = genreService;
+        this.optionService = optionService;
+    }
+
+    fetchURLMatchFilters(req: Request): FilterQuery<GenreQueryFilters> {
+        const params = this.optionService.fetchQueryParams(req);
+        return this.optionService.generateMatchFilters(params);
     }
 
     async create(req: Request, res: Response): Promise<Response> {
