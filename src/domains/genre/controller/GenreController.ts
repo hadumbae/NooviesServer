@@ -5,7 +5,6 @@ import BaseCRUDController, {
 import type IGenre from "../model/Genre.interface.js";
 import GenreService from "../service/GenreService.js";
 import type {Request, Response} from "express";
-import type {ZGenreSubmit} from "../schema/GenreSubmitSchema.js";
 
 export interface IGenreController extends IBaseCRUDController {
 }
@@ -22,11 +21,17 @@ export default class GenreController extends BaseCRUDController<IGenre> implemen
         this.genreService = params.genreService;
     }
 
+    async create(req: Request, res: Response): Promise<Response> {
+        const data = req.validatedBody;
+        const item = await this.genreService.create({data});
+        return res.status(200).json(item);
+    }
+
     async update(req: Request, res: Response): Promise<Response> {
         const {_id} = req.params;
         const data = req.validatedBody;
-        const item = await this.genreService.updateGenre({genreID: _id, data: data as ZGenreSubmit});
 
+        const item = await this.genreService.update({genreID: _id, data});
         return res.status(200).json(item);
     }
 }
