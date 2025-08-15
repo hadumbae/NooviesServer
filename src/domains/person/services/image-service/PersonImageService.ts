@@ -2,8 +2,8 @@ import createHttpError from "http-errors";
 import {type Document, Types} from "mongoose";
 import type CloudinaryUtils from "../../../../shared/utility/CloudinaryUtils.js";
 
-import Person from "../../model/Person.js";
-import type {IPerson} from "../../model/IPerson.js";
+import PersonModel from "../../model/Person.model.js";
+import type {IPerson} from "../../interfaces/IPerson.js";
 import type {ZPerson} from "../../schema/PersonSchema.js";
 
 import type {IPersonImageService} from "./IPersonImageService.js";
@@ -33,7 +33,7 @@ export default class PersonImageService implements IPersonImageService {
      * @throws 404 Not Found error if the person does not exist.
      */
     async fetchPerson(_id: Types.ObjectId): Promise<IPerson & Document> {
-        const person = await Person.findById(_id);
+        const person = await PersonModel.findById(_id);
         if (!person) throw createHttpError(404, "Not found.");
         return person;
     }

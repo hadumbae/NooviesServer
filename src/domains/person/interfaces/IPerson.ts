@@ -1,6 +1,5 @@
 import {Types} from "mongoose";
 import type ICloudinaryImage from "../../../shared/model/cloudinary-image/ICloudinaryImage.js";
-import type {IMovieCredit} from "../../movieCredit/models/IMovieCredit.js";
 import type {ISO3166Alpha2Code} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
 import type {DateString} from "../../../shared/schema/date/DateStringSchema.js";
 
@@ -11,6 +10,5 @@ export interface IPerson {
     dob: DateString,
     nationality: ISO3166Alpha2Code,
     profileImage?: ICloudinaryImage | null,
-    movies?: IMovieCredit[],
 }
 

@@ -1,5 +1,5 @@
 import {type Document, Types} from "mongoose";
-import type {IPerson} from "../../model/IPerson.js";
+import type {IPerson} from "../../interfaces/IPerson.js";
 import type {ZPerson} from "../../schema/PersonSchema.js";
 import type {
     RemovePersonProfileImageParams,

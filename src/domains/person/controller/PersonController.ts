@@ -2,7 +2,7 @@ import BaseCRUDController, {
     type IBaseCRUDController,
     type IBaseCRUDControllerConstructor
 } from "../../../shared/controller/BaseCRUDController.js";
-import type {IPerson} from "../model/IPerson.js";
+import type {IPerson} from "../interfaces/IPerson.js";
 import type PersonQueryService from "../services/PersonQueryService.js";
 import type {Request, Response} from "express";
 import type {FilterQuery} from "mongoose";
@@ -47,7 +47,7 @@ export default class PersonController extends BaseCRUDController<IPerson> implem
         await this.imageService.updateProfileImage({personID, image: profileImage});
         const person = await this.repository.findById({_id: personID, populate, virtuals});
 
-        return res.status(200).json({message: "Image Updated.", data: person});
+        return res.status(200).json(person);
     }
 
     async deleteProfileImage(req: Request, res: Response): Promise<Response> {

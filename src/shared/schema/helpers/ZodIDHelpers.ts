@@ -1,5 +1,5 @@
 import GenreModel from "../../../domains/genre/model/Genre.model.js";
-import Person from "../../../domains/person/model/Person.js";
+import PersonModel from "../../../domains/person/model/Person.model.js";
 import Screen from "../../../domains/screen/model/Screen.js";
 import Seat from "../../../domains/seat/model/Seat.js";
 import Theatre from "../../../domains/theatre/model/Theatre.js";
@@ -18,7 +18,7 @@ export const GenreAsyncIDString = ObjectIdStringSchema
 export const PersonAsyncIDString = ObjectIdStringSchema
     .refine(
         async (personID) => {
-            const genre = await Person.findById(personID);
+            const genre = await PersonModel.findById(personID);
             return !!genre;
         },
         "404. Invalid ID."

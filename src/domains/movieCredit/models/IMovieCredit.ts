@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import type IMovie from "../../movie/model/IMovie.js";
-import type {IPerson} from "../../person/model/IPerson.js";
+import type {IPerson} from "../../person/interfaces/IPerson.js";
 
 export interface IMovieCredit {
     readonly _id: Types.ObjectId;

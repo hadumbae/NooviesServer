@@ -1,4 +1,4 @@
-import Person from "../model/Person.js";
+import PersonModel from "../model/Person.model.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
@@ -10,10 +10,8 @@ import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
 
 export default class PersonServiceProvider {
     static register() {
-        const model = Person;
-        const populateRefs: PopulatePath[] = [
-            {path: "movies", populate: {path: "movie"}},
-        ];
+        const model = PersonModel;
+        const populateRefs: PopulatePath[] = [];
 
         const queryUtils = QueryUtils;
         const cloudinaryUtils = new CloudinaryUtils();
