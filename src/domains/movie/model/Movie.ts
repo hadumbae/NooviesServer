@@ -121,5 +121,5 @@ MovieSchema.virtual("crew", {
 
 MovieSchema.plugin(mongooseLeanVirtuals);
 
-const Movie: Model<IMovie> = model<IMovie>("Movie", MovieSchema);
-export default Movie;
+const MovieModel: Model<IMovie> = model<IMovie>("Movie", MovieSchema);
+export default MovieModel;

@@ -1,5 +1,5 @@
 import type IShowing from "../IShowing.js";
-import Movie from "../../../movie/model/Movie.js";
+import MovieModel from "../../../movie/model/Movie.js";
 import type {Query} from "mongoose";
 
 import Showing from "../Showing.js";
@@ -16,7 +16,7 @@ export async function UpdateShowingQueryPreMiddleware(this: Query<any, IShowing>
     (this as any)._showing = showing;
 
     await Promise.all([
-        Movie.updateMany({showings: showing._id}, {$pull: {showings: showing._id}}),
+        MovieModel.updateMany({showings: showing._id}, {$pull: {showings: showing._id}}),
         Screen.updateMany({showings: showing._id}, {$pull: {showings: showing._id}}),
     ]);
 }
@@ -26,7 +26,7 @@ export async function UpdateShowingQueryPostMiddleware(this: Query<any, IShowing
     if (!showing) return;
 
     await Promise.all([
-        Movie.findByIdAndUpdate(showing.movie, {$push: {showings: showing}}),
+        MovieModel.findByIdAndUpdate(showing.movie, {$push: {showings: showing}}),
         Screen.findByIdAndUpdate(showing.screen, {$push: {showings: showing}}),
     ]);
 }
@@ -35,7 +35,7 @@ export async function DeleteShowingQueryPreMiddleware(this: Query<any, IShowing>
     const {_id: showingID} = this.getFilter();
 
     await Promise.all([
-        Movie.updateMany({}, {$pull: {showings: showingID}}),
+        MovieModel.updateMany({}, {$pull: {showings: showingID}}),
         Screen.updateMany({}, {$pull: {showings: showingID}}),
         SeatMap.deleteMany({showing: showingID})
     ]);

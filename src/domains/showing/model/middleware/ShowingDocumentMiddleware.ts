@@ -1,5 +1,5 @@
 import type IShowing from "../IShowing.js";
-import Movie from "../../../movie/model/Movie.js";
+import MovieModel from "../../../movie/model/Movie.js";
 import SeatMap from "../../../seatmap/model/SeatMap.js";
 import SeatMapService from "../../../seatmap/service/SeatMapService.js";
 import type {HydratedDocument} from "mongoose";
@@ -28,7 +28,7 @@ export async function DeleteOneShowingDocumentPreMiddleware(this: IShowing) {
     if (!_id) return;
 
     await Promise.all([
-        Movie.updateMany({}, {$pull: {showings: this._id}}),
+        MovieModel.updateMany({}, {$pull: {showings: this._id}}),
         SeatMap.deleteMany({showing: this._id}),
     ]);
 }

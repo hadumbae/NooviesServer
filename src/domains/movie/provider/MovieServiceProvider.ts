@@ -1,4 +1,4 @@
-import Movie from "../model/Movie.js";
+import MovieModel from "../model/Movie.js";
 import type IMovie from "../model/IMovie.js";
 
 import MovieController from "../controller/MovieController.js";
@@ -17,7 +17,7 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 
 export default class MovieServiceProvider {
     static register() {
-        const model = Movie;
+        const model = MovieModel;
         const populateRefs: PopulatePath[] = [
             {path: "genres"},
             {path: "showings"},

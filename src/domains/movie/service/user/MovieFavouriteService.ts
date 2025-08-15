@@ -6,7 +6,7 @@
 //  - Fetch Movie
 //  - Fetch Showings
 
-import Movie from "../../model/Movie.js";
+import MovieModel from "../../model/Movie.js";
 import type IMovie from "../../model/IMovie.js";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
@@ -29,7 +29,7 @@ interface IMovieFavouriteService {
 
 export default class MovieFavouriteService implements IMovieFavouriteService {
     async addMovieToFavourite({userID, movieID}: UserMovieParams): Promise<IMovie> {
-        const movie = await Movie.findById(movieID).lean();
+        const movie = await MovieModel.findById(movieID).lean();
         if (!movie) throw createHttpError(404, "Movie not found!");
 
         const res = await User.findByIdAndUpdate(
@@ -44,7 +44,7 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
     }
 
     async removeMovieFromFavourite({userID, movieID}: UserMovieParams): Promise<IMovie> {
-        const movie = await Movie.findById(movieID).lean();
+        const movie = await MovieModel.findById(movieID).lean();
         if (!movie) throw createHttpError(404, "Movie not found!");
 
         console.log("movie: ", movie._id);
@@ -63,7 +63,7 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
     async fetchMovieWithDetails({userID, movieID}: UserMovieParams): Promise<{ showings: IShowing[], movie: IMovie }> {
         const [user, movie] = await Promise.all([
             User.findById(userID).select("_id favourites").lean(),
-            Movie.findById(movieID).populate(["genres"]).lean(),
+            MovieModel.findById(movieID).populate(["genres"]).lean(),
         ]);
 
         if (!user) throw createHttpError(404, "User not found!");

@@ -1,6 +1,6 @@
 import createHttpError from "http-errors";
 import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
-import Movie from "../model/Movie.js";
+import MovieModel from "../model/Movie.js";
 import {type Document, Types} from "mongoose";
 import type IMovie from "../model/IMovie.js";
 import type {ZMovie} from "../schema/MovieSchema.js";
@@ -18,7 +18,7 @@ export default class MovieImageService implements IMovieImageService {
     }
 
     async fetchMovie(movieID: Types.ObjectId): Promise<IMovie & Document> {
-        const movie = await Movie.findById(movieID);
+        const movie = await MovieModel.findById(movieID);
         if (!movie) throw createHttpError(404, "Not found.");
         return movie;
     }

@@ -1,7 +1,7 @@
 import type IMovie from "../model/IMovie.js";
 import type IMovieService from "../interface/service/IMovieService.js";
 import type {fetchPaginatedMoviesByQueryParams} from "../interface/service/IMovieService.js";
-import Movie from "../model/Movie.js";
+import MovieModel from "../model/Movie.js";
 
 export default class MovieService implements IMovieService {
     async fetchPaginatedMoviesByQueryWithData(
@@ -10,8 +10,8 @@ export default class MovieService implements IMovieService {
         items: IMovie[],
         totalItems: number
     }> {
-        const count = await Movie.countDocuments(query);
-        const movies = await Movie
+        const count = await MovieModel.countDocuments(query);
+        const movies = await MovieModel
             .find(query)
             .sort(sort)
             .skip((page - 1) * perPage)
