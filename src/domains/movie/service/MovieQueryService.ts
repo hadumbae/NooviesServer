@@ -1,12 +1,11 @@
 import type {Request} from 'express';
 import {type FilterQuery, type SortOrder, Types} from "mongoose";
-import {MovieQueryMatchParamSchema} from "../schema/query/MovieQueryMatchParamSchema.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import {MovieQuerySortParamSchema} from "../schema/query/MovieQuerySortParamSchema.js";
 import type IMovieQueryService from "../interface/service/IMovieQueryService.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import type {MovieQueryRequest} from "../type/requests/MovieQueryRequest.js";
 import {ParsedObjectIdStringSchema} from "../../../shared/schema/strings/ParsedObjectIdStringSchema.js";
+import {MovieQueryFiltersSchema, MovieQuerySortsSchema} from "../schema/query/MovieFilters.schema.js";
 
 export default class MovieQueryService implements IMovieQueryService {
     getIDParam(req: Request): Types.ObjectId {
@@ -22,7 +21,7 @@ export default class MovieQueryService implements IMovieQueryService {
     }
 
     getSortQuery(req: MovieQueryRequest): Record<string, SortOrder> {
-        const {success, data, error} = MovieQuerySortParamSchema.safeParse(req.query);
+        const {success, data, error} = MovieQuerySortsSchema.safeParse(req.query);
 
         if (!success) {
             const message = "Invalid URL Query Params.";
@@ -34,7 +33,7 @@ export default class MovieQueryService implements IMovieQueryService {
     }
 
     getFilterQuery(req: MovieQueryRequest): FilterQuery<any> {
-        const {success, data, error} = MovieQueryMatchParamSchema.safeParse(req.query);
+        const {success, data, error} = MovieQueryFiltersSchema.safeParse(req.query);
 
         if (!success) {
             const message = "Invalid URL Query Params.";

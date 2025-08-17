@@ -1,7 +1,7 @@
-import type IMovie from "../model/IMovie.js";
+import type IMovie from "../model/Movie.interface.js";
 import type IMovieService from "../interface/service/IMovieService.js";
 import type {fetchPaginatedMoviesByQueryParams} from "../interface/service/IMovieService.js";
-import MovieModel from "../model/Movie.js";
+import MovieModel from "../model/Movie.model.js";
 
 export default class MovieService implements IMovieService {
     async fetchPaginatedMoviesByQueryWithData(

@@ -6,8 +6,8 @@
 //  - Fetch Movie
 //  - Fetch Showings
 
-import MovieModel from "../../model/Movie.js";
-import type IMovie from "../../model/IMovie.js";
+import MovieModel from "../../model/Movie.model.js";
+import type IMovie from "../../model/Movie.interface.js";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
 import User from "@models/User.js";

@@ -1,5 +1,5 @@
 import type IShowing from "../IShowing.js";
-import MovieModel from "../../../movie/model/Movie.js";
+import MovieModel from "../../../movie/model/Movie.model.js";
 import type {Query} from "mongoose";
 
 import Showing from "../Showing.js";

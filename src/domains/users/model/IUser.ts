@@ -1,5 +1,5 @@
 import {Types} from "mongoose";
-import type IMovie from "../../movie/model/IMovie.js";
+import type IMovie from "../../movie/model/Movie.interface.js";
 
 export default interface IUser {
     readonly _id: Types.ObjectId;

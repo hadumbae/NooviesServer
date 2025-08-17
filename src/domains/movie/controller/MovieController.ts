@@ -4,7 +4,7 @@ import BaseCRUDController, {
 } from "../../../shared/controller/BaseCRUDController.js";
 
 import type {Request, Response} from "express";
-import type IMovie from "../model/IMovie.js";
+import type IMovie from "../model/Movie.interface.js";
 import MovieImageService from "../service/MovieImageService.js";
 import type IMovieService from "../interface/service/IMovieService.js";
 import type MovieService from "../service/MovieService.js";

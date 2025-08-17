@@ -2,7 +2,7 @@ import {z, ZodType} from "zod";
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {GenreInputSchema} from "../../genre/schema/GenreInputSchema.js";
 import {ShowingSchema} from "../../showing/schema/ShowingSchema.js";
-import type IMovie from "../model/IMovie.js";
+import type IMovie from "../model/Movie.interface.js";
 import {MovieCreditSchema} from "../../movieCredit/schemas/MovieCreditSchema.js";
 import {DateStringSchema} from "../../../shared/schema/date/DateStringSchema.js";
 import {CloudinaryImageObjectSchema} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";

@@ -12,3 +12,5 @@ import {z} from "zod";
 export const ValidURLStringSchema = z
     .string({required_error: "Required.", invalid_type_error: "Must be a valid URL string."})
     .url({message: "Must be a valid URL."});
+
+export type ValidURLString = z.infer<typeof ValidURLStringSchema>;

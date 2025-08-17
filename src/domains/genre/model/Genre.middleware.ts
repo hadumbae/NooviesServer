@@ -1,7 +1,7 @@
 import GenreSchema from "./Genre.schema.js";
 import type IGenre from "./Genre.interface.js";
 import type {HydratedDocument, Query} from "mongoose";
-import MovieModel from "../../movie/model/Movie.js";
+import MovieModel from "../../movie/model/Movie.model.js";
 
 GenreSchema.pre(["find", "findOne", "findOneAndUpdate"], {query: true}, function (this: Query<any, IGenre>, next: () => void): void {
     const hasVirtuals = typeof this._mongooseOptions.lean === "object" && this._mongooseOptions.lean.virtuals === true;

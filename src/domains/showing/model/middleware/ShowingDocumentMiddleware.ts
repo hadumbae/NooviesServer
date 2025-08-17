@@ -1,5 +1,5 @@
 import type IShowing from "../IShowing.js";
-import MovieModel from "../../../movie/model/Movie.js";
+import MovieModel from "../../../movie/model/Movie.model.js";
 import SeatMap from "../../../seatmap/model/SeatMap.js";
 import SeatMapService from "../../../seatmap/service/SeatMapService.js";
 import type {HydratedDocument} from "mongoose";

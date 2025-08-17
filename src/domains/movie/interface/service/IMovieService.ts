@@ -1,11 +1,11 @@
 import type {FilterQuery, SortOrder} from "mongoose";
-import type {MovieQueryParams} from "../../schema/query/MovieQueryMatchParamSchema.js";
-import type IMovie from "../../model/IMovie.js";
+import type IMovie from "../../model/Movie.interface.js";
+import type {MovieQueryFilters} from "../../schema/query/MovieFilters.types.js";
 
 export interface fetchPaginatedMoviesByQueryParams {
     page: number;
     perPage: number;
-    query: FilterQuery<MovieQueryParams>;
+    query: FilterQuery<MovieQueryFilters>;
     sort: Record<string, SortOrder>;
 }
 

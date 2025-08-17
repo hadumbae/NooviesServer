@@ -1,5 +1,5 @@
-import MovieModel from "../model/Movie.js";
-import type IMovie from "../model/IMovie.js";
+import MovieModel from "../model/Movie.model.js";
+import type IMovie from "../model/Movie.interface.js";
 
 import MovieController from "../controller/MovieController.js";
 

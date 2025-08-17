@@ -1,5 +1,5 @@
 import {type Document, Types} from "mongoose";
-import type IMovie from "../../model/IMovie.js";
+import type IMovie from "../../model/Movie.interface.js";
 import type {DeletePosterImageParams, UploadPosterImageParams} from "../../type/services/MovieImageServiceTypes.js";
 
 export interface IMovieImageService {
