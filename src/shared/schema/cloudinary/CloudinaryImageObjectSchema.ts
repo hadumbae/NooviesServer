@@ -1,5 +1,4 @@
-import {z, type ZodType} from "zod";
-import type ICloudinaryImage from "../../model/cloudinary-image/ICloudinaryImage.js";
+import {z} from "zod";
 import {NonNegativeNumberSchema} from "../numbers/NonNegativeNumberSchema.js";
 
 import {PositiveNumberSchema} from "../numbers/PositiveNumberSchema.js";
@@ -7,55 +6,53 @@ import {ValidURLStringSchema} from "../strings/ValidURLStringSchema.js";
 import {RequiredStringSchema} from "../strings/RequiredStringSchema.js";
 
 /**
- * Zod schema defining the expected shape of a Cloudinary image upload response.
+ * Schema representing a Cloudinary image object.
  *
- * Each field is required and validated:
- * - `public_id`, `format`, `resource_type`, `type`, `etag`, `signature` must be non-empty strings.
- * - `secure_url`, `url` must be valid URLs.
- * - `version` must be a finite UNIX number.
- * - `width`, `height`, `bytes` are non-negative numbers (>= 0).
- *
- * @remarks
- * This schema is used both at runtime to validate data and compile-time to enforce
- * the structure through `satisfies ZodType<ICloudinaryImage>`.
- *
- * @example
- * ```ts
- * const result = CloudinaryImageObjectSchema.safeParse(response);
- * if (!result.success) {
- *   console.error(result.error.issues);
- * } else {
- *   const img: CloudinaryImageObject = result.data;
- *   console.log(img.public_id, img.secure_url, img.width);
- * }
- * ```
+ * This schema validates the typical response returned by Cloudinary when
+ * uploading or fetching an image. It ensures that all required properties
+ * are present and have the correct types/constraints.
  */
-const CloudinaryImageObjectRawSchema = z.object({
+export const CloudinaryImageObjectSchema = z.object({
+    /** Public identifier of the image in Cloudinary. */
     public_id: RequiredStringSchema,
+
+    /** Secure HTTPS URL of the image. */
     secure_url: ValidURLStringSchema,
+
+    /** Version number of the image, must be positive. */
     version: PositiveNumberSchema,
+
+    /** Width of the image in pixels, non-negative. */
     width: NonNegativeNumberSchema,
+
+    /** Height of the image in pixels, non-negative. */
     height: NonNegativeNumberSchema,
+
+    /** Format of the image file (e.g., "jpg", "png"). */
     format: RequiredStringSchema,
+
+    /** Resource type, usually "image". */
     resource_type: RequiredStringSchema,
+
+    /** Size of the image file in bytes, non-negative. */
     bytes: NonNegativeNumberSchema,
+
+    /** Type of the image, typically "upload". */
     type: RequiredStringSchema,
+
+    /** ETag provided by Cloudinary for caching/versioning. */
     etag: RequiredStringSchema,
+
+    /** URL of the image (HTTP or HTTPS). */
     url: ValidURLStringSchema,
+
+    /** Signature returned by Cloudinary for validation. */
     signature: RequiredStringSchema,
 });
 
 /**
- * Zod schema statically ensured to match the TypeScript interface `ICloudinaryImage`.
+ * TypeScript type inferred from {@link CloudinaryImageObjectSchema}.
  *
- * Using the TypeScript `satisfies` operator ensures that if the schema shape diverges
- * from `ICloudinaryImage`, a compile-time error is raised.
- */
-export const CloudinaryImageObjectSchema = CloudinaryImageObjectRawSchema satisfies ZodType<ICloudinaryImage>;
-
-/**
- * TypeScript type inferred from `CloudinaryImageObjectSchema`.
- *
- * This type is identical to `ICloudinaryImage`, but derived automatically from the schema.
+ * Represents a fully validated Cloudinary image object.
  */
 export type CloudinaryImageObject = z.infer<typeof CloudinaryImageObjectSchema>;
