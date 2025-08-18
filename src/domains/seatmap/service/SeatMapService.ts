@@ -6,12 +6,12 @@ import SeatMap from "../model/SeatMap.js";
 import Showing from "../../showing/model/Showing.js";
 
 import type {ZSeatMap} from "../schema/SeatMapSchema.js";
-import type {ZMovie} from "../../movie/schema/MovieSchema.js";
 
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
 
 import type ISeatMapService from "./ISeatMapService.js";
 import type {GetShowingSeatMapParams} from "./ISeatMapService.js";
+import type ISeatMap from "../model/ISeatMap.js";
 
 
 export default class SeatMapService implements ISeatMapService {
@@ -39,8 +39,7 @@ export default class SeatMapService implements ISeatMapService {
         const showing = await Showing.findById(showingID).populate("movie");
         if (!showing) throw createHttpError(404, "Showing Not Found.");
 
-        const {theatre, screen, movie} = showing;
-        const {price} = (movie as ZMovie);
+        const {theatre, screen, ticketPrice} = showing;
         const seats = await Seat.find({theatre, screen, isAvailable: true});
 
         if (seats.length === 0) return;
@@ -50,7 +49,7 @@ export default class SeatMapService implements ISeatMapService {
             const document = {
                 isAvailable: true,
                 isReserved: false,
-                price: priceMultiplier * price,
+                price: priceMultiplier * ticketPrice,
                 seat: _id,
                 showing: showingID,
             };
@@ -63,7 +62,7 @@ export default class SeatMapService implements ISeatMapService {
         await Showing.findByIdAndUpdate(showingID, {seating: Object.values(insertedIds)});
     }
 
-    async toggleSeatMapAvailability({seatMapID}: {seatMapID: string}): Promise<ZSeatMap> {
+    async toggleSeatMapAvailability({seatMapID}: {seatMapID: string}): Promise<ISeatMap> {
         const seatMap = await SeatMap.findById(seatMapID);
         if (!seatMap) throw createHttpError(404, "Seat Map not found.");
 

@@ -2,7 +2,6 @@ import type {FilterQuery} from "mongoose";
 import type ISeatMap from "../model/ISeatMap.js";
 import type {PopulatePipelineStages} from "../../../shared/types/mongoose/PopulatePipelineStages.js";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
-import type {ZSeatMap} from "../schema/SeatMapSchema.js";
 
 export interface GetShowingSeatMapParams {
     showingID: string,
@@ -13,7 +12,7 @@ export interface GetShowingSeatMapParams {
 }
 
 export default interface ISeatMapService {
-    getShowingSeatMap(params: GetShowingSeatMapParams): Promise<PaginationReturns<ZSeatMap>>
+    getShowingSeatMap(params: GetShowingSeatMapParams): Promise<PaginationReturns<ISeatMap>>
     createShowingSeatMap(params: {showingID: string}): Promise<void>;
-    toggleSeatMapAvailability(params: {seatMapID: string}): Promise<ZSeatMap>;
+    toggleSeatMapAvailability(params: {seatMapID: string}): Promise<ISeatMap>;
 }
