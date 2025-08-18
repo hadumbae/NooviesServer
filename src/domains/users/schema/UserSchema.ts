@@ -1,6 +1,5 @@
 import {z} from 'zod';
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import {MovieSchema} from "../../movie/schema/MovieSchema.js";
 
 export const UserSchema = z.object({
     name: z
@@ -24,7 +23,7 @@ export const UserSchema = z.object({
             invalid_type_error: "IsAdmin must be a boolean."
         }),
 
-    favourites: z.array(z.union([IDInstance, z.lazy(() => MovieSchema)]))
+    favourites: z.array(IDInstance)
 });
 
 export type ZUser = z.infer<typeof UserSchema>;

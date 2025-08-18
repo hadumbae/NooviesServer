@@ -1,16 +1,15 @@
 import {z} from "zod";
 import {Types} from "mongoose";
 import {MovieCreditBaseSchema} from "./base/MovieCreditBaseSchema.js";
-import {MovieSchema} from "../../movie/schema/MovieSchema.js";
-import {PersonSchema} from "../../person/schema/PersonSchema.js";
 
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
+import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 
 const MovieCreditReadSchema = MovieCreditBaseSchema.extend({
     _id: z.instanceof(Types.ObjectId).readonly(),
-    movie: z.union([z.instanceof(Types.ObjectId), z.lazy(() => MovieSchema)]),
-    person: z.union([z.instanceof(Types.ObjectId), z.lazy(() => PersonSchema)]),
+    movie: IDInstance,
+    person: IDInstance,
 });
 
 const CrewSchema = MovieCreditReadSchema.extend({

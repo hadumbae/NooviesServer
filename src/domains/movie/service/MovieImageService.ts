@@ -3,12 +3,8 @@ import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
 import MovieModel from "../model/Movie.model.js";
 import {type Document, Types} from "mongoose";
 import type IMovie from "../model/Movie.interface.js";
-import type {ZMovie} from "../schema/MovieSchema.js";
 import type {IMovieImageService} from "../interface/service/IMovieImageService.js";
-import type {
-    DeletePosterImageParams,
-    UploadPosterImageParams
-} from "../type/services/MovieImageServiceTypes.js";
+import type {DeletePosterImageParams, UploadPosterImageParams} from "../type/services/MovieImageServiceTypes.js";
 
 export default class MovieImageService implements IMovieImageService {
     private cloudinaryUtils: CloudinaryUtils;
@@ -23,7 +19,7 @@ export default class MovieImageService implements IMovieImageService {
         return movie;
     }
 
-    async updateMoviePosterImage(params: UploadPosterImageParams): Promise<ZMovie> {
+    async updateMoviePosterImage(params: UploadPosterImageParams): Promise<IMovie> {
         const {movieID, image} = params;
         const movie = await this.fetchMovie(movieID);
 
@@ -37,7 +33,7 @@ export default class MovieImageService implements IMovieImageService {
         return movie;
     }
 
-    async deleteMoviePosterImage(params: DeletePosterImageParams): Promise<ZMovie> {
+    async deleteMoviePosterImage(params: DeletePosterImageParams): Promise<IMovie> {
         const {movieID} = params;
         const movie = await this.fetchMovie(movieID);
 
