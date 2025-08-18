@@ -1,12 +1,11 @@
-import {z, type ZodType} from 'zod';
+import {z} from 'zod';
 import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
-import type {IPerson} from "../interfaces/IPerson.js";
 import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
-import {DateStringSchema} from "../../../shared/schema/date/DateStringSchema.js";
+import {DateStringSchema} from "../../../shared/schema/date/DateString.schema.js";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 import {CloudinaryImageObjectSchema} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
 
-export const PersonSchema: ZodType<IPerson> = z.object({
+export const PersonSchema = z.object({
     _id: IDInstance.readonly(),
 
     name: RequiredStringSchema

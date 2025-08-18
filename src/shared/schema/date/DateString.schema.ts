@@ -4,10 +4,10 @@ import {isValid, parse} from "date-fns";
 /**
  * Schema for date strings in the format `YYYY-MM-DD`.
  *
- * Validates that the input is:
- * 1. A string
+ * Validates that the input:
+ * 1. Is a string
  * 2. Matches the `YYYY-MM-DD` regex
- * 3. Represents a real calendar date (e.g. no February 30th)
+ * 3. Represents a real calendar date (e.g., no February 30th)
  *
  * @example
  * DateStringSchema.parse("2023-04-15"); // ✅ pass
@@ -20,9 +20,17 @@ export const DateStringSchema = z
     .refine(val => isValid(parse(val, "yyyy-MM-dd", new Date())), {message: "Must be a valid YYYY-MM-DD date."});
 
 /**
- * Type representing a valid date string in the "YYYY-MM-DD" format.
+ * Schema that transforms a valid `YYYY-MM-DD` string into a UTC `Date` object.
  *
- * Inferred from {@link DateStringSchema}. Does not guarantee calendar validity,
- * only that the string conforms to the expected format.
+ * Validates using {@link DateStringSchema}, then converts the string
+ * to a `Date` object in UTC timezone.
+ *
+ * @example
+ * UTCDateStringSchema.parse("2023-04-15"); // ✅ returns new Date('2023-04-15T00:00:00Z')
  */
-export type DateString = z.infer<typeof DateStringSchema>;
+export const UTCDateStringSchema = DateStringSchema
+    .transform(dateString => {
+        const [year, month, date] = dateString.split("-").map(Number);
+        return new Date(Date.UTC(year, month - 1, date));
+    });
+
