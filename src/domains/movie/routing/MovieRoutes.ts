@@ -2,7 +2,7 @@ import MovieServiceProvider from "../provider/MovieServiceProvider.js";
 import {createBaseRoutes, type IBaseRoutesConfig} from "../../../shared/routing/BaseRoutes.js";
 import type {IMovieController} from "../controller/MovieController.js";
 import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
-import {MovieSubmitSchema} from "../schema/MovieSubmitSchema.js";
+import {MovieInputSchema} from "../schema/MovieInputSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import {uploadImage} from "@config/image-multr.js";
 import hasPosterImage from "../middleware/hasPosterImage.js";
@@ -12,8 +12,8 @@ const {crudController} = MovieServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IMovieController> = {
     crudController: crudController,
-    createValidator: ZodAsyncValidator(MovieSubmitSchema),
-    updateValidator: ZodAsyncValidator(MovieSubmitSchema),
+    createValidator: ZodAsyncValidator(MovieInputSchema),
+    updateValidator: ZodAsyncValidator(MovieInputSchema),
 };
 
 const routes = createBaseRoutes(baseConfig);
