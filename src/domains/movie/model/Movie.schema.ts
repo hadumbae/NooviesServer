@@ -20,11 +20,13 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
      * The main title of the movie.
      * @type {string}
      * @required
+     * @minLength 1
      * @maxLength 250
      * @trim Removes leading/trailing whitespace.
      */
     title: {
         type: String,
+        minlength: [1, "Must not be an empty string."],
         maxlength: [250, "Must be 250 characters or less."],
         trim: true,
         required: [true, "Required."],
@@ -34,11 +36,13 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
      * The original title of the movie (often in the original language).
      * @type {string}
      * @required
+     * @minLength 1
      * @maxLength 250
      * @trim Removes leading/trailing whitespace.
      */
     originalTitle: {
         type: String,
+        minlength: [1, "Must not be an empty string."],
         maxlength: [250, "Must be 250 characters or less."],
         trim: true,
         required: [true, "Required."],
@@ -53,6 +57,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     tagline: {
         type: String,
         trim: true,
+        minlength: [1, "Must not be an empty string."],
         maxlength: [100, "Must be 100 characters or less."],
     },
 
@@ -66,6 +71,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     synopsis: {
         type: String,
         trim: true,
+        minlength: [1, "Must be at least 1 character."],
         maxlength: [2000, "Must be 2000 characters or less."],
         required: [true, "Synopsis is required."],
     },
@@ -223,7 +229,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
         type: Boolean,
         default: true,
     },
-}, {timestamps: true});
+}, {timestamps: {createdAt: "createdAt", updatedAt: "updatedAt"}});
 
 /**
  * Indexes for faster queries.
