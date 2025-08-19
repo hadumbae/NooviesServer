@@ -8,7 +8,7 @@ export type UploadPersonProfileImageParams = {
     /**
      * The MongoDB ObjectId of the person whose profile image is being uploaded.
      */
-    personID: Types.ObjectId;
+    personId: Types.ObjectId;
 
     /**
      * The image file to upload. Expected to be a Multer-parsed file.
@@ -23,5 +23,5 @@ export type RemovePersonProfileImageParams = {
     /**
      * The MongoDB ObjectId of the person whose profile image is to be deleted.
      */
-    personID: Types.ObjectId;
+    personId: Types.ObjectId;
 };

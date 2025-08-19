@@ -1,6 +1,5 @@
 import {type Document, Types} from "mongoose";
 import type {IPerson} from "../../interfaces/IPerson.js";
-import type {ZPerson} from "../../schema/PersonSchema.js";
 import type {
     RemovePersonProfileImageParams,
     UploadPersonProfileImageParams
@@ -26,15 +25,15 @@ export interface IPersonImageService {
      * Deletes any existing image before uploading a new one.
      *
      * @param params - The parameters including the person ID and image file.
-     * @returns A promise resolving to the updated person object.
+     * @returns A promise resolving to the updated person document.
      */
-    updateProfileImage(params: UploadPersonProfileImageParams): Promise<ZPerson>;
+    updateProfileImage(params: UploadPersonProfileImageParams): Promise<IPerson & Document>;
 
     /**
      * Deletes a person's existing profile image, if one exists.
      *
      * @param params - The parameters including the person ID.
-     * @returns A promise resolving to the updated person object with no image.
+     * @returns A promise resolving to the updated person document with no image.
      */
-    deleteProfileImage(params: RemovePersonProfileImageParams): Promise<ZPerson>;
+    deleteProfileImage(params: RemovePersonProfileImageParams): Promise<IPerson & Document>;
 }
