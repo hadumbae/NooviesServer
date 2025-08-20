@@ -2,7 +2,7 @@ import {createBaseRoutes, type IBaseRoutesConfig} from "../../../shared/routing/
 import type {IPersonController} from "../controller/PersonController.js";
 import PersonServiceProvider from "../provider/PersonServiceProvider.js";
 import ZodValidator from "../../../shared/utility/zod/validateZodSchema.js";
-import {PersonSubmitSchema} from "../schema/PersonSubmitSchema.js";
+import {PersonInputSchema} from "../schema/PersonInputSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import {uploadImage} from "@config/image-multr.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
@@ -12,8 +12,8 @@ const { controller } = PersonServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IPersonController> = {
     crudController: controller,
-    createValidator: ZodValidator(PersonSubmitSchema),
-    updateValidator: ZodValidator(PersonSubmitSchema),
+    createValidator: ZodValidator(PersonInputSchema),
+    updateValidator: ZodValidator(PersonInputSchema),
 };
 
 const routes = createBaseRoutes(baseConfig);
