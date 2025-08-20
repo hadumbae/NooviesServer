@@ -1,16 +1,20 @@
 import type {Request} from "express";
-import {type PersonQueryParams, PersonQueryParamsSchema} from "../schema/query/PersonQueryParamsSchema.js";
+import {PersonQueryFiltersSchema} from "../schema/query/PersonFilters.schema.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
-import {type FilterQuery} from "mongoose";
+import {type FilterQuery, type SortOrder} from "mongoose";
+import type {PersonQueryFilters, PersonQueryOptions} from "../schema/query/PersonFilters.types.js";
+import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import type {IPerson} from "../interfaces/IPerson.js";
 
 interface IPersonQueryService {
-    fetchQueryParams: (req: Request) => PersonQueryParams;
-    generateMatchFilters: (queries: PersonQueryParams) => FilterQuery<PersonQueryParams>;
+    fetchQueryParams: (req: Request) => PersonQueryOptions;
+    generateQueryFilters: (queries: PersonQueryOptions) => FilterQuery<PersonQueryFilters>;
+    generateQuerySorts: (queries: PersonQueryOptions) => Partial<Record<keyof IPerson, SortOrder>>;
 }
 
 export default class PersonQueryService implements IPersonQueryService {
-    fetchQueryParams(req: Request): PersonQueryParams {
-        const {success, data, error} = PersonQueryParamsSchema.safeParse(req.query);
+    fetchQueryParams(req: Request): PersonQueryFilters {
+        const {success, data, error} = PersonQueryFiltersSchema.safeParse(req.query);
 
         if (!success) {
             const message = "Invalid Query Parameters.";
@@ -20,14 +24,21 @@ export default class PersonQueryService implements IPersonQueryService {
         return data;
     }
 
-    generateMatchFilters(queries: PersonQueryParams): FilterQuery<PersonQueryParams> {
-        const {name, ...matchQueries} = queries;
-        const filters: Record<string, any> = matchQueries;
+    generateQueryFilters(queries: PersonQueryOptions): FilterQuery<PersonQueryFilters> {
+        const {_id, name, nationality, ...sortQueries} = queries;
 
-        if (name) {
-            filters["name"] = {$regex: name, $options: "i"};
-        }
+        const filters = {
+            _id,
+            nationality,
+            ...(name && {name: {$regex: name, $options: "i"}}),
+        };
 
-        return filters satisfies FilterQuery<PersonQueryParams>;
+        return filterNullArray(filters);
+    }
+
+    generateQuerySorts(queries: PersonQueryOptions): Partial<Record<keyof IPerson, SortOrder>> {
+        const {sortByName, sortByNationality, ...matchQueries} = queries;
+        const sorts = {name: sortByName, nationality: sortByNationality};
+        return filterNullArray(sorts);
     }
 }

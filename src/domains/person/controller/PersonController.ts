@@ -34,7 +34,7 @@ export default class PersonController extends BaseCRUDController<IPerson> implem
 
     fetchURLMatchFilters(req: Request): FilterQuery<PersonQueryFilters> {
         const queryParams = this.queryService.fetchQueryParams(req);
-        return this.queryService.generateMatchFilters(queryParams);
+        return this.queryService.generateQueryFilters(queryParams);
     }
 
     async updateProfileImage(req: Request, res: Response): Promise<Response> {
