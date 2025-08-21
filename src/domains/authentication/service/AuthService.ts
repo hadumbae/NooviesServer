@@ -1,4 +1,3 @@
-import type {ZUser} from "../../users/schema/UserSchema.js";
 import {safeParse} from "../../../shared/utility/zod/ZodParsers.js";
 import {type UserRegisterData, UserRegisterSubmitSchema} from "../schema/UserRegisterSubmitSchema.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
@@ -9,26 +8,18 @@ import createHttpError from "http-errors";
 import {z, type ZodIssue} from "zod";
 import jwt from "jsonwebtoken";
 import type {UserCredentials} from "../types/UserCredentials.js";
+import type IUser from "@models/IUser.js";
 
 export interface IAuthService {
     login(params: { email: string, password: string }): Promise<UserCredentials>;
 
-    register(params: UserRegisterData): Promise<ZUser>;
+    register(params: UserRegisterData): Promise<IUser>;
 
-    toggleAdmin(params: { userID: Types.ObjectId | string }): Promise<ZUser>;
+    toggleAdmin(params: { userID: Types.ObjectId | string }): Promise<IUser>;
 }
 
-// Admin Account Credentials
-// john@doe.com
-// K&]B94U32P'L+h$<~n>&N7*'
-
-// Client Account Credentials
-// bane@doe.com
-// D^iR8_{n$`jZ:>9qK:=$E/4u+=N0$?2L
-// 6'Q7a0)7,M_j£$JHA)\7Tq[1!0RehgHQ
-
 export default class AuthService implements IAuthService {
-    async register(params: UserRegisterData): Promise<ZUser> {
+    async register(params: UserRegisterData): Promise<IUser> {
         const data = this.validateUserRegisterData(params);
         const {name, email, password} = data!;
 
@@ -63,7 +54,7 @@ export default class AuthService implements IAuthService {
         return {...tokenData, token};
     }
 
-    async toggleAdmin({userID}: { userID: Types.ObjectId | string }): Promise<ZUser> {
+    async toggleAdmin({userID}: { userID: Types.ObjectId | string }): Promise<IUser> {
         const user = await User.findById(userID);
         if (!user) throw createHttpError(404, "User not found!");
 
