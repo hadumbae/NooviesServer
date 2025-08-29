@@ -65,7 +65,7 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
 
     async create(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
-        const data = req.body;
+        const data = req.validatedBody;
 
         const item = await this.repository.create({data, populate, virtuals});
 
