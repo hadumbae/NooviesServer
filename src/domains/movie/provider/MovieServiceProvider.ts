@@ -20,9 +20,6 @@ export default class MovieServiceProvider {
         const model = MovieModel;
         const populateRefs: PopulatePath[] = [
             {path: "genres"},
-            {path: "showings"},
-            {path: "crew", populate: {path: "person"}},
-            {path: "cast", populate: {path: "person"}},
         ];
 
         const queryUtils = QueryUtils;

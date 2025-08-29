@@ -2,42 +2,36 @@ import {MovieSchema} from "./Movie.schema.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 /**
- * Virtual property `cast` for the Movie schema.
+ * Virtual field `showingCount` for the Movie model.
  *
  * @remarks
- * Populates the cast members (actors) associated with this movie.
- * Uses the `MovieCredit` collection where `roleType` is `"CAST"`.
- * This virtual returns an array of all matching credits.
- */
-MovieSchema.virtual("cast", {
-    ref: "MovieCredit",
-    localField: "_id",
-    foreignField: "movie",
-    justOne: false,
-    match: { roleType: "CAST" },
-});
-
-/**
- * Virtual property `crew` for the Movie schema.
+ * This virtual calculates the number of Showings associated with a movie.
+ * It does not store data in the database but can be populated in queries.
  *
- * @remarks
- * Populates the crew members (directors, producers, etc.) associated with this movie.
- * Uses the `MovieCredit` collection where `roleType` is `"CREW"`.
- * This virtual returns an array of all matching credits.
+ * @example
+ * ```ts
+ * const movie = await Movie.findById(movieId).lean({ virtuals: true });
+ * console.log(movie.showingCount); // Number of showings
+ * ```
  */
-MovieSchema.virtual("crew", {
-    ref: "MovieCredit",
+MovieSchema.virtual("showingCount", {
+    ref: "Showing",
     localField: "_id",
     foreignField: "movie",
-    justOne: false,
-    match: { roleType: "CREW" },
+    count: true,
 });
 
 /**
  * Mongoose plugin to enable lean queries to populate virtuals.
  *
  * @remarks
- * Applying `mongoose-lean-virtuals` ensures that `lean()` queries
- * include virtual fields like `cast` and `crew`.
+ * Applying `mongoose-lean-virtuals` ensures that calling `lean({ virtuals: true })`
+ * on queries includes virtual fields like `showingCount` in the result.
+ *
+ * @example
+ * ```ts
+ * const movies = await Movie.find().lean({ virtuals: true });
+ * console.log(movies[0].showingCount);
+ * ```
  */
 MovieSchema.plugin(mongooseLeanVirtuals);

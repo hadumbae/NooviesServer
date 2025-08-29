@@ -5,6 +5,32 @@ import Showing from "../../showing/model/Showing.js";
 import User from "@models/User.js";
 
 /**
+ * Pre 'find', 'findOne', and 'findOneAndUpdate' middleware for Movie queries.
+ *
+ * @remarks
+ * This hook is triggered before executing a query that retrieves movie documents.
+ * If the query is executed with `lean({ virtuals: true })`, it automatically
+ * populates the `showingCount` virtual field so that the resulting documents
+ * include the number of associated showings.
+ *
+ * @param this - The query object being executed (`find`, `findOne`, or `findOneAndUpdate`).
+ * @param next - Callback to proceed with query execution.
+ */
+MovieSchema.pre(
+    ["find", "findOne", "findOneAndUpdate"],
+    {query: true},
+    async function (this: Query<any, IMovie>, next: () => void): Promise<void> {
+        const hasVirtuals = typeof this._mongooseOptions.lean === "object" && this._mongooseOptions.lean.virtuals === true;
+
+        if (hasVirtuals) {
+            this.populate([
+                {path: "showingCount"}
+            ]);
+        }
+    }
+);
+
+/**
  * Pre 'deleteOne' middleware for Movie documents.
  *
  * @remarks
@@ -15,13 +41,13 @@ import User from "@models/User.js";
  */
 MovieSchema.pre(
     "deleteOne",
-    { document: true, query: false },
+    {document: true, query: false},
     async function (this: HydratedDocument<IMovie>) {
-        const { _id } = this;
+        const {_id} = this;
         (this as any)._wasUpdated = true;
 
         // Remove all showings associated with this movie
-        await Showing.deleteMany({ movie: _id });
+        await Showing.deleteMany({movie: _id});
     }
 );
 
@@ -39,15 +65,15 @@ MovieSchema.pre(
  */
 MovieSchema.pre(
     ["deleteOne", "deleteMany"],
-    { document: false, query: true },
+    {document: false, query: true},
     async function (this: Query<any, IMovie>) {
-        const { _id } = this.getFilter();
+        const {_id} = this.getFilter();
         if (!_id) return;
 
         // Remove movie from user favourites and delete related showings
         await Promise.all([
-            User.updateMany({ favourites: _id }, { $pull: { favourites: _id } }),
-            Showing.deleteMany({ movie: _id }),
+            User.updateMany({favourites: _id}, {$pull: {favourites: _id}}),
+            Showing.deleteMany({movie: _id}),
         ]);
     }
 );
