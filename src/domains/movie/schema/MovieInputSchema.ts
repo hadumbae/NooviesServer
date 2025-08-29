@@ -1,5 +1,4 @@
 import {z} from "zod";
-import {IDInstance} from "../../../shared/schema/helpers/ZodInstanceHelpers.js";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 import {UTCDateStringSchema} from "../../../shared/schema/date/DateString.schema.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
@@ -9,6 +8,7 @@ import {ISO6391CodeEnumSchema} from "../../../shared/schema/enums/language/ISO63
 import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
 import {isMulterFile} from "../../../shared/utility/zod/TypeChecks.js";
 import ImageTypeConstant from "../../../shared/constants/ImageTypeConstant.js";
+import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
 
 /**
  * Schema describing the expected input for creating or updating a movie entity.
@@ -58,7 +58,7 @@ export const MovieInputSchema = z.object({
      * - Required
      * - Each item must be a valid `IDInstance`
      */
-    genres: z.array(IDInstance, {
+    genres: z.array(ObjectIdStringSchema, {
         required_error: "Required.",
         invalid_type_error: "Must be an array of IDs.",
     }),
