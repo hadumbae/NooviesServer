@@ -10,7 +10,7 @@ import type {
 
 interface IBaseRepositoryConstructor<TSchema> {
     model: Model<TSchema>;
-    populateRefs: PopulatePath[];
+    populateRefs?: PopulatePath[];
 }
 
 export default class BaseRepository<TSchema extends Record<string, any>> implements IBaseRepository<TSchema> {
