@@ -1,13 +1,14 @@
 import type {Request, Response} from "express";
 
-import BaseCRUDController, {
-    type IBaseCRUDController,
-    type IBaseCRUDControllerConstructor
-} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 
 import type ISeatMap from "../model/ISeatMap.js";
 import type {ISeatMapQueryService} from "../service/SeatMapQueryService.js";
 import type ISeatMapService from "../service/ISeatMapService.js";
+import type {
+    IBaseCRUDController,
+    IBaseCRUDControllerConstructor
+} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
 export interface ISeatMapControllerConstructor extends IBaseCRUDControllerConstructor<ISeatMap> {
     service: ISeatMapService;

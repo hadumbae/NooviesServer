@@ -1,12 +1,13 @@
-import BaseCRUDController, {
-    type IBaseCRUDController,
-    type IBaseCRUDControllerConstructor
-} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type IShowing from "../model/IShowing.js";
 import type {Request, Response} from "express";
 import type {IShowingSeatingService} from "../service/ShowingSeatingService.js";
 import type {IShowingQueryService} from "../service/ShowingQueryService.js";
 import type {ShowingSeatQuery} from "../schema/query/ShowingSeatQuerySchema.js";
+import type {
+    IBaseCRUDController,
+    IBaseCRUDControllerConstructor
+} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
 export interface IShowingController extends IBaseCRUDController {
 }

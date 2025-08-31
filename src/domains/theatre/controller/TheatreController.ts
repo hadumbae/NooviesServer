@@ -1,12 +1,13 @@
-import BaseCRUDController, {
-    type IBaseCRUDController,
-    type IBaseCRUDControllerConstructor
-} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type ITheatre from "../model/ITheatre.js";
 import type TheatreQueryOptionService from "../services/query/option-service/TheatreQueryOptionService.js";
 import type {FilterQuery} from "mongoose";
 import type {Request} from "express";
 import type {TheatreMatchFilters} from "../schema/query/TheatreQueryOptions.types.js";
+import type {
+    IBaseCRUDController,
+    IBaseCRUDControllerConstructor
+} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
 export interface ITheatreController extends IBaseCRUDController {
 }

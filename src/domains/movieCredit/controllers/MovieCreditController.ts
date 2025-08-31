@@ -1,11 +1,12 @@
 import type {Request, Response} from "express";
-import BaseCRUDController, {
-    type IBaseCRUDController,
-    type IBaseCRUDControllerConstructor
-} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type {IMovieCredit} from "../models/IMovieCredit.js";
 import type MovieCreditQueryService from "../services/MovieCreditQueryService.js";
 import type MovieCreditService from "../services/MovieCreditService.js";
+import type {
+    IBaseCRUDController,
+    IBaseCRUDControllerConstructor
+} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
 export interface IMovieCreditControllerConstructor extends IBaseCRUDControllerConstructor<IMovieCredit> {
     service: MovieCreditService;

@@ -1,7 +1,4 @@
-import BaseCRUDController, {
-    type IBaseCRUDController,
-    type IBaseCRUDControllerConstructor
-} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type {IScreen} from "../interface/IScreen.js";
 import type {Request, Response} from "express";
 import ScreenQueryService from "../service/ScreenQueryService.js";
@@ -9,6 +6,10 @@ import ScreenService from "../service/ScreenService.js";
 import type {FilterQuery} from "mongoose";
 import type ScreenSeatService from "../service/screen-seat-service/ScreenSeatService.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import type {
+    IBaseCRUDController,
+    IBaseCRUDControllerConstructor
+} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
 export interface IScreenController extends IBaseCRUDController {
     getScreensByTheatre(req: Request, res: Response): Promise<Response>;

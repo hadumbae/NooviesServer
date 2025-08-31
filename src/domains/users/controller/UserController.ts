@@ -1,11 +1,12 @@
 import type {Request, Response} from "express";
-import BaseCRUDController, {
-    type IBaseCRUDController,
-    type IBaseCRUDControllerConstructor
-} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type IUser from "../model/IUser.js";
 import type UserService from "../service/UserService.js";
 import createHttpError from "http-errors";
+import type {
+    IBaseCRUDController,
+    IBaseCRUDControllerConstructor
+} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
 export interface IUserControllerConstructor extends IBaseCRUDControllerConstructor<IUser> {
     service: UserService;

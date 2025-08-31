@@ -1,13 +1,14 @@
-import BaseCRUDController, {
-    type IBaseCRUDController,
-    type IBaseCRUDControllerConstructor
-} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type IGenre from "../model/Genre.interface.js";
 import GenreService from "../service/GenreService.js";
 import type {Request, Response} from "express";
 import type GenreQueryOptionService from "../service/GenreQueryOptionService.js";
 import type {FilterQuery} from "mongoose";
 import type {GenreQueryFilters} from "../schema/options/GenreFilters.types.js";
+import type {
+    IBaseCRUDController,
+    IBaseCRUDControllerConstructor
+} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
 export interface IGenreController extends IBaseCRUDController {
 }

@@ -1,7 +1,4 @@
-import BaseCRUDController, {
-    type IBaseCRUDController,
-    type IBaseCRUDControllerConstructor
-} from "../../../shared/controller/BaseCRUDController.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type {IPerson} from "../interfaces/IPerson.js";
 import type PersonQueryService from "../services/PersonQueryService.js";
 import type {Request, Response} from "express";
@@ -9,6 +6,10 @@ import type {FilterQuery} from "mongoose";
 import type PersonImageService from "../services/image-service/PersonImageService.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
 import type {PersonQueryFilters} from "../schema/query/PersonFilters.types.js";
+import type {
+    IBaseCRUDController,
+    IBaseCRUDControllerConstructor
+} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
 interface IPersonControllerConstructor extends IBaseCRUDControllerConstructor<IPerson> {
     queryService: PersonQueryService,
