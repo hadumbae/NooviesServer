@@ -17,7 +17,7 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
      * @param model - The Mongoose model to query.
      * @param populateRefs - Default population paths for `.find()` queries.
      */
-    constructor({model, populateRefs}: { model: Model<TSchema>, populateRefs: PopulatePath[] }) {
+    constructor({model, populateRefs = []}: { model: Model<TSchema>, populateRefs?: PopulatePath[] }) {
         this._model = model;
         this._populateRefs = populateRefs;
     }
