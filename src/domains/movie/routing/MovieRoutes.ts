@@ -19,9 +19,9 @@ const baseConfig: IBaseRoutesConfig<IMovieController> = {
 const routes = createBaseRoutes(baseConfig);
 
 routes.get(
-    '/query/populated',
+    '/query/paginated-with-recent-showings',
     [isAuth],
-    asyncHandler(crudController.fetchMoviesByQueryWithData.bind(crudController)),
+    asyncHandler(crudController.fetchPaginatedMoviesWithRecentShowings.bind(crudController)),
 );
 
 routes.patch(
