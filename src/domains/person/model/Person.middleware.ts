@@ -1,7 +1,7 @@
 import {PersonSchema} from "./Person.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import type {IPerson} from "../interfaces/IPerson.js";
-import MovieCredit from "../../movieCredit/models/MovieCredit.js";
+import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
 
 PersonSchema.pre(["find", "findOne", "findOneAndUpdate"], {query: true}, function (
     this: Query<any, IPerson>, next: () => void

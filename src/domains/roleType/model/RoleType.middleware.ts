@@ -1,7 +1,7 @@
 import {RoleTypeSchema} from "./RoleType.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import type IRoleType from "./RoleType.interface.js";
-import MovieCredit from "../../movieCredit/models/MovieCredit.js";
+import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
 
 /**
  * Pre-hook for `find`, `findOne`, and `findOneAndUpdate` queries.
