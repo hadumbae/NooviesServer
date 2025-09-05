@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
 import {RoleTypeDepartmentEnumSchema} from "../RoleTypeDepartment.enum.js";
-import {MongooseSortOrderSchema} from "../../../../shared/schema/mongoose/MongooseSortOrderSchema.js";
+import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
 
 /**
  * Schema for filtering RoleType queries.
@@ -21,8 +21,8 @@ export const RoleTypeQueryFiltersSchema = z.object({
  * @property sortByDepartment - Optional. Defines the sort order (`1` for ascending, `-1` for descending) of departments.
  */
 export const RoleTypeQuerySortsSchema = z.object({
-    sortByRoleName: MongooseSortOrderSchema.optional(),
-    sortByDepartment: MongooseSortOrderSchema.optional(),
+    sortByRoleName: URLParamMongooseSortOrderSchema,
+    sortByDepartment: URLParamMongooseSortOrderSchema,
 });
 
 /**

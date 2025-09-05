@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
-import {MongooseSortOrderSchema} from "../../../../shared/schema/mongoose/MongooseSortOrderSchema.js";
+import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
 
 /**
  * Schema for filtering genres by query parameters.
@@ -25,7 +25,7 @@ export const GenreQueryFiltersSchema = z.object({
  */
 export const GenreQuerySortsSchema = z.object({
     /** Sort order for the `name` field (ascending or descending). */
-    sortByName: MongooseSortOrderSchema.optional(),
+    sortByName: URLParamMongooseSortOrderSchema,
 });
 
 /**

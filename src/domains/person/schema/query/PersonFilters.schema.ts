@@ -2,7 +2,7 @@ import {z} from "zod";
 import {ISO3166Alpha2CodeEnumSchema} from "../../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
 import {URLParamRegexStringSchema} from "../../../../shared/schema/url/URLParamRegexStringSchema.js";
 import {URLParamObjectIDSchema} from "../../../../shared/schema/url/URLParamObjectIDSchema.js";
-import {MongooseSortOrderSchema} from "../../../../shared/schema/mongoose/MongooseSortOrderSchema.js";
+import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
 
 /**
  * Schema for filtering Person documents in queries.
@@ -24,8 +24,8 @@ export const PersonQueryFiltersSchema = z.object({
  * @property sortByNationality - Optional sort order for the nationality field. Uses Mongoose sort order ('asc' or 'desc').
  */
 export const PersonQuerySortsSchema = z.object({
-    sortByName: MongooseSortOrderSchema.optional(),
-    sortByNationality: MongooseSortOrderSchema.optional(),
+    sortByName: URLParamMongooseSortOrderSchema,
+    sortByNationality: URLParamMongooseSortOrderSchema,
 });
 
 /**
