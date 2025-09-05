@@ -1,4 +1,4 @@
-import type {AggregateQueryParams} from "./AggregateQueryServiceTypes.js";
+import type {AggregateQueryParams} from "./AggregateQueryService.types.js";
 
 /**
  * Interface defining the contract for an aggregation query service.

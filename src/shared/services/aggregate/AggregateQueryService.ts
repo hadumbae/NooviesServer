@@ -1,4 +1,4 @@
-import type {AggregateCountParams, AggregateQueryParams, AggregateQueryResults} from "./AggregateQueryServiceTypes.js";
+import type {AggregateCountParams, AggregateQueryParams, AggregateQueryResults} from "./AggregateQueryService.types.js";
 import type {Model, PipelineStage} from "mongoose";
 import type {PopulatePath} from "../../types/PopulatePath.js";
 import type IAggregateQueryService from "./IAggregateQueryService.js";
@@ -23,14 +23,14 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
     }
 
     /**
-     * Chooses between `.aggregate()` and `.find()` based on the presence of `populateFilters`.
+     * Chooses between `.aggregate()` and `.find()` based on the presence of `referenceFilters`.
      *
      * @param params - Query parameters including filters, population, and pagination.
      * @returns Aggregated or standard query results.
      */
     async query<TResult = any>(params: AggregateQueryParams): Promise<AggregateQueryResults<TResult>> {
-        const {populateFilters, populatePipelines} = params;
-        const useAggregate = populateFilters?.length || populatePipelines?.length;
+        const {referenceFilters, populationPipelines} = params;
+        const useAggregate = referenceFilters?.length || populationPipelines?.length;
         return useAggregate ? this.aggregate(params) : this.find(params);
     }
 
@@ -79,28 +79,27 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
      */
     async aggregate<TResult = any>(params: AggregateQueryParams): Promise<AggregateQueryResults<TResult>> {
         const {
-            matchFilters = {},
-            populateFilters = [],
+            matchFilters,
+            referenceFilters,
             limit,
             paginated,
-            populatePipelines = [],
+            populationPipelines = [],
             populate,
         } = params;
 
         const pipeline: PipelineStage[] = [];
 
-        pipeline.push({$match: matchFilters});
-        pipeline.push(...populateFilters);
+        if (matchFilters) pipeline.push({$match: matchFilters});
+        if (referenceFilters) pipeline.push(...referenceFilters);
 
         if (paginated) {
             const {page, perPage} = params;
-
             pipeline.push({$skip: (page - 1) * perPage});
             pipeline.push({$limit: perPage});
         }
 
         if (!paginated && typeof limit === "number") pipeline.push({$limit: limit});
-        if (populate) pipeline.push(...populatePipelines);
+        if (populate) pipeline.push(...populationPipelines);
 
         if (paginated) {
             return {
@@ -119,12 +118,12 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
      * @returns The number of matching documents.
      */
     async count(params: AggregateCountParams): Promise<number> {
-        const {matchFilters, populateFilters} = params;
+        const {matchFilters, referenceFilters} = params;
 
         const pipeline: PipelineStage[] = [];
 
         if (matchFilters) pipeline.push({$match: matchFilters});
-        if (populateFilters) pipeline.push(...populateFilters);
+        if (referenceFilters) pipeline.push(...referenceFilters);
         pipeline.push({$count: "docCount"});
 
         const aggregate = await this._model.aggregate(pipeline);

@@ -8,7 +8,7 @@ import type {
     ReferenceFilterPipelineStages
 } from "../../types/mongoose/AggregatePipelineStages.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
-import type {AggregateQueryParams} from "../../services/aggregate/AggregateQueryServiceTypes.js";
+import type {AggregateQueryParams} from "../../services/aggregate/AggregateQueryService.types.js";
 import type {IBaseCRUDController, IBaseCRUDControllerConstructor} from "./BaseCRUDController.types.js";
 
 /**
@@ -20,8 +20,7 @@ import type {IBaseCRUDController, IBaseCRUDControllerConstructor} from "./BaseCR
  */
 export default class BaseCRUDController<TSchema extends Record<string, any>, TMatchFilters = any>
     extends BaseController
-    implements IBaseCRUDController<TSchema, TMatchFilters>
-{
+    implements IBaseCRUDController<TSchema, TMatchFilters> {
     /** Repository instance for database interaction. */
     protected readonly repository: BaseRepository<TSchema>;
 
@@ -50,10 +49,10 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A response containing the list of items.
      */
     async all(req: Request, res: Response): Promise<Response> {
-        const { populate, virtuals, limit } =
+        const {populate, virtuals, limit} =
             this.queryUtils.fetchOptionsFromQuery(req);
 
-        const items = await this.repository.find({ populate, virtuals, limit });
+        const items = await this.repository.find({populate, virtuals, limit});
         return res.status(200).json(items);
     }
 
@@ -65,8 +64,8 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A response containing total item count and paginated items.
      */
     async paginated(req: Request, res: Response): Promise<Response> {
-        const { populate, virtuals } = this.queryUtils.fetchOptionsFromQuery(req);
-        const { page, perPage } = this.queryUtils.fetchPaginationFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
+        const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
 
         const totalItems = await this.repository.count();
         const items = await this.repository.paginate({
@@ -76,7 +75,7 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
             virtuals,
         });
 
-        return res.status(200).json({ totalItems, items });
+        return res.status(200).json({totalItems, items});
     }
 
     /**
@@ -87,10 +86,10 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A response containing the created item.
      */
     async create(req: Request, res: Response): Promise<Response> {
-        const { populate, virtuals } = this.queryUtils.fetchOptionsFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const data = req.validatedBody;
 
-        const item = await this.repository.create({ data, populate, virtuals });
+        const item = await this.repository.create({data, populate, virtuals});
 
         return res.status(200).json(item);
     }
@@ -104,9 +103,9 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @throws If `_id` is not a valid MongoDB ObjectId.
      */
     async get(req: Request, res: Response): Promise<Response> {
-        const { _id } = req.params;
+        const {_id} = req.params;
         const parsedID = isValidObjectId(_id);
-        const { populate, virtuals } = this.queryUtils.fetchOptionsFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
         const item = await this.repository.findById({
             _id: parsedID,
@@ -126,11 +125,11 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @throws If `_id` is not a valid MongoDB ObjectId.
      */
     async update(req: Request, res: Response): Promise<Response> {
-        const { _id } = req.params;
+        const {_id} = req.params;
         const parsedID = isValidObjectId(_id);
 
         const data = req.validatedBody;
-        const { populate, virtuals } = this.queryUtils.fetchOptionsFromQuery(req);
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
         const item = await this.repository.update({
             _id: parsedID,
@@ -151,12 +150,12 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @throws If `_id` is not a valid MongoDB ObjectId.
      */
     async delete(req: Request, res: Response): Promise<Response> {
-        const { _id } = req.params;
+        const {_id} = req.params;
         const parsedID = isValidObjectId(_id);
 
-        await this.repository.destroy({ _id: parsedID });
+        await this.repository.destroy({_id: parsedID});
 
-        return res.status(200).json({ message: "Deleted." });
+        return res.status(200).json({message: "Deleted."});
     }
 
     /**
@@ -168,19 +167,19 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A response containing aggregate query results.
      */
     async query(req: Request, res: Response): Promise<Response> {
-        const { paginated, ...optionParams } =
+        const {paginated, ...optionParams} =
             this.queryUtils.fetchOptionsFromQuery(req);
         const paginationParams = this.queryUtils.fetchPaginationFromQuery(req);
 
         const matchFilters = this.fetchURLMatchFilters(req);
-        const populateFilters = this.fetchURLPopulateFilters(req);
-        const populatePipelines = this.fetchPopulatePipelines();
+        const referenceFilters = this.fetchURLPopulateFilters(req);
+        const populationPipelines = this.fetchPopulatePipelines();
 
-        const countParams = { matchFilters, populateFilters };
-        const baseParams = { ...optionParams, ...countParams, populatePipelines };
+        const countParams = {matchFilters, referenceFilters};
+        const baseParams = {...optionParams, ...countParams, populationPipelines};
         const queryParams: AggregateQueryParams = paginated
-            ? { ...baseParams, paginated: true, ...paginationParams }
-            : { ...baseParams, paginated: false };
+            ? {...baseParams, paginated: true, ...paginationParams}
+            : {...baseParams, paginated: false};
 
         const data = await this.aggregateService.query(queryParams);
 
