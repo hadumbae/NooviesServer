@@ -1,68 +1,92 @@
-import type {Request, Response} from "express";
+import type {Request} from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type {IMovieCredit} from "../models/IMovieCredit.js";
-import type MovieCreditQueryService from "../services/MovieCreditQueryService.js";
+import type {IMovieCredit} from "../models/MovieCredit.interface.js";
+import type MovieCreditQueryOptionService from "../services/MovieCreditQueryOptionService.js";
 import type MovieCreditService from "../services/MovieCreditService.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+import type {FilterQuery} from "mongoose";
+import type {PopulatePipelineStages} from "../../../shared/types/mongoose/PopulatePipelineStages.js";
 
+/**
+ * Constructor parameters for {@link MovieCreditController}.
+ */
 export interface IMovieCreditControllerConstructor extends IBaseCRUDControllerConstructor<IMovieCredit> {
+    /** Service responsible for performing CRUD operations on movie credits. */
     service: MovieCreditService;
-    queryService: MovieCreditQueryService;
+    /** Service responsible for handling query options such as filters and population. */
+    optionService: MovieCreditQueryOptionService;
 }
 
+/**
+ * Interface for a Movie Credit Controller.
+ * Extends the base CRUD controller and adds specific movie credit services.
+ */
 export interface IMovieCreditController extends IBaseCRUDController {
+    /** Service for CRUD operations. */
     service: MovieCreditService;
-    queryService: MovieCreditQueryService;
-
-    all(req: Request, res: Response): Promise<Response>;
-    paginated(req: Request, res: Response): Promise<Response>;
+    /** Service for handling query options and filters. */
+    optionService: MovieCreditQueryOptionService;
 }
 
-export default class MovieCreditController extends BaseCRUDController<IMovieCredit> implements IMovieCreditController {
+/**
+ * Controller for handling Movie Credit related requests.
+ * Extends {@link BaseCRUDController} and provides
+ * filter and population logic specific to movie credits.
+ */
+export default class MovieCreditController
+    extends BaseCRUDController<IMovieCredit>
+    implements IMovieCreditController
+{
+    /** Service for CRUD operations on movie credits. */
     service: MovieCreditService;
-    queryService: MovieCreditQueryService;
 
+    /** Service for extracting and generating query options. */
+    optionService: MovieCreditQueryOptionService;
+
+    /**
+     * Creates a new {@link MovieCreditController}.
+     *
+     * @param params - The constructor parameters including service and optionService.
+     */
     constructor(params: IMovieCreditControllerConstructor) {
-        const {service, queryService, ...superParams} = params;
-
+        const { service, optionService, ...superParams } = params;
         super(superParams);
 
         this.service = service;
-        this.queryService = queryService;
+        this.optionService = optionService;
     }
 
-    async all(req: Request, res: Response): Promise<Response> {
-        const {populate, limit} = this.queryUtils.fetchOptionsFromQuery(req);
-        const queryParams  = this.queryService.fetchQueryParams(req);
-
-        const matchFilters = this.queryService.generateMatchFilters(queryParams);
-        const populateFilters = this.queryService.generatePopulateFilters(queryParams);
-
-        const credits = await this.service.all({matchFilters, populateFilters, populate, limit});
-
-        return res.status(200).json(credits);
+    /**
+     * Extracts and builds MongoDB match filters from the request query parameters.
+     *
+     * @param req - The Express request object.
+     * @returns A MongoDB filter query for matching documents.
+     */
+    fetchURLMatchFilters(req: Request): FilterQuery<any> {
+        const options = this.optionService.fetchQueryParams(req);
+        return this.optionService.generateMatchFilters(options);
     }
 
-    async paginated(req: Request, res: Response): Promise<Response> {
-        const {populate} = this.queryUtils.fetchOptionsFromQuery(req);
-        const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
+    /**
+     * Extracts and builds MongoDB populate filters from the request query parameters.
+     *
+     * @param req - The Express request object.
+     * @returns A set of populate pipeline stages for MongoDB aggregation.
+     */
+    fetchURLPopulateFilters(req: Request): PopulatePipelineStages {
+        const options = this.optionService.fetchQueryParams(req);
+        return this.optionService.generatePopulateFilters(options);
+    }
 
-        const queryParams  = this.queryService.fetchQueryParams(req);
-        const matchFilters = this.queryService.generateMatchFilters(queryParams);
-        const populateFilters = this.queryService.generatePopulateFilters(queryParams);
-
-        const count = await this.service.count({matchFilters, populateFilters});
-        const credits = await this.service.paginate({
-            page,
-            perPage,
-            matchFilters,
-            populateFilters,
-            populate,
-        });
-
-        return res.status(200).json({totalItems: count, items: credits});
+    /**
+     * Returns predefined population pipelines for movie credits.
+     *
+     * @returns A set of populate pipeline stages for MongoDB aggregation.
+     */
+    fetchPopulatePipelines(): PopulatePipelineStages {
+        return this.optionService.generatePopulationPipelines();
     }
 }

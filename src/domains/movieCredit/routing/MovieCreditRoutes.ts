@@ -2,14 +2,14 @@ import MovieCreditServiceProvider from "../provider/MovieCreditServiceProvider.j
 import {createBaseRoutes, type IBaseRoutesConfig} from "../../../shared/routing/BaseRoutes.js";
 import type {IMovieCreditController} from "../controllers/MovieCreditController.js";
 import validateZodSchema from "../../../shared/utility/zod/validateZodSchema.js";
-import {MovieCreditSubmitSchema} from "../schemas/MovieCreditSubmitSchema.js";
+import {MovieCreditInputSchema} from "../schemas/MovieCreditInputSchema.js";
 
 const {crudController} = MovieCreditServiceProvider.register();
 
 const baseConfig: IBaseRoutesConfig<IMovieCreditController> = {
     crudController: crudController,
-    createValidator: validateZodSchema(MovieCreditSubmitSchema),
-    updateValidator: validateZodSchema(MovieCreditSubmitSchema),
+    createValidator: validateZodSchema(MovieCreditInputSchema),
+    updateValidator: validateZodSchema(MovieCreditInputSchema),
 }
 
 const routes = createBaseRoutes(baseConfig);
