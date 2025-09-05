@@ -3,7 +3,10 @@ import type BaseRepository from "../../repository/BaseRepository.js";
 import BaseController from "../BaseController.js";
 import isValidObjectId from "../../utility/query/isValidObjectId.js";
 import type {FilterQuery} from "mongoose";
-import type {PopulatePipelineStages} from "../../types/mongoose/PopulatePipelineStages.js";
+import type {
+    PopulationPipelineStages,
+    ReferenceFilterPipelineStages
+} from "../../types/mongoose/AggregatePipelineStages.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {AggregateQueryParams} from "../../services/aggregate/AggregateQueryServiceTypes.js";
 import type {IBaseCRUDController, IBaseCRUDControllerConstructor} from "./BaseCRUDController.types.js";
@@ -202,7 +205,7 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @param req - Express request object.
      * @returns An array of Mongoose population pipeline stages.
      */
-    fetchURLPopulateFilters(req: Request): PopulatePipelineStages {
+    fetchURLPopulateFilters(req: Request): ReferenceFilterPipelineStages {
         return [];
     }
 
@@ -212,7 +215,7 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      *
      * @returns An array of Mongoose population pipeline stages.
      */
-    fetchPopulatePipelines(): PopulatePipelineStages {
+    fetchPopulatePipelines(): PopulationPipelineStages {
         return [];
     }
 }

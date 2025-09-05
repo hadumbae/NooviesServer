@@ -1,7 +1,10 @@
 import type {Request} from "express";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import {type FilterQuery, type PipelineStage, type SortOrder} from "mongoose";
-import type {PopulatePipelineStages} from "../../../shared/types/mongoose/PopulatePipelineStages.js";
+import type {
+    PopulationPipelineStages,
+    ReferenceFilterPipelineStages
+} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
 import type IQueryOptionService from "../../../shared/interfaces/IQueryOptionService.js";
 import type {IMovieCredit} from "../models/MovieCredit.interface.js";
@@ -21,12 +24,12 @@ interface IMovieCreditQueryOptionService
      * Generates an array of MongoDB aggregation pipeline stages for population.
      * @param params - Query options containing optional filters for population.
      */
-    generatePopulateFilters(params: MovieCreditQueryOptions): PopulatePipelineStages;
+    generatePopulateFilters(params: MovieCreditQueryOptions): ReferenceFilterPipelineStages;
 
     /**
      * Builds post-pagination stages for enriching results with Person, Movie, and RoleType documents.
      */
-    generatePopulationPipelines(): PopulatePipelineStages;
+    generatePopulationPipelines(): PopulationPipelineStages;
 
     /**
      * Generates a $lookup pipeline stage to populate the 'creditPerson' field.
@@ -114,7 +117,7 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
     /**
      * Builds post-pagination stages to populate Movie, Person, and RoleType references.
      */
-    generatePopulationPipelines(): PopulatePipelineStages {
+    generatePopulationPipelines(): PopulationPipelineStages {
         return [
             {$lookup: {from: "movies", localField: "movie", foreignField: "_id", as: "movie"}},
             {$lookup: {from: "people", localField: "person", foreignField: "_id", as: "person"}},
@@ -132,10 +135,10 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
      * @param params - Query options containing optional filters for population
      * @returns Array of MongoDB aggregation pipeline stages
      */
-    generatePopulateFilters(params: MovieCreditQueryOptions): PopulatePipelineStages {
+    generatePopulateFilters(params: MovieCreditQueryOptions): ReferenceFilterPipelineStages {
         const {name, title, roleName} = params;
 
-        const pipelines: PopulatePipelineStages = [];
+        const pipelines: ReferenceFilterPipelineStages = [];
 
         // Lookups
         if (name) pipelines.push(this.personLookup({name}));

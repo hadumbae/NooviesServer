@@ -8,7 +8,10 @@ import type {
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 import type {FilterQuery} from "mongoose";
-import type {PopulatePipelineStages} from "../../../shared/types/mongoose/PopulatePipelineStages.js";
+import type {
+    PopulationPipelineStages,
+    ReferenceFilterPipelineStages
+} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 
 /**
  * Constructor parameters for {@link MovieCreditController}.
@@ -76,7 +79,7 @@ export default class MovieCreditController
      * @param req - The Express request object.
      * @returns A set of populate pipeline stages for MongoDB aggregation.
      */
-    fetchURLPopulateFilters(req: Request): PopulatePipelineStages {
+    fetchURLPopulateFilters(req: Request): ReferenceFilterPipelineStages {
         const options = this.optionService.fetchQueryParams(req);
         return this.optionService.generatePopulateFilters(options);
     }
@@ -86,7 +89,7 @@ export default class MovieCreditController
      *
      * @returns A set of populate pipeline stages for MongoDB aggregation.
      */
-    fetchPopulatePipelines(): PopulatePipelineStages {
+    fetchPopulatePipelines(): PopulationPipelineStages {
         return this.optionService.generatePopulationPipelines();
     }
 }

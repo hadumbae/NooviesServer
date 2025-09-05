@@ -1,6 +1,9 @@
 import type {Request, Response} from "express";
 import type {FilterQuery} from "mongoose";
-import type {PopulatePipelineStages} from "../../types/mongoose/PopulatePipelineStages.js";
+import type {
+    PopulationPipelineStages,
+    ReferenceFilterPipelineStages
+} from "../../types/mongoose/AggregatePipelineStages.js";
 import type {IBaseControllerConstructor} from "../BaseController.js";
 import type BaseRepository from "../../repository/BaseRepository.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
@@ -94,7 +97,7 @@ export interface IBaseCRUDController<
      * @param req - Express request object.
      * @returns An array of Mongoose population pipeline stages.
      */
-    fetchURLPopulateFilters(req: Request): PopulatePipelineStages;
+    fetchURLPopulateFilters(req: Request): ReferenceFilterPipelineStages;
 
     /**
      * Provides default Mongoose populate pipelines.
@@ -102,7 +105,7 @@ export interface IBaseCRUDController<
      *
      * @returns An array of Mongoose population pipeline stages.
      */
-    fetchPopulatePipelines(): PopulatePipelineStages;
+    fetchPopulatePipelines(): PopulationPipelineStages;
 }
 
 /**

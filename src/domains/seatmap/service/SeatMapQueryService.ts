@@ -2,7 +2,9 @@ import type {Request} from "express";
 import {SeatMapFilterQuerySchema} from "../schema/SeatMapFilterQuerySchema.js";
 import type {FilterQuery} from "mongoose";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import type {PopulatePipelineStages} from "../../../shared/types/mongoose/PopulatePipelineStages.js";
+import type {
+    ReferenceFilterPipelineStages
+} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 
 interface RequestFilters {
     isAvailable?: string;
@@ -14,12 +16,13 @@ interface RequestFilters {
 }
 
 export interface ISeatMapQueryService {
-    getSeatMapMatchFilters(params: {req: Request<any, any, any, RequestFilters>}): FilterQuery<any>;
-    getSeatMapPopulateFilters(params: {req: Request<any, any, any, RequestFilters>}): PopulatePipelineStages;
+    getSeatMapMatchFilters(params: { req: Request<any, any, any, RequestFilters> }): FilterQuery<any>;
+
+    getSeatMapPopulateFilters(params: { req: Request<any, any, any, RequestFilters> }): ReferenceFilterPipelineStages;
 }
 
-export default class SeatMapQueryService implements ISeatMapQueryService{
-    getSeatMapMatchFilters({req} : {req: Request<any, any, any, RequestFilters>}): FilterQuery<RequestFilters> {
+export default class SeatMapQueryService implements ISeatMapQueryService {
+    getSeatMapMatchFilters({req}: { req: Request<any, any, any, RequestFilters> }): FilterQuery<RequestFilters> {
         const {
             isAvailable,
             isReserved,
@@ -35,24 +38,31 @@ export default class SeatMapQueryService implements ISeatMapQueryService{
         return filterNullArray(conditions) as FilterQuery<RequestFilters>;
     }
 
-    getSeatMapPopulateFilters({req}: {req: Request<any, any, any, RequestFilters>}): PopulatePipelineStages {
-        const {
-            seatRow,
-            seatNumber,
-            seatType,
-        } = SeatMapFilterQuerySchema.parse(req.query);
+    getSeatMapPopulateFilters({req}: { req: Request<any, any, any, RequestFilters> }): ReferenceFilterPipelineStages {
+        const {seatRow, seatNumber, seatType} = SeatMapFilterQuerySchema.parse(req.query);
 
-        const conditions: FilterQuery<RequestFilters> = filterNullArray({
-            "seatMapSeat.row": seatRow,
-            "seatMapSeat.seatNumber": seatNumber,
-            "seatMapSeat.seatType": seatType,
+        const filters: FilterQuery<RequestFilters> = filterNullArray({
+            "row": seatRow,
+            "seatNumber": seatNumber,
+            "seatType": seatType,
         });
 
-        if (Object.keys(conditions).length === 0) return [];
+        if (Object.keys(filters).length === 0) return [];
 
         return [
-            {$lookup: {from: "seatmaps", localField: "seat", foreignField: "_id", as: "seatMapSeat"}},
-            {$match: conditions},
+            {
+                $lookup: {
+                    from: "seatmaps",
+                    let: {seatID: "$seat"},
+                    pipeline: [
+                        {$match: {$expr: {$eq: ["$_id", "$$seatID"]}}},
+                        {$match: filters}
+                    ],
+                    as: "seatMapSeat"
+                }
+            },
+            {$unwind: "$seatMapSeat"},
+            {$unset: "$seatMapSeat"}
         ];
     }
 }
