@@ -146,9 +146,21 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
         if (roleName) pipelines.push(this.roleTypeLookup({roleName}));
 
         // Unwinds
-        if (name) pipelines.push({$unwind: "$creditPerson"});
-        if (title) pipelines.push({$unwind: "$creditMovie"});
-        if (roleName) pipelines.push({$unwind: "$creditRoleType"});
+
+        if (name) {
+            pipelines.push({$unwind: "$creditPerson"});
+            pipelines.push({$unset: "$creditPerson"});
+        }
+
+        if (title) {
+            pipelines.push({$unwind: "$creditMovie"});
+            pipelines.push({$unset: "$creditMovie"});
+        }
+
+        if (roleName) {
+            pipelines.push({$unwind: "$creditRoleType"});
+            pipelines.push({$unset: "$creditRoleType"});
+        }
 
         return pipelines;
     }
