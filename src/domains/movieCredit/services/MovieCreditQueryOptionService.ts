@@ -124,7 +124,7 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
             {$lookup: {from: "roletypes", localField: "roleType", foreignField: "_id", as: "roleType"}},
             {$unwind: {path: "$movie", preserveNullAndEmptyArrays: true}},
             {$unwind: {path: "$person", preserveNullAndEmptyArrays: true}},
-            {$unwind: {path: "roleType", preserveNullAndEmptyArrays: true}},
+            {$unwind: {path: "$roleType", preserveNullAndEmptyArrays: true}},
         ];
     }
 
