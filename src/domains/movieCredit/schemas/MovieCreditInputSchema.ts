@@ -24,19 +24,20 @@ const MovieCreditBaseSchema = z.object({
 
     /** Optional override for how the role name is displayed (max 150 chars) */
     displayRoleName: RequiredStringSchema
-        .max(150, { message: "Must be 150 characters or less." })
-        .optional(),
-
-    /** Optional credited name if different from the person's name (max 150 chars) */
-    creditedAs: RequiredStringSchema
-        .max(150, { message: "Must be 150 characters or less." })
+        .max(150, {message: "Must be 150 characters or less."})
         .optional(),
 
     /** Optional notes about this credit (max 1000 chars) */
     notes: RequiredStringSchema
-        .max(1000, { message: "Must be 1000 characters or less." })
+        .max(1000, {message: "Must be 1000 characters or less."})
         .optional(),
 });
+
+const UndefinedForCrew = z.undefined({
+    required_error: "Required as `undefined`.",
+    invalid_type_error: "Must be `undefined`.",
+    message: "Must be undefined for `CREW` credits."
+}).optional();
 
 /**
  * Schema for CREW credits
@@ -44,6 +45,15 @@ const MovieCreditBaseSchema = z.object({
 const CrewSchema = MovieCreditBaseSchema.extend({
     /** Force department to "CREW" */
     department: z.literal("CREW"),
+    characterName: UndefinedForCrew,
+    billingOrder: UndefinedForCrew,
+    creditedAs: UndefinedForCrew,
+    uncredited: UndefinedForCrew,
+    isPrimary: UndefinedForCrew,
+    voiceOnly: UndefinedForCrew,
+    cameo: UndefinedForCrew,
+    motionCapture: UndefinedForCrew,
+    archiveFootage: UndefinedForCrew,
 });
 
 /**
@@ -58,6 +68,11 @@ const CastSchema = MovieCreditBaseSchema.extend({
 
     /** Billing order for CAST roles (positive number) */
     billingOrder: PositiveNumberSchema,
+
+    /** Optional credited name if different from the person's name (max 150 chars) */
+    creditedAs: RequiredStringSchema
+        .max(150, {message: "Must be 150 characters or less."})
+        .optional(),
 
     /** Optional: marks as uncredited */
     uncredited: CoercedBooleanSchema.optional(),
@@ -84,7 +99,6 @@ const CastSchema = MovieCreditBaseSchema.extend({
  * - "CREW" uses `CrewSchema`
  * - "CAST" uses `CastSchema`
  */
-export const MovieCreditInputSchema = z.discriminatedUnion("department", [
-    CrewSchema,
-    CastSchema,
-]);
+export const MovieCreditInputSchema = z
+    .discriminatedUnion("department", [CrewSchema, CastSchema])
+    .describe("Movie Credit Input");
