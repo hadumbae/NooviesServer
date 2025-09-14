@@ -14,13 +14,13 @@ export const RoleTypeSchema: Schema<IRoleType> = new Schema<IRoleType>({
      *
      * - Required.
      * - Trimmed.
-     * - 1–100 characters.
+     * - 1–150 characters.
      */
     roleName: {
         type: String,
         trim: true,
         minlength: [1, "Required. Must not be an empty string."],
-        maxlength: [100, "Must not be more than 100 characters."],
+        maxlength: [150, "Must not be more than 150 characters."],
         required: true,
     },
 
