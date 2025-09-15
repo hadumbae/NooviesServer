@@ -11,6 +11,7 @@ import UserRoutes from "../../domains/users/routing/UserRoutes.js";
 import SeatMapRoutes from "../../domains/seatmap/routing/SeatMapRoutes.js";
 import MovieFavouriteRoutes from "../../domains/movie/routing/MovieFavouriteRoutes.js";
 import MovieCreditRoutes from "../../domains/movieCredit/routing/MovieCreditRoutes.js";
+import RoleTypeRoutes from "../../domains/roleType/routing/RoleTypeRoutes.js";
 
 const registerRoutes = (app: Express) => {
     app.use("/auth", AuthRoutes);
@@ -21,6 +22,7 @@ const registerRoutes = (app: Express) => {
     app.use("/api/v1/admin/movies", MovieRoutes);
     app.use("/api/v1/admin/movies", MovieFavouriteRoutes);
 
+    app.use("/api/v1/admin/roletypes", RoleTypeRoutes);
     app.use("/api/v1/admin/movie/credits", MovieCreditRoutes);
 
     app.use("/api/v1/admin/genres", GenreRoutes);
