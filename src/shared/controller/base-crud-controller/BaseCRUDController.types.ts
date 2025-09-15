@@ -52,7 +52,7 @@ export interface IBaseCRUDController<
      * @param res - Express response object.
      * @returns A promise resolving to the Express response with the item.
      */
-    get(req: Request, res: Response): Promise<Response>;
+    get(req: Request<TSchema>, res: Response): Promise<Response>;
 
     /**
      * Updates an existing item by ID.
@@ -61,7 +61,7 @@ export interface IBaseCRUDController<
      * @param res - Express response object.
      * @returns A promise resolving to the Express response with the updated item.
      */
-    update(req: Request, res: Response): Promise<Response>;
+    update(req: Request<TSchema>, res: Response): Promise<Response>;
 
     /**
      * Deletes an item by ID.
