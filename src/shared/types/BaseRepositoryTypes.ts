@@ -30,6 +30,7 @@ export type BaseRepositoryCreateParams<TSchema = Record<string, any>> = {
 export type BaseRepositoryUpdateParams<TSchema = Record<string, any>> = {
     _id: Types.ObjectId,
     data: Partial<TSchema>,
+    unset?: Partial<TSchema>,
     populatePath?: string[],
     populate?: boolean,
     virtuals?: boolean,

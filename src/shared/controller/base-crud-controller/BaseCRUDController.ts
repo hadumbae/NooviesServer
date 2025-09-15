@@ -49,9 +49,7 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A response containing the list of items.
      */
     async all(req: Request, res: Response): Promise<Response> {
-        const {populate, virtuals, limit} =
-            this.queryUtils.fetchOptionsFromQuery(req);
-
+        const {populate, virtuals, limit} = this.queryUtils.fetchOptionsFromQuery(req);
         const items = await this.repository.find({populate, virtuals, limit});
         return res.status(200).json(items);
     }
@@ -87,7 +85,7 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      */
     async create(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
-        const data = req.validatedBody;
+        const data = req.validatedBody as Partial<TSchema>;
 
         const item = await this.repository.create({data, populate, virtuals});
 
@@ -102,16 +100,12 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A response containing the found item.
      * @throws If `_id` is not a valid MongoDB ObjectId.
      */
-    async get(req: Request, res: Response): Promise<Response> {
-        const {_id} = req.params;
-        const parsedID = isValidObjectId(_id);
+    async get(req: Request<TSchema>, res: Response): Promise<Response> {
+        const {_id: entityID} = req.params;
+        const _id = isValidObjectId(entityID);
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
-        const item = await this.repository.findById({
-            _id: parsedID,
-            populate,
-            virtuals,
-        });
+        const item = await this.repository.findById({_id, populate, virtuals});
 
         return res.status(200).json(item);
     }
@@ -124,19 +118,15 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A response containing the updated item.
      * @throws If `_id` is not a valid MongoDB ObjectId.
      */
-    async update(req: Request, res: Response): Promise<Response> {
-        const {_id} = req.params;
-        const parsedID = isValidObjectId(_id);
+    async update(req: Request<TSchema>, res: Response): Promise<Response> {
+        const {_id: entityID} = req.params;
+        const _id = isValidObjectId(entityID);
 
-        const data = req.validatedBody;
+        const data = req.validatedBody!;
+        const unset = req.unsetFields;
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
-        const item = await this.repository.update({
-            _id: parsedID,
-            data,
-            populate,
-            virtuals,
-        });
+        const item = await this.repository.update({_id, data, unset, populate, virtuals});
 
         return res.status(200).json(item);
     }
@@ -150,10 +140,10 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @throws If `_id` is not a valid MongoDB ObjectId.
      */
     async delete(req: Request, res: Response): Promise<Response> {
-        const {_id} = req.params;
-        const parsedID = isValidObjectId(_id);
+        const {_id: entityID} = req.params;
+        const _id = isValidObjectId(entityID);
 
-        await this.repository.destroy({_id: parsedID});
+        await this.repository.destroy({_id});
 
         return res.status(200).json({message: "Deleted."});
     }
@@ -167,8 +157,7 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A response containing aggregate query results.
      */
     async query(req: Request, res: Response): Promise<Response> {
-        const {paginated, ...optionParams} =
-            this.queryUtils.fetchOptionsFromQuery(req);
+        const {paginated, ...optionParams} = this.queryUtils.fetchOptionsFromQuery(req);
         const paginationParams = this.queryUtils.fetchPaginationFromQuery(req);
 
         const matchFilters = this.fetchURLMatchFilters(req);

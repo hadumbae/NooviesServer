@@ -64,9 +64,10 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
     }
 
     async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<any> {
-        const {_id, data, populatePath, populate, virtuals = false} = params;
+        const {_id, data, unset, populatePath, populate, virtuals = false} = params;
 
-        const query = this.model.findByIdAndUpdate(_id, data, {new: true});
+        const updateObject = {$set: data, $unset: unset};
+        const query = this.model.findByIdAndUpdate(_id, updateObject, {new: true});
         if (populate) query.populate(populatePath || this.populateRefs);
 
         const doc = query.lean(virtuals && { virtuals });
