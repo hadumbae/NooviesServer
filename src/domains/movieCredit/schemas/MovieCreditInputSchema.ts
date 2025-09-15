@@ -27,6 +27,11 @@ const MovieCreditBaseSchema = z.object({
         .max(150, {message: "Must be 150 characters or less."})
         .optional(),
 
+    /** Optional credited name if different from the person's name (max 150 chars) */
+    creditedAs: RequiredStringSchema
+        .max(150, {message: "Must be 150 characters or less."})
+        .optional(),
+
     /** Optional notes about this credit (max 1000 chars) */
     notes: RequiredStringSchema
         .max(1000, {message: "Must be 1000 characters or less."})
@@ -47,7 +52,6 @@ const CrewSchema = MovieCreditBaseSchema.extend({
     department: z.literal("CREW"),
     characterName: UndefinedForCrew,
     billingOrder: UndefinedForCrew,
-    creditedAs: UndefinedForCrew,
     uncredited: UndefinedForCrew,
     isPrimary: UndefinedForCrew,
     voiceOnly: UndefinedForCrew,
@@ -68,11 +72,6 @@ const CastSchema = MovieCreditBaseSchema.extend({
 
     /** Billing order for CAST roles (positive number) */
     billingOrder: PositiveNumberSchema,
-
-    /** Optional credited name if different from the person's name (max 150 chars) */
-    creditedAs: RequiredStringSchema
-        .max(150, {message: "Must be 150 characters or less."})
-        .optional(),
 
     /** Optional: marks as uncredited */
     uncredited: CoercedBooleanSchema.optional(),
