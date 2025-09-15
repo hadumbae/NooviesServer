@@ -27,6 +27,7 @@ export default class MovieCreditServiceProvider {
         });
 
         return {
+            model,
             repository,
             crudController,
         };
