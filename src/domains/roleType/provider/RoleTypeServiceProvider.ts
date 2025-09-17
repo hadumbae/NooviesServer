@@ -5,32 +5,43 @@ import RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionService.j
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 
 /**
- * Service provider for the RoleType domain.
- *
- * Responsible for registering and wiring up:
- * - The {@link RoleTypeModel} (Mongoose schema & model)
- * - A {@link BaseRepository} for data access
- * - Query and aggregation services
- * - The {@link RoleTypeController} for CRUD operations
- *
- * Acts as a factory to encapsulate construction logic and return
- * a fully configured controller with its dependencies.
+ * @class RoleTypeServiceProvider
+ * @description
+ * Service provider responsible for registering and initializing
+ * the components related to RoleType: model, repository, services, and controller.
  */
 export default class RoleTypeServiceProvider {
     /**
-     * Registers and builds the RoleType module.
+     * Registers the RoleType components and returns an object containing
+     * the model, services, and controllers.
      *
-     * @returns An object containing:
-     * - `optionService`: The {@link RoleTypeQueryOptionService} instance
-     * - `controller`: The configured {@link RoleTypeController} instance
+     * @static
+     * @returns {Object} An object with the following structure:
+     * {
+     *   model: typeof RoleTypeModel,
+     *   repository: BaseRepository,
+     *   services: {
+     *     optionService: RoleTypeQueryOptionService
+     *   },
+     *   controllers: {
+     *     controller: RoleTypeController
+     *   }
+     * }
      */
     static register() {
+        // Model representing RoleType
         const model = RoleTypeModel;
+
+        // Repository for RoleType with basic CRUD operations
         const repository = new BaseRepository({ model });
 
+        // Service to handle query options for RoleType
         const optionService = new RoleTypeQueryOptionService();
+
+        // Service to handle aggregate queries for RoleType
         const aggregateService = new AggregateQueryService({ model });
 
+        // Controller to handle RoleType-related HTTP requests
         const controller = new RoleTypeController({
             repository,
             optionService,
@@ -38,8 +49,14 @@ export default class RoleTypeServiceProvider {
         });
 
         return {
-            optionService,
-            controller,
+            model,
+            repository,
+            services: {
+                optionService
+            },
+            controllers: {
+                controller
+            },
         };
     }
 }
