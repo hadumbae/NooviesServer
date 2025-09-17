@@ -6,9 +6,39 @@ import ShowingSeatingService from "../service/ShowingSeatingService.js";
 import ShowingQueryService from "../service/ShowingQueryService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 
+/**
+ * Service provider for Showing-related operations.
+ *
+ * Responsible for:
+ * - Instantiating the Showing model repository.
+ * - Providing the Showing controller.
+ * - Providing services for query handling, seat management, and aggregation.
+ *
+ * @remarks
+ * This class centralizes the registration of all services, controllers, and repository
+ * objects for the `Showing` resource. It can be used to extract controllers and services
+ * for route configuration or dependency injection.
+ */
 export default class ShowingServiceProvider {
+    /**
+     * Registers all Showing-related components and returns them in a structured object.
+     *
+     * @returns An object containing:
+     * - `model`: The Showing Mongoose model.
+     * - `repository`: Base repository for CRUD operations with populated references.
+     * - `services`: Collection of service instances:
+     *   - `queryService`: Handles complex queries for Showings.
+     *   - `seatService`: Handles seating-related logic.
+     *   - `aggregateService`: Handles aggregation pipelines.
+     * - `controllers`: Collection of controllers:
+     *   - `controller`: The main Showing controller.
+     */
     static register() {
         const model = Showing;
+
+        /**
+         * References to populate on queries for the Showing resource.
+         */
         const populateRefs= [
             {path: "movie"},
             {path: "theatre"},
@@ -32,8 +62,16 @@ export default class ShowingServiceProvider {
         });
 
         return {
+            model,
             repository,
-            controller,
+            services: {
+                queryService,
+                seatService,
+                aggregateService,
+            },
+            controllers: {
+                controller,
+            }
         };
     }
 }

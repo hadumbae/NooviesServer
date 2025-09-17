@@ -1,22 +1,85 @@
 import ShowingServiceProvider from "../provider/ShowingServiceProvider.js";
-import {createBaseRoutes, type IBaseRoutesConfig} from "../../../shared/routing/BaseRoutes.js";
+import {
+    type BaseRouteMiddleware,
+    createBaseRoutes,
+    type IBaseRoutesConfig
+} from "../../../shared/routing/BaseRoutes.js";
 import type {IShowingController} from "../controller/ShowingController.js";
-import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 import {ShowingSubmitSchema} from "../schema/ShowingSubmitSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 
-const {controller} = ShowingServiceProvider.register();
+/**
+ * Extract the Showing controller and model from the Showing service provider
+ * to configure routes and apply request validation.
+ */
+const {model, controllers: {controller}} = ShowingServiceProvider.register();
 
-const baseConfig: IBaseRoutesConfig<IShowingController> = {
-    crudController: controller,
-    createValidator: ZodAsyncValidator(ShowingSubmitSchema),
-    updateValidator: ZodAsyncValidator(ShowingSubmitSchema),
+/**
+ * Middleware that removes unset/undefined fields before Showing documents
+ * are persisted to the database.
+ */
+const unsetMiddleware = UnsetModelFormFields({model});
+
+/**
+ * Middleware list specific to the `Showing` routes.
+ *
+ * - **create**: Validates the request body against {@link ShowingSubmitSchema}
+ *   and unsets unexpected form fields before creating a showing.
+ * - **update**: Same validation and sanitization logic applied when updating.
+ */
+const middlewareList: BaseRouteMiddleware<typeof controller> = {
+    path: {
+        create: [validateZodSchemaAsync(ShowingSubmitSchema), unsetMiddleware],
+        update: [validateZodSchemaAsync(ShowingSubmitSchema), unsetMiddleware],
+    }
 };
 
+/**
+ * Base configuration for `Showing` routes.
+ *
+ * @property crudController - The controller handling showing CRUD operations.
+ * @property middlewareList - Middleware hooks applied to specific CRUD routes.
+ */
+const baseConfig: IBaseRoutesConfig<IShowingController> = {
+    crudController: controller,
+    middlewareList,
+};
+
+/**
+ * Express router for `Showing` domain.
+ *
+ * Provides automatically generated CRUD routes via {@link createBaseRoutes},
+ * and defines additional domain-specific endpoints such as fetching seats
+ * for a particular showing.
+ *
+ * ### Routes
+ * - `POST /create` → Create a new showing (with validation + field sanitization)
+ * - `PUT /update/:id` → Update a showing (with validation + field sanitization)
+ * - `GET /get/:id` → Fetch a showing by ID
+ * - `DELETE /delete/:id` → Delete a showing
+ * - `GET /get/:_id/seats` → Fetch available seats for a showing (requires authentication)
+ *
+ * @example
+ * ```ts
+ * import showingRoutes from "./routes/ShowingRoutes.js";
+ * app.use("/showings", showingRoutes);
+ * ```
+ */
 const routes = createBaseRoutes<IShowingController>(baseConfig);
 
-// /api/v1/admin/showings/:_id/seats/seatmaps
-routes.get('/get/:_id/seats', isAuth, asyncHandler(controller.fetchSeatsForShowing.bind(controller)));
+/**
+ * GET `/get/:_id/seats`
+ *
+ * Protected route that retrieves all seats for a specific showing.
+ * Requires authentication via {@link isAuth}.
+ */
+routes.get(
+    "/get/:_id/seats",
+    isAuth,
+    asyncHandler(controller.fetchSeatsForShowing.bind(controller))
+);
 
 export default routes;
