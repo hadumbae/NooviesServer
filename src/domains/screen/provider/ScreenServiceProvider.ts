@@ -32,8 +32,17 @@ export default class ScreenServiceProvider {
         });
 
         return {
+            model,
             repository,
-            controller,
+            services: {
+                service,
+                seatService,
+                queryService,
+                aggregateService,
+            },
+            controllers: {
+                controller
+            },
         };
     }
 }

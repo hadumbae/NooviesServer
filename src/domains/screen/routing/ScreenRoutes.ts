@@ -1,21 +1,86 @@
 import ScreenServiceProvider from "../provider/ScreenServiceProvider.js";
-import {createBaseRoutes, type IBaseRoutesConfig} from "../../../shared/routing/BaseRoutes.js";
+import {
+    type BaseRouteMiddleware,
+    createBaseRoutes,
+    type IBaseRoutesConfig
+} from "../../../shared/routing/BaseRoutes.js";
 import type {IScreenController} from "../controller/ScreenController.js";
-import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 import {ScreenSubmitSchema} from "../schema/ScreenSubmitSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 
-const {controller} = ScreenServiceProvider.register();
+/**
+ * Extract the Screen model and controller from the service provider.
+ */
+const {model, controllers: {controller}} = ScreenServiceProvider.register();
 
-const baseConfig: IBaseRoutesConfig<IScreenController> = {
-    crudController: controller,
-    createValidator: ZodAsyncValidator(ScreenSubmitSchema),
-    updateValidator: ZodAsyncValidator(ScreenSubmitSchema),
+/**
+ * Middleware to unset undefined or extraneous fields from the Screen model
+ * before persisting data to the database.
+ */
+const unsetMiddleware = UnsetModelFormFields({model});
+
+/**
+ * Route-specific middleware for the Screen CRUD operations.
+ *
+ * - **create**:
+ *   1. Validates the request body against {@link ScreenSubmitSchema}.
+ *   2. Removes unset/undefined fields via {@link unsetMiddleware}.
+ *
+ * - **update**:
+ *   Same as create, ensuring incoming data is validated and sanitized.
+ *
+ * @type {BaseRouteMiddleware<typeof controller>}
+ */
+const middlewareList: BaseRouteMiddleware<typeof controller> = {
+    path: {
+        create: [validateZodSchemaAsync(ScreenSubmitSchema), unsetMiddleware],
+        update: [validateZodSchemaAsync(ScreenSubmitSchema), unsetMiddleware],
+    },
 };
 
+/**
+ * Base configuration for generating Screen CRUD routes.
+ *
+ * @remarks
+ * The `crudController` handles the logic for each route,
+ * while `middlewareList` attaches route-specific middleware.
+ *
+ * @type {IBaseRoutesConfig<IScreenController>}
+ */
+const baseConfig: IBaseRoutesConfig<IScreenController> = {
+    crudController: controller,
+    middlewareList
+};
+
+/**
+ * Screen routes.
+ *
+ * @remarks
+ * - Automatically generates CRUD routes using {@link createBaseRoutes}.
+ * - Includes additional custom endpoints such as:
+ *   - `GET /get/:_id/seats/by-row`: Retrieves seats for a specific screen, grouped by row.
+ *
+ * @returns An Express router with Screen CRUD and custom routes.
+ */
 const routes = createBaseRoutes<IScreenController>(baseConfig);
 
-routes.get(`/get/:_id/seats/by-row`, isAuth, asyncHandler(controller.getSeatsByRow.bind(controller)));
+/**
+ * GET /get/:_id/seats/by-row
+ *
+ * @description Retrieves all seats for a given screen (by `_id`),
+ * organized/grouped by row.
+ *
+ * @middleware
+ * - {@link isAuth}: Ensures the user is authenticated.
+ * - {@link asyncHandler}: Wraps controller logic to properly handle async errors.
+ */
+routes.get(
+    `/get/:_id/seats/by-row`,
+    isAuth,
+    asyncHandler(controller.getSeatsByRow.bind(controller))
+);
 
 export default routes;
