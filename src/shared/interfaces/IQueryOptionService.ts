@@ -10,11 +10,11 @@ import type {FilterQuery, SortOrder} from "mongoose";
  * - Transformed into Mongoose filter queries
  * - Transformed into Mongoose sort specifications
  *
- * @typeParam TModel   - The Mongoose model type (schema interface) being queried.
+ * @typeParam TSchema   - The Mongoose model type (schema interface) being queried.
  * @typeParam TOptions - The validated query options type (typically inferred from a Zod schema).
  * @typeParam TFilters - The filter fields type, describing which properties can be filtered.
  */
-export default interface IQueryOptionService<TModel, TOptions, TFilters> {
+export default interface IQueryOptionService<TSchema, TOptions, TFilters> {
     /**
      * Extracts and validates query parameters from an Express request,
      * returning them as a strongly typed `TOptions` object.
@@ -58,5 +58,5 @@ export default interface IQueryOptionService<TModel, TOptions, TFilters> {
      * // => { roleName: 1, department: -1 }
      * ```
      */
-    generateQuerySorts(options: TOptions): Partial<Record<keyof TModel, SortOrder>>;
+    generateQuerySorts(options: TOptions): Partial<Record<keyof TSchema, SortOrder>>;
 }
