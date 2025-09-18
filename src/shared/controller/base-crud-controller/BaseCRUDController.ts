@@ -2,7 +2,7 @@ import {type Request, type Response} from "express";
 import type BaseRepository from "../../repository/BaseRepository.js";
 import BaseController from "../BaseController.js";
 import isValidObjectId from "../../utility/query/isValidObjectId.js";
-import type {FilterQuery} from "mongoose";
+import type {FilterQuery, SortOrder} from "mongoose";
 import type {
     PopulationPipelineStages,
     ReferenceFilterPipelineStages
@@ -18,9 +18,10 @@ import type {IBaseCRUDController, IBaseCRUDControllerConstructor} from "./BaseCR
  * @typeParam TSchema - The schema type handled by the controller.
  * @typeParam TMatchFilters - Optional type used for query match filters.
  */
-export default class BaseCRUDController<TSchema extends Record<string, any>, TMatchFilters = any>
-    extends BaseController
-    implements IBaseCRUDController<TSchema, TMatchFilters> {
+export default class BaseCRUDController<
+    TSchema extends Record<string, any>,
+    TMatchFilters = any
+> extends BaseController implements IBaseCRUDController<TSchema, TMatchFilters> {
     /** Repository instance for database interaction. */
     protected readonly repository: BaseRepository<TSchema>;
 
@@ -32,7 +33,7 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      *
      * @param params - Constructor parameters including repository, aggregate service, and BaseController options.
      */
-    constructor(params: IBaseCRUDControllerConstructor<TSchema, TMatchFilters>) {
+    constructor(params: IBaseCRUDControllerConstructor<TSchema>) {
         const {repository, aggregateService, ...superParams} = params;
 
         super(superParams);
@@ -162,10 +163,11 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
 
         const matchFilters = this.fetchURLMatchFilters(req);
         const referenceFilters = this.fetchURLPopulateFilters(req);
+        const querySorts = this.fetchURLQuerySorts(req);
         const populationPipelines = this.fetchPopulatePipelines();
 
         const countParams = {matchFilters, referenceFilters};
-        const baseParams = {...optionParams, ...countParams, populationPipelines};
+        const baseParams = {...optionParams, ...countParams, querySorts, populationPipelines};
         const queryParams: AggregateQueryParams = paginated
             ? {...baseParams, paginated: true, ...paginationParams}
             : {...baseParams, paginated: false};
@@ -183,6 +185,10 @@ export default class BaseCRUDController<TSchema extends Record<string, any>, TMa
      * @returns A Mongoose filter query.
      */
     fetchURLMatchFilters(req: Request): FilterQuery<TMatchFilters> {
+        return {};
+    }
+
+    fetchURLQuerySorts(req: Request): Partial<Record<keyof TSchema, SortOrder>> {
         return {};
     }
 

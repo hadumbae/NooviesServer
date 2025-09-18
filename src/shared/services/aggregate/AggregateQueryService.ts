@@ -1,11 +1,17 @@
 import type {AggregateCountParams, AggregateQueryParams, AggregateQueryResults} from "./AggregateQueryService.types.js";
-import type {Model, PipelineStage} from "mongoose";
+import type {Model, PipelineStage, SortOrder} from "mongoose";
 import type {PopulatePath} from "../../types/PopulatePath.js";
 import type IAggregateQueryService from "./IAggregateQueryService.js";
+import buildAggregationSort from "../../utility/buildAggregationSort.js";
 
 /**
- * A reusable query service that supports both `.find()` and `.aggregate()` operations
- * with optional population, pagination, and count.
+ * A reusable query service supporting both `.find()` and `.aggregate()` queries
+ * with optional population, pagination, and document counting.
+ *
+ * Provides a consistent interface for retrieving Mongoose documents
+ * with flexible query options.
+ *
+ * @typeParam TSchema - The schema type of the documents in the collection.
  */
 export default class AggregateQueryService<TSchema = Record<string, any>> implements IAggregateQueryService<TSchema> {
     private readonly _model: Model<TSchema>;
@@ -15,18 +21,19 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
      * Creates a new AggregateQueryService instance.
      *
      * @param model - The Mongoose model to query.
-     * @param populateRefs - Default population paths for `.find()` queries.
+     * @param populateRefs - Optional default population paths for `.find()` queries.
      */
-    constructor({model, populateRefs = []}: { model: Model<TSchema>, populateRefs?: PopulatePath[] }) {
+    constructor({model, populateRefs = []}: { model: Model<TSchema>; populateRefs?: PopulatePath[] }) {
         this._model = model;
         this._populateRefs = populateRefs;
     }
 
     /**
-     * Chooses between `.aggregate()` and `.find()` based on the presence of `referenceFilters`.
+     * Executes a query using either `.aggregate()` or `.find()` depending on the presence of reference filters or population pipelines.
      *
-     * @param params - Query parameters including filters, population, and pagination.
-     * @returns Aggregated or standard query results.
+     * @param params - Query parameters including match filters, population pipelines, sorting, and pagination.
+     * @typeParam TResult - The type of the returned documents.
+     * @returns Aggregated or standard query results, either as a list or a paginated object.
      */
     async query<TResult = any>(params: AggregateQueryParams): Promise<AggregateQueryResults<TResult>> {
         const {referenceFilters, populationPipelines} = params;
@@ -35,15 +42,16 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
     }
 
     /**
-     * Executes a standard `.find()` query with optional `.populate()` and `.lean()`.
-     * Supports both paginated and non-paginated responses.
+     * Executes a standard `.find()` query with optional population, pagination, and `.lean()` support.
      *
-     * @param params - Query parameters including filters, pagination, and population options.
-     * @returns A list of matching documents or a paginated result.
+     * @param params - Query parameters including match filters, sorts, population, pagination, and virtuals.
+     * @typeParam TResult - The type of the returned documents.
+     * @returns A list of matching documents or a paginated object containing `totalItems` and `items`.
      */
     async find<TResult = any>(params: AggregateQueryParams): Promise<AggregateQueryResults<TResult>> {
         const {
             matchFilters = {},
+            querySorts = {},
             populate,
             limit,
             virtuals = false,
@@ -52,14 +60,14 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
             perPage,
         } = params;
 
-        const query = this._model.find(matchFilters);
+        const query = this._model
+            .find(matchFilters)
+            .sort(querySorts as Record<string, SortOrder>);
 
         if (!paginated && limit) query.limit(limit);
         if (paginated) query.skip(perPage * (page - 1)).limit(perPage);
         if (populate) query.populate(this._populateRefs);
-        if (populate) query.populate(this._populateRefs);
         if (virtuals) query.lean(virtuals && {virtuals: true});
-
 
         if (paginated) {
             return {
@@ -72,15 +80,17 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
     }
 
     /**
-     * Executes an aggregation pipeline with `$match`, population stages, and optional pagination.
+     * Executes an aggregation pipeline with optional `$match`, reference filters, population stages, sorting, and pagination.
      *
-     * @param params - Aggregation parameters including match, populate stages, and pagination.
-     * @returns A list of aggregated documents or a paginated result.
+     * @param params - Aggregation parameters including filters, population pipelines, sorting, and pagination.
+     * @typeParam TResult - The type of the returned documents.
+     * @returns A list of aggregated documents or a paginated object containing `totalItems` and `items`.
      */
     async aggregate<TResult = any>(params: AggregateQueryParams): Promise<AggregateQueryResults<TResult>> {
         const {
             matchFilters,
             referenceFilters,
+            querySorts,
             limit,
             paginated,
             populationPipelines = [],
@@ -91,6 +101,7 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
 
         if (matchFilters) pipeline.push({$match: matchFilters});
         if (referenceFilters) pipeline.push(...referenceFilters);
+        if (querySorts) pipeline.push({$sort: buildAggregationSort(querySorts as Record<string, SortOrder>)});
 
         if (paginated) {
             const {page, perPage} = params;
@@ -105,17 +116,26 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
             return {
                 totalItems: await this.count(params),
                 items: (await this._model.aggregate(pipeline).exec()) as TResult[],
-            }
+            };
         }
 
         return (await this._model.aggregate(pipeline).exec()) as TResult[];
     }
 
     /**
-     * Counts the number of documents that match the given filters via aggregation.
+     * Counts the number of documents matching the given filters using an aggregation pipeline.
      *
-     * @param params - Count parameters including match and population filters.
+     * @param params - Count parameters including `matchFilters` and optional `referenceFilters`.
      * @returns The number of matching documents.
+     *
+     * @example
+     * ```ts
+     * const total = await aggregateService.count({
+     *   matchFilters: { isActive: true },
+     *   referenceFilters: [ *** some $lookup stages ****]
+     * });
+     * console.log(total); // e.g., 42
+     * ```
      */
     async count(params: AggregateCountParams): Promise<number> {
         const {matchFilters, referenceFilters} = params;

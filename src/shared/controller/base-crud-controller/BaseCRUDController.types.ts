@@ -1,5 +1,5 @@
 import type {Request, Response} from "express";
-import type {FilterQuery} from "mongoose";
+import type {FilterQuery, SortOrder} from "mongoose";
 import type {
     PopulationPipelineStages,
     ReferenceFilterPipelineStages
@@ -91,6 +91,15 @@ export interface IBaseCRUDController<
     fetchURLMatchFilters(req: Request): FilterQuery<TMatchFilters>;
 
     /**
+     * Extracts Mongoose sort options from the request URL.
+     * Override in subclasses to implement custom sorting logic.
+     *
+     * @param req - Express request object.
+     * @returns A partial record mapping schema keys to sort orders.
+     */
+    fetchURLQuerySorts(req: Request): Partial<Record<keyof TSchema, SortOrder>>;
+
+    /**
      * Extracts Mongoose populate filters from the request URL.
      * Override in subclasses to implement custom population logic.
      *
@@ -112,11 +121,9 @@ export interface IBaseCRUDController<
  * Interface for constructing a BaseCRUDController.
  *
  * @typeParam TSchema - The schema type handled by the controller.
- * @typeParam TMatchFilters - Optional type used for query match filters.
  */
 export interface IBaseCRUDControllerConstructor<
-    TSchema extends Record<string, any>,
-    TMatchFilters = any,
+    TSchema extends Record<string, any>
 > extends IBaseControllerConstructor {
     /** Repository instance used for CRUD operations. */
     repository: BaseRepository<TSchema>;
