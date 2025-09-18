@@ -1,50 +1,68 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type IGenre from "../model/Genre.interface.js";
-import GenreService from "../service/GenreService.js";
-import type {Request, Response} from "express";
+import type { Request } from "express";
 import type GenreQueryOptionService from "../service/GenreQueryOptionService.js";
-import type {FilterQuery} from "mongoose";
-import type {GenreQueryFilters} from "../schema/options/GenreFilters.types.js";
+import type { FilterQuery, SortOrder } from "mongoose";
+import type { GenreQueryFilters } from "../schema/options/GenreFilters.types.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 
-export interface IGenreController extends IBaseCRUDController {
-}
+/**
+ * Interface for the Genre controller, extending the base CRUD controller interface.
+ */
+export interface IGenreController extends IBaseCRUDController {}
 
+/**
+ * Constructor interface for {@link GenreController}.
+ */
 export interface IGenreControllerConstructor extends IBaseCRUDControllerConstructor<IGenre> {
-    genreService: GenreService;
+    /** Service responsible for generating query filters and sorts from request parameters. */
     optionService: GenreQueryOptionService;
 }
 
+/**
+ * Controller responsible for handling CRUD operations and query filtering
+ * for {@link IGenre} documents.
+ *
+ * Extends the generic {@link BaseCRUDController} with genre-specific query
+ * filtering and sorting logic using {@link GenreQueryOptionService}.
+ */
 export default class GenreController extends BaseCRUDController<IGenre> implements IGenreController {
-    genreService: GenreService;
+    /** Service used to fetch query parameters and generate filters/sorts. */
     optionService: GenreQueryOptionService;
 
-    constructor({genreService, optionService, ...superParams}: IGenreControllerConstructor) {
+    /**
+     * Creates a new instance of {@link GenreController}.
+     *
+     * @param optionService - Service to generate query filters and sorting options.
+     * @param superParams - Additional parameters required by the base CRUD controller.
+     */
+    constructor({ optionService, ...superParams }: IGenreControllerConstructor) {
         super(superParams);
-
-        this.genreService = genreService;
         this.optionService = optionService;
     }
 
+    /**
+     * Generates Mongoose match filters from the request URL parameters.
+     *
+     * @param req - Express request object.
+     * @returns A {@link FilterQuery} object for Mongoose queries.
+     */
     fetchURLMatchFilters(req: Request): FilterQuery<GenreQueryFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateMatchFilters(params);
     }
 
-    async create(req: Request, res: Response): Promise<Response> {
-        const data = req.validatedBody;
-        const item = await this.genreService.create({data});
-        return res.status(200).json(item);
-    }
-
-    async update(req: Request, res: Response): Promise<Response> {
-        const {_id} = req.params;
-        const data = req.validatedBody;
-
-        const item = await this.genreService.update({genreID: _id, data});
-        return res.status(200).json(item);
+    /**
+     * Generates Mongoose sort instructions from the request URL parameters.
+     *
+     * @param req - Express request object.
+     * @returns Partial mapping of {@link IGenre} fields to sort orders (`asc`/`desc`).
+     */
+    fetchURLQuerySorts(req: Request): Partial<Record<keyof IGenre, SortOrder>> {
+        const params = this.optionService.fetchQueryParams(req);
+        return this.optionService.generateQuerySorts(params);
     }
 }
