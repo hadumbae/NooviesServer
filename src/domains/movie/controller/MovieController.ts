@@ -1,13 +1,13 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 
-import type {Request, Response} from "express";
+import type { Request, Response } from "express";
 import type IMovie from "../model/Movie.interface.js";
 import MovieImageService from "../service/MovieImageService.js";
 import type IMovieService from "../service/movie/IMovieService.js";
 import type MovieService from "../service/movie/MovieService.js";
 import type MovieQueryOptionService from "../service/MovieQueryOptionService.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
-import type {FilterQuery} from "mongoose";
+import type { FilterQuery, SortOrder } from "mongoose";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
@@ -19,10 +19,10 @@ import type {
  * Extends the base CRUD controller constructor with movie-specific services.
  */
 export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<IMovie> {
-    /** Service for movie CRUD operations. */
+    /** Service for CRUD operations on movies. */
     service: IMovieService;
 
-    /** Service for generating movie query filters and sorting. */
+    /** Service for parsing query parameters and generating filters/sorts. */
     optionService: MovieQueryOptionService;
 
     /** Service for managing movie poster images. */
@@ -30,44 +30,54 @@ export interface IMovieControllerConstructor extends IBaseCRUDControllerConstruc
 }
 
 /**
- * Contract for a movie controller.
+ * Interface for {@link MovieController}.
  *
- * Extends the base CRUD controller and adds movie-specific endpoints.
+ * Extends {@link IBaseCRUDController} with movie-specific endpoints:
+ * - Updating/deleting poster images
+ * - Fetching paginated movies with recent showings
  */
 export interface IMovieController extends IBaseCRUDController {
     /**
-     * Updates the poster image for a movie.
+     * Updates the poster image of a movie.
      *
-     * @param req - Express request (expects `params._id` and `file` for the new image)
-     * @param res - Express response
+     * @param req - Express request object containing `params._id` and `file`
+     * @param res - Express response object
      */
     updatePosterPicture(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Fetches a paginated list of movies along with their recent active showings.
+     * Fetches paginated movies along with recent active showings.
      *
-     * @param req - Express request (supports query parameters for pagination and filters)
-     * @param res - Express response
+     * @param req - Express request supporting query params for pagination, filtering, and sorting
+     * @param res - Express response object
      */
     fetchPaginatedMoviesWithRecentShowings(req: Request, res: Response): Promise<Response>;
 }
 
 /**
- * Controller for movie-related requests.
+ * Controller for handling movie-related requests.
  *
- * Provides CRUD operations (inherited from {@link BaseCRUDController}) and
- * additional endpoints for managing poster images and fetching movies with
- * recent showings.
+ * Extends {@link BaseCRUDController} for standard CRUD operations,
+ * and adds endpoints for:
+ * - Poster image management
+ * - Paginated retrieval of movies with recent showings
+ *
+ * @example
+ * // Update poster image:
+ * // POST /movies/:id/poster (multipart/form-data with file)
+ *
+ * // Fetch paginated movies:
+ * // GET /movies?page=1&perPage=10&title=Matrix&sortByReleaseDate=-1
  */
 export default class MovieController extends BaseCRUDController<IMovie> implements IMovieController {
     private service: MovieService;
-    private queryService: MovieQueryOptionService;
+    private optionService: MovieQueryOptionService;
     private imageService: MovieImageService;
 
     /**
-     * Creates a new instance of {@link MovieController}.
+     * Creates a new {@link MovieController}.
      *
-     * @param params - Constructor parameters including services and base CRUD options.
+     * @param params - Constructor parameters including base CRUD options and services
      */
     constructor(params: IMovieControllerConstructor) {
         const { service, optionService, imageService, ...constructorParams } = params;
@@ -75,33 +85,56 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
         super(constructorParams);
 
         this.service = service;
-        this.queryService = optionService;
+        this.optionService = optionService;
         this.imageService = imageService;
     }
 
     /**
-     * Generates MongoDB match filters based on query parameters in the request.
+     * Builds MongoDB `$match` filters from request query parameters.
      *
-     * @param req - Express request
-     * @returns A filter query for movies
+     * @param req - Express request object containing query parameters
+     * @returns A {@link FilterQuery} object for querying movies
+     *
+     * @example
+     * // ?title=Matrix&genre=Sci-Fi
+     * // Returns: { title: "Matrix", genre: "Sci-Fi" }
      */
     fetchURLMatchFilters(req: Request): FilterQuery<IMovie> {
-        const options = this.queryService.fetchQueryParams(req);
-        return this.queryService.generateMatchFilters(options);
+        const options = this.optionService.fetchQueryParams(req);
+        return this.optionService.generateMatchFilters(options);
     }
 
     /**
-     * Updates the poster image of a movie.
+     * Builds MongoDB `$sort` options from request query parameters.
      *
-     * @param req - Express request (expects `params._id` and a `file` for the poster)
-     * @param res - Express response
-     * @returns A response indicating success
+     * @param req - Express request object containing sort query parameters
+     * @returns A partial record mapping {@link IMovie} fields to sort orders
+     *
+     * @example
+     * // ?sortByReleaseDate=-1&sortByTitle=1
+     * // Returns: { releaseDate: -1, title: 1 }
+     */
+    fetchURLQuerySorts(req: Request): Partial<Record<keyof IMovie, SortOrder>> {
+        const options = this.optionService.fetchQueryParams(req);
+        return this.optionService.generateQuerySorts(options);
+    }
+
+    /**
+     * Updates the poster image for a specific movie.
+     *
+     * @param req - Express request object (expects `params._id` and `file`)
+     * @param res - Express response object
+     * @returns JSON response indicating success
+     *
+     * @example
+     * // POST /movies/123/poster with multipart file
+     * // Response: { message: "Poster Image Updated." }
      */
     async updatePosterPicture(req: Request, res: Response): Promise<Response> {
         const { _id } = req.params;
-
         const movieID = isValidObjectId(_id);
         const image = req.file as Express.Multer.File;
+
         await this.imageService.updateMoviePosterImage({ movieID, image });
 
         return res.status(200).json({ message: "Poster Image Updated." });
@@ -110,32 +143,40 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
     /**
      * Deletes the poster image of a movie.
      *
-     * @param req - Express request (expects `params._id`)
-     * @param res - Express response
-     * @returns A response indicating success
+     * @param req - Express request object (expects `params._id`)
+     * @param res - Express response object
+     * @returns JSON response indicating success
+     *
+     * @example
+     * // DELETE /movies/123/poster
+     * // Response: { message: "Poster Image Removed." }
      */
     async deletePosterPicture(req: Request, res: Response): Promise<Response> {
         const { _id } = req.params;
-
         const movieID = isValidObjectId(_id);
+
         await this.imageService.deleteMoviePosterImage({ movieID });
 
         return res.status(200).json({ message: "Poster Image Removed." });
     }
 
     /**
-     * Fetches a paginated list of movies with their recent active showings.
+     * Fetches a paginated list of movies along with their recent active showings.
      *
-     * @param req - Express request (supports query parameters for pagination, filters, and sorting)
-     * @param res - Express response
-     * @returns A JSON response containing `items` (movies) and `totalItems`
+     * @param req - Express request object (supports query parameters for pagination, filters, and sort)
+     * @param res - Express response object
+     * @returns JSON response containing `items` (movies) and `totalItems`
+     *
+     * @example
+     * // GET /movies?page=1&perPage=10&title=Matrix&sortByReleaseDate=-1
+     * // Response: { items: [...], totalItems: 50 }
      */
     async fetchPaginatedMoviesWithRecentShowings(req: Request, res: Response): Promise<Response> {
         const { page, perPage } = this.queryUtils.fetchPaginationFromQuery(req);
 
-        const params = this.queryService.fetchQueryParams(req);
-        const query = this.queryService.generateMatchFilters(params);
-        const sort = this.queryService.generateQuerySorts(params);
+        const params = this.optionService.fetchQueryParams(req);
+        const query = this.optionService.generateMatchFilters(params);
+        const sort = this.optionService.generateQuerySorts(params);
 
         const { items, totalItems } = await this.service.fetchPaginatedMoviesWithRecentShowings({
             page,
