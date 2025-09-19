@@ -3,7 +3,7 @@ import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import type { PopulatePath } from "../../../shared/types/PopulatePath.js";
-import PersonQueryService from "../services/PersonQueryService.js";
+import PersonQueryOptionService from "../services/PersonQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import PersonImageService from "../services/image-service/PersonImageService.js";
 import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
@@ -47,7 +47,7 @@ export default class PersonServiceProvider {
         const repository = new BaseRepository({ model, populateRefs });
 
         // Service for handling advanced queries specific to Person
-        const queryService = new PersonQueryService();
+        const optionService = new PersonQueryOptionService();
 
         // Service for handling Person images via Cloudinary
         const imageService = new PersonImageService({ cloudinaryUtils });
@@ -59,7 +59,7 @@ export default class PersonServiceProvider {
         const controller = new PersonController({
             repository,
             queryUtils,
-            queryService,
+            optionService,
             aggregateService,
             imageService,
         });
