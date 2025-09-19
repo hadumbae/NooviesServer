@@ -4,7 +4,7 @@ import TheatreController from "../controller/TheatreController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import type {PopulatePath} from "../../../shared/types/PopulatePath.js";
-import TheatreQueryOptionService from "../services/query/option-service/TheatreQueryOptionService.js";
+import TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";
 
 /**
  * Service provider for the `Theatre` domain.
