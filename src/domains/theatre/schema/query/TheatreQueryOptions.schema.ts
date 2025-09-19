@@ -1,20 +1,20 @@
-import {z} from "zod";
-import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
-import {URLParamNonNegativeNumberSchema} from "../../../../shared/schema/url/URLParamNonNegativeNumberSchema.js";
-import {MongooseSortOrderSchema} from "../../../../shared/schema/mongoose/MongooseSortOrderSchema.js";
-import {IANATimezoneSchema} from "../../../../shared/schema/timezones/IANATimezone.enum.js";
-import {ISO3166Alpha2CodeEnumSchema} from "../../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import { z } from "zod";
+import { URLParamStringSchema } from "../../../../shared/schema/url/URLParamStringSchema.js";
+import { URLParamNonNegativeNumberSchema } from "../../../../shared/schema/url/URLParamNonNegativeNumberSchema.js";
+import { MongooseSortOrderSchema } from "../../../../shared/schema/mongoose/MongooseSortOrderSchema.js";
+import { IANATimezoneSchema } from "../../../../shared/schema/timezones/IANATimezone.enum.js";
+import { ISO3166Alpha2CodeEnumSchema } from "../../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
 
 /**
- * Schema for filtering theatres by various optional query parameters.
+ * Schema for filtering theatres by optional query parameters.
  *
- * This is typically used for matching theatre documents in database queries.
- * All fields are optional and interpreted as **query parameters**.
+ * All fields are optional and typically correspond to URL query parameters.
+ * This schema is used to construct Mongoose filter queries when searching for theatres.
  *
- * Example use case:
- * - `/api/theatres?city=Bangkok&seatCapacity=200`
+ * Example query:
+ * `/api/theatres?city=Bangkok&seatCapacity=200`
  */
-export const TheatreMatchFilterSchema = z.object({
+export const TheatreQueryFilterSchema = z.object({
     /** Human-readable name of the theatre (partial match supported). */
     name: URLParamStringSchema,
 
@@ -30,26 +30,26 @@ export const TheatreMatchFilterSchema = z.object({
     /** State or region of the theatre. */
     state: URLParamStringSchema,
 
-    /** Country code (ISO 3166-1 alpha-2). */
+    /** Country code (ISO 3166-1 alpha-2). Optional. */
     country: ISO3166Alpha2CodeEnumSchema.optional(),
 
-    /** Postal or ZIP code. */
+    /** Postal or ZIP code of the theatre. */
     postalCode: URLParamStringSchema,
 
-    /** IANA timezone name (e.g., "Asia/Bangkok"). */
+    /** IANA timezone name (e.g., "Asia/Bangkok"). Optional. */
     timezone: IANATimezoneSchema.optional(),
 });
 
 /**
- * Schema for sorting theatre results by specified fields and order.
+ * Schema for validating theatre sorting options.
  *
- * Used to validate query parameters that indicate how the theatre list should be sorted.
- * All fields are optional; when present, they must be either `"asc"` or `"desc"`.
+ * Used to validate URL query parameters that indicate the sort order of the theatre list.
+ * All fields are optional; when present, values must be `"asc"` or `"desc"`.
  *
- * Example use case:
- * - `/api/theatres?sort[seatCapacity]=desc&sort[city]=asc`
+ * Example query:
+ * `/api/theatres?sort[seatCapacity]=desc&sort[city]=asc`
  */
-export const TheatreSortSchema = z.object({
+export const TheatreQuerySortSchema = z.object({
     /** Sort by theatre name. */
     sortByName: MongooseSortOrderSchema.optional(),
 
@@ -72,14 +72,11 @@ export const TheatreSortSchema = z.object({
 /**
  * Schema representing all query options for filtering and sorting theatres.
  *
- * Combines both {@link TheatreMatchFilterSchema} and {@link TheatreSortSchema},
- * allowing a single schema to validate URL query parameters that may include:
- * - Filtering criteria (e.g., `city=Bangkok`, `seatCapacity=200`)
- * - Sorting preferences (e.g., `sort[seatCapacity]=desc`)
+ * Combines {@link TheatreQueryFilterSchema} and {@link TheatreQuerySortSchema}.
+ * This schema validates full URL query parameters for theatre search endpoints,
+ * including both filtering criteria and sorting preferences.
  *
  * Example full query:
  * `/api/theatres?city=Bangkok&seatCapacity=200&sort[seatCapacity]=desc`
- *
- * Use this schema to validate query parameters in theatre search endpoints.
  */
-export const TheatreQueryOptionsSchema = TheatreMatchFilterSchema.merge(TheatreSortSchema);
+export const TheatreQueryOptionsSchema = TheatreQueryFilterSchema.merge(TheatreQuerySortSchema);

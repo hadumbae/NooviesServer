@@ -1,13 +1,14 @@
-import type {ITheatreQueryOptionService} from "./TheatreQueryOptionService.types.js";
 import type {Request} from "express";
 import type {
-    TheatreMatchFilters,
+    TheatreQueryFilters,
     TheatreQueryOptions,
-    TheatreSorts
-} from "../../../schema/query/TheatreQueryOptions.types.js";
-import {TheatreQueryOptionsSchema} from "../../../schema/query/TheatreQueryOptions.schema.js";
-import filterNullArray from "../../../../../shared/utility/filterNullArray.js";
-import type {FilterQuery} from "mongoose";
+    TheatreQuerySorts
+} from "../../schema/query/TheatreQueryOptions.types.js";
+import {TheatreQueryOptionsSchema} from "../../schema/query/TheatreQueryOptions.schema.js";
+import filterNullArray from "../../../../shared/utility/filterNullArray.js";
+import type {FilterQuery, SortOrder} from "mongoose";
+import type IQueryOptionService from "../../../../shared/interfaces/IQueryOptionService.js";
+import type ITheatre from "../../model/ITheatre.js";
 
 /**
  * Service for parsing, validating, and converting theatre query parameters
@@ -21,7 +22,7 @@ import type {FilterQuery} from "mongoose";
  * It is typically used in route handlers to translate Express `req.query`
  * into Mongoose-ready queries.
  */
-export default class TheatreQueryOptionService implements ITheatreQueryOptionService {
+export default class TheatreQueryOptionService implements IQueryOptionService<ITheatre, TheatreQueryOptions, TheatreQueryFilters> {
     /**
      * Parses and validates query parameters from an Express request.
      *
@@ -54,8 +55,15 @@ export default class TheatreQueryOptionService implements ITheatreQueryOptionSer
      * // filters: { "location.city": { $regex: "Bangkok", $options: "i" } }
      * ```
      */
-    generateMatchFilters(params: TheatreQueryOptions): FilterQuery<TheatreMatchFilters> {
-        const {name, seatCapacity, city, country, postalCode, timezone} = params;
+    generateMatchFilters(params: TheatreQueryOptions): FilterQuery<TheatreQueryFilters> {
+        const {
+            name,
+            seatCapacity,
+            city,
+            country,
+            postalCode,
+            timezone,
+        } = params;
         
         const filters = {
             name: name && {$regex: name, $options: "i"},
@@ -66,7 +74,7 @@ export default class TheatreQueryOptionService implements ITheatreQueryOptionSer
             "location.timezone": timezone,
         };
 
-        return filterNullArray(filters) as FilterQuery<TheatreMatchFilters>;
+        return filterNullArray(filters);
     }
 
     /**
@@ -76,7 +84,7 @@ export default class TheatreQueryOptionService implements ITheatreQueryOptionSer
      * as defined in {@link MongooseSortOrderSchema}.
      *
      * @param params - Validated {@link TheatreQueryOptions} object.
-     * @returns A {@link TheatreSorts} object for sorting theatres.
+     * @returns A {@link TheatreQuerySorts} object for sorting theatres.
      *
      * @example
      * ```ts
@@ -84,7 +92,7 @@ export default class TheatreQueryOptionService implements ITheatreQueryOptionSer
      * // sorts: { "location.city": 1, seatCapacity: -1 }
      * ```
      */
-    generateQuerySorts(params: TheatreQueryOptions): TheatreSorts {
+    generateQuerySorts(params: TheatreQueryOptions): Partial<Record<keyof ITheatre, SortOrder>> {
         const {
             sortByName,
             sortBySeatCapacity,
@@ -103,6 +111,6 @@ export default class TheatreQueryOptionService implements ITheatreQueryOptionSer
             "location.timezone": sortByTimezone,
         };
 
-        return filterNullArray(sorts) as TheatreSorts;
+        return filterNullArray(sorts);
     }
 }
