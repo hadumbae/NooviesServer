@@ -6,8 +6,6 @@ import {
 } from "../../../shared/routing/BaseRoutes.js";
 import type {IShowingController} from "../controller/ShowingController.js";
 import {ShowingSubmitSchema} from "../schema/ShowingSubmitSchema.js";
-import isAuth from "../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 
@@ -60,7 +58,6 @@ const baseConfig: IBaseRoutesConfig<IShowingController> = {
  * - `PUT /update/:id` → Update a showing (with validation + field sanitization)
  * - `GET /get/:id` → Fetch a showing by ID
  * - `DELETE /delete/:id` → Delete a showing
- * - `GET /get/:_id/seats` → Fetch available seats for a showing (requires authentication)
  *
  * @example
  * ```ts
@@ -69,17 +66,5 @@ const baseConfig: IBaseRoutesConfig<IShowingController> = {
  * ```
  */
 const routes = createBaseRoutes<IShowingController>(baseConfig);
-
-/**
- * GET `/get/:_id/seats`
- *
- * Protected route that retrieves all seats for a specific showing.
- * Requires authentication via {@link isAuth}.
- */
-routes.get(
-    "/get/:_id/seats",
-    isAuth,
-    asyncHandler(controller.fetchSeatsForShowing.bind(controller))
-);
 
 export default routes;
