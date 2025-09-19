@@ -1,8 +1,8 @@
 import RoleTypeController from "../controllers/RoleTypeController.js";
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import RoleTypeModel from "../model/RoleType.model.js";
 import RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
+import RoleTypeRepository from "../repositories/RoleTypeRepository.js";
 
 /**
  * @class RoleTypeServiceProvider
@@ -33,7 +33,7 @@ export default class RoleTypeServiceProvider {
         const model = RoleTypeModel;
 
         // Repository for RoleType with basic CRUD operations
-        const repository = new BaseRepository({ model });
+        const repository = new RoleTypeRepository({ model });
 
         // Service to handle query options for RoleType
         const optionService = new RoleTypeQueryOptionService();
