@@ -41,11 +41,11 @@ export const SeatInputSchema = SeatInputBaseSchema.extend({
     /** Optional display label (e.g., "A5", "VIP‑3", max 50 chars). */
     seatLabel: RequiredStringSchema.max(50, "Must be 50 characters or less").optional(),
 
-    /** Optional X-coordinate for seating layout visualizations. */
-    x: PositiveNumberSchema.optional(),
+    /** X-coordinate for seating layout visualizations. */
+    x: PositiveNumberSchema,
 
-    /** Optional Y-coordinate for seating layout visualizations. */
-    y: PositiveNumberSchema.optional(),
+    /** Y-coordinate for seating layout visualizations. */
+    y: PositiveNumberSchema,
 });
 
 /**

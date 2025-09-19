@@ -1,6 +1,6 @@
 import type {ISeatQueryService} from "./SeatQueryService.types.js";
 import type ISeat from "../../model/Seat.interface.js";
-import type {SeatsByRowSubmitData} from "../../schema/seats/Seat.types.js";
+import type {SeatsByRowSubmitData} from "../../schema/seats/SeatInput.types.js";
 import Seat from "../../model/Seat.model.js";
 
 export default class SeatQueryService implements ISeatQueryService {

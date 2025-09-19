@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {SeatsByRowInputSchema} from "./Seat.schema.js";
+import {SeatsByRowInputSchema} from "./SeatInput.schema.js";
 
 /**
  * 🎟️ Data for submitting seats by row.

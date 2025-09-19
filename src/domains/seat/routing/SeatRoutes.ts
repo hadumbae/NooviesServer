@@ -8,7 +8,7 @@ import type {ISeatController} from "../controller/SeatController.js";
 import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
-import {SeatInputSchema, SeatsByRowInputSchema} from "../schema/seats/Seat.schema.js";
+import {SeatInputSchema, SeatsByRowInputSchema} from "../schema/seats/SeatInput.schema.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 

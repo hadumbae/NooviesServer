@@ -8,7 +8,7 @@ import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
-import type {SeatsByRowSubmitData} from "../schema/seats/Seat.types.js";
+import type {SeatsByRowSubmitData} from "../schema/seats/SeatInput.types.js";
 
 /**
  * Constructor parameters for {@link SeatController}.
