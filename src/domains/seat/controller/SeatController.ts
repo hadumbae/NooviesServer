@@ -1,6 +1,6 @@
 import type {Request, Response} from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type ISeat from "../model/ISeat.js";
+import type ISeat from "../model/Seat.interface.js";
 import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
 import type {FilterQuery, SortOrder} from "mongoose";
 import type SeatQueryService from "../service/query-service/SeatQueryService.js";

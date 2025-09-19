@@ -1,5 +1,5 @@
 import {Types} from "mongoose";
-import type ISeat from "../../seat/model/ISeat.js";
+import type ISeat from "../../seat/model/Seat.interface.js";
 import type IShowing from "../../showing/model/IShowing.js";
 
 export default interface ISeatMap {

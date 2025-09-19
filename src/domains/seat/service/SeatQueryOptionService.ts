@@ -4,7 +4,7 @@ import { SeatQueryFiltersSchema } from "../schema/query/SeatQueryOptions.schema.
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
 import type { SeatQueryFilters, SeatQueryOptions, SeatQuerySorts } from "../schema/query/SeatQueryOptions.types.js";
 import type IQueryOptionService from "../../../shared/interfaces/IQueryOptionService.js";
-import type ISeat from "../model/ISeat.js";
+import type ISeat from "../model/Seat.interface.js";
 
 /**
  * Interface defining the methods for a Seat query option service.

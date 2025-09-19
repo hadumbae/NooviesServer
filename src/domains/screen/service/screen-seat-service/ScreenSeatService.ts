@@ -1,6 +1,6 @@
 import type {PipelineStage} from "mongoose";
-import Seat from "../../../seat/model/Seat.js";
 import type {FetchSeatsByRowParams, IScreenSeatService, SeatsByRow} from "./ScreenSeatService.types.js";
+import Seat from "../../../seat/model/Seat.model.js";
 
 export default class ScreenSeatService implements IScreenSeatService {
     async fetchSeatsByRow(params: FetchSeatsByRowParams): Promise<SeatsByRow[]> {

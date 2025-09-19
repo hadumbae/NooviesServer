@@ -1,5 +1,3 @@
-import Seat from "../model/Seat.js";
-
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import SeatController from "../controller/SeatController.js";
 
@@ -7,6 +5,7 @@ import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import SeatQueryService from "../service/query-service/SeatQueryService.js";
+import Seat from "../model/Seat.model.js";
 
 /**
  * Service provider for the `Seat` domain.

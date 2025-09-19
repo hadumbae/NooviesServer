@@ -1,7 +1,6 @@
 import createHttpError from "http-errors";
 import {Types} from "mongoose";
 
-import Seat from "../../seat/model/Seat.js";
 import SeatMap from "../model/SeatMap.js";
 import Showing from "../../showing/model/Showing.js";
 
@@ -12,6 +11,7 @@ import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js
 import type ISeatMapService from "./ISeatMapService.js";
 import type {GetShowingSeatMapParams} from "./ISeatMapService.js";
 import type ISeatMap from "../model/ISeatMap.js";
+import Seat from "../../seat/model/Seat.model.js";
 
 
 export default class SeatMapService implements ISeatMapService {
