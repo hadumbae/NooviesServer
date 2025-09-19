@@ -2,7 +2,6 @@ import Showing from "../model/Showing.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import ShowingController from "../controller/ShowingController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
-import ShowingSeatingService from "../service/ShowingSeatingService.js";
 import ShowingQueryService from "../service/ShowingQueryService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 
@@ -12,7 +11,7 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
  * Responsible for:
  * - Instantiating the Showing model repository.
  * - Providing the Showing controller.
- * - Providing services for query handling, seat management, and aggregation.
+ * - Providing services for query handling, and aggregation.
  *
  * @remarks
  * This class centralizes the registration of all services, controllers, and repository
@@ -28,7 +27,6 @@ export default class ShowingServiceProvider {
      * - `repository`: Base repository for CRUD operations with populated references.
      * - `services`: Collection of service instances:
      *   - `queryService`: Handles complex queries for Showings.
-     *   - `seatService`: Handles seating-related logic.
      *   - `aggregateService`: Handles aggregation pipelines.
      * - `controllers`: Collection of controllers:
      *   - `controller`: The main Showing controller.
@@ -50,13 +48,11 @@ export default class ShowingServiceProvider {
         const queryUtils = QueryUtils;
 
         const queryService = new ShowingQueryService();
-        const seatService = new ShowingSeatingService();
         const aggregateService = new AggregateQueryService({model, populateRefs});
 
         const controller = new ShowingController({
             repository,
             queryService,
-            seatService,
             queryUtils,
             aggregateService,
         });
@@ -66,7 +62,6 @@ export default class ShowingServiceProvider {
             repository,
             services: {
                 queryService,
-                seatService,
                 aggregateService,
             },
             controllers: {
