@@ -92,7 +92,7 @@ routes.patch(
 routes.delete(
     '/delete/:_id/poster_image',
     [isAuth, uploadImage.single("image"), hasPosterImage],
-    asyncHandler(controller.updatePosterPicture.bind(controller)),
+    asyncHandler(controller.deletePosterPicture.bind(controller)),
 );
 
 export default routes;
