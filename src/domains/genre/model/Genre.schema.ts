@@ -51,11 +51,4 @@ const GenreSchema = new Schema<IGenre>({
     },
 }, { timestamps: true });
 
-/**
- * Compound index to enforce unique genre names.
- *
- * This ensures that no two documents have the same `name`.
- */
-GenreSchema.index({ name: 1 }, { unique: true });
-
 export default GenreSchema;
