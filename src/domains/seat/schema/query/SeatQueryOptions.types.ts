@@ -2,53 +2,49 @@ import { z } from "zod";
 import { SeatQueryFiltersSchema, SeatQueryOptionsSchema, SeatQuerySortsSchema } from "./SeatQueryOptions.schema.js";
 
 /**
- * Type representing URL query parameters used to filter seat results.
+ * Type representing available filters for querying seats.
  *
- * Derived from {@link SeatQueryFiltersSchema}, this type includes optional fields
- * such as row, seat number, seat type, availability, theatre ID, and screen ID.
+ * Derived from {@link SeatQueryFiltersSchema}.
  *
- * Example:
- * ```ts
- * const filters: SeatQueryFilters = {
- *   row: "A",
- *   seatType: "VIP",
- *   isAvailable: true
- * };
- * ```
+ * Supports optional filters for:
+ * - `_id` (seat ID)
+ * - `row` (row identifier, e.g., "A", "B")
+ * - `seatNumber` (seat number within a row)
+ * - `seatType` (e.g., Regular, VIP, Recliner)
+ * - `isAvailable` (whether the seat is currently available)
+ * - `priceMultiplier` (pricing adjustment factor)
+ * - `theatre` (associated theatre ID)
+ * - `screen` (associated screen ID)
  */
 export type SeatQueryFilters = z.infer<typeof SeatQueryFiltersSchema>;
 
 /**
- * Type representing sort options for querying seats.
+ * Type representing sorting options for querying seats.
  *
- * Derived from {@link SeatQuerySortsSchema}, this type allows specifying sort order
- * (ascending or descending) for seat fields like row, seat number, seat label, and seat type.
+ * Derived from {@link SeatQuerySortsSchema}.
  *
- * Example:
- * ```ts
- * const sorts: SeatQuerySorts = {
- *   sortByRow: 1,
- *   sortBySeatNumber: -1
- * };
- * ```
+ * Each property maps to a seat field and supports MongoDB sort order:
+ * - `1` → ascending
+ * - `-1` → descending
+ *
+ * Sortable fields include:
+ * - `theatre`
+ * - `screen`
+ * - `row`
+ * - `seatNumber`
+ * - `seatType`
+ * - `isAvailable`
+ * - `priceMultiplier`
  */
 export type SeatQuerySorts = z.infer<typeof SeatQuerySortsSchema>;
 
 /**
- * Type representing the full set of query options for seats,
- * including both filter and sort parameters.
+ * Type representing the full set of query options for seats.
  *
- * Derived from {@link SeatQueryOptionsSchema}, this type merges
- * {@link SeatQueryFilters} and {@link SeatQuerySorts}.
+ * Derived from {@link SeatQueryOptionsSchema}.
  *
- * Example:
- * ```ts
- * const options: SeatQueryOptions = {
- *   row: "A",
- *   seatType: "VIP",
- *   isAvailable: true,
- *   sortBySeatNumber: 1
- * };
- * ```
+ * Combines:
+ * - {@link SeatQueryFilters} → field-based filtering
+ * - {@link SeatQuerySorts} → ordering of results
  */
 export type SeatQueryOptions = z.infer<typeof SeatQueryOptionsSchema>;
