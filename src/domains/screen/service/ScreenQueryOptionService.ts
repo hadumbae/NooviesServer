@@ -62,11 +62,13 @@ export default class ScreenQueryOptionService implements IQueryOptionService<ISc
      * @returns A partial mapping of {@link IScreen} keys to {@link SortOrder}.
      */
     generateQuerySorts(options: ScreenQueryOptions): Partial<Record<keyof IScreen, SortOrder>> {
-        const {sortByCapacity, sortByScreenType} = options;
+        const {sortByName, sortByCapacity, sortByScreenType, sortByCreatedAt} = options;
 
         const sorts = {
+            name: sortByName,
             capacity: sortByCapacity,
             screenType: sortByScreenType,
+            createdAt: sortByCreatedAt
         };
 
         return filterNullArray(sorts);

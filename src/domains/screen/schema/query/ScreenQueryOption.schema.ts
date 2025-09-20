@@ -35,10 +35,14 @@ export const ScreenQueryFiltersSchema = z.object({
  */
 export const ScreenQuerySortsSchema = z.object({
     /** Sort by screen capacity */
+    sortByName: URLParamMongooseSortOrderSchema,
+
     sortByCapacity: URLParamMongooseSortOrderSchema,
 
     /** Sort by screen type */
     sortByScreenType: URLParamMongooseSortOrderSchema,
+
+    sortByCreatedAt: URLParamMongooseSortOrderSchema,
 });
 
 /**
