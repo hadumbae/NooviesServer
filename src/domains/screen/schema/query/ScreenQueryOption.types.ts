@@ -7,34 +7,41 @@ import {
 } from "./ScreenQueryOption.schema.js";
 
 /**
- * Type representing the filters used to match screens.
+ * Type representing the filter fields for querying screens.
  *
- * Derived from {@link ScreenQueryFiltersSchema}, this type includes optional
- * and required fields for filtering screens by theatre, capacity, and screen type.
+ * Derived from `ScreenQueryFiltersSchema`.
+ * Includes:
+ * - `_id`: Screen ID
+ * - `name`: Screen name
+ * - `theatre`: Associated theatre ID
+ * - `capacity`: Screen capacity
+ * - `screenType`: Optional screen type
  */
 export type ScreenQueryFilters = z.infer<typeof ScreenQueryFiltersSchema>;
 
 /**
- * Type representing additional query parameters for screens.
+ * Type representing the sort fields for querying screens.
  *
- * Derived from {@link ScreenQueryParamsSchema}, this type typically includes
- * fields such as the number of showings per screen.
- */
-export type ScreenQueryParams = z.infer<typeof ScreenQueryParamsSchema>;
-
-/**
- * Type representing the sort options for screens.
- *
- * Derived from {@link ScreenQuerySortsSchema}, this type allows specifying
- * ascending or descending order on fields like capacity or screen type.
+ * Derived from `ScreenQuerySortsSchema`.
+ * Each field accepts a MongoDB sort order (`1` for ascending, `-1` for descending).
  */
 export type ScreenQuerySorts = z.infer<typeof ScreenQuerySortsSchema>;
 
 /**
- * Type representing the complete set of query options for screens,
- * including filters, additional query parameters, and sorting preferences.
+ * Type representing additional query parameters for screens.
  *
- * Derived from {@link ScreenQueryOptionsSchema}, this type is used
- * to validate and type incoming HTTP query parameters for screen endpoints.
+ * Derived from `ScreenQueryParamsSchema`.
+ * Includes:
+ * - `showingsPerScreen`: Number of showings to fetch per screen (non-negative)
+ */
+export type ScreenQueryParams = z.infer<typeof ScreenQueryParamsSchema>;
+
+/**
+ * Type representing the full set of query options for screens.
+ *
+ * Derived from `ScreenQueryOptionsSchema`, which merges:
+ * - Filters (`ScreenQueryFilters`)
+ * - Sorts (`ScreenQuerySorts`)
+ * - Additional parameters (`ScreenQueryParams`)
  */
 export type ScreenQueryOptions = z.infer<typeof ScreenQueryOptionsSchema>;

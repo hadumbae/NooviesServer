@@ -4,63 +4,58 @@ import { URLParamNonNegativeNumberSchema } from "../../../../shared/schema/url/U
 import { URLParamPositiveNumberSchema } from "../../../../shared/schema/url/URLParamPositiveNumberSchema.js";
 import { ScreenTypeEnum } from "../enum/ScreenTypeEnum.js";
 import { URLParamMongooseSortOrderSchema } from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
+import { URLParamStringSchema } from "../../../../shared/schema/url/URLParamStringSchema.js";
 
 /**
- * Zod schema for filtering screens based on optional or required query parameters.
+ * Zod schema for filtering screens in queries.
  *
- * Fields:
- * - `theatre`: ID of the theatre (required, must be a valid MongoDB ObjectId)
- * - `capacity`: Minimum screen capacity (optional, must be a positive number)
- * - `screenType`: Type of screen (optional, e.g., IMAX, Standard)
- *
- * Typically used for constructing MongoDB filter queries.
+ * Supports filtering by screen ID, name, associated theatre, capacity, and screen type.
  */
 export const ScreenQueryFiltersSchema = z.object({
+    /** Filter by screen ID (MongoDB ObjectID) */
+    _id: URLParamObjectIDSchema,
+
+    /** Filter by screen name */
+    name: URLParamStringSchema,
+
+    /** Filter by the ID of the associated theatre */
     theatre: URLParamObjectIDSchema,
+
+    /** Filter by screen capacity (must be positive) */
     capacity: URLParamPositiveNumberSchema,
+
+    /** Filter by screen type (optional) */
     screenType: ScreenTypeEnum.optional(),
 });
 
 /**
- * Zod schema for additional query parameters for screens.
+ * Zod schema for sorting screens in queries.
  *
- * Fields:
- * - `showingsPerScreen`: Number of showings to retrieve per screen (non-negative number)
+ * Each field accepts a MongoDB sort order (`1` for ascending, `-1` for descending).
  */
-export const ScreenQueryParamsSchema = z.object({
-    showingsPerScreen: URLParamNonNegativeNumberSchema,
+export const ScreenQuerySortsSchema = z.object({
+    /** Sort by screen capacity */
+    sortByCapacity: URLParamMongooseSortOrderSchema,
+
+    /** Sort by screen type */
+    sortByScreenType: URLParamMongooseSortOrderSchema,
 });
 
 /**
- * Zod schema for specifying sorting of screens.
+ * Zod schema for additional screen query parameters.
  *
- * Fields:
- * - `sortByCapacity`: Sort order for screen capacity (ascending/descending)
- * - `sortByScreenType`: Sort order for screen type (ascending/descending)
+ * Currently supports:
+ * - `showingsPerScreen`: number of showings to fetch per screen (non-negative)
  */
-export const ScreenQuerySortsSchema = z.object({
-    sortByCapacity: URLParamMongooseSortOrderSchema,
-    sortByScreenType: URLParamMongooseSortOrderSchema,
+export const ScreenQueryParamsSchema = z.object({
+    /** Number of showings per screen to retrieve (non-negative) */
+    showingsPerScreen: URLParamNonNegativeNumberSchema,
 });
 
 /**
  * Combined Zod schema for all screen query options.
  *
- * This merges filters, additional query params, and sort specifications
- * into a single schema for validating incoming HTTP query parameters.
- *
- * Example usage:
- * ```ts
- * const options = ScreenQueryOptionsSchema.parse(req.query);
- * // options: {
- * //   theatre: "64abc123...",
- * //   capacity: 200,
- * //   screenType: "IMAX",
- * //   showingsPerScreen: 5,
- * //   sortByCapacity: 1,
- * //   sortByScreenType: -1
- * // }
- * ```
+ * Merges filters, sorting, and additional parameters into a single schema.
  */
 export const ScreenQueryOptionsSchema = ScreenQueryParamsSchema.merge(
     ScreenQueryFiltersSchema.merge(ScreenQuerySortsSchema)

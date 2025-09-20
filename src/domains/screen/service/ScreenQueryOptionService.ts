@@ -1,107 +1,85 @@
-import type { Request } from "express";
+import type {Request} from "express";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import type IQueryOptionService from "../../../shared/interfaces/IQueryOptionService.js";
-import type { IScreen } from "../interface/IScreen.js";
+import type {IScreen} from "../interface/IScreen.js";
 import {
     type ScreenQueryFilters,
     type ScreenQueryParams,
     type ScreenQueryOptions
 } from "../schema/query/ScreenQueryOption.types.js";
-import { ScreenQueryOptionsSchema } from "../schema/query/ScreenQueryOption.schema.js";
-import type { SortOrder } from "mongoose";
-
-/**
- * Interface defining methods for parsing and transforming screen query options.
- *
- * This service is responsible for:
- * - Extracting and validating query parameters from Express requests
- * - Generating MongoDB filter objects
- * - Generating MongoDB sort objects
- * - Extracting additional parameters such as `showingsPerScreen`
- */
-export interface IScreenQueryService {
-    /**
-     * Extracts and validates query parameters from an Express request.
-     *
-     * @param req - Incoming HTTP request
-     * @returns Validated {@link ScreenQueryOptions} object
-     * @throws {ZodParseError} If the query parameters fail validation
-     */
-    fetchQueryParams(req: Request): ScreenQueryOptions;
-
-    /**
-     * Converts validated query options into MongoDB filter criteria.
-     *
-     * @param params - Validated {@link ScreenQueryOptions}
-     * @returns {@link ScreenQueryFilters} object usable in `.find()` queries
-     */
-    generateMatchFilters(params: ScreenQueryOptions): ScreenQueryFilters;
-
-    /**
-     * Extracts additional options from query parameters, e.g., `showingsPerScreen`.
-     *
-     * @param params - Validated {@link ScreenQueryOptions}
-     * @returns {@link ScreenQueryParams} object containing additional query options
-     */
-    generateOptions(params: ScreenQueryOptions): ScreenQueryParams;
-}
+import {ScreenQueryOptionsSchema} from "../schema/query/ScreenQueryOption.schema.js";
+import type {FilterQuery, SortOrder} from "mongoose";
 
 /**
  * Service for parsing, validating, and transforming screen query parameters.
  *
  * Implements {@link IQueryOptionService} for the {@link IScreen} model.
  * Converts URL query parameters into MongoDB-compatible filter, sort, and
- * additional options objects.
+ * additional option objects.
  */
 export default class ScreenQueryOptionService implements IQueryOptionService<IScreen, ScreenQueryOptions, ScreenQueryFilters> {
+
     /**
      * Extracts and validates query parameters from an Express request.
      *
-     * @param req - Express request containing `req.query`
-     * @returns Validated {@link ScreenQueryOptions} object
-     * @throws {ZodParseError} If the query parameters are invalid
+     * @param req - The incoming Express request object.
+     * @returns A validated and cleaned {@link ScreenQueryOptions} object.
+     * @throws {ZodParseError} If the query parameters fail schema validation.
      */
     fetchQueryParams(req: Request): ScreenQueryOptions {
-        const { success, data, error } = ScreenQueryOptionsSchema.safeParse(req.query);
-        if (!success) throw new ZodParseError({ message: "Invalid Query Params.", errors: error.errors });
+        const {success, data, error} = ScreenQueryOptionsSchema.safeParse(req.query);
+        if (!success) throw new ZodParseError({message: "Invalid Query Params.", errors: error.errors});
         return filterNullArray(data);
     }
 
     /**
-     * Generates MongoDB filter object from validated query options.
+     * Converts validated query options into a Mongoose filter object.
      *
-     * @param params - Validated {@link ScreenQueryOptions}
-     * @returns {@link ScreenQueryFilters} object for `.find()` queries
+     * @param params - The validated query options.
+     * @returns A {@link FilterQuery} for {@link IScreen} that can be passed to `.find()`.
+     *
+     * Name filtering is done case-insensitively using a regular expression.
      */
-    generateMatchFilters(params: ScreenQueryOptions): ScreenQueryFilters {
-        const { theatre, capacity, screenType } = params;
+    generateMatchFilters(params: ScreenQueryOptions): FilterQuery<ScreenQueryFilters> {
+        const {_id, name, theatre, capacity, screenType} = params;
 
-        const filters = { theatre, capacity, screenType };
+        const filters = {
+            _id,
+            theatre,
+            capacity,
+            screenType,
+            name: name && {$regex: name, $options: "i"},
+        };
+
         return filterNullArray(filters);
     }
 
     /**
-     * Generates MongoDB sort object from validated query options.
+     * Converts validated query options into a Mongoose sort specification.
      *
-     * @param options - Validated {@link ScreenQueryOptions}
-     * @returns Partial mapping of {@link IScreen} fields to `SortOrder`
+     * @param options - The validated query options.
+     * @returns A partial mapping of {@link IScreen} keys to {@link SortOrder}.
      */
     generateQuerySorts(options: ScreenQueryOptions): Partial<Record<keyof IScreen, SortOrder>> {
-        const { sortByCapacity, sortByScreenType } = options;
+        const {sortByCapacity, sortByScreenType} = options;
 
-        const sorts = { capacity: sortByCapacity, screenType: sortByScreenType };
+        const sorts = {
+            capacity: sortByCapacity,
+            screenType: sortByScreenType,
+        };
+
         return filterNullArray(sorts);
     }
 
     /**
-     * Extracts additional query parameters, such as the number of showings per screen.
+     * Extracts additional query parameters from validated options.
      *
-     * @param params - Validated {@link ScreenQueryOptions}
-     * @returns {@link ScreenQueryParams} object containing additional options
+     * @param params - The validated query options.
+     * @returns {@link ScreenQueryParams}, such as `showingsPerScreen`.
      */
     generateParams(params: ScreenQueryOptions): ScreenQueryParams {
-        const { showingsPerScreen } = params;
+        const {showingsPerScreen} = params;
 
         const queryParams = {
             showingsPerScreen
