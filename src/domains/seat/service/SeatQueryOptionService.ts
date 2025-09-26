@@ -64,7 +64,7 @@ export default class SeatQueryOptionService
             screen,
         };
 
-        return filters as FilterQuery<SeatQueryFilters>;
+        return filterNullArray(filters);
     }
 
     /**
