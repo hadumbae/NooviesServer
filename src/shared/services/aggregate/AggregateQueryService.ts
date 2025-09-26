@@ -29,15 +29,16 @@ export default class AggregateQueryService<TSchema = Record<string, any>> implem
     }
 
     /**
-     * Executes a query using either `.aggregate()` or `.find()` depending on the presence of reference filters or population pipelines.
+     * Executes a query using either `.aggregate()` or `.find()` depending on the presence of reference filters.
      *
      * @param params - Query parameters including match filters, population pipelines, sorting, and pagination.
      * @typeParam TResult - The type of the returned documents.
      * @returns Aggregated or standard query results, either as a list or a paginated object.
      */
     async query<TResult = any>(params: AggregateQueryParams): Promise<AggregateQueryResults<TResult>> {
-        const {referenceFilters, populationPipelines} = params;
-        const useAggregate = referenceFilters?.length || populationPipelines?.length;
+        const {referenceFilters} = params;
+        const useAggregate = Boolean(referenceFilters?.length);
+
         return useAggregate ? this.aggregate(params) : this.find(params);
     }
 
