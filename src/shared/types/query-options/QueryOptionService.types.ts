@@ -80,7 +80,6 @@ export type QueryReferenceOptions = {
 export type QueryOptionTypes<
     TSchema,
     TMatchFilters,
-    TReferenceFilters
 > = {
     match: QueryMatchOptions<TSchema, TMatchFilters>;
     reference?: QueryReferenceOptions;

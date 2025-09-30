@@ -20,7 +20,6 @@ export default interface IQueryOptionService<
     TSchema,
     TOptions,
     TMatchFilters,
-    TReferenceFilters,
 > {
     /**
      * Extracts query parameters from an Express request.
@@ -53,5 +52,5 @@ export default interface IQueryOptionService<
      * @param options - Parsed query parameters.
      * @returns Structured query options including `match` and `reference`.
      */
-    generateQueryOptions(options: TOptions): QueryOptionTypes<TSchema, TMatchFilters, TReferenceFilters>;
+    generateQueryOptions(options: TOptions): QueryOptionTypes<TSchema, TMatchFilters>;
 }
