@@ -8,6 +8,8 @@ import type {IMovieCreditController} from "../controllers/MovieCreditController.
 import validateZodSchema from "../../../shared/utility/zod/validateZodSchema.js";
 import {MovieCreditInputSchema} from "../schemas/MovieCreditInputSchema.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import isAuth from "../../authentication/middleware/isAuth.js";
+import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 
 const {model, crudController} = MovieCreditServiceProvider.register();
 
@@ -22,6 +24,12 @@ const middlewareList: BaseRouteMiddleware<typeof crudController> = {
 
 const baseConfig: IBaseRoutesConfig<IMovieCreditController> = {crudController, middlewareList};
 
-const routes = createBaseRoutes(baseConfig);
+const router = createBaseRoutes(baseConfig);
 
-export default routes;
+router.get(
+    "/query/person/:personID/grouped-by-role-type",
+    [isAuth],
+    asyncHandler(crudController.fetchGroupedMovieCreditsByPerson.bind(crudController)),
+);
+
+export default router;

@@ -1,8 +1,8 @@
-import type {Request} from "express";
+import type {Request, Response} from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type {IMovieCredit} from "../models/MovieCredit.interface.js";
 import type MovieCreditQueryOptionService from "../services/MovieCreditQueryOptionService.js";
-import type MovieCreditService from "../services/MovieCreditService.js";
+import type MovieCreditService from "../services/movie-credit-service/MovieCreditService.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
@@ -12,6 +12,7 @@ import type {
     PopulationPipelineStages,
     ReferenceFilterPipelineStages
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
 
 /**
  * Constructor parameters for {@link MovieCreditController}.
@@ -134,5 +135,31 @@ export default class MovieCreditController
     fetchURLQuerySorts(req: Request): Partial<Record<keyof IMovieCredit, SortOrder>> {
         const options = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQuerySorts(options);
+    }
+
+    /**
+     * Fetches movie credits grouped by role for a specific person.
+     * Uses the `limit` query parameter to control the number of credits per role.
+     *
+     * @param req - Express request object, expects `params.personID` and optional `query.limit`.
+     * @param res - Express response object used to return JSON results.
+     * @returns A Promise resolving to the HTTP response containing grouped movie credits.
+     *
+     * @example
+     * // GET /movie-credits/person/123?limit=5
+     * // Returns top 5 credits per role for person with ID 123
+     */
+    async fetchGroupedMovieCreditsByPerson(req: Request, res: Response): Promise<Response> {
+        const {personID} = req.params;
+        const validPersonID = isValidObjectId(personID);
+
+        const {limit} = this.queryUtils.fetchOptionsFromQuery(req);
+
+        const groupedMovieCredits = await this.service.fetchGroupedMovieCreditsByPerson({
+            personID: validPersonID,
+            limit,
+        });
+
+        return res.status(200).json(groupedMovieCredits);
     }
 }

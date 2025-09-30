@@ -2,7 +2,7 @@ import MovieCredit from "../models/MovieCredit.model.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
 import MovieCreditController from "../controllers/MovieCreditController.js";
 import MovieCreditQueryOptionService from "../services/MovieCreditQueryOptionService.js";
-import MovieCreditService from "../services/MovieCreditService.js";
+import MovieCreditService from "../services/movie-credit-service/MovieCreditService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import MovieCreditRepository from "../repositories/MovieCreditRepository.js";
 
