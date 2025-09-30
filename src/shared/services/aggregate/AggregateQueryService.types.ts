@@ -1,127 +1,71 @@
-import type {FilterQuery, SortOrder} from "mongoose";
 import type {
-    PopulationPipelineStages,
-    ReferenceFilterPipelineStages
+    PopulationPipelineStages, ReferenceFilterPipelineStages,
 } from "../../types/mongoose/AggregatePipelineStages.js";
 import type {QueryOptionParams} from "../../schema/query/QueryOptionParamsSchema.js";
+import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
+import type {FilterQuery} from "mongoose";
 
 /**
- * Represents the result of an aggregation query.
+ * Represents the result shape of an aggregate query.
  *
- * Depending on the query mode, the result can either be:
- * - **Non-paginated:** an array of documents (`TResult[]`).
- * - **Paginated:** an object containing `totalItems` and `items`.
+ * @typeParam TResult - The document type returned by the aggregation.
  *
- * @template TResult - The type of each document in the result.
- *
- * @example
- * ```ts
- * // Non-paginated results
- * const users: AggregateQueryResults<User> = [
- *   { name: "Alice" },
- *   { name: "Bob" }
- * ];
- *
- * // Paginated results
- * const paginatedUsers: AggregateQueryResults<User> = {
- *   totalItems: 100,
- *   items: [{ name: "Alice" }, { name: "Bob" }]
- * };
- * ```
+ * @remarks
+ * - Can either be a raw array of results (`TResult[]`),
+ *   or a paginated response object containing `totalItems` and `items`.
  */
 export type AggregateQueryResults<TResult = any> =
     TResult[] | { totalItems: number; items: TResult[] };
 
 /**
- * Parameters for controlling pagination in an aggregation query.
+ * Parameters controlling pagination behavior for aggregate queries.
  *
- * Can be used in two modes:
- * - **Paginated:** requires `paginated: true` and pagination details (`page`, `perPage`).
- * - **Non-paginated:** `paginated` is `false` or omitted, and no pagination fields are allowed.
- *
- * @example
- * ```ts
- * // Paginated mode
- * const params: AggregatePaginationParams = {
- *   paginated: true,
- *   page: 2,
- *   perPage: 20
- * };
- *
- * // Non-paginated mode
- * const params: AggregatePaginationParams = {
- *   paginated: false
- * };
- * ```
+ * @remarks
+ * - When `paginated: true`, both `page` and `perPage` are required.
+ * - When not paginated, these fields must be omitted.
  */
 export type AggregatePaginationParams =
     | { paginated: true; page: number; perPage: number }
     | { paginated?: false; page?: never; perPage?: never };
 
 /**
- * Parameters for filtering and counting documents in an aggregation query.
+ * Input parameters for performing an aggregate query.
  *
- * @template TSchema - The schema type of documents in the collection.
+ * @typeParam TSchema - The schema type for the main collection documents.
+ * @typeParam TMatchFilters - The type representing filterable fields.
+ *
+ * @remarks
+ * - Combines generic query options with optional pagination and population stages.
+ * - `options` specifies match filters, sorts, and reference filters.
+ * - `populationPipelines` allows enriching results with `$lookup` and `$unwind` stages.
  */
-export type AggregateCountParams<TSchema = Record<string, any>> = {
-    /**
-     * Standard Mongoose filter query applied directly to the base collection.
-     *
-     * @example
-     * ```ts
-     * { isActive: true, age: { $gte: 18 } }
-     * ```
-     */
-    matchFilters?: FilterQuery<TSchema>;
-
-    /**
-     * Reference filters applied via aggregation stages,
-     * such as `$lookup` and `$unwind`, to filter related documents.
-     *
-     * @example
-     * ```ts
-     * [
-     *   { $lookup: { from: "roles", localField: "roleId", foreignField: "_id", as: "role" } },
-     *   { $match: { "role.name": "admin" } }
-     * ]
-     * ```
-     */
-    referenceFilters?: ReferenceFilterPipelineStages;
-};
-
-/**
- * Full parameter set for an aggregation query.
- *
- * Combines:
- * - **Query options:** {@link QueryOptionParams}
- * - **Filtering and count options:** {@link AggregateCountParams}
- * - **Pagination mode:** {@link AggregatePaginationParams}
- * - **Population pipelines:** optional {@link PopulationPipelineStages}
- *
- * @template TSchema - The schema type of documents in the collection.
- */
-export type AggregateQueryParams<TSchema = Record<string, any>> =
+export type AggregateQueryParams<
+    TSchema = Record<string, unknown>,
+    TMatchFilters = any,
+> =
     QueryOptionParams &
-    AggregateCountParams<TSchema> &
     AggregatePaginationParams &
     {
-        /**
-         * Optional aggregation pipelines for populating referenced documents.
-         *
-         * Typically includes `$lookup` and `$unwind` stages.
-         */
-        populationPipelines?: PopulationPipelineStages;
+        /** Query and filter options (match filters, sorts, reference filters). */
+        options: QueryOptionTypes<TSchema, TMatchFilters>;
 
-        /**
-         * Sort order for query results.
-         *
-         * Keys correspond to schema fields, and values indicate sort direction.
-         * Accepts `1 | -1 | "asc" | "desc"`.
-         *
-         * @example
-         * ```ts
-         * { createdAt: -1, name: "asc" }
-         * ```
-         */
-        querySorts?: Partial<Record<keyof TSchema, SortOrder>>;
+        /** Optional pipeline stages for populating references (e.g., Person, Movie). */
+        populationPipelines?: PopulationPipelineStages;
     };
+
+/**
+ * Parameters for counting documents in an aggregate query.
+ *
+ * @typeParam TMatchFilters - The type representing filterable fields.
+ *
+ * @remarks
+ * - `matchFilters` apply standard query filters.
+ * - `referenceFilters` allow filtering on joined reference documents.
+ */
+export type AggregateCountParams<TMatchFilters> = {
+    /** Match filters applied directly to the main collection. */
+    matchFilters?: FilterQuery<TMatchFilters>;
+
+    /** Reference filters applied through `$lookup` stages. */
+    referenceFilters?: ReferenceFilterPipelineStages;
+};
