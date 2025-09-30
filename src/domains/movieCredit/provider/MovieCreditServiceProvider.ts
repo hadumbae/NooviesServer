@@ -9,11 +9,12 @@ import MovieCreditRepository from "../repositories/MovieCreditRepository.js";
 /**
  * Service provider for the **MovieCredit domain**.
  *
+ * @remarks
  * This class wires together all dependencies related to `MovieCredit`:
- * - **Model**: Mongoose schema and data access
- * - **Repository**: Handles direct database operations
- * - **Services**: Encapsulate domain logic, query parsing, and aggregation
- * - **Controller**: Exposes endpoints for HTTP routing
+ * - **Model**: Mongoose schema and data access.
+ * - **Repository**: Handles direct database operations.
+ * - **Services**: Encapsulate domain logic, query parsing, and aggregation.
+ * - **Controller**: Exposes endpoints for HTTP routing.
  *
  * Designed to be called during application startup to provide a
  * ready-to-use, self-contained package of MovieCredit components.
@@ -22,20 +23,24 @@ export default class MovieCreditServiceProvider {
     /**
      * Registers and initializes all MovieCredit-related services.
      *
-     * @returns An object with the following properties:
-     * - `model`: The {@link MovieCredit} Mongoose model
-     * - `repository`: The {@link MovieCreditRepository} for database operations
-     * - `crudController`: A configured {@link MovieCreditController} for HTTP routes
+     * @returns An object containing the fully initialized MovieCredit components:
+     * - `model`: The {@link MovieCredit} Mongoose model.
+     * - `repository`: The {@link MovieCreditRepository} for direct database operations.
+     * - `services`: Encapsulates:
+     *   - `service`: {@link MovieCreditService} domain logic.
+     *   - `optionService`: {@link MovieCreditQueryOptionService} for parsing queries.
+     *   - `aggregateService`: {@link AggregateQueryService} for aggregation pipelines.
+     * - `controllers`: Contains the configured {@link MovieCreditController} for HTTP routes.
      *
      * @example
-     * // Register MovieCredit services at startup
-     * const { model, repository, crudController } = MovieCreditServiceProvider.register();
+     * // Register MovieCredit services at application startup
+     * const { model, repository, services, controllers } = MovieCreditServiceProvider.register();
      *
-     * // Use the repository in domain logic
+     * // Using the repository to fetch a credit
      * const credit = await repository.findById("123");
      *
-     * // Mount controller in an Express app
-     * app.use("/movie-credits", crudController.router);
+     * // Using the controller in an Express app
+     * app.use("/movie-credits", controllers.controller.router);
      */
     static register() {
         /** Mongoose model for MovieCredit */
@@ -59,8 +64,8 @@ export default class MovieCreditServiceProvider {
         /** Service for building and executing aggregation pipelines */
         const aggregateService = new AggregateQueryService({ model, populateRefs });
 
-        /** Controller for handling HTTP requests and delegating to services */
-        const crudController = new MovieCreditController({
+        /** Controller for HTTP endpoints related to MovieCredit */
+        const controller = new MovieCreditController({
             repository,
             queryUtils,
             service,
@@ -71,7 +76,14 @@ export default class MovieCreditServiceProvider {
         return {
             model,
             repository,
-            crudController,
+            services: {
+                service,
+                optionService,
+                aggregateService,
+            },
+            controllers: {
+                controller,
+            }
         };
     }
 }
