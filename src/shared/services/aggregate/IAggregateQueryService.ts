@@ -1,28 +1,42 @@
 import type {AggregateQueryParams} from "./AggregateQueryService.types.js";
 
 /**
- * Interface defining the contract for an aggregation query service.
+ * Interface defining a service for executing aggregate and find queries
+ * against a Mongoose model, with optional support for pagination,
+ * population, and advanced query options.
+ *
+ * @typeParam TSchema - The schema type of the documents being queried.
+ * @typeParam TMatchFilters - The type used for query match filters.
  */
-export default interface IAggregateQueryService<TSchema = Record<string, any>> {
+export default interface IAggregateQueryService<
+    TSchema = Record<string, unknown>,
+    TMatchFilters = any,
+> {
     /**
-     * Entry point for querying the database.
-     * Automatically chooses between `find()` and `aggregate()` based on the presence of `populateFilters`.
+     * Executes a query, automatically choosing between a `.find()` or
+     * `.aggregate()` pipeline depending on the provided options.
      *
-     * @param params - Query parameters including filters, pagination, and population.
+     * @param params - Parameters including filters, sorts, pagination, and population pipelines.
+     * @returns A promise resolving to query results or a paginated result object.
      */
-    query(params: AggregateQueryParams<TSchema>): Promise<any>;
+    query(params: AggregateQueryParams<TSchema, TMatchFilters>): Promise<any>;
 
     /**
-     * Executes a standard `.find()` query with optional pagination and population.
+     * Executes a standard Mongoose `.find()` query with optional pagination,
+     * sorting, population, and virtuals.
      *
-     * @param params - Query parameters including match filters, pagination, and populate flags.
+     * @param params - Parameters including filters, sorts, pagination, and query options.
+     * @returns A promise resolving to the documents or a paginated result object.
      */
-    find(params: AggregateQueryParams<TSchema>): Promise<any>;
+    find(params: AggregateQueryParams<TSchema, TMatchFilters>): Promise<any>;
 
     /**
-     * Executes an aggregation pipeline query with support for filters, pagination, and population.
+     * Executes an aggregation pipeline query, supporting advanced filters,
+     * reference lookups, population, and pagination.
      *
-     * @param params - Aggregation query parameters including match filters, population pipelines, and pagination.
+     * @param params - Parameters including match filters, reference filters,
+     * population pipelines, and pagination settings.
+     * @returns A promise resolving to the aggregation results or a paginated result object.
      */
-    aggregate(params: AggregateQueryParams<TSchema>): Promise<any>;
+    aggregate(params: AggregateQueryParams<TSchema, TMatchFilters>): Promise<any>;
 }
