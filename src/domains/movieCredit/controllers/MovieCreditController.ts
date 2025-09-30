@@ -7,12 +7,12 @@ import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
-import type {FilterQuery, SortOrder} from "mongoose";
 import type {
     PopulationPipelineStages,
-    ReferenceFilterPipelineStages
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {MovieCreditQueryMatchFilters} from "../schemas/query/MovieCreditQueryOption.types.js";
 
 /**
  * Constructor parameters for {@link MovieCreditController}.
@@ -75,35 +75,15 @@ export default class MovieCreditController
     }
 
     /**
-     * Builds MongoDB `$match` filters from request query parameters.
+     * Builds query options for matching and referencing movie credits,
+     * based on request query parameters.
      *
      * @param req - Express request object containing query parameters.
-     * @returns A {@link FilterQuery} object for matching movie credits.
-     *
-     * @example
-     * // ?department=Directing&billingOrder=1
-     * // Returns: { department: "Directing", billingOrder: 1 }
+     * @returns A structured {@link QueryOptionTypes} object with filters and sorts.
      */
-    fetchURLMatchFilters(req: Request): FilterQuery<any> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<IMovieCredit, MovieCreditQueryMatchFilters> {
         const options = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateMatchFilters(options);
-    }
-
-    /**
-     * Builds MongoDB `$lookup`-based filters from request query parameters.
-     *
-     * @param req - Express request object containing query parameters.
-     * @returns A {@link ReferenceFilterPipelineStages} array
-     *          for joining and filtering related collections.
-     *
-     * @example
-     * // ?name=Tom
-     * // Returns a $lookup stage joining `people` collection
-     * // and filtering by { name: /Tom/i }
-     */
-    fetchURLPopulateFilters(req: Request): ReferenceFilterPipelineStages {
-        const options = this.optionService.fetchQueryParams(req);
-        return this.optionService.generatePopulateFilters(options);
+        return this.optionService.generateQueryOptions(options);
     }
 
     /**
@@ -119,22 +99,6 @@ export default class MovieCreditController
      */
     fetchPopulatePipelines(): PopulationPipelineStages {
         return this.optionService.generatePopulationPipelines();
-    }
-
-    /**
-     * Builds MongoDB sort rules from request query parameters.
-     *
-     * @param req - Express request object containing query parameters.
-     * @returns A record mapping {@link IMovieCredit} fields to sort orders
-     *          (`1` for ascending, `-1` for descending).
-     *
-     * @example
-     * // ?sortByMovie=1&sortByBillingOrder=-1
-     * // Returns: { movie: 1, billingOrder: -1 }
-     */
-    fetchURLQuerySorts(req: Request): Partial<Record<keyof IMovieCredit, SortOrder>> {
-        const options = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateQuerySorts(options);
     }
 
     /**

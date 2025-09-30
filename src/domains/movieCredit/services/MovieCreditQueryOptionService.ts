@@ -1,84 +1,74 @@
-import type {Request} from "express";
+import type { Request } from "express";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
-import {type FilterQuery, type PipelineStage, type SortOrder} from "mongoose";
+import { type FilterQuery, type SortOrder } from "mongoose";
 import type {
     PopulationPipelineStages,
     ReferenceFilterPipelineStages
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import type IQueryOptionService from "../../../shared/interfaces/IQueryOptionService.js";
-import type {IMovieCredit} from "../models/MovieCredit.interface.js";
-import {MovieCreditQueryOptionsSchema} from "../schemas/query/MovieCreditFilters.schema.js";
+import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type { IMovieCredit } from "../models/MovieCredit.interface.js";
+import { MovieCreditQueryOptionsSchema } from "../schemas/query/MovieCreditQueryOption.schema.js";
 import type {
     MovieCreditQueryMatchFilters,
     MovieCreditQueryOptions
-} from "../schemas/query/MovieCreditFilters.types.js";
+} from "../schemas/query/MovieCreditQueryOption.types.js";
+import generateLookupMatchStage from "../../../shared/utility/generateLookupMatchStage.js";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Interface defining the MovieCreditQueryOptionService methods.
+ * Interface defining methods for building query options specific to MovieCredit documents.
+ * Extends the generic {@link IQueryOptionService}.
  */
 interface IMovieCreditQueryOptionService
     extends IQueryOptionService<IMovieCredit, MovieCreditQueryOptions, MovieCreditQueryMatchFilters> {
 
     /**
-     * Generates an array of MongoDB aggregation pipeline stages for population.
-     * @param params - Query options containing optional filters for population.
+     * Generates an array of MongoDB aggregation pipeline stages
+     * for applying reference-based filters (e.g., filtering by person name, movie title).
+     *
+     * @param params - Query options containing optional filters for related collections.
+     * @returns Array of `$lookup`, `$match`, and `$unset` stages used in filtering.
      */
-    generatePopulateFilters(params: MovieCreditQueryOptions): ReferenceFilterPipelineStages;
+    generateReferenceFilters(params: MovieCreditQueryOptions): ReferenceFilterPipelineStages;
 
     /**
-     * Builds post-pagination stages for enriching results with Person, Movie, and RoleType documents.
+     * Builds post-pagination population stages for enriching MovieCredit results
+     * with related Person, Movie, and RoleType documents.
+     *
+     * @returns Array of `$lookup` and `$unwind` stages used for population.
      */
     generatePopulationPipelines(): PopulationPipelineStages;
-
-    /**
-     * Generates a $lookup pipeline stage to populate the 'creditPerson' field.
-     * @param match - Optional filter containing a person's name.
-     * @param match.name - Name to filter by (case-insensitive regex)
-     */
-    personLookup(match: { name?: string }): PipelineStage.Lookup;
-
-    /**
-     * Generates a $lookup pipeline stage to populate the 'creditMovie' field.
-     * @param match - Optional filter containing a movie title.
-     * @param match.title - Title to filter by (case-insensitive regex)
-     */
-    movieLookup(match: { title?: string }): PipelineStage.Lookup;
-
-    /**
-     * Generates a $lookup pipeline stage to populate the 'creditRoleType' field.
-     * @param match - Optional filter containing a role name.
-     * @param match.roleName - Role name to filter by (case-insensitive regex)
-     */
-    roleTypeLookup(match: { roleName?: string }): PipelineStage.Lookup;
 }
 
 /**
- * Service for building queries, sorts, and aggregation pipelines for MovieCredit documents.
- * Supports filtering, sorting, and population of related Person, Movie, and RoleType documents.
+ * Service for constructing queries, filters, sorts, and aggregation pipelines
+ * for MovieCredit documents. Supports filtering by root-level fields
+ * (e.g., department, roleType) and reference-level fields
+ * (e.g., person name, movie title, role name).
  */
 export default class MovieCreditQueryOptionService implements IMovieCreditQueryOptionService {
 
     /**
      * Parses and validates query parameters from an Express request using Zod.
-     * Removes null or undefined values from the resulting object.
+     * Automatically removes `null` or `undefined` values for cleaner queries.
      *
-     * @param req - Express request object
-     * @returns A validated and cleaned MovieCreditQueryOptions object
-     * @throws {ZodParseError} If validation fails
+     * @param req - Express request containing query string parameters.
+     * @returns A validated {@link MovieCreditQueryOptions} object.
+     * @throws {ZodParseError} If query validation fails.
      */
     fetchQueryParams(req: Request): MovieCreditQueryOptions {
-        const {success, error, data} = MovieCreditQueryOptionsSchema.safeParse(req.query);
-        if (!success) throw new ZodParseError({message: "Validation Failed.", errors: error.errors});
+        const { success, error, data } = MovieCreditQueryOptionsSchema.safeParse(req.query);
+        if (!success) throw new ZodParseError({ message: "Validation Failed.", errors: error.errors });
         return filterNullArray(data);
     }
 
     /**
-     * Generates a Mongoose filter query object based on MovieCreditQueryOptions.
-     * Removes null or undefined fields.
+     * Generates root-level MongoDB filter conditions for MovieCredit queries.
+     * Excludes reference-based filters (name, title, roleName).
      *
-     * @param options - Query options from the client
-     * @returns FilterQuery object for Mongoose
+     * @param options - Query options provided by the client.
+     * @returns A {@link FilterQuery} object for MovieCredit documents.
      */
     generateMatchFilters(options: MovieCreditQueryOptions): FilterQuery<MovieCreditQueryMatchFilters> {
         const {
@@ -96,14 +86,14 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
     }
 
     /**
-     * Generates sorting options for a Mongoose query based on MovieCreditQueryOptions.
-     * Only includes fields with non-null sort orders.
+     * Generates sorting options for MovieCredit queries.
+     * Only includes fields with valid (non-null) sort orders.
      *
-     * @param options - Query options containing sort fields
-     * @returns Partial record mapping IMovieCredit fields to SortOrder
+     * @param options - Query options containing sort fields.
+     * @returns A partial record mapping {@link IMovieCredit} fields to sort orders.
      */
-    generateQuerySorts(options: MovieCreditQueryOptions): Partial<Record<keyof IMovieCredit, SortOrder>> {
-        const {sortByDepartment, sortByMovie, sortByPerson, sortByBillingOrder} = options;
+    generateMatchSorts(options: MovieCreditQueryOptions): Partial<Record<keyof IMovieCredit, SortOrder>> {
+        const { sortByDepartment, sortByMovie, sortByPerson, sortByBillingOrder } = options;
         const sorts: Partial<Record<keyof IMovieCredit, SortOrder | undefined>> = {
             department: sortByDepartment,
             movie: sortByMovie,
@@ -115,122 +105,123 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
     }
 
     /**
-     * Builds post-pagination stages to populate Movie, Person, and RoleType references.
-     */
-    generatePopulationPipelines(): PopulationPipelineStages {
-        return [
-            {$lookup: {from: "movies", localField: "movie", foreignField: "_id", as: "movie"}},
-            {$lookup: {from: "people", localField: "person", foreignField: "_id", as: "person"}},
-            {$lookup: {from: "roletypes", localField: "roleType", foreignField: "_id", as: "roleType"}},
-            {$unwind: {path: "$movie", preserveNullAndEmptyArrays: true}},
-            {$unwind: {path: "$person", preserveNullAndEmptyArrays: true}},
-            {$unwind: {path: "$roleType", preserveNullAndEmptyArrays: true}},
-        ];
-    }
-
-    /**
-     * Generates an array of populate pipeline stages for aggregation based on the provided options.
-     * Adds lookups and optional unwinds for person, movie, and roleType references.
+     * Generates reference-level MongoDB aggregation stages for filtering
+     * by related documents (e.g., Person, Movie, RoleType).
      *
-     * @param params - Query options containing optional filters for population
-     * @returns Array of MongoDB aggregation pipeline stages
+     * Uses `$lookup` + `$match` to filter joined documents by regex,
+     * then unsets temporary lookup fields.
+     *
+     * @param params - Query options including reference-based filters.
+     * @returns Array of `$lookup`, `$match`, and `$unset` stages.
+     *
+     * @example
+     * ```ts
+     * const stages = service.generateReferenceFilters({ name: "Tom" });
+     * // Produces lookup and match stages that only keep MovieCredits
+     * // where the associated person's name matches "Tom".
+     * ```
      */
-    generatePopulateFilters(params: MovieCreditQueryOptions): ReferenceFilterPipelineStages {
-        const {name, title, roleName} = params;
+    generateReferenceFilters(params: MovieCreditQueryOptions): ReferenceFilterPipelineStages {
+        const { name, title, roleName } = params;
 
         const pipelines: ReferenceFilterPipelineStages = [];
-
-        // Lookups
-        if (name) pipelines.push(this.personLookup({name}));
-        if (title) pipelines.push(this.movieLookup({title}));
-        if (roleName) pipelines.push(this.roleTypeLookup({roleName}));
-
-        // Unwinds
+        const matchStage: Record<string, any> = {};
 
         if (name) {
-            pipelines.push({$unwind: "$creditPerson"});
-            pipelines.push({$unset: "$creditPerson"});
+            const filters = { name: { $regex: name, $options: "i" } };
+
+            const pipeline = generateLookupMatchStage({
+                from: "people",
+                as: "creditPerson",
+                localField: "person",
+                foreignField: "_id",
+                project: { name: 1 },
+                filters,
+            });
+
+            pipelines.push(pipeline);
+            matchStage.creditPerson = { $ne: [] };
         }
 
         if (title) {
-            pipelines.push({$unwind: "$creditMovie"});
-            pipelines.push({$unset: "$creditMovie"});
+            const filters = { title: { $regex: title, $options: "i" } };
+
+            const pipeline = generateLookupMatchStage({
+                from: "movies",
+                as: "creditMovie",
+                localField: "movie",
+                foreignField: "_id",
+                project: { title: 1 },
+                filters,
+            });
+
+            pipelines.push(pipeline);
+            matchStage.creditMovie = { $ne: [] };
         }
 
         if (roleName) {
-            pipelines.push({$unwind: "$creditRoleType"});
-            pipelines.push({$unset: "$creditRoleType"});
+            const filters = { roleName: { $regex: roleName, $options: "i" } };
+
+            const pipeline = generateLookupMatchStage({
+                from: "roletypes",
+                as: "creditRoleType",
+                localField: "roleType",
+                foreignField: "_id",
+                project: { roleName: 1 },
+                filters,
+            });
+
+            pipelines.push(pipeline);
+            matchStage.creditRoleType = { $ne: [] };
         }
+
+        pipelines.push({ $match: matchStage });
+        pipelines.push({ $unset: ["creditPerson", "creditMovie", "creditRoleType"] });
 
         return pipelines;
     }
 
     /**
-     * Generates a $lookup pipeline stage to populate the 'creditPerson' field.
-     * Applies optional case-insensitive name filtering if provided.
+     * Combines root-level filters, reference filters, and sort rules
+     * into a single {@link QueryOptionTypes} object.
      *
-     * @param name - Optional name to filter by (case-insensitive regex)
-     * @returns MongoDB $lookup pipeline stage
+     * @param options - The query options provided by the client.
+     * @returns Query options structured for both root and reference queries.
      */
-    personLookup({name}: { name?: string }): PipelineStage.Lookup {
-        const filters = {...(name && {name: {$regex: name, $options: "i"}})};
+    generateQueryOptions(
+        options: MovieCreditQueryOptions
+    ): QueryOptionTypes<IMovieCredit, MovieCreditQueryMatchFilters> {
+        const matchFilters = this.generateMatchFilters(options);
+        const referenceFilters = this.generateReferenceFilters(options);
+        const matchSorts = this.generateMatchSorts(options);
 
         return {
-            $lookup: {
-                from: "people",
-                let: {personID: "$person"},
-                pipeline: [
-                    {$match: {$expr: {$eq: ["$_id", "$$personID"]}}},
-                    {$match: filters}
-                ],
-                as: "creditPerson"
-            }
+            match: { filters: matchFilters, sorts: matchSorts },
+            reference: { filters: referenceFilters, sorts: [] },
         };
     }
 
     /**
-     * Generates a $lookup pipeline stage to populate the 'creditMovie' field.
-     * Applies optional case-insensitive title filtering if provided.
+     * Builds post-pagination pipeline stages to populate
+     * Person, Movie, and RoleType references in query results.
      *
-     * @param title - Optional title to filter by (case-insensitive regex)
-     * @returns MongoDB $lookup pipeline stage
-     */
-    movieLookup({title}: { title?: string }): PipelineStage.Lookup {
-        const filters = {...(title && {title: {$regex: title, $options: "i"}})};
-
-        return {
-            $lookup: {
-                from: "movies",
-                let: {movieID: "$movie"},
-                pipeline: [
-                    {$match: {$expr: {$eq: ["$_id", "$$movieID"]}}},
-                    {$match: filters}
-                ],
-                as: "creditMovie"
-            }
-        };
-    }
-
-    /**
-     * Generates a $lookup pipeline stage to populate the 'creditRoleType' field.
-     * Applies optional case-insensitive roleName filtering if provided.
+     * @returns Array of `$lookup` and `$unwind` stages used for population.
      *
-     * @param roleName - Optional role name to filter by (case-insensitive regex)
-     * @returns MongoDB $lookup pipeline stage
+     * @example
+     * ```ts
+     * const stages = service.generatePopulationPipelines();
+     * // Produces lookups for movies, people, and roletypes,
+     * // and unwinds them to embed the related documents.
+     * ```
      */
-    roleTypeLookup({roleName}: { roleName?: string }): PipelineStage.Lookup {
-        const filters = {...(roleName && {roleName: {$regex: roleName, $options: "i"}})};
-
-        return {
-            $lookup: {
-                from: "roletypes",
-                let: {roleTypeID: "$roleType"},
-                pipeline: [
-                    {$match: {$expr: {$eq: ["$_id", "$$roleTypeID"]}}},
-                    {$match: filters}
-                ],
-                as: "creditRoleType"
-            }
-        };
+    generatePopulationPipelines(): PopulationPipelineStages {
+        return [
+            { $lookup: { from: "movies", localField: "movie", foreignField: "_id", as: "movie" } },
+            { $lookup: { from: "people", localField: "person", foreignField: "_id", as: "person" } },
+            { $lookup: { from: "roletypes", localField: "roleType", foreignField: "_id", as: "roleType" } },
+            { $unwind: { path: "$movie", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$person", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$roleType", preserveNullAndEmptyArrays: true } },
+        ];
     }
 }
