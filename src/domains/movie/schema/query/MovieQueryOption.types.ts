@@ -1,19 +1,19 @@
 import {z} from "zod";
-import {MovieQueryFiltersSchema, MovieQueryOptionsSchema, MovieQuerySortsSchema} from "./MovieFilters.schema.js";
+import {MovieQueryMatchFiltersSchema, MovieQueryOptionsSchema, MovieQueryMatchSortsSchema} from "./MovieQueryOption.schema.js";
 
 /**
  * Type representing the query filters that can be applied when fetching movies.
  *
- * Corresponds to `MovieQueryFiltersSchema`.
+ * Corresponds to `MovieQueryMatchFiltersSchema`.
  */
-export type MovieQueryFilters = z.infer<typeof MovieQueryFiltersSchema>;
+export type MovieQueryMatchFilters = z.infer<typeof MovieQueryMatchFiltersSchema>;
 
 /**
  * Type representing the sorting options for movie queries.
  *
- * Corresponds to `MovieQuerySortsSchema`.
+ * Corresponds to `MovieQueryMatchSortsSchema`.
  */
-export type MovieQuerySorts = z.infer<typeof MovieQuerySortsSchema>;
+export type MovieQueryMatchSorts = z.infer<typeof MovieQueryMatchSortsSchema>;
 
 /**
  * Type representing the complete set of query options for movies,

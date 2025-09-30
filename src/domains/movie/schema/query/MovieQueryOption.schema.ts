@@ -15,7 +15,7 @@ import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URL
  * - `releaseDate`: Movie release date string
  * - `genres`: Array of genre ObjectIds
  */
-export const MovieQueryFiltersSchema = z.object({
+export const MovieQueryMatchFiltersSchema = z.object({
     _id: URLParamObjectIDSchema,
     title: URLParamStringSchema,
     releaseDate: URLParamDateStringSchema,
@@ -29,7 +29,7 @@ export const MovieQueryFiltersSchema = z.object({
  * - `sortByReleaseDate`: Sort order for release date (asc/desc)
  * - `sortByTitle`: Sort order for title (asc/desc)
  */
-export const MovieQuerySortsSchema = z.object({
+export const MovieQueryMatchSortsSchema = z.object({
     sortByReleaseDate: URLParamMongooseSortOrderSchema,
     sortByTitle: URLParamMongooseSortOrderSchema,
 });
@@ -38,4 +38,4 @@ export const MovieQuerySortsSchema = z.object({
  * Combined schema for movie query options including both
  * filters and sorting.
  */
-export const MovieQueryOptionsSchema = MovieQuerySortsSchema.merge(MovieQueryFiltersSchema);
+export const MovieQueryOptionsSchema = MovieQueryMatchSortsSchema.merge(MovieQueryMatchFiltersSchema);

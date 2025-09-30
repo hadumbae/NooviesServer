@@ -1,5 +1,4 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-
 import type { Request, Response } from "express";
 import type IMovie from "../model/Movie.interface.js";
 import MovieImageService from "../service/MovieImageService.js";
@@ -7,11 +6,12 @@ import type IMovieService from "../service/movie/IMovieService.js";
 import type MovieService from "../service/movie/MovieService.js";
 import type MovieQueryOptionService from "../service/MovieQueryOptionService.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
-import type { FilterQuery, SortOrder } from "mongoose";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {MovieQueryMatchFilters} from "../schema/query/MovieQueryOption.types.js";
 
 /**
  * Constructor parameters for {@link MovieController}.
@@ -44,6 +44,14 @@ export interface IMovieController extends IBaseCRUDController {
      * @param res - Express response object
      */
     updatePosterPicture(req: Request, res: Response): Promise<Response>;
+
+    /**
+     * Deletes the poster image of a movie.
+     *
+     * @param req - Express request object containing `params._id`
+     * @param res - Express response object
+     */
+    deletePosterPicture(req: Request, res: Response): Promise<Response>;
 
     /**
      * Fetches paginated movies along with recent active showings.
@@ -90,33 +98,14 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
     }
 
     /**
-     * Builds MongoDB `$match` filters from request query parameters.
+     * Converts request query parameters into structured query options.
      *
      * @param req - Express request object containing query parameters
-     * @returns A {@link FilterQuery} object for querying movies
-     *
-     * @example
-     * // ?title=Matrix&genre=Sci-Fi
-     * // Returns: { title: "Matrix", genre: "Sci-Fi" }
+     * @returns Structured {@link QueryOptionTypes} with filters and sorts
      */
-    fetchURLMatchFilters(req: Request): FilterQuery<IMovie> {
-        const options = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateMatchFilters(options);
-    }
-
-    /**
-     * Builds MongoDB `$sort` options from request query parameters.
-     *
-     * @param req - Express request object containing sort query parameters
-     * @returns A partial record mapping {@link IMovie} fields to sort orders
-     *
-     * @example
-     * // ?sortByReleaseDate=-1&sortByTitle=1
-     * // Returns: { releaseDate: -1, title: 1 }
-     */
-    fetchURLQuerySorts(req: Request): Partial<Record<keyof IMovie, SortOrder>> {
-        const options = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateQuerySorts(options);
+    fetchQueryOptions(req: Request): QueryOptionTypes<IMovie, MovieQueryMatchFilters> {
+        const params = this.optionService.fetchQueryParams(req);
+        return this.optionService.generateQueryOptions(params);
     }
 
     /**
@@ -176,7 +165,7 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
 
         const params = this.optionService.fetchQueryParams(req);
         const query = this.optionService.generateMatchFilters(params);
-        const sort = this.optionService.generateQuerySorts(params);
+        const sort = this.optionService.generateMatchSorts(params);
 
         const { items, totalItems } = await this.service.fetchPaginatedMoviesWithRecentShowings({
             page,

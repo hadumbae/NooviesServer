@@ -1,27 +1,31 @@
 import type {Request} from 'express';
 import {type FilterQuery, type SortOrder} from "mongoose";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import {MovieQueryOptionsSchema} from "../schema/query/MovieFilters.schema.js";
-import type IQueryOptionService from "../../../shared/interfaces/IQueryOptionService.js";
+import {MovieQueryOptionsSchema} from "../schema/query/MovieQueryOption.schema.js";
+import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
 import type IMovie from "../model/Movie.interface.js";
-import type {MovieQueryFilters, MovieQueryOptions} from "../schema/query/MovieFilters.types.js";
+import type {MovieQueryMatchFilters, MovieQueryOptions} from "../schema/query/MovieQueryOption.types.js";
+import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Service responsible for parsing query options from requests
- * and generating Mongoose-compatible query filters and sort objects
- * for the `Movie` model.
+ * Service for parsing, validating, and converting query parameters
+ * into Mongoose-compatible filters and sorts for {@link IMovie} documents.
  *
- * Implements {@link IQueryOptionService}.
+ * Implements {@link IQueryOptionService} to provide a consistent interface
+ * for fetching query parameters and generating query options.
  */
-export default class MovieQueryOptionService implements IQueryOptionService<IMovie, MovieQueryOptions, MovieQueryFilters> {
+export default class MovieQueryOptionService implements IQueryOptionService<IMovie, MovieQueryOptions, MovieQueryMatchFilters> {
+
     /**
-     * Parses query parameters from an Express request and returns
-     * a validated `MovieQueryOptions` object.
+     * Parses and validates query parameters from an Express request.
+     * Removes null or undefined values from the resulting object.
      *
-     * Filters out any null or undefined values.
+     * @param req - Express request object containing query parameters
+     * @returns Validated and cleaned {@link MovieQueryOptions} object
      *
-     * @param req - The Express request object
-     * @returns A validated and filtered {@link MovieQueryOptions} object
+     * @example
+     * // GET /movies?title=Matrix&genres=Action
+     * const options = service.fetchQueryParams(req);
      */
     fetchQueryParams(req: Request): MovieQueryOptions {
         const params = MovieQueryOptionsSchema.parse(req.query);
@@ -29,36 +33,43 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
     }
 
     /**
-     * Generates Mongoose-compatible match filters based on query options.
+     * Generates Mongoose filter conditions based on {@link MovieQueryOptions}.
+     * Automatically converts string fields to regex for case-insensitive matching,
+     * and handles array inclusion for genres.
      *
-     * Supports exact matches for `_id` and `releaseDate`,
-     * regex-based case-insensitive matches for `title`,
-     * and `$in` filters for `genres`.
+     * @param options - Parsed movie query options
+     * @returns A {@link FilterQuery} object for Mongoose queries
      *
-     * @param options - The validated {@link MovieQueryOptions}
-     * @returns A {@link FilterQuery} object usable in Mongoose queries
+     * @example
+     * const filters = service.generateMatchFilters({title: "Matrix", genres: ["Action"]});
+     * // filters: { title: { $regex: "Matrix", $options: "i" }, genres: { $in: ["Action"] } }
      */
-    generateMatchFilters(options: MovieQueryOptions): FilterQuery<MovieQueryFilters> {
-        const { _id, title, releaseDate, genres } = options;
+    generateMatchFilters(options: MovieQueryOptions): FilterQuery<MovieQueryMatchFilters> {
+        const {_id, title, releaseDate, genres} = options;
 
         const conditions = {
             _id,
             releaseDate,
-            title: title && { $regex: title, $options: "i" },
-            genres: genres && { genres: { $in: genres } },
+            title: title && {$regex: title, $options: "i"},
+            genres: genres && {genres: {$in: genres}},
         };
 
         return filterNullArray(conditions);
     }
 
     /**
-     * Generates Mongoose-compatible sort options for querying movies.
+     * Generates sorting options for Mongoose queries based on {@link MovieQueryOptions}.
+     * Only includes fields with non-null sort orders.
      *
-     * @param options - The validated {@link MovieQueryOptions}
-     * @returns A partial record mapping movie fields to {@link SortOrder} ('asc' | 'desc')
+     * @param options - Movie query options containing sort fields
+     * @returns Partial record mapping {@link IMovie} fields to {@link SortOrder}
+     *
+     * @example
+     * const sorts = service.generateMatchSorts({sortByTitle: 1, sortByReleaseDate: -1});
+     * // sorts: { title: 1, releaseDate: -1 }
      */
-    generateQuerySorts(options: MovieQueryOptions): Partial<Record<keyof IMovie, SortOrder>> {
-        const { sortByReleaseDate, sortByTitle } = options;
+    generateMatchSorts(options: MovieQueryOptions): Partial<Record<keyof IMovie, SortOrder>> {
+        const {sortByReleaseDate, sortByTitle} = options;
 
         const sorts = {
             releaseDate: sortByReleaseDate,
@@ -66,5 +77,24 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
         };
 
         return filterNullArray(sorts);
+    }
+
+    /**
+     * Combines match filters and sorts into a structured query options object.
+     *
+     * @param options - Validated {@link MovieQueryOptions}
+     * @returns {@link QueryOptionTypes} object containing `match` filters and sorts
+     *
+     * @example
+     * const queryOptions = service.generateQueryOptions({title: "Matrix", sortByReleaseDate: 1});
+     * // queryOptions: { match: { filters: { title: /Matrix/i }, sorts: { releaseDate: 1 } } }
+     */
+    generateQueryOptions(options: MovieQueryOptions): QueryOptionTypes<IMovie, MovieQueryMatchFilters> {
+        const matchFilters = this.generateMatchFilters(options);
+        const matchSorts = this.generateMatchSorts(options);
+
+        return {
+            match: {filters: matchFilters, sorts: matchSorts},
+        };
     }
 }

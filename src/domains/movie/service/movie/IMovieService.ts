@@ -1,6 +1,6 @@
 import type {FilterQuery, SortOrder} from "mongoose";
 import type IMovie from "../../model/Movie.interface.js";
-import type {MovieQueryFilters} from "../../schema/query/MovieFilters.types.js";
+import type {MovieQueryMatchFilters} from "../../schema/query/MovieQueryOption.types.js";
 
 /**
  * Parameters for fetching paginated movies that include recent active showings.
@@ -21,7 +21,7 @@ export interface FetchPaginatedMoviesWithRecentShowingsParams {
      *
      * Example: `{ genre: "Action" }`
      */
-    query?: FilterQuery<MovieQueryFilters>;
+    query?: FilterQuery<MovieQueryMatchFilters>;
 
     /**
      * Optional sort definition for movies.
