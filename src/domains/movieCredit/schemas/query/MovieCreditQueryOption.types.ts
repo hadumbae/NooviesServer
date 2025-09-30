@@ -3,9 +3,9 @@ import {
     MovieCreditQueryFiltersSchema,
     MovieCreditQueryMatchFiltersSchema,
     MovieCreditQueryOptionsSchema,
-    MovieCreditQueryPopulateFiltersSchema,
-    MovieCreditQuerySortsSchema
-} from "./MovieCreditFilters.schema.js";
+    MovieCreditQueryReferenceFiltersSchema,
+    MovieCreditQueryMatchSortsSchema
+} from "./MovieCreditQueryOption.schema.js";
 
 /**
  * Type representing filters for matching MovieCredit documents.
@@ -17,7 +17,7 @@ export type MovieCreditQueryMatchFilters = z.infer<typeof MovieCreditQueryMatchF
  * Type representing filters for populating related fields in MovieCredit queries.
  * Derived from `MovieCreditQueryPopulateFiltersSchema`.
  */
-export type MovieCreditQueryPopulateFilters = z.infer<typeof MovieCreditQueryPopulateFiltersSchema>;
+export type MovieCreditQueryReferenceFilters = z.infer<typeof MovieCreditQueryReferenceFiltersSchema>;
 
 /**
  * Type representing all filters for `MovieCredit` queries.
@@ -39,7 +39,7 @@ export type MovieCreditQueryFilters = z.infer<typeof MovieCreditQueryFiltersSche
  * Type representing sorting options for MovieCredit queries.
  * Derived from `MovieCreditQuerySortsSchema`.
  */
-export type MovieCreditQuerySorts = z.infer<typeof MovieCreditQuerySortsSchema>;
+export type MovieCreditQueryMatchSorts = z.infer<typeof MovieCreditQueryMatchSortsSchema>;
 
 /**
  * Type representing full query options for MovieCredit queries,
