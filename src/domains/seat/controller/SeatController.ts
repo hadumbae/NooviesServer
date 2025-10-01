@@ -1,52 +1,65 @@
-import type {Request, Response} from "express";
+import type { Request, Response } from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type ISeat from "../model/Seat.interface.js";
 import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
-import type {FilterQuery, SortOrder} from "mongoose";
 import type SeatQueryService from "../service/query-service/SeatQueryService.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
-import type {SeatsByRowSubmitData} from "../schema/seats/SeatInput.types.js";
+import type { SeatsByRowSubmitData } from "../schema/seats/SeatInput.types.js";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type { SeatQueryMatchFilters } from "../schema/query/SeatQueryOption.types.js";
 
 /**
  * Constructor parameters for {@link SeatController}.
  *
- * Extends the base CRUD controller constructor and adds:
- * - `queryService`: Service for handling seat-related queries and batch operations
- * - `optionService`: Service for parsing and validating seat query options
+ * Extends {@link IBaseCRUDControllerConstructor} and adds seat-specific services:
+ * - {@link SeatQueryService} for handling custom seat queries and batch operations
+ * - {@link SeatQueryOptionService} for parsing and validating seat query parameters
  */
 export interface ISeatControllerConstructor extends IBaseCRUDControllerConstructor<ISeat> {
+    /** Service for custom seat queries and batch operations. */
     queryService: SeatQueryService;
+
+    /** Service for parsing and validating seat query options. */
     optionService: SeatQueryOptionService;
 }
 
 /**
- * Interface for {@link SeatController}.
+ * Public interface for {@link SeatController}.
  *
- * Extends {@link IBaseCRUDController} and provides additional seat-specific endpoints.
+ * Extends {@link IBaseCRUDController} and can be extended to add additional seat-specific endpoints.
  */
 export interface ISeatController extends IBaseCRUDController {}
 
 /**
- * Controller responsible for handling CRUD operations and custom endpoints for {@link ISeat}.
+ * Controller responsible for managing {@link ISeat} documents.
  *
- * Extends {@link BaseCRUDController} and adds:
- * - Query option parsing via {@link SeatQueryOptionService}
- * - Batch seat creation by row via {@link SeatQueryService}
+ * Extends {@link BaseCRUDController} to provide standard CRUD functionality,
+ * and adds seat-specific features:
+ * - Parsing query options via {@link SeatQueryOptionService}
+ * - Batch seat creation for rows via {@link SeatQueryService}
+ *
+ * @example
+ * // Create seats for a row:
+ * // POST /seats/row
+ * // Request body conforms to {@link SeatsByRowSubmitData}
  */
 export default class SeatController extends BaseCRUDController<ISeat> implements ISeatController {
+    /** Service for executing custom seat queries and batch operations. */
     protected queryService: SeatQueryService;
+
+    /** Service for parsing and generating query options for seats. */
     protected optionService: SeatQueryOptionService;
 
     /**
-     * Creates a new instance of {@link SeatController}.
+     * Creates a new {@link SeatController} instance.
      *
-     * @param params - Constructor parameters including services and base CRUD options.
+     * @param params - Constructor parameters including base CRUD options and seat-specific services
      */
     constructor(params: ISeatControllerConstructor) {
-        const {optionService, queryService, ...superParams} = params;
+        const { optionService, queryService, ...superParams } = params;
         super(superParams);
 
         this.optionService = optionService;
@@ -54,35 +67,26 @@ export default class SeatController extends BaseCRUDController<ISeat> implements
     }
 
     /**
-     * Generates MongoDB filter query based on the current request's query parameters.
+     * Fetches query options for seats from the request.
      *
-     * @param req - Express request object
-     * @returns A {@link FilterQuery} object for seat matching
+     * Uses {@link SeatQueryOptionService} to parse filters, sorts, and additional options.
+     *
+     * @param req - Express request
+     * @returns Parsed query options compatible with Mongoose queries
      */
-    fetchURLMatchFilters(req: Request): FilterQuery<any> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<ISeat, SeatQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateMatchFilters(params);
+        return this.optionService.generateQueryOptions(params);
     }
 
     /**
-     * Generates MongoDB sort specification based on the current request's query parameters.
+     * Creates multiple seats for a specified row in a theatre screen.
      *
-     * @param req - Express request object
-     * @returns Partial mapping of {@link ISeat} keys to {@link SortOrder}
-     */
-    fetchURLQuerySorts(req: Request): Partial<Record<keyof ISeat, SortOrder>> {
-        const params = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateQuerySorts(params);
-    }
-
-    /**
-     * Creates multiple seats for a given row in a theatre screen.
+     * Expects a validated request body following {@link SeatsByRowSubmitData}.
      *
-     * Expects a validated request body conforming to {@link SeatsByRowSubmitData}.
-     *
-     * @param req - Express request containing `validatedBody` with seat data
+     * @param req - Express request containing `validatedBody` with seat creation data
      * @param res - Express response
-     * @returns JSON response with the created seat documents
+     * @returns JSON response containing the created seat documents
      */
     async createSeatsByRow(req: Request, res: Response): Promise<Response> {
         const data = req.validatedBody as SeatsByRowSubmitData;

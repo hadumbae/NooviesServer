@@ -1,47 +1,47 @@
-import type {Request} from "express";
-import type {FilterQuery, SortOrder} from "mongoose";
-import {SeatQueryFiltersSchema} from "../schema/query/SeatQueryOptions.schema.js";
+import type { Request } from "express";
+import type { FilterQuery, SortOrder } from "mongoose";
+import { SeatQueryMatchFiltersSchema } from "../schema/query/SeatQueryOption.schema.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import type {SeatQueryFilters, SeatQueryOptions, SeatQuerySorts} from "../schema/query/SeatQueryOptions.types.js";
-import type IQueryOptionService from "../../../shared/interfaces/IQueryOptionService.js";
+import type {
+    SeatQueryMatchFilters,
+    SeatQueryOptions,
+} from "../schema/query/SeatQueryOption.types.js";
+import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
 import type ISeat from "../model/Seat.interface.js";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Service class for handling query options related to seats.
+ * Service responsible for parsing, validating, and generating query options
+ * for {@link ISeat} documents.
  *
- * Implements {@link IQueryOptionService} for the `Seat` domain.
- * Provides methods to:
- * - Extract query options from HTTP requests
- * - Build MongoDB filter objects
- * - Generate MongoDB sort objects
+ * Implements {@link IQueryOptionService} to provide standardized methods for:
+ * - Extracting query parameters from Express requests
+ * - Generating Mongoose `$match` filters
+ * - Generating Mongoose `$sort` options
+ * - Combining filters and sorts into query option objects
  */
 export default class SeatQueryOptionService
-    implements IQueryOptionService<ISeat, SeatQueryOptions, SeatQueryFilters> {
+    implements IQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters> {
 
     /**
-     * Extracts and validates seat query parameters from an HTTP request.
+     * Parses query parameters from an Express request and validates them
+     * against {@link SeatQueryMatchFiltersSchema}.
      *
-     * - Uses {@link SeatQueryFiltersSchema} to parse and validate input.
-     * - Removes null or undefined values via {@link filterNullArray}.
-     *
-     * @param req - The incoming Express request containing query parameters
-     * @returns A strongly typed {@link SeatQueryOptions} object
+     * @param req - Express request object
+     * @returns Validated and filtered {@link SeatQueryOptions}
      */
     fetchQueryParams(req: Request): SeatQueryOptions {
-        const conditions = SeatQueryFiltersSchema.parse(req.query);
+        const conditions = SeatQueryMatchFiltersSchema.parse(req.query);
         return filterNullArray(conditions) as SeatQueryOptions;
     }
 
     /**
-     * Generates MongoDB filter conditions for seat queries.
+     * Generates Mongoose `$match` filters for querying seats.
      *
-     * - Supports regex search for string-based fields like `row` and `seatLabel`.
-     * - Includes direct equality filters for other fields such as `seatNumber`, `seatType`, and `theatre`.
-     *
-     * @param params - Query options including filters
-     * @returns A MongoDB {@link FilterQuery} object for seats
+     * @param params - Validated {@link SeatQueryOptions}
+     * @returns Mongoose-compatible filter object of type {@link FilterQuery<SeatQueryMatchFilters>}
      */
-    generateMatchFilters(params: SeatQueryOptions): FilterQuery<SeatQueryFilters> {
+    generateMatchFilters(params: SeatQueryOptions): FilterQuery<SeatQueryMatchFilters> {
         const {
             _id,
             row,
@@ -55,8 +55,8 @@ export default class SeatQueryOptionService
 
         const filters = {
             _id,
-            row: row && {$regex: row, $options: "i"},
-            seatLabel: seatLabel && {$regex: seatLabel, $options: "i"},
+            row: row && { $regex: row, $options: "i" },
+            seatLabel: seatLabel && { $regex: seatLabel, $options: "i" },
             seatNumber,
             seatType,
             isAvailable,
@@ -68,21 +68,17 @@ export default class SeatQueryOptionService
     }
 
     /**
-     * Generates MongoDB sort conditions for seat queries.
+     * Generates Mongoose `$sort` options for querying seats.
      *
-     * - Maps `sortBy*` parameters from {@link SeatQuerySorts} to actual seat fields.
-     * - Removes null or undefined sort options using {@link filterNullArray}.
-     *
-     * @param params - Query options including sort preferences
-     * @returns A MongoDB sort object mapping seat fields to sort orders (`1` or `-1`)
+     * @param params - Validated {@link SeatQueryOptions}
+     * @returns Partial record mapping seat fields to {@link SortOrder}
      */
-    generateQuerySorts(params: SeatQueryOptions): Partial<Record<keyof ISeat, SortOrder>> {
+    generateMatchSorts(params: SeatQueryOptions): Partial<Record<keyof ISeat, SortOrder>> {
         const {
             sortByRow,
             sortBySeatNumber,
             sortBySeatLabel,
             sortBySeatType,
-
             sortByTheatre,
             sortByScreen,
             sortByIsAvailable,
@@ -101,5 +97,20 @@ export default class SeatQueryOptionService
         };
 
         return filterNullArray(sorts);
+    }
+
+    /**
+     * Combines match filters and sort options into a single query option object.
+     *
+     * @param options - Validated {@link SeatQueryOptions}
+     * @returns {@link QueryOptionTypes} containing `match` filters and sorts
+     */
+    generateQueryOptions(options: SeatQueryOptions): QueryOptionTypes<ISeat, SeatQueryMatchFilters> {
+        const matchFilters = this.generateMatchFilters(options);
+        const matchSorts = this.generateMatchSorts(options);
+
+        return {
+            match: { filters: matchFilters, sorts: matchSorts },
+        };
     }
 }
