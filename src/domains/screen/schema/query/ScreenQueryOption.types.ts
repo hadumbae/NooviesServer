@@ -1,54 +1,65 @@
 import { z } from "zod";
 import {
-    ScreenQueryFiltersSchema,
+    ScreenQueryMatchFilterSchema,
     ScreenQueryOptionsSchema,
-    ScreenQueryParamsSchema,
-    ScreenQuerySortsSchema
+    ScreenQueryParamSchema,
+    ScreenQueryMatchSortSchema
 } from "./ScreenQueryOption.schema.js";
 
 /**
- * Type representing available filters for querying screens.
+ * Filters that can be applied to Screen documents.
  *
- * Derived from {@link ScreenQueryFiltersSchema}.
+ * Corresponds to {@link ScreenQueryMatchFilterSchema}.
  *
- * Includes optional filters for:
- * - `_id` (screen ID)
- * - `name` (screen name)
- * - `theatre` (theatre ID)
- * - `capacity` (screen capacity)
- * - `screenType` (e.g., IMAX, 3D, Standard)
+ * @example
+ * // Filter by theatre ID and minimum capacity
+ * const filters: ScreenQueryMatchFilters = {
+ *   theatre: "123",
+ *   capacity: 100
+ * };
  */
-export type ScreenQueryFilters = z.infer<typeof ScreenQueryFiltersSchema>;
+export type ScreenQueryMatchFilters = z.infer<typeof ScreenQueryMatchFilterSchema>;
 
 /**
- * Type representing sorting options for querying screens.
+ * Sorting options for Screen queries.
  *
- * Derived from {@link ScreenQuerySortsSchema}.
+ * Corresponds to {@link ScreenQueryMatchSortSchema}.
  *
- * Each property maps to a screen field and supports MongoDB sort order:
- * - `1` → ascending
- * - `-1` → descending
+ * @example
+ * // Sort by capacity ascending and name descending
+ * const sorts: ScreenQueryMatchSorts = {
+ *   sortByCapacity: 1,
+ *   sortByName: -1
+ * };
  */
-export type ScreenQuerySorts = z.infer<typeof ScreenQuerySortsSchema>;
+export type ScreenQueryMatchSorts = z.infer<typeof ScreenQueryMatchSortSchema>;
 
 /**
- * Type representing additional query parameters for screens.
+ * Additional parameters for Screen queries.
  *
- * Derived from {@link ScreenQueryParamsSchema}.
+ * Corresponds to {@link ScreenQueryParamSchema}.
  *
- * Includes configuration like:
- * - `showingsPerScreen` (number of showings to fetch per screen)
+ * @example
+ * // Limit the number of showings per screen
+ * const params: ScreenQueryParams = {
+ *   showingsPerScreen: 5
+ * };
  */
-export type ScreenQueryParams = z.infer<typeof ScreenQueryParamsSchema>;
+export type ScreenQueryParams = z.infer<typeof ScreenQueryParamSchema>;
 
 /**
- * Type representing the full set of query options for screens.
+ * Complete set of query options for Screen queries, combining:
+ * - Filters (`ScreenQueryMatchFilters`)
+ * - Sorting (`ScreenQueryMatchSorts`)
+ * - Additional parameters (`ScreenQueryParams`)
  *
- * Derived from {@link ScreenQueryOptionsSchema}.
+ * Corresponds to {@link ScreenQueryOptionsSchema}.
  *
- * Combines:
- * - {@link ScreenQueryFilters} → field-based filtering
- * - {@link ScreenQuerySorts} → ordering of results
- * - {@link ScreenQueryParams} → extra configuration parameters
+ * @example
+ * const options: ScreenQueryOptions = {
+ *   name: "IMAX",
+ *   sortByCapacity: -1,
+ *   showingsPerScreen: 3
+ * };
  */
 export type ScreenQueryOptions = z.infer<typeof ScreenQueryOptionsSchema>;

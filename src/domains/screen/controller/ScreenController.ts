@@ -1,20 +1,21 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type { IScreen } from "../interface/IScreen.js";
-import type { Request, Response } from "express";
+import type {IScreen} from "../interface/IScreen.js";
+import type {Request, Response} from "express";
 import ScreenQueryOptionService from "../service/ScreenQueryOptionService.js";
 import ScreenService from "../service/ScreenService.js";
-import type { FilterQuery, SortOrder } from "mongoose";
 import type ScreenSeatService from "../service/screen-seat-service/ScreenSeatService.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {ScreenQueryMatchFilters} from "../schema/query/ScreenQueryOption.types.js";
 
 /**
  * Public interface for a ScreenController.
  *
- * Extends the base CRUD controller and adds screen-specific endpoints
+ * Extends the base CRUD controller with screen-specific endpoints
  * for fetching screens by theatre and seats by row.
  */
 export interface IScreenController extends IBaseCRUDController {
@@ -26,6 +27,15 @@ export interface IScreenController extends IBaseCRUDController {
      * @returns JSON response containing `totalItems` and `items` (screens)
      */
     getScreensByTheatre(req: Request, res: Response): Promise<Response>;
+
+    /**
+     * Fetches all seats for a given screen, grouped by row.
+     *
+     * @param req - Express request (expects `params._id` for screen ID)
+     * @param res - Express response
+     * @returns JSON object containing seats organized by row
+     */
+    getSeatsByRow(req: Request, res: Response): Promise<Response>;
 }
 
 /**
@@ -51,6 +61,13 @@ export interface IScreenControllerConstructor extends IBaseCRUDControllerConstru
  * - Pagination and filtering of screens
  * - Fetching screens by theatre
  * - Fetching seats grouped by row
+ *
+ * @example
+ * // Fetch paginated screens for a theatre:
+ * // GET /theatres/:id/screens?page=1&perPage=10
+ *
+ * // Fetch seats for a screen grouped by row:
+ * // GET /screens/:id/seats
  */
 export default class ScreenController extends BaseCRUDController<IScreen> implements IScreenController {
     /** Service handling screen CRUD operations and business logic. */
@@ -68,8 +85,8 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
      * @param params - Constructor parameters including services and base CRUD options
      */
     constructor(params: IScreenControllerConstructor) {
-        const { service, optionService, seatService, ...baseParams } = params;
-        super({ ...baseParams });
+        const {service, optionService, seatService, ...baseParams} = params;
+        super({...baseParams});
 
         this.service = service;
         this.optionService = optionService;
@@ -77,25 +94,14 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
     }
 
     /**
-     * Generates MongoDB filter object based on request query parameters.
+     * Fetches query options for screens from the request.
      *
-     * @param req - Express request
-     * @returns FilterQuery object for Mongoose queries
+     * @param req - Express request object
+     * @returns {@link QueryOptionTypes} for screens
      */
-    fetchURLMatchFilters(req: Request): FilterQuery<any> {
-        const queryParams = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateMatchFilters(queryParams);
-    }
-
-    /**
-     * Generates MongoDB sort object based on request query parameters.
-     *
-     * @param req - Express request
-     * @returns Partial mapping of {@link IScreen} fields to {@link SortOrder}
-     */
-    fetchURLQuerySorts(req: Request): Partial<Record<keyof IScreen, SortOrder>> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<IScreen, ScreenQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateQuerySorts(params);
+        return this.optionService.generateQueryOptions(params);
     }
 
     /**
@@ -106,13 +112,13 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
      * @returns JSON containing `totalItems` and `items` (screens)
      */
     async getScreensByTheatre(req: Request, res: Response): Promise<Response> {
-        const { _id: theatreID } = req.params;
+        const {_id: theatreID} = req.params;
 
-        const { page, perPage } = this.queryUtils.fetchPaginationFromQuery(req);
+        const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
         const queryParams = this.optionService.fetchQueryParams(req);
-        const { showingsPerScreen } = this.optionService.generateParams(queryParams);
+        const {showingsPerScreen} = this.optionService.generateParams(queryParams);
 
-        const totalItems = await this.repository.count({ filters: { theatre: theatreID } });
+        const totalItems = await this.repository.count({filters: {theatre: theatreID}});
         const screens = await this.service.fetchPaginatedScreensByTheatre({
             page,
             perPage,
@@ -120,7 +126,7 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
             showingsPerScreen,
         });
 
-        return res.status(200).json({ totalItems, items: screens });
+        return res.status(200).json({totalItems, items: screens});
     }
 
     /**
@@ -131,11 +137,11 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
      * @returns JSON object containing seats organized by row
      */
     async getSeatsByRow(req: Request, res: Response): Promise<Response> {
-        const { _id } = req.params;
+        const {_id} = req.params;
         const screenID = isValidObjectId(_id);
 
-        const { populate } = this.queryUtils.fetchOptionsFromQuery(req);
-        const seatsByRow = await this.seatService.fetchSeatsByRow({ screenID, populate });
+        const {populate} = this.queryUtils.fetchOptionsFromQuery(req);
+        const seatsByRow = await this.seatService.fetchSeatsByRow({screenID, populate});
 
         return res.status(200).json(seatsByRow);
     }
