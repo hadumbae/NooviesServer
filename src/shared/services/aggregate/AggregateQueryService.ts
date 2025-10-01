@@ -18,7 +18,7 @@ export default class AggregateQueryService<
     TSchema = Record<string, unknown>,
     TMatchFilters = any,
     TReferenceFilters = any
-> implements IAggregateQueryService<TSchema, TMatchFilters, TReferenceFilters> {
+> implements IAggregateQueryService<TSchema, TMatchFilters> {
     private readonly _model: Model<TSchema>;
     private readonly _populateRefs: PopulatePath[];
 
@@ -112,9 +112,9 @@ export default class AggregateQueryService<
 
         if (matchFilters) pipeline.push({$match: matchFilters});
         if (referenceFilters) pipeline.push(...referenceFilters);
-        if (referenceSorts) pipeline.push(...referenceSorts);
 
-        if (matchSorts) {
+        if (referenceSorts) pipeline.push(...referenceSorts);
+        if (matchSorts && Object.keys(matchSorts).length > 0) {
             pipeline.push({$sort: buildAggregationSort(matchSorts as Record<string, SortOrder>)});
         }
 
