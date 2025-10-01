@@ -1,56 +1,24 @@
-import type {Request} from "express";
-import type {GenreQueryFilters, GenreQueryOptions} from "../schema/options/GenreFilters.types.js";
-import type {FilterQuery, SortOrder} from "mongoose";
-import {GenreQueryOptionsSchema} from "../schema/options/GenreFilters.schema.js";
+import type { Request } from "express";
+import type { GenreQueryMatchFilters, GenreQueryOptions } from "../schema/query/GenreQueryOption.types.js";
+import type { FilterQuery, SortOrder } from "mongoose";
+import { GenreQueryOptionsSchema } from "../schema/query/GenreQueryOption.schema.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
 import type IGenre from "../model/Genre.interface.js";
+import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Service interface for building genre query options,
- * including parsing request parameters, generating MongoDB match filters,
- * and generating sort configurations.
+ * Service responsible for parsing and generating query options
+ * for Genre entities, including filters and sorting.
  */
-interface IGenreQueryOptionService {
-    /**
-     * Parses and validates query parameters from the request object
-     * into a {@link GenreQueryOptions} instance.
-     *
-     * @param req - Express request containing query parameters.
-     * @returns A validated {@link GenreQueryOptions} object.
-     */
-    fetchQueryParams(req: Request): GenreQueryOptions;
+export default class GenreQueryOptionService implements IQueryOptionService<any, any, any> {
 
     /**
-     * Builds a MongoDB match filter object from validated query options.
+     * Extracts and validates query parameters from an Express request object.
+     * Filters out null or undefined values.
      *
-     * @param params - Validated genre query options.
-     * @returns A MongoDB {@link FilterQuery} to match genre documents.
-     */
-    generateMatchFilters(params: GenreQueryOptions): FilterQuery<GenreQueryFilters>;
-
-    /**
-     * Builds a MongoDB sort object from validated query options.
-     *
-     * @param params - Validated genre query options.
-     * @returns A partial record mapping {@link IGenre} keys to {@link SortOrder}.
-     */
-    generateQuerySorts(params: GenreQueryOptions): Partial<Record<keyof IGenre, SortOrder>>;
-}
-
-/**
- * Implementation of {@link IGenreQueryOptionService} that
- * uses {@link GenreQueryOptionsSchema} for validation and
- * builds MongoDB filter/sort configurations for genre queries.
- */
-export default class GenreQueryOptionService implements IGenreQueryOptionService {
-    /**
-     * Parses and validates query parameters from the request object
-     * into a {@link GenreQueryOptions} instance.
-     *
-     * Uses {@link GenreQueryOptionsSchema} to validate and `filterNullArray` to strip nullish values.
-     *
-     * @param req - Express request containing query parameters.
-     * @returns A validated {@link GenreQueryOptions} object.
+     * @param req - Express request object containing query parameters.
+     * @returns Parsed and cleaned genre query options.
      */
     fetchQueryParams(req: Request): GenreQueryOptions {
         const conditions = GenreQueryOptionsSchema.parse(req.query);
@@ -58,18 +26,13 @@ export default class GenreQueryOptionService implements IGenreQueryOptionService
     }
 
     /**
-     * Generates MongoDB match filters for genre queries.
+     * Generates MongoDB match filters based on the provided genre query options.
+     * Supports partial matching for the genre name (case-insensitive).
      *
-     * Example:
-     * ```ts
-     * // params: { name: "rock" }
-     * // returns: { name: { $regex: "rock", $options: "i" } }
-     * ```
-     *
-     * @param params - Validated genre query options.
-     * @returns A {@link FilterQuery} with MongoDB regex match for name (case-insensitive).
+     * @param params - The parsed genre query options.
+     * @returns A Mongoose filter query object with only the active filters.
      */
-    generateMatchFilters(params: GenreQueryOptions): FilterQuery<GenreQueryFilters> {
+    generateMatchFilters(params: GenreQueryOptions): FilterQuery<GenreQueryMatchFilters> {
         const { name } = params;
 
         const filters = {
@@ -80,18 +43,12 @@ export default class GenreQueryOptionService implements IGenreQueryOptionService
     }
 
     /**
-     * Generates MongoDB sort configuration for genre queries.
+     * Generates sorting instructions for MongoDB queries based on genre query options.
      *
-     * Example:
-     * ```ts
-     * // params: { sortByName: 1 }
-     * // returns: { name: 1 }
-     * ```
-     *
-     * @param params - Validated genre query options.
-     * @returns Partial record mapping {@link IGenre} fields to sort order values.
+     * @param params - The parsed genre query options.
+     * @returns A partial record of genre fields mapped to Mongoose sort orders.
      */
-    generateQuerySorts(params: GenreQueryOptions): Partial<Record<keyof IGenre, SortOrder>> {
+    generateMatchSorts(params: GenreQueryOptions): Partial<Record<keyof IGenre, SortOrder>> {
         const { sortByName } = params;
 
         const sorts: Partial<Record<keyof IGenre, SortOrder | undefined>> = {
@@ -99,5 +56,21 @@ export default class GenreQueryOptionService implements IGenreQueryOptionService
         };
 
         return filterNullArray(sorts);
+    }
+
+    /**
+     * Combines match filters and sorting into a complete query options object
+     * suitable for Mongoose queries.
+     *
+     * @param options - The parsed genre query options.
+     * @returns An object containing `filters` and `sorts` ready for querying genres.
+     */
+    generateQueryOptions(options: GenreQueryOptions): QueryOptionTypes<IGenre, GenreQueryMatchFilters> {
+        const matchFilters = this.generateMatchFilters(options);
+        const matchSorts = this.generateMatchSorts(options);
+
+        return {
+            match: { filters: matchFilters, sorts: matchSorts },
+        };
     }
 }

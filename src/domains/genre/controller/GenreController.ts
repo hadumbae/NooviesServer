@@ -2,12 +2,12 @@ import BaseCRUDController from "../../../shared/controller/base-crud-controller/
 import type IGenre from "../model/Genre.interface.js";
 import type { Request } from "express";
 import type GenreQueryOptionService from "../service/GenreQueryOptionService.js";
-import type { FilterQuery, SortOrder } from "mongoose";
-import type { GenreQueryFilters } from "../schema/options/GenreFilters.types.js";
+import type { GenreQueryMatchFilters } from "../schema/query/GenreQueryOption.types.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
  * Interface for the Genre controller, extending the base CRUD controller interface.
@@ -18,7 +18,9 @@ export interface IGenreController extends IBaseCRUDController {}
  * Constructor interface for {@link GenreController}.
  */
 export interface IGenreControllerConstructor extends IBaseCRUDControllerConstructor<IGenre> {
-    /** Service responsible for generating query filters and sorts from request parameters. */
+    /**
+     * Service responsible for generating query filters and sorts from request parameters.
+     */
     optionService: GenreQueryOptionService;
 }
 
@@ -45,24 +47,14 @@ export default class GenreController extends BaseCRUDController<IGenre> implemen
     }
 
     /**
-     * Generates Mongoose match filters from the request URL parameters.
+     * Fetches and generates complete query options (filters and sorting)
+     * for genre documents based on the request parameters.
      *
-     * @param req - Express request object.
-     * @returns A {@link FilterQuery} object for Mongoose queries.
+     * @param req - Express request object containing query parameters.
+     * @returns Query options suitable for Mongoose queries, including filters and sorts.
      */
-    fetchURLMatchFilters(req: Request): FilterQuery<GenreQueryFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<IGenre, GenreQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateMatchFilters(params);
-    }
-
-    /**
-     * Generates Mongoose sort instructions from the request URL parameters.
-     *
-     * @param req - Express request object.
-     * @returns Partial mapping of {@link IGenre} fields to sort orders (`asc`/`desc`).
-     */
-    fetchURLQuerySorts(req: Request): Partial<Record<keyof IGenre, SortOrder>> {
-        const params = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateQuerySorts(params);
+        return this.optionService.generateQueryOptions(params);
     }
 }
