@@ -1,15 +1,15 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type {IPerson} from "../interfaces/IPerson.js";
+import type { IPerson } from "../interfaces/IPerson.js";
 import type PersonQueryOptionService from "../services/PersonQueryOptionService.js";
-import type {Request, Response} from "express";
-import type {FilterQuery, SortOrder} from "mongoose";
+import type { Request, Response } from "express";
 import type PersonImageService from "../services/image-service/PersonImageService.js";
 import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
-import type {PersonQueryFilters} from "../schema/query/PersonFilters.types.js";
+import type { PersonQueryMatchFilters } from "../schema/query/PersonQueryOption.types.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
  * Constructor parameters for {@link PersonController}.
@@ -80,7 +80,7 @@ export default class PersonController extends BaseCRUDController<IPerson> implem
      * @param params - Constructor parameters including services and base CRUD options
      */
     constructor(params: IPersonControllerConstructor) {
-        const {optionService, imageService, ...superParams} = params;
+        const { optionService, imageService, ...superParams } = params;
         super(superParams);
 
         this.optionService = optionService;
@@ -88,33 +88,14 @@ export default class PersonController extends BaseCRUDController<IPerson> implem
     }
 
     /**
-     * Builds MongoDB `$match` filters from request query parameters.
+     * Fetches and generates query options (filters and sorting) for Person documents.
      *
      * @param req - Express request containing query parameters
-     * @returns A {@link FilterQuery} object for filtering {@link IPerson} documents
-     *
-     * @example
-     * // ?firstName=John&lastName=Doe
-     * // Returns: { firstName: "John", lastName: "Doe" }
+     * @returns Query options suitable for Mongoose queries
      */
-    fetchURLMatchFilters(req: Request): FilterQuery<PersonQueryFilters> {
-        const queryParams = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateMatchFilters(queryParams);
-    }
-
-    /**
-     * Builds MongoDB `$sort` options from request query parameters.
-     *
-     * @param req - Express request containing sort query parameters
-     * @returns A partial record mapping {@link IPerson} fields to sort orders
-     *
-     * @example
-     * // ?sortByFirstName=1&sortByLastName=-1
-     * // Returns: { firstName: 1, lastName: -1 }
-     */
-    fetchURLQuerySorts(req: Request): Partial<Record<keyof IPerson, SortOrder>> {
-        const options = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateQuerySorts(options);
+    fetchQueryOptions(req: Request): QueryOptionTypes<IPerson, PersonQueryMatchFilters> {
+        const params = this.optionService.fetchQueryParams(req);
+        return this.optionService.generateQueryOptions(params);
     }
 
     /**
@@ -129,14 +110,14 @@ export default class PersonController extends BaseCRUDController<IPerson> implem
      * // Response: { _id: "123", firstName: "John", profileImage: "..." }
      */
     async updateProfileImage(req: Request, res: Response): Promise<Response> {
-        const {_id} = req.params;
-        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
+        const { _id } = req.params;
+        const { populate, virtuals } = this.queryUtils.fetchOptionsFromQuery(req);
 
         const personId = isValidObjectId(_id);
         const profileImage = req.file as Express.Multer.File;
 
-        await this.imageService.updateProfileImage({personId, image: profileImage});
-        const person = await this.repository.findById({_id: personId, populate, virtuals});
+        await this.imageService.updateProfileImage({ personId, image: profileImage });
+        const person = await this.repository.findById({ _id: personId, populate, virtuals });
 
         return res.status(200).json(person);
     }
@@ -153,10 +134,10 @@ export default class PersonController extends BaseCRUDController<IPerson> implem
      * // Response: { message: "Image Removed." }
      */
     async deleteProfileImage(req: Request, res: Response): Promise<Response> {
-        const {_id} = req.params;
+        const { _id } = req.params;
         const personId = isValidObjectId(_id);
 
-        await this.imageService.deleteProfileImage({personId});
-        return res.status(200).json({message: "Image Removed."});
+        await this.imageService.deleteProfileImage({ personId });
+        return res.status(200).json({ message: "Image Removed." });
     }
 }

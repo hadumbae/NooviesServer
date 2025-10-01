@@ -1,56 +1,30 @@
 import type { Request } from "express";
-import { PersonQueryFiltersSchema } from "../schema/query/PersonFilters.schema.js";
+import { PersonQueryMatchFiltersSchema } from "../schema/query/PersonQueryOption.schema.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import { type FilterQuery, type SortOrder } from "mongoose";
-import type { PersonQueryFilters, PersonQueryOptions } from "../schema/query/PersonFilters.types.js";
+import type { PersonQueryMatchFilters, PersonQueryOptions } from "../schema/query/PersonQueryOption.types.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
 import type { IPerson } from "../interfaces/IPerson.js";
-import type IQueryOptionService from "../../../shared/interfaces/IQueryOptionService.js";
+import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Service for handling query options related to {@link IPerson}.
- *
- * Implements {@link IQueryOptionService} specifically for the Person model.
- * Responsibilities include:
- * - Parsing and validating URL query parameters
- * - Converting query options into Mongoose-compatible `$match` filters
- * - Converting query options into Mongoose-compatible sort specifications
- *
- * @example
- * ```ts
- * const service = new PersonQueryOptionService();
- *
- * // Extract and validate query params
- * const options = service.fetchQueryParams(req);
- * // => { name: "John", nationality: "US", sortByName: 1 }
- *
- * // Generate filters
- * const filters = service.generateMatchFilters(options);
- * // => { name: { $regex: "John", $options: "i" }, nationality: "US" }
- *
- * // Generate sorts
- * const sorts = service.generateQuerySorts(options);
- * // => { name: 1, nationality: 1 }
- * ```
+ * Service responsible for parsing request query parameters and generating
+ * Mongoose-compatible query filters and sorting options for Person documents.
  */
 export default class PersonQueryOptionService
-    implements IQueryOptionService<IPerson, PersonQueryOptions, PersonQueryFilters>
-{
+    implements IQueryOptionService<IPerson, PersonQueryOptions, PersonQueryMatchFilters> {
+
     /**
-     * Extracts and validates query parameters from an Express request.
+     * Parses query parameters from an Express request and validates them
+     * against {@link PersonQueryMatchFiltersSchema}.
      *
-     * Uses {@link PersonQueryFiltersSchema} for validation and throws
-     * {@link ZodParseError} if validation fails.
-     *
-     * @param req - The incoming Express request
-     * @returns A validated {@link PersonQueryOptions} object
-     *
-     * @example
-     * // ?name=John&nationality=US
-     * // Returns: { name: "John", nationality: "US" }
+     * @param req - Express request object containing query parameters.
+     * @returns Parsed and validated filters for querying Person documents.
+     * @throws ZodParseError if query parameters are invalid.
      */
-    fetchQueryParams(req: Request): PersonQueryFilters {
-        const { success, data, error } = PersonQueryFiltersSchema.safeParse(req.query);
+    fetchQueryParams(req: Request): PersonQueryMatchFilters {
+        const { success, data, error } = PersonQueryMatchFiltersSchema.safeParse(req.query);
 
         if (!success) {
             const message = "Invalid Query Parameters.";
@@ -61,20 +35,13 @@ export default class PersonQueryOptionService
     }
 
     /**
-     * Generates a Mongoose `$match` filter query from validated query options.
+     * Generates MongoDB match filters from the provided Person query options.
+     * Supports case-insensitive regex matching for the name field.
      *
-     * - `name` is converted to a case-insensitive regex match
-     * - `nationality` is included as-is if provided
-     * - `_id` is included as-is if provided
-     *
-     * @param queries - Validated query options
-     * @returns A {@link FilterQuery} usable in `Model.find()`
-     *
-     * @example
-     * // { name: "John", nationality: "US" }
-     * // => { name: { $regex: "John", $options: "i" }, nationality: "US" }
+     * @param queries - Parsed Person query options.
+     * @returns A Mongoose filter query object containing only active filters.
      */
-    generateMatchFilters(queries: PersonQueryOptions): FilterQuery<PersonQueryFilters> {
+    generateMatchFilters(queries: PersonQueryOptions): FilterQuery<PersonQueryMatchFilters> {
         const { _id, name, nationality } = queries;
 
         const filters = {
@@ -87,21 +54,30 @@ export default class PersonQueryOptionService
     }
 
     /**
-     * Generates a Mongoose sort specification from validated query options.
+     * Generates sorting instructions for MongoDB queries based on Person query options.
      *
-     * - `sortByName` sorts results by the `name` field
-     * - `sortByNationality` sorts results by the `nationality` field
-     *
-     * @param queries - Validated query options
-     * @returns A partial mapping of {@link IPerson} keys to {@link SortOrder}
-     *
-     * @example
-     * // { sortByName: 1, sortByNationality: -1 }
-     * // => { name: 1, nationality: -1 }
+     * @param queries - Parsed Person query options.
+     * @returns A partial record mapping Person fields to Mongoose sort orders.
      */
-    generateQuerySorts(queries: PersonQueryOptions): Partial<Record<keyof IPerson, SortOrder>> {
+    generateMatchSorts(queries: PersonQueryOptions): Partial<Record<keyof IPerson, SortOrder>> {
         const { sortByName, sortByNationality } = queries;
         const sorts = { name: sortByName, nationality: sortByNationality };
         return filterNullArray(sorts);
+    }
+
+    /**
+     * Combines match filters and sorting into a complete set of query options
+     * suitable for Mongoose queries.
+     *
+     * @param options - Parsed Person query options.
+     * @returns An object containing `filters` and `sorts` for querying Person documents.
+     */
+    generateQueryOptions(options: PersonQueryOptions): QueryOptionTypes<IPerson, PersonQueryMatchFilters> {
+        const matchFilters = this.generateMatchFilters(options);
+        const matchSorts = this.generateMatchSorts(options);
+
+        return {
+            match: { filters: matchFilters, sorts: matchSorts },
+        };
     }
 }
