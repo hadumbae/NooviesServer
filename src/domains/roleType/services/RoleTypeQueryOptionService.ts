@@ -1,51 +1,25 @@
-import type IQueryOptionService from "../../../shared/interfaces/IQueryOptionService.js";
+import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
 import type IRoleType from "../model/RoleType.interface.js";
-import type {RoleTypeQueryFilters, RoleTypeQueryOptions} from "../schemas/filters/RoleTypeFilters.types.js";
-import type {Request} from "express";
-import {RoleTypeQueryOptionsSchema} from "../schemas/filters/RoleTypeFilters.schema.js";
+import type { RoleTypeQueryMatchFilters, RoleTypeQueryOptions } from "../schemas/filters/RoleTypeOption.types.js";
+import type { Request } from "express";
+import { RoleTypeQueryOptionsSchema } from "../schemas/filters/RoleTypeOption.schema.js";
 import filterNullArray from "../../../shared/utility/filterNullArray.js";
-import type {FilterQuery, SortOrder} from "mongoose";
+import type { FilterQuery, SortOrder } from "mongoose";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Service for handling query options related to {@link IRoleType}.
- *
- * Implements {@link IQueryOptionService} specifically for the RoleType model.
- * This service is responsible for:
- * - Parsing and validating URL query parameters into a strongly typed object
- * - Converting query options into Mongoose-compatible `$match` filters
- * - Converting query options into Mongoose-compatible sort specifications
- *
- * @example
- * ```ts
- * const service = new RoleTypeQueryOptionService();
- *
- * // Extract and validate query parameters
- * const options = service.fetchQueryParams(req);
- * // => { roleName: "Engineer", sortByDepartment: 1 }
- *
- * // Generate filters for Mongoose queries
- * const filters = service.generateMatchFilters(options);
- * // => { roleName: { $regex: "Engineer", $options: "i" }, department: "IT" }
- *
- * // Generate sort options for Mongoose queries
- * const sorts = service.generateQuerySorts(options);
- * // => { roleName: 1, department: -1 }
- * ```
+ * Service responsible for parsing request query parameters and generating
+ * Mongoose-compatible query filters and sorting options for RoleType documents.
  */
 export default class RoleTypeQueryOptionService
-    implements IQueryOptionService<IRoleType, RoleTypeQueryOptions, RoleTypeQueryFilters> {
+    implements IQueryOptionService<IRoleType, RoleTypeQueryOptions, RoleTypeQueryMatchFilters> {
+
     /**
-     * Extracts and validates query parameters from an Express request.
+     * Parses query parameters from an Express request and validates them
+     * against {@link RoleTypeQueryOptionsSchema}.
      *
-     * Uses {@link RoleTypeQueryOptionsSchema} for validation and removes
-     * null or undefined values.
-     *
-     * @param req - The incoming Express request
-     * @returns A validated {@link RoleTypeQueryOptions} object
-     *
-     * @example
-     * // ?roleName=Engineer&department=IT
-     * // Returns: { roleName: "Engineer", department: "IT" }
+     * @param req - Express request containing query parameters
+     * @returns Parsed and cleaned RoleType query options
      */
     fetchQueryParams(req: Request): RoleTypeQueryOptions {
         const params = RoleTypeQueryOptionsSchema.parse(req.query);
@@ -53,23 +27,17 @@ export default class RoleTypeQueryOptionService
     }
 
     /**
-     * Generates a Mongoose filter query from validated query options.
+     * Generates MongoDB match filters based on RoleType query options.
+     * Supports case-insensitive regex matching for roleName.
      *
-     * - `roleName` is converted into a case-insensitive regex match.
-     * - `department` is included as-is if provided.
-     *
-     * @param options - Validated query options
-     * @returns A {@link FilterQuery} object for use in `Model.find()`
-     *
-     * @example
-     * // { roleName: "Engineer", department: "IT" }
-     * // => { roleName: { $regex: "Engineer", $options: "i" }, department: "IT" }
+     * @param options - Parsed RoleType query options
+     * @returns Mongoose filter query object containing active filters
      */
-    generateMatchFilters(options: RoleTypeQueryOptions): FilterQuery<RoleTypeQueryFilters> {
-        const {roleName, department} = options;
+    generateMatchFilters(options: RoleTypeQueryOptions): FilterQuery<RoleTypeQueryMatchFilters> {
+        const { roleName, department } = options;
 
         const filters = {
-            roleName: roleName && {$regex: roleName, $options: "i"},
+            roleName: roleName && { $regex: roleName, $options: "i" },
             department,
         };
 
@@ -77,20 +45,13 @@ export default class RoleTypeQueryOptionService
     }
 
     /**
-     * Generates a Mongoose sort specification from validated query options.
+     * Generates sorting instructions for MongoDB queries based on RoleType query options.
      *
-     * - `sortByRoleName` sorts results by the `roleName` field.
-     * - `sortByDepartment` sorts results by the `department` field.
-     *
-     * @param options - Validated query options
-     * @returns A partial mapping of {@link IRoleType} fields to {@link SortOrder}
-     *
-     * @example
-     * // { sortByRoleName: 1, sortByDepartment: -1 }
-     * // => { roleName: 1, department: -1 }
+     * @param options - Parsed RoleType query options
+     * @returns Partial record mapping RoleType fields to Mongoose sort orders
      */
-    generateQuerySorts(options: RoleTypeQueryOptions): Partial<Record<keyof IRoleType, SortOrder>> {
-        const {sortByRoleName, sortByDepartment} = options;
+    generateMatchSorts(options: RoleTypeQueryOptions): Partial<Record<keyof IRoleType, SortOrder>> {
+        const { sortByRoleName, sortByDepartment } = options;
 
         const sorts = {
             roleName: sortByRoleName,
@@ -98,5 +59,21 @@ export default class RoleTypeQueryOptionService
         };
 
         return filterNullArray(sorts);
+    }
+
+    /**
+     * Combines match filters and sorting into a complete set of query options
+     * suitable for Mongoose queries.
+     *
+     * @param options - Parsed RoleType query options
+     * @returns An object containing `filters` and `sorts` ready for querying RoleType documents
+     */
+    generateQueryOptions(options: RoleTypeQueryOptions): QueryOptionTypes<IRoleType, RoleTypeQueryMatchFilters> {
+        const matchFilters = this.generateMatchFilters(options);
+        const matchSorts = this.generateMatchSorts(options);
+
+        return {
+            match: { filters: matchFilters, sorts: matchSorts },
+        };
     }
 }

@@ -1,12 +1,13 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type IRoleType from "../model/RoleType.interface.js";
 import type RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionService.js";
-import type { FilterQuery, SortOrder } from "mongoose";
 import type { Request } from "express";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type { RoleTypeQueryMatchFilters } from "../schemas/filters/RoleTypeOption.types.js";
 
 /**
  * Constructor parameters for {@link RoleTypeController}.
@@ -37,10 +38,10 @@ export interface IRoleTypeController extends IBaseCRUDController {}
  * - Build Mongoose `$sort` options
  *
  * @example
- * // Example: GET /role-types?name=Director&sortByName=1
+ * // Example: GET /role-types?roleName=Director&sortByRoleName=1
  * // Controller will:
- * // - Match role types with name "Director"
- * // - Sort results by name ascending
+ * // - Match role types with roleName "Director"
+ * // - Sort results by roleName ascending
  */
 export default class RoleTypeController
     extends BaseCRUDController<IRoleType>
@@ -62,33 +63,19 @@ export default class RoleTypeController
     }
 
     /**
-     * Builds MongoDB `$match` filters from request query parameters.
+     * Fetches query options (filters and sorts) for RoleType documents
+     * based on the request parameters.
      *
-     * @param req - Express request object containing query parameters.
-     * @returns A {@link FilterQuery} for filtering {@link IRoleType} documents.
-     *
-     * @example
-     * // ?name=Actor
-     * // Returns: { name: "Actor" }
-     */
-    fetchURLMatchFilters(req: Request): FilterQuery<IRoleType> {
-        const params = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateMatchFilters(params);
-    }
-
-    /**
-     * Builds MongoDB `$sort` options from request query parameters.
-     *
-     * @param req - Express request object containing query parameters.
-     * @returns A partial record mapping {@link IRoleType} fields to sort orders
-     *          (`1` for ascending, `-1` for descending).
+     * @param req - Express request containing query parameters
+     * @returns Query options suitable for Mongoose queries
      *
      * @example
-     * // ?sortByName=1
-     * // Returns: { name: 1 }
+     * // GET /role-types?roleName=Director&sortByRoleName=1
+     * // Returns:
+     * // { match: { filters: { roleName: /Director/i }, sorts: { roleName: 1 } } }
      */
-    fetchURLQuerySorts(req: Request): Partial<Record<keyof IRoleType, SortOrder>> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<IRoleType, RoleTypeQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateQuerySorts(params);
+        return this.optionService.generateQueryOptions(params);
     }
 }
