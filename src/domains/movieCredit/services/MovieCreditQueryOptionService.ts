@@ -175,8 +175,10 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
             matchStage.creditRoleType = { $ne: [] };
         }
 
-        pipelines.push({ $match: matchStage });
-        pipelines.push({ $unset: ["creditPerson", "creditMovie", "creditRoleType"] });
+        if (Object.keys(matchStage).length > 0) {
+            pipelines.push({ $match: matchStage });
+            pipelines.push({ $unset: ["creditPerson", "creditMovie", "creditRoleType"] });
+        }
 
         return pipelines;
     }
