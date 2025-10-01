@@ -49,41 +49,67 @@ export type QueryReferenceOptions = {
 }
 
 /**
- * Represents a complete set of query options, including root-level and reference-level queries.
+ * Represents a complete set of query options for a Mongoose query, including
+ * root-level filters/sorts, reference-level filters/sorts, and additional arbitrary options.
  *
  * @template TSchema - The schema type used for sorting.
  * @template TMatchFilters - Type of filters applied to the root entity.
- * @template TReferenceFilters - Type of filters applied to referenced or populated entities.
  *
  * @remarks
  * - Either `match` or `reference` must be present; both are optional individually.
  * - `match` applies to root-level documents.
  * - `reference` applies to related/populated collections.
+ * - `options` can contain any additional parameters relevant to the query,
+ *   such as `limit`, `skip`, or domain-specific options like `showingsPerMovie`.
  *
  * @example
- * // Only root-level query options
- * const queryOptions1: QueryOptionTypes<MovieSchema, MovieFilters, PersonFilters> = {
- *   match: { filters: { title: /Star/ }, sorts: { releaseDate: -1 } }
+ * // Root-level query only
+ * const queryOptions1: QueryOptionTypes<MovieSchema, MovieFilters> = {
+ *   match: {
+ *     filters: { title: /Star/ },
+ *     sorts: { releaseDate: -1 }
+ *   }
  * };
  *
- * // Only reference-level query options
- * const queryOptions2: QueryOptionTypes<MovieSchema, MovieFilters, PersonFilters> = {
- *   reference: { filters: [{ $match: { name: /Tom/ } }], sorts: [{ $sort: { age: 1 } }] }
+ * // Reference-level query only
+ * const queryOptions2: QueryOptionTypes<MovieSchema, MovieFilters> = {
+ *   reference: {
+ *     filters: [{ $match: { name: /Tom/ } }],
+ *     sorts: [{ $sort: { age: 1 } }]
+ *   }
  * };
  *
- * // Both root-level and reference-level query options
- * const queryOptions3: QueryOptionTypes<MovieSchema, MovieFilters, PersonFilters> = {
- *   match: { filters: { genre: "Action" }, sorts: { releaseDate: -1 } },
- *   reference: { filters: [{ $match: { nationality: "US" } }], sorts: [{ $sort: { name: 1 } }] }
+ * // Both root-level and reference-level queries, with additional options
+ * const queryOptions3: QueryOptionTypes<MovieSchema, MovieFilters> = {
+ *   match: {
+ *     filters: { genre: "Action" },
+ *     sorts: { releaseDate: -1 }
+ *   },
+ *   reference: {
+ *     filters: [{ $match: { nationality: "US" } }],
+ *     sorts: [{ $sort: { name: 1 } }]
+ *   },
+ *   options: {
+ *     limit: 10,
+ *     showingsPerMovie: 5
+ *   }
  * };
  */
 export type QueryOptionTypes<
     TSchema,
     TMatchFilters,
 > = {
+    /** Root-level query options including filters and sorts. */
     match: QueryMatchOptions<TSchema, TMatchFilters>;
+
+    /** Optional reference-level query options for populated/related documents. */
     reference?: QueryReferenceOptions;
+
+    /** Additional arbitrary options such as `limit` or domain-specific parameters. */
+    options?: Record<string, unknown>;
 } | {
     match?: QueryMatchOptions<TSchema, TMatchFilters>;
     reference: QueryReferenceOptions;
+    options?: Record<string, unknown>;
 };
+
