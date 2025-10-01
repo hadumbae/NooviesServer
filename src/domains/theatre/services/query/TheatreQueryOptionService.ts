@@ -1,61 +1,46 @@
-import type {Request} from "express";
+import type { Request } from "express";
 import type {
-    TheatreQueryFilters,
+    TheatreQueryMatchFilters,
     TheatreQueryOptions,
-    TheatreQuerySorts
-} from "../../schema/query/TheatreQueryOptions.types.js";
-import {TheatreQueryOptionsSchema} from "../../schema/query/TheatreQueryOptions.schema.js";
+} from "../../schema/query/TheatreQueryOption.types.js";
+import { TheatreQueryOptionSchema } from "../../schema/query/TheatreQueryOption.schema.js";
 import filterNullArray from "../../../../shared/utility/filterNullArray.js";
-import type {FilterQuery, SortOrder} from "mongoose";
-import type IQueryOptionService from "../../../../shared/interfaces/IQueryOptionService.js";
+import type { FilterQuery, SortOrder } from "mongoose";
+import type IQueryOptionService from "../../../../shared/types/query-options/QueryOptionService.interface.js";
 import type ITheatre from "../../model/ITheatre.js";
+import type { QueryOptionTypes } from "../../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Service for parsing, validating, and converting theatre query parameters
- * from HTTP requests into MongoDB-compatible filter and sort objects.
- *
- * This service:
- * - Validates incoming query parameters against Zod schemas.
- * - Generates MongoDB `FilterQuery` objects for filtering theatres.
- * - Generates MongoDB sort objects for sorting theatres.
- *
- * It is typically used in route handlers to translate Express `req.query`
- * into Mongoose-ready queries.
+ * Service responsible for parsing request query parameters and generating
+ * Mongoose-compatible filters and sorting instructions for Theatre documents.
  */
-export default class TheatreQueryOptionService implements IQueryOptionService<ITheatre, TheatreQueryOptions, TheatreQueryFilters> {
+export default class TheatreQueryOptionService
+    implements IQueryOptionService<ITheatre, TheatreQueryOptions, TheatreQueryMatchFilters> {
+
     /**
-     * Parses and validates query parameters from an Express request.
+     * Parses query parameters from an Express request and validates them
+     * against {@link TheatreQueryOptionSchema}.
      *
-     * @param req - Express request containing `req.query` parameters.
-     * @returns A validated {@link TheatreQueryOptions} object with null/empty values removed.
+     * @param req - Express request containing query parameters
+     * @returns Parsed and cleaned Theatre query options
      *
      * @example
-     * ```ts
-     * const options = service.fetchQueryParams(req);
-     * // options: { city: "Bangkok", seatCapacity: 200 }
-     * ```
+     * // GET /theatres?name=Grand&sortByName=1
+     * // Returns: { name: "Grand", sortByName: 1 }
      */
     fetchQueryParams(req: Request): TheatreQueryOptions {
-        const parsed = TheatreQueryOptionsSchema.parse(req.query);
+        const parsed = TheatreQueryOptionSchema.parse(req.query);
         return filterNullArray(parsed) as TheatreQueryOptions;
     }
 
     /**
-     * Generates MongoDB filter conditions based on validated query parameters.
+     * Generates MongoDB match filters based on Theatre query options.
+     * Supports case-insensitive regex matching for string fields.
      *
-     * String fields are converted to case-insensitive `$regex` matches.
-     * Numeric fields are matched directly.
-     *
-     * @param params - Validated {@link TheatreQueryOptions} object.
-     * @returns A MongoDB {@link FilterQuery} for matching theatres.
-     *
-     * @example
-     * ```ts
-     * const filters = service.generateMatchFilters(options);
-     * // filters: { "location.city": { $regex: "Bangkok", $options: "i" } }
-     * ```
+     * @param params - Parsed Theatre query options
+     * @returns Mongoose filter query object containing active filters
      */
-    generateMatchFilters(params: TheatreQueryOptions): FilterQuery<TheatreQueryFilters> {
+    generateMatchFilters(params: TheatreQueryOptions): FilterQuery<TheatreQueryMatchFilters> {
         const {
             name,
             seatCapacity,
@@ -64,13 +49,13 @@ export default class TheatreQueryOptionService implements IQueryOptionService<IT
             postalCode,
             timezone,
         } = params;
-        
+
         const filters = {
-            name: name && {$regex: name, $options: "i"},
+            name: name && { $regex: name, $options: "i" },
             seatCapacity: seatCapacity,
-            "location.city": city && {$regex: city, $options: "i"},
+            "location.city": city && { $regex: city, $options: "i" },
             "location.country": country,
-            "location.postalCode": postalCode && {$regex: postalCode, $options: "i"},
+            "location.postalCode": postalCode && { $regex: postalCode, $options: "i" },
             "location.timezone": timezone,
         };
 
@@ -78,21 +63,12 @@ export default class TheatreQueryOptionService implements IQueryOptionService<IT
     }
 
     /**
-     * Generates MongoDB sort object based on validated query parameters.
+     * Generates sorting instructions for MongoDB queries based on Theatre query options.
      *
-     * Sort directions are typically `1` (ascending) or `-1` (descending),
-     * as defined in {@link MongooseSortOrderSchema}.
-     *
-     * @param params - Validated {@link TheatreQueryOptions} object.
-     * @returns A {@link TheatreQuerySorts} object for sorting theatres.
-     *
-     * @example
-     * ```ts
-     * const sorts = service.generateQuerySorts(options);
-     * // sorts: { "location.city": 1, seatCapacity: -1 }
-     * ```
+     * @param params - Parsed Theatre query options
+     * @returns Partial record mapping Theatre fields to Mongoose sort orders
      */
-    generateQuerySorts(params: TheatreQueryOptions): Partial<Record<keyof ITheatre, SortOrder>> {
+    generateMatchSorts(params: TheatreQueryOptions): Partial<Record<keyof ITheatre, SortOrder>> {
         const {
             sortByName,
             sortBySeatCapacity,
@@ -112,5 +88,31 @@ export default class TheatreQueryOptionService implements IQueryOptionService<IT
         };
 
         return filterNullArray(sorts);
+    }
+
+    /**
+     * Combines match filters and sorting into a complete set of query options
+     * suitable for Mongoose queries.
+     *
+     * @param options - Parsed Theatre query options
+     * @returns An object containing `filters` and `sorts` ready for querying Theatre documents
+     *
+     * @example
+     * // GET /theatres?name=Grand&sortByName=1
+     * // Returns:
+     * // {
+     * //   match: {
+     * //     filters: { name: /Grand/i },
+     * //     sorts: { name: 1 }
+     * //   }
+     * // }
+     */
+    generateQueryOptions(options: TheatreQueryOptions): QueryOptionTypes<ITheatre, TheatreQueryMatchFilters> {
+        const matchFilters = this.generateMatchFilters(options);
+        const matchSorts = this.generateMatchSorts(options);
+
+        return {
+            match: { filters: matchFilters, sorts: matchSorts },
+        };
     }
 }
