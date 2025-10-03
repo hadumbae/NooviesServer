@@ -8,21 +8,17 @@ import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStrin
 /**
  * Mongoose schema representing a Movie document.
  *
- * @remarks
- * This schema includes core movie information such as titles, synopsis, genres,
- * release details, runtime, language, country, and multimedia resources. It also
- * enforces validation rules for uniqueness, length, and proper formatting.
- *
- * @schema MovieSchema
+ * Core movie info including titles, synopsis, genres, release info, runtime,
+ * language, country, images, trailer URL, and availability.
  */
 export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     /**
-     * The main title of the movie.
+     * Main title of the movie.
      * @type {string}
      * @required
      * @minLength 1
      * @maxLength 250
-     * @trim Removes leading/trailing whitespace.
+     * @trim Removes leading/trailing whitespace
      */
     title: {
         type: String,
@@ -33,26 +29,26 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * The original title of the movie (often in the original language).
+     * Original title of the movie (often in the original language).
      * @type {string}
-     * @required
+     * @optional
      * @minLength 1
      * @maxLength 250
-     * @trim Removes leading/trailing whitespace.
+     * @trim Removes leading/trailing whitespace
      */
     originalTitle: {
         type: String,
         minlength: [1, "Must not be an empty string."],
         maxlength: [250, "Must be 250 characters or less."],
         trim: true,
-        required: [true, "Required."],
     },
 
     /**
-     * A short tagline or slogan for the movie.
+     * Short tagline or slogan for the movie.
      * @type {string}
+     * @optional
      * @maxLength 100
-     * @trim Removes leading/trailing whitespace.
+     * @trim Removes leading/trailing whitespace
      */
     tagline: {
         type: String,
@@ -62,11 +58,11 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * A full synopsis of the movie's plot.
+     * Full synopsis of the movie.
      * @type {string}
      * @required
      * @maxLength 2000
-     * @trim Removes leading/trailing whitespace.
+     * @trim Removes leading/trailing whitespace
      */
     synopsis: {
         type: String,
@@ -77,8 +73,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * List of genres this movie belongs to.
-     * Each genre is referenced by its ObjectId.
+     * List of genres (ObjectId references).
      * @type {ObjectId[]}
      * @required
      * @uniqueItems true
@@ -87,20 +82,16 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
         type: [{type: Schema.Types.ObjectId, ref: "Genre"}],
         required: [true, "Genres are required."],
         validate: {
-            validator: (arr) => {
-                if (!Array.isArray(arr)) return false;
-                const ids = arr.map((id) => id.toString());
-                return new Set(ids).size === ids.length;
-            },
+            validator: (arr) => Array.isArray(arr) && new Set(arr.map(id => id.toString())).size === arr.length,
             message: "Genres must be unique.",
         },
     },
 
     /**
-     * The official release date of the movie.
+     * Official release date.
      * @type {Date}
      * @optional
-     * @customValidator Ensures that `releaseDate` is present if `isReleased` is true.
+     * @customValidator Required if `isReleased` is true
      */
     releaseDate: {
         type: Date,
@@ -123,7 +114,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * Duration of the movie in minutes.
+     * Runtime in minutes.
      * @type {number}
      * @required
      * @min 1
@@ -133,11 +124,11 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
         type: Number,
         min: [1, "Must be at least 1 minute."],
         max: [500, "Must be 500 minutes or less."],
-        required: [true, "Duration In Minutes is required."],
+        required: [true, "Duration in minutes is required."],
     },
 
     /**
-     * Original language of the movie (ISO 639-1 code).
+     * Original language (ISO 639-1 code).
      * @type {string}
      * @required
      * @enum ISO6391CodeConstant
@@ -145,11 +136,11 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     originalLanguage: {
         type: String,
         required: [true, "The original language is required."],
-        enum: {values: ISO6391CodeConstant, message: "Invalid ISO 639-1 Code"},
+        enum: {values: ISO6391CodeConstant, message: "Invalid ISO 639-1 Code."},
     },
 
     /**
-     * Country where the movie was produced (ISO 3166-1 Alpha-2 code).
+     * Primary production country (ISO 3166-1 Alpha-2 code).
      * @type {string}
      * @required
      * @enum ISO3166Alpha2CodeConstant
@@ -161,7 +152,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * Languages available in the movie (ISO 639-1 codes).
+     * Audio languages (ISO 639-1 codes).
      * @type {string[]}
      * @required
      * @uniqueItems true
@@ -176,7 +167,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * Languages available as subtitles (ISO 639-1 codes).
+     * Subtitle languages (ISO 639-1 codes).
      * @type {string[]}
      * @required
      * @uniqueItems true
@@ -191,7 +182,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * Poster image for the movie, stored as a Cloudinary image schema.
+     * Poster image (Cloudinary).
      * @type {CloudinaryImageSchema | null}
      * @default null
      */
@@ -201,19 +192,18 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * URL to the movie trailer.
+     * Trailer URL.
      * @type {string}
      * @optional
-     * @customValidator Validates URL format using `ValidURLStringSchema`.
+     * @customValidator Valid URL format
      */
     trailerURL: {
         type: String,
         validate: {
-            message: "Trailer URL must be a URL.",
+            message: "Trailer URL must be a valid URL.",
             validator: (urlString) => {
                 if (urlString === undefined || urlString === null) return true;
                 if (urlString === "") return false;
-
                 const {success} = ValidURLStringSchema.safeParse(urlString);
                 return success;
             },
@@ -221,7 +211,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 
     /**
-     * Whether the movie is currently available to view.
+     * Whether the movie is available.
      * @type {boolean}
      * @default true
      */
@@ -231,13 +221,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
     },
 }, {timestamps: {createdAt: "createdAt", updatedAt: "updatedAt"}});
 
-/**
- * Indexes for faster queries.
- * - title: ascending index for searching by title.
- * - originalTitle: ascending index for searching by original title.
- * - releaseDate: descending index for sorting by release date (newest first).
- * - isAvailable: ascending index for filtering by availability.
- */
+/** Indexes for optimized queries */
 MovieSchema.index({title: 1});
 MovieSchema.index({originalTitle: 1});
 MovieSchema.index({releaseDate: -1});
