@@ -115,9 +115,9 @@ export default class MovieCreditController
      */
     async fetchGroupedMovieCreditsByPerson(req: Request, res: Response): Promise<Response> {
         const {personID} = req.params;
-        const validPersonID = isValidObjectId(personID);
-
         const {limit} = this.queryUtils.fetchOptionsFromQuery(req);
+
+        const validPersonID = isValidObjectId(personID);
 
         const groupedMovieCredits = await this.service.fetchGroupedMovieCreditsByPerson({
             personID: validPersonID,
