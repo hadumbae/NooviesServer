@@ -25,11 +25,11 @@ export default class MovieCreditService implements IMovieCreditService {
             {$match: {person: personID}},
 
             // Join with the "Movies" collection to populate the movie details
-            {$lookup: {from: "Movies", localField: "movie", foreignField: "_id", as: "movie"}},
+            {$lookup: {from: "movies", localField: "movie", foreignField: "_id", as: "movie"}},
             {$unwind: "$movie"},
 
             // Join with the "RoleTypes" collection to populate the role type details
-            {$lookup: {from: "RoleTypes", localField: "roleType", foreignField: "_id", as: "roleType"}},
+            {$lookup: {from: "roletypes", localField: "roleType", foreignField: "_id", as: "roleType"}},
             {$unwind: "$roleType"},
 
             // Assign a rank to each credit within its role type, sorted by movie release date descending
@@ -45,10 +45,23 @@ export default class MovieCreditService implements IMovieCreditService {
             {$match: {index: {$lte: limit}}},
 
             // Group credits by role type
-            {$group: {_id: "$roleType.roleName", credits: {$push: "$$ROOT"}}},
+            {
+                $group: {
+                    _id: "$roleType.roleName",
+                    department: {$first: "$roleType.department"},
+                    credits: {$push: "$$ROOT"}
+                },
+            },
 
             // Project the final shape of the output
-            {$project: {_id: 0, roleName: "$_id", credits: 1, roleType: {$arrayElemAt: ["$credits.roleType", 0]}}},
+            {
+                $project: {
+                    _id: 0,
+                    roleName: "$_id",
+                    department: 1,
+                    credits: 1,
+                    roleType: {$arrayElemAt: ["$credits.roleType", 0]}},
+            },
         ]);
     }
 }
