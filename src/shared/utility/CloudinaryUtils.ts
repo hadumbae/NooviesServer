@@ -1,23 +1,38 @@
 import cloudinary from "../config/cloudinary.js";
-
 import ZodParseError from "../errors/ZodParseError.js";
+import {type CloudinaryImageObject, CloudinaryImageObjectSchema} from "../schema/cloudinary/CloudinaryImageObjectSchema.js";
 
-import {
-    type CloudinaryImageObject,
-    CloudinaryImageObjectSchema
-} from "../schema/cloudinary/CloudinaryImageObjectSchema.js";
-
+/**
+ * Interface defining the Cloudinary utility methods.
+ */
 export interface ICloudinaryUtils {
-    upload(image: Express.Multer.File): Promise<CloudinaryImageObject>,
+    /**
+     * Uploads an image file to Cloudinary.
+     *
+     * Converts the image buffer to a base64 string and uploads it to the configured Cloudinary folder.
+     * Validates the response against {@link CloudinaryImageObjectSchema}.
+     *
+     * @param image - The image file to upload (from `Express.Multer.File`).
+     * @returns A validated {@link CloudinaryImageObject} representing the uploaded image.
+     * @throws {ZodParseError} When the response from Cloudinary does not match the expected schema.
+     */
+    upload(image: Express.Multer.File): Promise<CloudinaryImageObject>;
 
-    delete(imageID: string): Promise<void>,
+    /**
+     * Deletes an image from Cloudinary by its public ID.
+     *
+     * @param imageID - The public ID of the image to delete.
+     * @returns A promise that resolves when the deletion is complete.
+     */
+    delete(imageID: string): Promise<void>;
 }
 
-export default class CloudinaryUtils implements ICloudinaryUtils {
-    constructor(private cloudinaryInstance: typeof cloudinary = cloudinary) {
-    }
-
+/**
+ * Cloudinary utility implementation for uploading and deleting images.
+ */
+const CloudinaryUtils: ICloudinaryUtils = {
     async upload(image: Express.Multer.File): Promise<CloudinaryImageObject> {
+        // Convert buffer to base64
         const imageBuffer = image.buffer;
         const imageArray = Array.from(new Uint8Array(imageBuffer));
         const imageData = Buffer.from(imageArray);
@@ -25,8 +40,9 @@ export default class CloudinaryUtils implements ICloudinaryUtils {
 
         const uploadFile = `data:image/png;base64,${imageBase64}`;
         const uploadOptions = {folder: 'propertypulse'};
-        const response = await this.cloudinaryInstance.uploader.upload(uploadFile, uploadOptions);
+        const response = await cloudinary.uploader.upload(uploadFile, uploadOptions);
 
+        // Validate the Cloudinary response
         const {error, success, data} = CloudinaryImageObjectSchema.safeParse(response);
 
         if (!success) {
@@ -35,9 +51,12 @@ export default class CloudinaryUtils implements ICloudinaryUtils {
         }
 
         return data!;
-    }
+    },
 
     async delete(imageID: string): Promise<void> {
-        await this.cloudinaryInstance.uploader.destroy(imageID);
+        // Delete image by ID
+        await cloudinary.uploader.destroy(imageID);
     }
-}
+};
+
+export default CloudinaryUtils;

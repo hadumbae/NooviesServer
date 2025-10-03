@@ -1,12 +1,12 @@
 import createHttpError from "http-errors";
 import {type Document, Types} from "mongoose";
-import type CloudinaryUtils from "../../../../shared/utility/CloudinaryUtils.js";
 
 import PersonModel from "../../model/Person.model.js";
 import type {IPerson} from "../../interfaces/IPerson.js";
 
 import type {IPersonImageService} from "./IPersonImageService.js";
 import type {RemovePersonProfileImageParams, UploadPersonProfileImageParams} from "./PersonImageTypes.js";
+import CloudinaryUtils from "../../../../shared/utility/CloudinaryUtils.js";
 
 /**
  * Service for managing a person's profile image.
@@ -14,17 +14,6 @@ import type {RemovePersonProfileImageParams, UploadPersonProfileImageParams} fro
  * and delete their profile image from Cloudinary.
  */
 export default class PersonImageService implements IPersonImageService {
-    /** Cloudinary utility for uploading and deleting images */
-    private cloudinaryUtils: Pick<CloudinaryUtils, "upload" | "delete">;
-
-    /**
-     * Creates a new instance of PersonImageService.
-     * @param cloudinaryUtils - Cloudinary utility instance with `upload` and `delete` methods.
-     */
-    constructor({cloudinaryUtils}: {cloudinaryUtils: CloudinaryUtils}) {
-        this.cloudinaryUtils = cloudinaryUtils;
-    }
-
     /**
      * Fetches a person document by ID.
      * @param _id - The MongoDB ObjectId of the person.
@@ -48,10 +37,10 @@ export default class PersonImageService implements IPersonImageService {
         const person = await this.fetchPerson(personId);
 
         if (person.profileImage) {
-            await this.cloudinaryUtils.delete(person.profileImage.public_id);
+            await CloudinaryUtils.delete(person.profileImage.public_id);
         }
 
-        person.profileImage = await this.cloudinaryUtils.upload(image);
+        person.profileImage = await CloudinaryUtils.upload(image);
         await person.save();
 
         return person;
@@ -67,7 +56,7 @@ export default class PersonImageService implements IPersonImageService {
         const person = await this.fetchPerson(personId);
 
         if (person.profileImage) {
-            await this.cloudinaryUtils.delete(person.profileImage.public_id);
+            await CloudinaryUtils.delete(person.profileImage.public_id);
 
             person.profileImage = null;
             await person.save();

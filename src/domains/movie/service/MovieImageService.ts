@@ -13,19 +13,6 @@ import type {DeletePosterImageParams, UploadPosterImageParams} from "../type/ser
  * Utilizes Cloudinary for image storage.
  */
 export default class MovieImageService implements IMovieImageService {
-    private cloudinaryUtils: CloudinaryUtils;
-
-    /**
-     * Creates a new instance of {@link MovieImageService}.
-     *
-     * @param params - Optional parameters
-     * @param params.cloudinaryUtils - Custom Cloudinary utility instance. Defaults to a new {@link CloudinaryUtils}.
-     */
-    constructor(params?: { cloudinaryUtils: CloudinaryUtils }) {
-        const { cloudinaryUtils = new CloudinaryUtils() } = params || {};
-        this.cloudinaryUtils = cloudinaryUtils;
-    }
-
     /**
      * Fetches a movie by its ID.
      *
@@ -54,10 +41,10 @@ export default class MovieImageService implements IMovieImageService {
         const movie = await this.fetchMovie(movieID);
 
         if (movie.posterImage) {
-            await this.cloudinaryUtils.delete(movie.posterImage.public_id);
+            await CloudinaryUtils.delete(movie.posterImage.public_id);
         }
 
-        movie.posterImage = await this.cloudinaryUtils.upload(image);
+        movie.posterImage = await CloudinaryUtils.upload(image);
         await movie.save();
 
         return movie;
@@ -79,7 +66,7 @@ export default class MovieImageService implements IMovieImageService {
         const { posterImage } = movie;
 
         if (posterImage) {
-            await this.cloudinaryUtils.delete(posterImage.public_id);
+            await CloudinaryUtils.delete(posterImage.public_id);
             movie.posterImage = null;
             await movie.save();
         }

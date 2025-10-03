@@ -6,7 +6,6 @@ import type { PopulatePath } from "../../../shared/types/PopulatePath.js";
 import PersonQueryOptionService from "../services/PersonQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import PersonImageService from "../services/image-service/PersonImageService.js";
-import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
 
 /**
  * @class PersonServiceProvider
@@ -40,9 +39,6 @@ export default class PersonServiceProvider {
         // Utility for query manipulation
         const queryUtils = QueryUtils;
 
-        // Utility for handling Cloudinary image operations
-        const cloudinaryUtils = new CloudinaryUtils();
-
         // Repository for Person with CRUD operations and population options
         const repository = new BaseRepository({ model, populateRefs });
 
@@ -50,7 +46,7 @@ export default class PersonServiceProvider {
         const optionService = new PersonQueryOptionService();
 
         // Service for handling Person images via Cloudinary
-        const imageService = new PersonImageService({ cloudinaryUtils });
+        const imageService = new PersonImageService();
 
         // Service for aggregate queries for Person
         const aggregateService = new AggregateQueryService({ model, populateRefs });
