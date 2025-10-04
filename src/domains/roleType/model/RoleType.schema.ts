@@ -1,6 +1,8 @@
-import {Schema} from "mongoose";
+import { Schema } from "mongoose";
 import type IRoleType from "./RoleType.interface.js";
 import RoleTypeDepartmentConstant from "../constants/RoleTypeDepartmentConstant.js";
+import RoleTypeCastCategoryConstant from "../constants/RoleTypeCastCategoryConstant.js";
+import RoleTypeCrewCategoryConstant from "../constants/RoleTypeCrewCategoryConstant.js";
 
 /**
  * Mongoose schema for {@link IRoleType}.
@@ -40,6 +42,31 @@ export const RoleTypeSchema: Schema<IRoleType> = new Schema<IRoleType>({
     },
 
     /**
+     * The category of the role within the department.
+     *
+     * - Required.
+     * - Conditional validation based on {@link department}:
+     *   - If {@link department} is "CREW", must be one of the values in {@link RoleTypeCrewCategoryConstant}.
+     *   - If {@link department} is "CAST", must be one of the values in {@link RoleTypeCastCategoryConstant}.
+     */
+    category: {
+        type: String,
+        validate: {
+            message: "Invalid value.",
+            validator: function (value) {
+                if (this.department === "CREW") {
+                    return RoleTypeCrewCategoryConstant.includes(value);
+                }
+                if (this.department === "CAST") {
+                    return RoleTypeCastCategoryConstant.includes(value);
+                }
+                return false;
+            },
+        },
+        required: true,
+    },
+
+    /**
      * Optional description of the role's purpose or duties.
      *
      * - Trimmed.
@@ -66,4 +93,4 @@ export const RoleTypeSchema: Schema<IRoleType> = new Schema<IRoleType>({
 /**
  * Compound unique index to prevent duplicate role names in the same department.
  */
-RoleTypeSchema.index({roleName: 1, department: 1}, {unique: true});
+RoleTypeSchema.index({ roleName: 1, department: 1 }, { unique: true });
