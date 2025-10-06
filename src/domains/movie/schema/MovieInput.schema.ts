@@ -6,9 +6,8 @@ import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStrin
 import {CoercedBooleanSchema} from "../../../shared/schema/booleans/CoercedBooleanSchema.js";
 import {ISO6391CodeEnumSchema} from "../../../shared/schema/enums/language/ISO6391CodeEnumSchema.js";
 import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
-import {isMulterFile} from "../../../shared/utility/zod/TypeChecks.js";
-import ImageTypeConstant from "../../../shared/constants/ImageTypeConstant.js";
 import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
+import refineRequiredImageFile from "../../../shared/utility/refineRequiredImageFile.js";
 
 /**
  * Schema describing the expected input for creating or updating a movie entity.
@@ -70,29 +69,23 @@ export const MovieInputSchema = z.object({
 });
 
 /**
- * Schema for validating movie image uploads.
+ * Schema describing the input for uploading a movie poster image.
  *
- * Ensures that:
- * - A file is provided
- * - The file is a valid Multer file
- * - The file's MIME type is allowed
+ * Validates that a file is provided, that it is a valid Multer file,
+ * and that its mimetype matches one of the allowed image types.
+ *
+ * @remarks
+ * This schema uses `superRefine` with `refineRequiredImageFile` to enforce:
+ * - Presence of a file (`required`).
+ * - File must pass the `isMulterFile` check.
+ * - File must have a mimetype included in `ImageTypeConstant`.
+ *
+ * @example
+ * ```ts
+ * MoviePosterImageInputSchema.parse({ file: req.file });
+ * ```
  */
-export const MovieImageInputSchema = z.object({
-    /** The uploaded file object (from Multer). Required. */
-    file: z.any(),
-}).superRefine(({file}, ctx) => {
-    if (!file) {
-        ctx.addIssue({code: "custom", path: ['image'], message: "Required.", fatal: true});
-        return z.NEVER;
-    }
-
-    if (!isMulterFile(file)) {
-        ctx.addIssue({code: "custom", path: ['image'], message: "Invalid file.", fatal: true});
-        return z.NEVER;
-    }
-
-    if (!ImageTypeConstant.includes(file.mimetype as any)) {
-        ctx.addIssue({code: "custom", path: ['image'], message: "Invalid file type.", fatal: true});
-        return z.NEVER;
-    }
-});
+export const MoviePosterImageInputSchema = z.object({
+    /** Uploaded poster file to validate. */
+    file: z.unknown(),
+}).superRefine(refineRequiredImageFile({ pathName: "posterImage" }));

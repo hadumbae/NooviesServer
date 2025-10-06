@@ -5,7 +5,7 @@ import {
     type IBaseRoutesConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type { IMovieController } from "../controller/MovieController.js";
-import { MovieInputSchema } from "../schema/MovieInputSchema.js";
+import { MovieInputSchema } from "../schema/MovieInput.schema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import { uploadImage } from "@config/image-multr.js";
 import hasPosterImage from "../middleware/hasPosterImage.js";
