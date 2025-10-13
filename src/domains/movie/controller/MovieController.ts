@@ -124,9 +124,9 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
         const movieID = isValidObjectId(_id);
         const image = req.file as Express.Multer.File;
 
-        await this.imageService.updateMoviePosterImage({ movieID, image });
+        const movie = await this.imageService.updateMoviePosterImage({ movieID, image });
 
-        return res.status(200).json({ message: "Poster Image Updated." });
+        return res.status(200).json(movie);
     }
 
     /**
@@ -144,9 +144,9 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
         const { _id } = req.params;
         const movieID = isValidObjectId(_id);
 
-        await this.imageService.deleteMoviePosterImage({ movieID });
+        const movie = await this.imageService.deleteMoviePosterImage({ movieID });
 
-        return res.status(200).json({ message: "Poster Image Removed." });
+        return res.status(200).json(movie);
     }
 
     /**

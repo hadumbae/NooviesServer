@@ -77,7 +77,7 @@ routes.get(
  */
 routes.patch(
     '/update/:_id/poster_image',
-    [isAuth, uploadImage.single("image"), hasPosterImage],
+    [isAuth, uploadImage.single("posterImage"), hasPosterImage],
     asyncHandler(controller.updatePosterPicture.bind(controller)),
 );
 
@@ -91,7 +91,7 @@ routes.patch(
  */
 routes.delete(
     '/delete/:_id/poster_image',
-    [isAuth, uploadImage.single("image"), hasPosterImage],
+    [isAuth],
     asyncHandler(controller.deletePosterPicture.bind(controller)),
 );
 
