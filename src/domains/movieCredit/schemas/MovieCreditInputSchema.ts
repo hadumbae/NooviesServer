@@ -71,7 +71,7 @@ const CastSchema = MovieCreditBaseSchema.extend({
     characterName: RequiredStringSchema.max(150, "Job must be 150 characters or less."),
 
     /** Billing order for CAST roles (positive number) */
-    billingOrder: PositiveNumberSchema,
+    billingOrder: PositiveNumberSchema.optional(),
 
     /** Optional: marks as uncredited */
     uncredited: CoercedBooleanSchema.optional(),
