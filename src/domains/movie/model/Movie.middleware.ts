@@ -1,7 +1,7 @@
 import {MovieSchema} from "./Movie.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import type IMovie from "./Movie.interface.js";
-import Showing from "../../showing/model/Showing.js";
+import Showing from "../../showing/model/Showing.model.js";
 import User from "@models/User.js";
 
 /**

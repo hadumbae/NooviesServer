@@ -5,7 +5,7 @@ import {
     type IBaseRoutesConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {IShowingController} from "../controller/ShowingController.js";
-import {ShowingSubmitSchema} from "../schema/ShowingSubmitSchema.js";
+import {ShowingInputSchema} from "../schema/ShowingInputSchema.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
 
@@ -24,14 +24,14 @@ const unsetMiddleware = UnsetModelFormFields({model});
 /**
  * Middleware list specific to the `Showing` routes.
  *
- * - **create**: Validates the request body against {@link ShowingSubmitSchema}
+ * - **create**: Validates the request body against {@link ShowingInputSchema}
  *   and unsets unexpected form fields before creating a showing.
  * - **update**: Same validation and sanitization logic applied when updating.
  */
 const middlewareList: BaseRouteMiddleware<typeof controller> = {
     path: {
-        create: [validateZodSchemaAsync(ShowingSubmitSchema), unsetMiddleware],
-        update: [validateZodSchemaAsync(ShowingSubmitSchema), unsetMiddleware],
+        create: [validateZodSchemaAsync(ShowingInputSchema), unsetMiddleware],
+        update: [validateZodSchemaAsync(ShowingInputSchema), unsetMiddleware],
     }
 };
 

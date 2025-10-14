@@ -11,7 +11,7 @@ import type IMovie from "../../model/Movie.interface.js";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
 import User from "@models/User.js";
-import Showing from "../../../showing/model/Showing.js";
+import Showing from "../../../showing/model/Showing.model.js";
 import type IShowing from "../../../showing/model/IShowing.js";
 
 interface UserMovieParams {

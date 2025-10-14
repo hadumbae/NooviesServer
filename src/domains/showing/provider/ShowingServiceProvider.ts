@@ -1,4 +1,4 @@
-import Showing from "../model/Showing.js";
+import Showing from "../model/Showing.model.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import ShowingController from "../controller/ShowingController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";

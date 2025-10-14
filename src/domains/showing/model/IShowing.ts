@@ -1,19 +1,23 @@
-import {Types} from "mongoose";
-import type {IScreen} from "../../screen/interface/IScreen.js";
+import { Types } from "mongoose";
+import type { IScreen } from "../../screen/interface/IScreen.js";
 import type ITheatre from "../../theatre/model/ITheatre.js";
-import type ISeatMap from "../../seatmap/model/ISeatMap.js";
 import type IMovie from "../../movie/model/Movie.interface.js";
+import type { ShowingStatusCode } from "../schema/ShowingStatusEnumSchema.js";
 
 /**
  * Represents a movie showing within a theatre.
  *
- * Includes scheduling details, pricing, language options, and references to related entities.
+ * @description
+ * Contains scheduling information, pricing, language options,
+ * references to the movie, theatre, and screen, as well as
+ * seating and status information. This interface is used
+ * throughout the system to type-check showings.
  */
 export default interface IShowing {
     /**
      * Unique identifier for the showing.
      */
-    readonly _id: Types.ObjectId,
+    readonly _id: Types.ObjectId;
 
     /**
      * The scheduled start time of the showing.
@@ -22,12 +26,14 @@ export default interface IShowing {
 
     /**
      * The scheduled end time of the showing.
+     *
+     * @remarks
      * Can be null if the end time is not predetermined.
      */
     endTime?: Date | null;
 
     /**
-     * The price of a ticket for the showing.
+     * The price of a ticket for this showing.
      */
     ticketPrice: number;
 
@@ -42,35 +48,46 @@ export default interface IShowing {
     subtitleLanguages: string[];
 
     /**
-     * Indicates whether the showing is currently active and available for booking.
+     * Indicates whether the showing is currently active
+     * and available for booking.
      */
     isActive: boolean;
 
     /**
-     * Indicates whether the showing is a special event (e.g., premiere, themed screening).
+     * Indicates whether the showing is a special event
+     * (e.g., premiere, themed screening).
      */
     isSpecialEvent: boolean;
 
     /**
      * Reference to the movie being shown.
-     * Can be either the movie's ObjectId or the full `Movie` object.
+     *
+     * @remarks
+     * Can be either the movie's ObjectId or the full `IMovie` object.
      */
     movie: Types.ObjectId | IMovie;
 
     /**
      * Reference to the theatre where the showing takes place.
-     * Can be either the theatre's ObjectId or the full `Theatre` object.
+     *
+     * @remarks
+     * Can be either the theatre's ObjectId or the full `ITheatre` object.
      */
     theatre: Types.ObjectId | ITheatre;
 
     /**
      * Reference to the screen on which the movie is shown.
-     * Can be either the screen's ObjectId or the full `Screen` object.
+     *
+     * @remarks
+     * Can be either the screen's ObjectId or the full `IScreen` object.
      */
     screen: Types.ObjectId | IScreen;
 
     /**
-     * An array representing the seating arrangement for the showing.
+     * Current status of the showing.
+     *
+     * @remarks
+     * Must be one of the allowed `ShowingStatusCode` values.
      */
-    seating: ISeatMap[];
+    status: ShowingStatusCode;
 }

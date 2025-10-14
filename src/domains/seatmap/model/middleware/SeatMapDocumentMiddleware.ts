@@ -2,7 +2,7 @@
  * Create Middleware
  */
 import type ISeatMap from "../ISeatMap.js";
-import Showing from "../../../showing/model/Showing.js";
+import Showing from "../../../showing/model/Showing.model.js";
 import type {HydratedDocument} from "mongoose";
 
 export async function SaveSeatMapDocumentPreMiddleware(this: HydratedDocument<ISeatMap>) {

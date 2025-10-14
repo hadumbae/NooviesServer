@@ -1,7 +1,7 @@
 import Theatre from "../../../theatre/model/Theatre.js";
 import type {IScreen} from "../../interface/IScreen.js";
 import type {HydratedDocument} from "mongoose";
-import Showing from "../../../showing/model/Showing.js";
+import Showing from "../../../showing/model/Showing.model.js";
 import Seat from "../../../seat/model/Seat.model.js";
 
 export async function DeleteOneDocumentPost(this: HydratedDocument<IScreen>) {

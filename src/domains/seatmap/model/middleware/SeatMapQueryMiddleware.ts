@@ -1,5 +1,5 @@
 import type ISeatMap from "../ISeatMap.js";
-import Showing from "../../../showing/model/Showing.js";
+import Showing from "../../../showing/model/Showing.model.js";
 import type {Query} from "mongoose";
 import SeatMap from "../SeatMap.js";
 

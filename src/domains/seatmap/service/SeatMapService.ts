@@ -2,7 +2,7 @@ import createHttpError from "http-errors";
 import {Types} from "mongoose";
 
 import SeatMap from "../model/SeatMap.js";
-import Showing from "../../showing/model/Showing.js";
+import Showing from "../../showing/model/Showing.model.js";
 
 import type {ZSeatMap} from "../schema/SeatMapSchema.js";
 
