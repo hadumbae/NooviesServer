@@ -1,33 +1,45 @@
-import {ShowingSchema} from "./Showing.schema.js";
+import { ShowingSchema } from "./Showing.schema.js";
+import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 /**
  * @fileoverview
- * Defines virtual population fields for the `Showing` Mongoose schema.
+ * Declares virtual population fields for the `Showing` schema.
  *
  * @description
- * These virtuals provide computed seat statistics for each showing by
- * referencing the `SeatMap` collection. They are used to count seats
- * in various states (available, reserved, etc.) without storing the
- * values directly in the database.
+ * These virtuals expose **computed seat statistics** derived from the
+ * related `SeatMap` documents without duplicating data.
  *
- * Each virtual uses Mongoose's `count` option to return the number
- * of matching seat documents instead of populating full records.
+ * Each virtual field leverages Mongoose’s virtual population mechanism
+ * combined with the `count: true` option to return only the number of
+ * matching documents, ensuring efficient aggregation.
  *
  * ---
+ * ### Virtual Field Summary
+ * | Virtual Name | Description | Match Filter |
+ * |---------------|--------------|--------------|
+ * | `seatMapCount` | Total number of seat maps linked to this showing. | — |
+ * | `availableSeatsCount` | Seats currently marked as available. | `{ isAvailable: true }` |
+ * | `reservedSeatsCount` | Seats that have been reserved. | `{ isReserved: true }` |
+ * | `unreservedSeatsCount` | Seats that are available and not reserved. | `{ isAvailable: true, isReserved: false }` |
  *
- * ### Virtual Fields
- * - **seatMapCount** — Total number of seat map entries for this showing.
- * - **availableSeatsCount** — Seats currently available for reservation.
- * - **reservedSeatsCount** — Seats that are already reserved.
- * - **unreservedSeatsCount** — Seats that are available and not reserved.
+ * ---
+ * @example
+ * ```ts
+ * // Populate virtual counts in a lean query:
+ * const showings = await Showing.find().lean({ virtuals: true });
+ * console.log(showings[0].availableSeatsCount); // → 42
+ * ```
  */
 
 /**
- * Counts all seat map entries linked to this showing.
+ * Virtual field representing the total number of seat map entries
+ * associated with this showing.
  *
  * @remarks
- * Uses Mongoose virtual population with `count: true` for efficient
- * aggregation of related seat maps.
+ * Uses Mongoose virtual population with `count: true` for efficient counting.
+ * This field reflects the total number of seat map documents linked by `showing`.
+ *
+ * @see SeatMap
  */
 ShowingSchema.virtual("seatMapCount", {
     ref: "SeatMap",
@@ -37,43 +49,62 @@ ShowingSchema.virtual("seatMapCount", {
 });
 
 /**
- * Counts seats that are currently marked as available.
+ * Virtual field representing the number of seats currently available.
  *
  * @remarks
- * Filters `SeatMap` documents by `{ isAvailable: true }`.
+ * Filters related `SeatMap` documents by `{ isAvailable: true }`.
+ * Useful for displaying live seat availability counts.
+ *
+ * @see SeatMap
  */
 ShowingSchema.virtual("availableSeatsCount", {
     ref: "SeatMap",
     localField: "_id",
     foreignField: "showing",
-    match: {isAvailable: true},
+    match: { isAvailable: true },
     count: true,
 });
 
 /**
- * Counts seats that have been reserved.
+ * Virtual field representing the number of seats that have been reserved.
  *
  * @remarks
- * Filters `SeatMap` documents by `{ isReserved: true }`.
+ * Filters related `SeatMap` documents by `{ isReserved: true }`.
+ * Useful for analytics or seat reservation tracking.
+ *
+ * @see SeatMap
  */
 ShowingSchema.virtual("reservedSeatsCount", {
     ref: "SeatMap",
     localField: "_id",
     foreignField: "showing",
-    match: {isReserved: true},
+    match: { isReserved: true },
     count: true,
 });
 
 /**
- * Counts seats that are both available and not reserved.
+ * Virtual field representing the number of seats that are available
+ * and not currently reserved.
  *
  * @remarks
- * Filters `SeatMap` documents by `{ isAvailable: true, isReserved: false }`.
+ * Filters related `SeatMap` documents by
+ * `{ isAvailable: true, isReserved: false }`.
+ *
+ * @see SeatMap
  */
 ShowingSchema.virtual("unreservedSeatsCount", {
     ref: "SeatMap",
     localField: "_id",
     foreignField: "showing",
-    match: {isAvailable: true, isReserved: false},
+    match: { isAvailable: true, isReserved: false },
     count: true,
 });
+
+/**
+ * Enables support for `.lean({ virtuals: true })` queries.
+ *
+ * @remarks
+ * Without this plugin, virtuals would not appear in results when using
+ * Mongoose's `lean()` option.
+ */
+ShowingSchema.plugin(mongooseLeanVirtuals);
