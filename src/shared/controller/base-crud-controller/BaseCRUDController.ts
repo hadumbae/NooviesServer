@@ -123,7 +123,7 @@ export default class BaseCRUDController<
      * @returns A JSON response containing the updated item.
      * @throws If `_id` is not a valid MongoDB ObjectId.
      */
-    async update(req: Request<TSchema>, res: Response): Promise<Response> {
+    async update(req: Request, res: Response): Promise<Response> {
         const {_id: entityID} = req.params;
         const _id = isValidObjectId(entityID);
 
