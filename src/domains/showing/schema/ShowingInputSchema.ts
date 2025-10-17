@@ -1,10 +1,12 @@
-import { z } from "zod";
-import { CoercedDateSchema } from "../../../shared/schema/date/CoercedDateSchema.js";
-import { ObjectIdStringSchema } from "../../../shared/schema/strings/ObjectIdStringSchema.js";
-import { RequiredStringSchema } from "../../../shared/schema/strings/RequiredStringSchema.js";
-import { RequiredBoolean } from "../../../shared/schema/booleans/RequiredBoolean.js";
-import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import { ShowingStatusEnumSchema } from "./ShowingStatusEnumSchema.js";
+import {z} from "zod";
+import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
+import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
+import {RequiredBoolean} from "../../../shared/schema/booleans/RequiredBoolean.js";
+import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import {ShowingStatusEnumSchema} from "./ShowingStatusEnumSchema.js";
+import {DateStringSchema} from "../../../shared/schema/date/DateString.schema.js";
+import {TimeStringSchema} from "../../../shared/schema/timezones/TimeStringSchema.js";
+import {DateTime} from "luxon";
 
 /**
  * @fileoverview
@@ -49,11 +51,13 @@ import { ShowingStatusEnumSchema } from "./ShowingStatusEnumSchema.js";
  */
 export const ShowingInputSchema = z
     .object({
-        /** The scheduled start time of the showing. */
-        startTime: CoercedDateSchema,
+        startAtDate: DateStringSchema,
 
-        /** Optional scheduled end time; must be later than `startTime` if provided. */
-        endTime: CoercedDateSchema.optional(),
+        startAtTime: TimeStringSchema,
+
+        endAtDate: DateStringSchema.optional(),
+
+        endAtTime: TimeStringSchema.optional(),
 
         /** Ticket price for the showing; must be greater than zero. */
         ticketPrice: PositiveNumberSchema,
@@ -62,7 +66,7 @@ export const ShowingInputSchema = z
         language: RequiredStringSchema,
 
         /** Array of subtitle languages; must contain at least one valid ISO-639-1 code. */
-        subtitleLanguages: z.array(RequiredStringSchema).nonempty({ message: "Must not be empty." }),
+        subtitleLanguages: z.array(RequiredStringSchema).nonempty({message: "Must not be empty."}),
 
         /** Indicates whether the showing is a special event. Defaults to `false`. */
         isSpecialEvent: RequiredBoolean.optional().default(false),
@@ -83,16 +87,22 @@ export const ShowingInputSchema = z
         status: ShowingStatusEnumSchema,
     })
     .superRefine((values, ctx) => {
-        const { startTime, endTime } = values;
+        const {startAtDate, startAtTime, endAtDate, endAtTime} = values;
 
-        if (endTime && startTime >= endTime) {
-            ctx.addIssue({
-                code: "custom",
-                path: ["endTime"],
-                fatal: true,
-                message: "Ending time cannot be earlier than starting time.",
-            });
+        if (endAtDate && endAtTime) {
+            const start = DateTime.fromISO(`${startAtDate}T${startAtTime}`);
+            const end = DateTime.fromISO(`${endAtDate}T${endAtTime}`);
 
-            return z.NEVER;
+            if (end < start) {
+                const errorMessage = "Ending time cannot be earlier than starting time.";
+
+                ctx.addIssue({code: "custom", path: ["endDate"], message: errorMessage});
+                ctx.addIssue({code: "custom", path: ["endTime"], message: errorMessage});
+
+                return z.NEVER;
+            }
+
         }
     });
+
+export type ShowingInput = z.infer<typeof ShowingInputSchema>;
