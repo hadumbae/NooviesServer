@@ -53,7 +53,7 @@ export default class ShowingServiceProvider {
 
         /** Population paths for common Showing-related queries. */
         const populateRefs = [
-            {path: "movie"},
+            {path: "movie", populate: {path: "genres"}},
             {path: "theatre"},
             {path: "screen"},
         ];
