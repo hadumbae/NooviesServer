@@ -1,41 +1,44 @@
-import {z} from "zod";
-import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
-import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
-import {RequiredBoolean} from "../../../shared/schema/booleans/RequiredBoolean.js";
-import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import {ShowingStatusEnumSchema} from "./ShowingStatusEnumSchema.js";
-import {DateStringSchema} from "../../../shared/schema/date/DateString.schema.js";
-import {TimeStringSchema} from "../../../shared/schema/timezones/TimeStringSchema.js";
-import {DateTime} from "luxon";
+import { z } from "zod";
+import { ObjectIdStringSchema } from "../../../shared/schema/strings/ObjectIdStringSchema.js";
+import { RequiredStringSchema } from "../../../shared/schema/strings/RequiredStringSchema.js";
+import { RequiredBoolean } from "../../../shared/schema/booleans/RequiredBoolean.js";
+import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import { ShowingStatusEnumSchema } from "./ShowingStatusEnumSchema.js";
+import { DateStringSchema } from "../../../shared/schema/date/DateString.schema.js";
+import { TimeStringSchema } from "../../../shared/schema/timezones/TimeStringSchema.js";
+import { DateTime } from "luxon";
 
 /**
  * @fileoverview
- * Defines the validation schema for incoming showing creation or update requests.
+ * Validation schema for creating or updating showings.
  *
- * @description
- * This schema ensures that all showing input data conforms to the domain requirements before
- * persistence or mutation. It validates dates, pricing, references, and flags for active
- * and special events, and enforces proper ordering between start and end times.
+ * Ensures all input data is consistent with domain rules before persistence:
+ * - Dates and times are valid and logically ordered.
+ * - Pricing is positive.
+ * - Required strings, booleans, and ObjectIds are enforced.
+ * - Status and flags like `isSpecialEvent` and `isActive` are validated.
  *
- * Utilizes shared schema components for standardized validation across the application:
- * - **Date Coercion:** via `CoercedDateSchema`
- * - **ObjectId Validation:** via `ObjectIdStringSchema`
- * - **Required Strings & Booleans:** via `RequiredStringSchema` and `RequiredBoolean`
- * - **Positive Numeric Values:** via `PositiveNumberSchema`
+ * Uses shared schemas to standardize validation across the application:
+ * - **Date & Time:** `DateStringSchema`, `TimeStringSchema`
+ * - **ObjectId Validation:** `ObjectIdStringSchema`
+ * - **Required Fields:** `RequiredStringSchema`, `RequiredBoolean`
+ * - **Numeric Values:** `PositiveNumberSchema`
  */
 
 /**
- * Zod schema for validating showing creation and update inputs.
+ * Zod schema for showing creation or update input.
  *
  * @remarks
- * Performs a **super refinement** check to ensure that `endTime` (if provided)
- * is later than `startTime`. If not, a fatal validation issue is raised.
+ * - Performs a super refinement to ensure that `endAtDate` + `endAtTime` (if provided) is after `startAtDate` + `startAtTime`.
+ * - Returns detailed issues on validation failure.
  *
  * @example
  * ```ts
  * const input = {
- *   startTime: "2025-12-01T18:00:00Z",
- *   endTime: "2025-12-01T20:00:00Z",
+ *   startAtDate: "2025-12-01",
+ *   startAtTime: "18:00:00",
+ *   endAtDate: "2025-12-01",
+ *   endAtTime: "20:00:00",
  *   ticketPrice: 12.5,
  *   language: "en",
  *   subtitleLanguages: ["fr", "es"],
@@ -51,43 +54,47 @@ import {DateTime} from "luxon";
  */
 export const ShowingInputSchema = z
     .object({
+        /** Start date of the showing in ISO format (YYYY-MM-DD). */
         startAtDate: DateStringSchema,
 
+        /** Start time of the showing in HH:mm:ss format. */
         startAtTime: TimeStringSchema,
 
+        /** Optional end date of the showing in ISO format. */
         endAtDate: DateStringSchema.optional(),
 
+        /** Optional end time of the showing in HH:mm:ss format. */
         endAtTime: TimeStringSchema.optional(),
 
         /** Ticket price for the showing; must be greater than zero. */
         ticketPrice: PositiveNumberSchema,
 
-        /** ISO-639-1 code for the language in which the movie is presented. */
+        /** Language code (ISO-639-1) for the showing. */
         language: RequiredStringSchema,
 
-        /** Array of subtitle languages; must contain at least one valid ISO-639-1 code. */
-        subtitleLanguages: z.array(RequiredStringSchema).nonempty({message: "Must not be empty."}),
+        /** Subtitle languages; must contain at least one valid ISO-639-1 code. */
+        subtitleLanguages: z.array(RequiredStringSchema).nonempty({ message: "Must not be empty." }),
 
-        /** Indicates whether the showing is a special event. Defaults to `false`. */
+        /** Indicates if the showing is a special event. Defaults to `false`. */
         isSpecialEvent: RequiredBoolean.optional().default(false),
 
-        /** Indicates whether the showing is active and available for booking. Defaults to `true`. */
+        /** Indicates if the showing is active and available for booking. Defaults to `true`. */
         isActive: RequiredBoolean.optional().default(true),
 
-        /** The ObjectId string referencing the associated movie. */
+        /** ObjectId referencing the movie. */
         movie: ObjectIdStringSchema,
 
-        /** The ObjectId string referencing the theatre where the showing takes place. */
+        /** ObjectId referencing the theatre. */
         theatre: ObjectIdStringSchema,
 
-        /** The ObjectId string referencing the screen on which the movie is shown. */
+        /** ObjectId referencing the screen. */
         screen: ObjectIdStringSchema,
 
-        /** The current status of the showing (e.g., `SCHEDULED`, `RUNNING`, `COMPLETED`). */
+        /** Current status of the showing. */
         status: ShowingStatusEnumSchema,
     })
     .superRefine((values, ctx) => {
-        const {startAtDate, startAtTime, endAtDate, endAtTime} = values;
+        const { startAtDate, startAtTime, endAtDate, endAtTime } = values;
 
         if (endAtDate && endAtTime) {
             const start = DateTime.fromISO(`${startAtDate}T${startAtTime}`);
@@ -95,14 +102,13 @@ export const ShowingInputSchema = z
 
             if (end < start) {
                 const errorMessage = "Ending time cannot be earlier than starting time.";
-
-                ctx.addIssue({code: "custom", path: ["endDate"], message: errorMessage});
-                ctx.addIssue({code: "custom", path: ["endTime"], message: errorMessage});
-
-                return z.NEVER;
+                ctx.addIssue({ code: "custom", path: ["endAtDate"], message: errorMessage });
+                ctx.addIssue({ code: "custom", path: ["endAtTime"], message: errorMessage });
             }
-
         }
     });
 
+/**
+ * TypeScript type inferred from `ShowingInputSchema`.
+ */
 export type ShowingInput = z.infer<typeof ShowingInputSchema>;
