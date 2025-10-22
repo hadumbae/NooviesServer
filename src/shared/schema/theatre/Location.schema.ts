@@ -1,6 +1,6 @@
 import {z} from "zod";
 import {RequiredStringSchema} from "../strings/RequiredStringSchema.js";
-import {IANATimezoneSchema} from "../timezones/IANATimezone.enum.js";
+import {IANATimezoneSchema} from "../date-time/IANATimezoneSchema.js";
 import {ISO3166Alpha2CodeEnumSchema} from "../enums/country/ISO3166Alpha2CodeEnumSchema.js";
 import {RequiredNumberSchema} from "../numbers/RequiredNumberSchema.js";
 

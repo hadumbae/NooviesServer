@@ -4,8 +4,8 @@ import { RequiredStringSchema } from "../../../shared/schema/strings/RequiredStr
 import { RequiredBoolean } from "../../../shared/schema/booleans/RequiredBoolean.js";
 import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import { ShowingStatusEnumSchema } from "./ShowingStatusEnumSchema.js";
-import { DateStringSchema } from "../../../shared/schema/date/DateString.schema.js";
-import { TimeStringSchema } from "../../../shared/schema/timezones/TimeStringSchema.js";
+import { SimpleDateStringSchema } from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
+import { TimeStringSchema } from "../../../shared/schema/date-time/TimeStringSchema.js";
 import { DateTime } from "luxon";
 
 /**
@@ -55,13 +55,13 @@ import { DateTime } from "luxon";
 export const ShowingInputSchema = z
     .object({
         /** Start date of the showing in ISO format (YYYY-MM-DD). */
-        startAtDate: DateStringSchema,
+        startAtDate: SimpleDateStringSchema,
 
         /** Start time of the showing in HH:mm:ss format. */
         startAtTime: TimeStringSchema,
 
         /** Optional end date of the showing in ISO format. */
-        endAtDate: DateStringSchema.optional(),
+        endAtDate: SimpleDateStringSchema.optional(),
 
         /** Optional end time of the showing in HH:mm:ss format. */
         endAtTime: TimeStringSchema.optional(),

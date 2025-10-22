@@ -17,7 +17,10 @@ import {timeZonesNames} from "@vvo/tzdb";
  * IANATimezoneSchema.parse("Invalid/Timezone");  // ❌ Throws ZodError("Invalid Time Zone.")
  * ```
  */
-export const IANATimezoneSchema = z.enum(timeZonesNames as [string, ...string[]], {message: "Invalid Time Zone."});
+export const IANATimezoneSchema = z.enum(
+    timeZonesNames as [string, ...string[]],
+    {message: "Invalid Time Zone."},
+);
 
 /**
  * TypeScript type for valid IANA timezones, inferred from `IANATimezoneSchema`.

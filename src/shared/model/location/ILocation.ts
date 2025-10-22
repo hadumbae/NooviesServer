@@ -1,4 +1,4 @@
-import type {IANATimezone} from "../../schema/timezones/IANATimezone.enum.js";
+import type {IANATimezone} from "../../schema/date-time/IANATimezoneSchema.js";
 import type ICoordinate from "../coordinate/ICoordinate.js";
 
 /**

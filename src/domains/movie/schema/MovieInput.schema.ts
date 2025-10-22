@@ -1,6 +1,5 @@
 import {z} from "zod";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
-import {UTCDateStringSchema} from "../../../shared/schema/date/DateString.schema.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStringSchema.js";
 import {CoercedBooleanSchema} from "../../../shared/schema/booleans/CoercedBooleanSchema.js";
@@ -8,6 +7,7 @@ import {ISO6391CodeEnumSchema} from "../../../shared/schema/enums/language/ISO63
 import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
 import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
 import refineRequiredImageFile from "../../../shared/utility/refineRequiredImageFile.js";
+import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
 
 /**
  * Schema describing the expected input for creating or updating a movie entity.
@@ -41,7 +41,7 @@ export const MovieInputSchema = z.object({
     }),
 
     /** Official release date in UTC. Optional and nullable. */
-    releaseDate: UTCDateStringSchema.optional().nullable(),
+    releaseDate: UTCDateOnlySchema.optional().nullable(),
 
     /** Whether the movie has been officially released. Optional boolean. */
     isReleased: CoercedBooleanSchema.optional(),

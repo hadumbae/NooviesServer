@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { URLParamStringSchema } from "../../../../shared/schema/url/URLParamStringSchema.js";
 import { URLParamNonNegativeNumberSchema } from "../../../../shared/schema/url/URLParamNonNegativeNumberSchema.js";
-import { IANATimezoneSchema } from "../../../../shared/schema/timezones/IANATimezone.enum.js";
+import { IANATimezoneSchema } from "../../../../shared/schema/date-time/IANATimezoneSchema.js";
 import { ISO3166Alpha2CodeEnumSchema } from "../../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
 import { URLParamMongooseSortOrderSchema } from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
 

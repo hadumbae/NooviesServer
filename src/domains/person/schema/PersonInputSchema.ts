@@ -2,7 +2,8 @@ import {z} from 'zod';
 
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
-import {UTCDateStringSchema} from "../../../shared/schema/date/DateString.schema.js";
+
+import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
 
 /**
  * Schema for validating input when creating or updating a person.
@@ -36,7 +37,7 @@ export const PersonInputSchema = z.object({
         .min(1, "Required.")
         .max(1000, "Must be 1000 characters or less."),
 
-    dob: UTCDateStringSchema,
+    dob: UTCDateOnlySchema,
 
     nationality: ISO3166Alpha2CodeEnumSchema,
 });

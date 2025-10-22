@@ -1,17 +1,17 @@
 import type IShowing from "../../model/IShowing.js";
-import type {DateString} from "../../../../shared/schema/date/DateString.types.js";
-import type {TimeString} from "../../../../shared/schema/timezones/TimeStringSchema.js";
-import type {IANATimezone} from "../../../../shared/schema/timezones/IANATimezone.enum.js";
+import type {TimeString} from "../../../../shared/schema/date-time/TimeStringSchema.js";
+import type {IANATimezone} from "../../../../shared/schema/date-time/IANATimezoneSchema.js";
 import type {PopulatePath} from "../../../../shared/types/PopulatePath.js";
 import type {ShowingInput} from "../../schema/ShowingInputSchema.js";
 import {Types} from "mongoose";
+import type {SimpleDateString} from "../../../../shared/schema/date-time/SimpleDateStringSchema.js";
 
 /**
  * Parameters to build a JavaScript Date object from date, time, and timezone.
  */
 export type BuildShowingDateParams = {
     /** ISO-format date string for the showing. */
-    date: DateString;
+    date: SimpleDateString;
     /** Time string (HH:mm:ss) for the showing. */
     time: TimeString;
     /** IANA timezone identifier for the date/time. */
@@ -25,11 +25,11 @@ export type GetShowingDateTimeParams = {
     /** The ObjectId of the theatre hosting the showing. */
     theatreID: Types.ObjectId;
     /** Start date string for the showing. */
-    startAtDate: DateString;
+    startAtDate: SimpleDateString;
     /** Start time string for the showing. */
     startAtTime: TimeString;
     /** Optional end date string; defaults to start date if not provided. */
-    endAtDate?: DateString;
+    endAtDate?: SimpleDateString;
     /** Optional end time string; defaults to null if not provided. */
     endAtTime?: TimeString;
 };
