@@ -1,8 +1,8 @@
 import {z, type ZodType} from "zod";
 import {SeatAsyncIDString, ShowingAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 import type ISeatMapSubmit from "./interface/ISeatMapSubmit.js";
-import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
 import {BooleanValueSchema} from "../../../shared/schema/booleans/BooleanValueSchema.js";
+import {NumberValueSchema} from "../../../shared/schema/numbers/NumberValueSchema.js";
 
 export const SeatMapSubmitSchema: ZodType<ISeatMapSubmit> = z.object({
     isAvailable: BooleanValueSchema
@@ -13,7 +13,7 @@ export const SeatMapSubmitSchema: ZodType<ISeatMapSubmit> = z.object({
         .optional()
         .default(false),
 
-    price: CoercedNumberSchema
+    price: NumberValueSchema
         .gt(0, "Must be greater than 0."),
 
     seat: SeatAsyncIDString,

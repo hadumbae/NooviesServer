@@ -1,27 +1,32 @@
-import {z} from "zod";
+import { z } from "zod";
+import { NumberValueSchema } from "./NumberValueSchema.js";
 
 /**
- * Zod schema for a positive number input.
+ * Schema for validating positive numbers (greater than 0).
  *
- * This schema:
- * - Accepts numbers or values that can be coerced to numbers (e.g., numeric strings like "42").
- * - Requires the value to be greater than 0.
- * - `null`, `undefined`, or non-numeric strings are rejected.
+ * @remarks
+ * - Extends {@link NumberValueSchema} with a `.positive()` refinement.
+ * - Throws a validation error if the value is 0 or less.
+ * - Ideal for fields such as `ticketPrice`, `quantity`, or any numeric value
+ *   that must be strictly positive.
  *
- * Validation errors:
- * - `required_error`: Triggered when the input is `undefined` or `null`.
- * - `invalid_type_error`: Triggered when the input cannot be coerced to a number.
- * - `gt` message: Triggered when the number is not greater than 0.
- *
- * Example usage:
+ * @example
  * ```ts
- * PositiveNumberSchema.parse("42");   // 42
- * PositiveNumberSchema.parse(3.5);    // 3.5
- * PositiveNumberSchema.parse(0);       // throws
- * PositiveNumberSchema.parse(-5);      // throws
- * PositiveNumberSchema.parse("abc");   // throws
+ * PositiveNumberSchema.parse(1);     // ✅ passes
+ * PositiveNumberSchema.parse(42);    // ✅ passes
+ * PositiveNumberSchema.parse(0);     // ❌ throws ZodError: "Must be 1 or more."
+ * PositiveNumberSchema.parse(-5);    // ❌ throws ZodError: "Must be 1 or more."
  * ```
  */
-export const PositiveNumberSchema = z
-    .number({required_error: "Required.", invalid_type_error: "Must be a positive number."})
-    .gt(0, "Must be a positive number.");
+export const PositiveNumberSchema = NumberValueSchema.positive({
+    message: "Must be 1 or more.",
+});
+
+/**
+ * TypeScript type representing a positive number.
+ *
+ * @remarks
+ * - Inferred from {@link PositiveNumberSchema}.
+ * - Ensures the value is a number > 0.
+ */
+export type PositiveNumber = z.infer<typeof PositiveNumberSchema>;

@@ -2,13 +2,13 @@ import {z} from "zod";
 import {RequiredStringSchema} from "../strings/RequiredStringSchema.js";
 import {IANATimezoneSchema} from "../date-time/IANATimezoneSchema.js";
 import {ISO3166Alpha2CountryCodeSchema} from "../enums/ISO3166Alpha2CountryCodeSchema.js";
-import {RequiredNumberSchema} from "../numbers/RequiredNumberSchema.js";
+import {NumberValueSchema} from "../numbers/NumberValueSchema.js";
 
 /**
  * A schema for validating longitude values.
  * Longitude represents the east-west position and must be a number between -180 and 180.
  */
-export const LongitudeSchema = RequiredNumberSchema
+export const LongitudeSchema = NumberValueSchema
     .min(-180, {message: "Longitude must be greater than or equal -180."})
     .max(180, {message: "Longitude must be less than or equal 180."});
 
@@ -16,7 +16,7 @@ export const LongitudeSchema = RequiredNumberSchema
  * A schema for validating latitude values.
  * Latitude represents the north-south position and must be a number between -90 and 90.
  */
-export const LatitudeSchema = RequiredNumberSchema
+export const LatitudeSchema = NumberValueSchema
     .min(-90, {message: "Latitude must be greater than or equal -90."})
     .max(90, {message: "Latitude must be less than or equal 90."});
 

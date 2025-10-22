@@ -1,32 +1,31 @@
-import {z} from "zod";
+import { z } from "zod";
+import { NumberValueSchema } from "./NumberValueSchema.js";
 
 /**
- * Schema for validating a non-negative number.
+ * Schema for validating non-negative numbers (0 or greater).
  *
- * Accepts either:
- * - A string that can be parsed into a non-negative number (e.g., "0", "42")
- * - A numeric value (e.g., 0, 42)
+ * @remarks
+ * - Extends {@link NumberValueSchema} with a `.nonnegative()` refinement.
+ * - Throws a validation error if the value is less than 0.
+ * - Ideal for fields such as `ticketPrice`, `quantity`, or any numeric value
+ *   that must not be negative.
  *
- * Validates that:
- * - The value is not empty
- * - The value is a number
- * - The value is greater than or equal to 0
- *
- * Transforms the input into a `number`.
- *
- * Example usage:
+ * @example
  * ```ts
- * NonNegativeNumberSchema.parse("42"); // 42
- * NonNegativeNumberSchema.parse(0);    // 0
- * NonNegativeNumberSchema.parse("-1"); // throws validation error
+ * NonNegativeNumberSchema.parse(0);     // ✅ passes
+ * NonNegativeNumberSchema.parse(42);    // ✅ passes
+ * NonNegativeNumberSchema.parse(-5);    // ❌ throws ZodError: "Must be 0 or more."
  * ```
  */
-export const NonNegativeNumberSchema = z
-    .union(
-        [z.string().trim(), z.number()],
-        {required_error: "Required.", invalid_type_error: "Must be a non-negative number."},
-    ).refine((val) => {
-        const num = Number(val);
-        return val !== "" && !(isNaN(num) || num < 0);
-    }, {message: "Must be a non-negative number."})
-    .transform(Number);
+export const NonNegativeNumberSchema = NumberValueSchema.nonnegative({
+    message: "Must be 0 or more.",
+});
+
+/**
+ * TypeScript type representing a non-negative number.
+ *
+ * @remarks
+ * - Inferred from {@link NonNegativeNumberSchema}.
+ * - Ensures the value is a number ≥ 0.
+ */
+export type NonNegativeNumber = z.infer<typeof NonNegativeNumberSchema>;
