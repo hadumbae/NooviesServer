@@ -2,7 +2,7 @@ import { z } from "zod";
 import { URLParamStringSchema } from "../../../../shared/schema/url/URLParamStringSchema.js";
 import { URLParamNonNegativeNumberSchema } from "../../../../shared/schema/url/URLParamNonNegativeNumberSchema.js";
 import { IANATimezoneSchema } from "../../../../shared/schema/date-time/IANATimezoneSchema.js";
-import { ISO3166Alpha2CodeEnumSchema } from "../../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import { ISO3166Alpha2CountryCodeSchema } from "../../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 import { URLParamMongooseSortOrderSchema } from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
 
 /**
@@ -25,7 +25,7 @@ export const TheatreQueryMatchFilterSchema = z.object({
     state: URLParamStringSchema,
 
     /** Country of the theatre (ISO 3166-1 alpha-2 code, optional). */
-    country: ISO3166Alpha2CodeEnumSchema.optional(),
+    country: ISO3166Alpha2CountryCodeSchema.optional(),
 
     /** Postal code of the theatre. */
     postalCode: URLParamStringSchema,

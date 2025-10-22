@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {RequiredStringSchema} from "../strings/RequiredStringSchema.js";
 import {IANATimezoneSchema} from "../date-time/IANATimezoneSchema.js";
-import {ISO3166Alpha2CodeEnumSchema} from "../enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import {ISO3166Alpha2CountryCodeSchema} from "../enums/ISO3166Alpha2CountryCodeSchema.js";
 import {RequiredNumberSchema} from "../numbers/RequiredNumberSchema.js";
 
 /**
@@ -78,7 +78,7 @@ export const LocationSchema = z.object({
     /**
      * Country code in ISO 3166-1 alpha-2 format (e.g., "US", "TH").
      */
-    country: ISO3166Alpha2CodeEnumSchema,
+    country: ISO3166Alpha2CountryCodeSchema,
 
     /**
      * Postal or ZIP code.

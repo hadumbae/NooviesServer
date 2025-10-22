@@ -3,8 +3,8 @@ import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStrin
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStringSchema.js";
 import {CoercedBooleanValueSchema} from "../../../shared/schema/booleans/CoercedBooleanValueSchema.js";
-import {ISO6391CodeEnumSchema} from "../../../shared/schema/enums/language/ISO6391CodeEnumSchema.js";
-import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import {ISO6391LanguageCodeSchema} from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
+import {ISO3166Alpha2CountryCodeSchema} from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
 import refineRequiredImageFile from "../../../shared/utility/refineRequiredImageFile.js";
 import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
@@ -50,16 +50,16 @@ export const MovieInputSchema = z.object({
     runtime: PositiveNumberSchema.lte(500, "Must be 500 or less."),
 
     /** ISO 639-1 code of the movie's original language. Required. */
-    originalLanguage: ISO6391CodeEnumSchema,
+    originalLanguage: ISO6391LanguageCodeSchema,
 
     /** ISO 3166-1 alpha-2 code of the movie's primary country. Required. */
-    country: ISO3166Alpha2CodeEnumSchema,
+    country: ISO3166Alpha2CountryCodeSchema,
 
     /** Available audio languages (ISO 639-1 codes). Required array. */
-    languages: z.array(ISO6391CodeEnumSchema),
+    languages: z.array(ISO6391LanguageCodeSchema),
 
     /** Available subtitles (ISO 639-1 codes). Required array. */
-    subtitles: z.array(ISO6391CodeEnumSchema),
+    subtitles: z.array(ISO6391LanguageCodeSchema),
 
     /** Trailer URL. Optional and nullable, must be a valid URL. */
     trailerURL: ValidURLStringSchema.optional().nullable(),

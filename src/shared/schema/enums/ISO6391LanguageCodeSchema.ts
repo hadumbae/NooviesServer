@@ -1,5 +1,5 @@
 import {z} from "zod";
-import ISO6391CodeConstant from "../../../constants/language/ISO6391CodeConstant.js";
+import ISO6391CodeConstant from "../../constants/language/ISO6391CodeConstant.js";
 
 /**
  * A Zod schema for validating ISO 639-1 language codes.
@@ -11,7 +11,7 @@ import ISO6391CodeConstant from "../../../constants/language/ISO6391CodeConstant
  * This schema will throw a validation error with the message `"Invalid ISO Code."`
  * if the input value is not a valid ISO 639-1 code.
  */
-export const ISO6391CodeEnumSchema = z.enum(ISO6391CodeConstant, {
+export const ISO6391LanguageCodeSchema = z.enum(ISO6391CodeConstant, {
     message: "Invalid ISO Code.",
 });
 
@@ -23,4 +23,4 @@ export const ISO6391CodeEnumSchema = z.enum(ISO6391CodeConstant, {
  *
  * Example values: `"en"`, `"fr"`, `"es"`, etc.
  */
-export type ISO6391Code = z.infer<typeof ISO6391CodeEnumSchema>;
+export type ISO6391LanguageCode = z.infer<typeof ISO6391LanguageCodeSchema>;

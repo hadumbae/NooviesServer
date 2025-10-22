@@ -1,7 +1,7 @@
 import {Types} from "mongoose";
 import type ICloudinaryImage from "../../../shared/model/cloudinary-image/ICloudinaryImage.js";
 import type {ValidURLString} from "../../../shared/schema/strings/ValidURLStringSchema.js";
-import type {ISO6391Code} from "../../../shared/schema/enums/language/ISO6391CodeEnumSchema.js";
+import type {ISO6391LanguageCode} from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
 
 /**
  * Interface representing a Movie document.
@@ -77,24 +77,24 @@ export default interface IMovie {
 
     /**
      * The original language of the movie (ISO 639-1 code).
-     * @type {ISO6391Code}
+     * @type {ISO6391LanguageCode}
      * @required
      */
-    originalLanguage: ISO6391Code;
+    originalLanguage: ISO6391LanguageCode;
 
     /**
      * List of available languages in the movie (ISO 639-1 codes).
-     * @type {ISO6391Code[]}
+     * @type {ISO6391LanguageCode[]}
      * @required
      */
-    languages: ISO6391Code[];
+    languages: ISO6391LanguageCode[];
 
     /**
      * List of subtitle languages available for the movie (ISO 639-1 codes).
-     * @type {ISO6391Code[]}
+     * @type {ISO6391LanguageCode[]}
      * @required
      */
-    subtitles: ISO6391Code[];
+    subtitles: ISO6391LanguageCode[];
 
     /**
      * Optional poster image for the movie.

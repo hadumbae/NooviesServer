@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ISO3166Alpha2CodeEnumSchema } from "../../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import { ISO3166Alpha2CountryCodeSchema } from "../../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 import { URLParamRegexStringSchema } from "../../../../shared/schema/url/URLParamRegexStringSchema.js";
 import { URLParamObjectIDSchema } from "../../../../shared/schema/url/URLParamObjectIDSchema.js";
 import { URLParamMongooseSortOrderSchema } from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
@@ -15,7 +15,7 @@ export const PersonQueryMatchFiltersSchema = z.object({
     name: URLParamRegexStringSchema,
 
     /** Filter by nationality using ISO 3166-1 alpha-2 country codes (optional). */
-    nationality: ISO3166Alpha2CodeEnumSchema.optional(),
+    nationality: ISO3166Alpha2CountryCodeSchema.optional(),
 });
 
 /**

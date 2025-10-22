@@ -1,7 +1,7 @@
 import {z} from 'zod';
 
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
-import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import {ISO3166Alpha2CountryCodeSchema} from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 
 import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
 
@@ -39,5 +39,5 @@ export const PersonInputSchema = z.object({
 
     dob: UTCDateOnlySchema,
 
-    nationality: ISO3166Alpha2CodeEnumSchema,
+    nationality: ISO3166Alpha2CountryCodeSchema,
 });

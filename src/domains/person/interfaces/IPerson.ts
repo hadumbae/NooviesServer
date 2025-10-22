@@ -1,6 +1,6 @@
 import {Types} from "mongoose";
 import type ICloudinaryImage from "../../../shared/model/cloudinary-image/ICloudinaryImage.js";
-import type {ISO3166Alpha2Code} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
+import type {ISO3166Alpha2CountryCode} from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 
 /**
  * Represents a person with basic identifying information,
@@ -31,7 +31,7 @@ export interface IPerson {
     /**
      * Nationality of the person, represented as an ISO 3166-1 alpha-2 code.
      */
-    nationality: ISO3166Alpha2Code;
+    nationality: ISO3166Alpha2CountryCode;
 
     /**
      * Optional profile image of the person.
