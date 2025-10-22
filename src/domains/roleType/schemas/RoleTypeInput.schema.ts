@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { RequiredStringSchema } from "../../../shared/schema/strings/RequiredStringSchema.js";
+import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import { RoleTypeDepartmentEnumSchema } from "./RoleTypeDepartment.enum.js";
 import { RoleTypeCastCategoryEnumSchema, RoleTypeCrewCategoryEnumSchema } from "./RoleTypeCategory.schema.js";
 
@@ -14,14 +14,14 @@ import { RoleTypeCastCategoryEnumSchema, RoleTypeCrewCategoryEnumSchema } from "
  */
 const RoleTypeBaseSchema = z.object({
     /** Role type name. Required string, max 150 characters. */
-    roleName: RequiredStringSchema
+    roleName: NonEmptyStringSchema
         .max(150, { message: "Must be 150 characters or less." }),
 
     /** Department the role belongs to. Required. */
     department: RoleTypeDepartmentEnumSchema,
 
     /** Optional description of the role. Max 1000 characters. */
-    description: RequiredStringSchema
+    description: NonEmptyStringSchema
         .max(1000, { message: "Must be 1000 characters or less." })
         .optional(),
 });

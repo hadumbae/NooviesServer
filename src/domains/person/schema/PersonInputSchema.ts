@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
+import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import {ISO3166Alpha2CountryCodeSchema} from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 
 import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
@@ -29,11 +29,11 @@ import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySch
  * ```
  */
 export const PersonInputSchema = z.object({
-    name: RequiredStringSchema
+    name: NonEmptyStringSchema
         .min(3, "Must be at least 3 characters.")
         .max(255, "Name must not be more than 255 characters."),
 
-    biography: RequiredStringSchema
+    biography: NonEmptyStringSchema
         .min(1, "Required.")
         .max(1000, "Must be 1000 characters or less."),
 

@@ -1,7 +1,7 @@
 import {Schema} from "mongoose";
 import type ICloudinaryImage from "./ICloudinaryImage.js";
 
-import {ValidURLStringSchema} from "../../schema/strings/ValidURLStringSchema.js";
+import {URLStringSchema} from "../../schema/strings/URLStringSchema.js";
 
 export const CloudinaryImageSchema = new Schema<ICloudinaryImage>({
     public_id: {
@@ -15,7 +15,7 @@ export const CloudinaryImageSchema = new Schema<ICloudinaryImage>({
         minlength: [1, "Empty strings are not allowed."],
         required: [true, "Required."],
         validate: {
-            validator: (v: any) => ValidURLStringSchema.safeParse(v).success,
+            validator: (v: any) => URLStringSchema.safeParse(v).success,
             message: (props) => `"${props.value}" is not a valid URL.`,
         }
     },
@@ -72,7 +72,7 @@ export const CloudinaryImageSchema = new Schema<ICloudinaryImage>({
         minlength: [1, "Empty strings are not allowed."],
         required: [true, "Required."],
         validate: {
-            validator: (v: any) => ValidURLStringSchema.safeParse(v).success,
+            validator: (v: any) => URLStringSchema.safeParse(v).success,
             message: (props) => `"${props.value}" is not a valid URL.`,
         }
     },

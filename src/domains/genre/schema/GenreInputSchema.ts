@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { RequiredStringSchema } from "../../../shared/schema/strings/RequiredStringSchema.js";
+import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 
 /**
  * Zod schema for validating genre input data.
@@ -32,7 +32,7 @@ export const GenreInputSchema = z.object({
      * - Maximum length: 150 characters.
      * - Example: "Action", "Comedy".
      */
-    name: RequiredStringSchema
+    name: NonEmptyStringSchema
         .max(150, "Must be 150 characters or less."),
 
     /**
@@ -42,6 +42,6 @@ export const GenreInputSchema = z.object({
      * - Maximum length: 1000 characters.
      * - Example: "A genre characterized by suspense and excitement."
      */
-    description: RequiredStringSchema
+    description: NonEmptyStringSchema
         .max(1000, "Must be 1000 characters or less."),
 });

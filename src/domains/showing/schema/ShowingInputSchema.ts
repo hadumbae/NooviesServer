@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ObjectIdStringSchema } from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
-import { RequiredStringSchema } from "../../../shared/schema/strings/RequiredStringSchema.js";
+import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import { BooleanValueSchema } from "../../../shared/schema/booleans/BooleanValueSchema.js";
 import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import { ShowingStatusEnumSchema } from "./ShowingStatusEnumSchema.js";
@@ -70,10 +70,10 @@ export const ShowingInputSchema = z
         ticketPrice: PositiveNumberSchema,
 
         /** Language code (ISO-639-1) for the showing. */
-        language: RequiredStringSchema,
+        language: NonEmptyStringSchema,
 
         /** Subtitle languages; must contain at least one valid ISO-639-1 code. */
-        subtitleLanguages: z.array(RequiredStringSchema).nonempty({ message: "Must not be empty." }),
+        subtitleLanguages: z.array(NonEmptyStringSchema).nonempty({ message: "Must not be empty." }),
 
         /** Indicates if the showing is a special event. Defaults to `false`. */
         isSpecialEvent: BooleanValueSchema.optional().default(false),

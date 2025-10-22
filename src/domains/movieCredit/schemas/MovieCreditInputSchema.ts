@@ -2,7 +2,7 @@ import {z} from "zod";
 
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {ObjectIdStringSchema} from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
-import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
+import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import {CoercedBooleanValueSchema} from "../../../shared/schema/booleans/CoercedBooleanValueSchema.js";
 import {RoleTypeDepartmentEnumSchema} from "../../roleType/schemas/RoleTypeDepartment.enum.js";
 
@@ -23,17 +23,17 @@ const MovieCreditBaseSchema = z.object({
     roleType: ObjectIdStringSchema,
 
     /** Optional override for how the role name is displayed (max 150 chars) */
-    displayRoleName: RequiredStringSchema
+    displayRoleName: NonEmptyStringSchema
         .max(150, {message: "Must be 150 characters or less."})
         .optional(),
 
     /** Optional credited name if different from the person's name (max 150 chars) */
-    creditedAs: RequiredStringSchema
+    creditedAs: NonEmptyStringSchema
         .max(150, {message: "Must be 150 characters or less."})
         .optional(),
 
     /** Optional notes about this credit (max 1000 chars) */
-    notes: RequiredStringSchema
+    notes: NonEmptyStringSchema
         .max(1000, {message: "Must be 1000 characters or less."})
         .optional(),
 });
@@ -68,7 +68,7 @@ const CastSchema = MovieCreditBaseSchema.extend({
     department: z.literal("CAST"),
 
     /** Name of the character (required for CAST, max 150 chars) */
-    characterName: RequiredStringSchema.max(150, "Job must be 150 characters or less."),
+    characterName: NonEmptyStringSchema.max(150, "Job must be 150 characters or less."),
 
     /** Billing order for CAST roles (positive number) */
     billingOrder: PositiveNumberSchema.optional(),

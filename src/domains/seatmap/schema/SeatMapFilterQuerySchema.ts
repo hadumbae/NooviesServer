@@ -1,7 +1,7 @@
 import {z} from "zod";
 import ZodJSONParseTransform from "../../../shared/utility/zod/transformZodParsedJSON.js";
 import {type SeatType, SeatTypeEnum} from "../../seat/schema/enum/SeatTypeEnum.js";
-import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
+import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import {BooleanValueSchema} from "../../../shared/schema/booleans/BooleanValueSchema.js";
 import {NumberValueSchema} from "../../../shared/schema/numbers/NumberValueSchema.js";
 
@@ -16,10 +16,10 @@ export const SeatMapFilterQuerySchema = z.object({
         .transform(ZodJSONParseTransform<number>(NumberValueSchema)),
 
     seatRow: z.string().optional()
-        .transform(ZodJSONParseTransform<string>(RequiredStringSchema)),
+        .transform(ZodJSONParseTransform<string>(NonEmptyStringSchema)),
 
     seatNumber: z.string().optional()
-        .transform(ZodJSONParseTransform<string>(RequiredStringSchema)),
+        .transform(ZodJSONParseTransform<string>(NonEmptyStringSchema)),
 
     seatType: z.string().optional()
         .transform(ZodJSONParseTransform<SeatType>(SeatTypeEnum)),

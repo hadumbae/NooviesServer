@@ -2,8 +2,8 @@ import {z} from "zod";
 import {NonNegativeNumberSchema} from "../numbers/NonNegativeNumberSchema.js";
 
 import {PositiveNumberSchema} from "../numbers/PositiveNumberSchema.js";
-import {ValidURLStringSchema} from "../strings/ValidURLStringSchema.js";
-import {RequiredStringSchema} from "../strings/RequiredStringSchema.js";
+import {URLStringSchema} from "../strings/URLStringSchema.js";
+import {NonEmptyStringSchema} from "../strings/NonEmptyStringSchema.js";
 
 /**
  * Schema representing a Cloudinary image object.
@@ -14,10 +14,10 @@ import {RequiredStringSchema} from "../strings/RequiredStringSchema.js";
  */
 export const CloudinaryImageObjectSchema = z.object({
     /** Public identifier of the image in Cloudinary. */
-    public_id: RequiredStringSchema,
+    public_id: NonEmptyStringSchema,
 
     /** Secure HTTPS URL of the image. */
-    secure_url: ValidURLStringSchema,
+    secure_url: URLStringSchema,
 
     /** Version number of the image, must be positive. */
     version: PositiveNumberSchema,
@@ -29,25 +29,25 @@ export const CloudinaryImageObjectSchema = z.object({
     height: NonNegativeNumberSchema,
 
     /** Format of the image file (e.g., "jpg", "png"). */
-    format: RequiredStringSchema,
+    format: NonEmptyStringSchema,
 
     /** Resource type, usually "image". */
-    resource_type: RequiredStringSchema,
+    resource_type: NonEmptyStringSchema,
 
     /** Size of the image file in bytes, non-negative. */
     bytes: NonNegativeNumberSchema,
 
     /** Type of the image, typically "upload". */
-    type: RequiredStringSchema,
+    type: NonEmptyStringSchema,
 
     /** ETag provided by Cloudinary for caching/versioning. */
-    etag: RequiredStringSchema,
+    etag: NonEmptyStringSchema,
 
     /** URL of the image (HTTP or HTTPS). */
-    url: ValidURLStringSchema,
+    url: URLStringSchema,
 
     /** Signature returned by Cloudinary for validation. */
-    signature: RequiredStringSchema,
+    signature: NonEmptyStringSchema,
 });
 
 /**

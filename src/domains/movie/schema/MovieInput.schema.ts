@@ -1,7 +1,7 @@
 import {z} from "zod";
-import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
+import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStringSchema.js";
+import {URLStringSchema} from "../../../shared/schema/strings/URLStringSchema.js";
 import {CoercedBooleanValueSchema} from "../../../shared/schema/booleans/CoercedBooleanValueSchema.js";
 import {ISO6391LanguageCodeSchema} from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
 import {ISO3166Alpha2CountryCodeSchema} from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
@@ -16,21 +16,21 @@ import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySch
  */
 export const MovieInputSchema = z.object({
     /** Localized or display title of the movie. Required, max 250 characters. */
-    title: RequiredStringSchema.max(250, "Must be 250 characters or less."),
+    title: NonEmptyStringSchema.max(250, "Must be 250 characters or less."),
 
     /** Original title of the movie. Optional, max 250 characters. */
-    originalTitle: RequiredStringSchema
+    originalTitle: NonEmptyStringSchema
         .max(250, "Must be 250 characters or less.")
         .optional(),
 
     /** Tagline or slogan. Optional and nullable, max 100 characters. */
-    tagline: RequiredStringSchema
+    tagline: NonEmptyStringSchema
         .max(100, "Must be 100 characters or less.")
         .optional()
         .nullable(),
 
     /** Short synopsis or description. Required, trimmed, max 2000 characters. */
-    synopsis: RequiredStringSchema
+    synopsis: NonEmptyStringSchema
         .trim()
         .max(2000, "Must be 2000 characters or less."),
 
@@ -62,7 +62,7 @@ export const MovieInputSchema = z.object({
     subtitles: z.array(ISO6391LanguageCodeSchema),
 
     /** Trailer URL. Optional and nullable, must be a valid URL. */
-    trailerURL: ValidURLStringSchema.optional().nullable(),
+    trailerURL: URLStringSchema.optional().nullable(),
 
     /** Whether the movie is currently available for viewing. Optional boolean. */
     isAvailable: CoercedBooleanValueSchema.optional(),

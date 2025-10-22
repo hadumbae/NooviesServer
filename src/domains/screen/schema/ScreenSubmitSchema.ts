@@ -3,10 +3,10 @@ import {TheatreAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.
 import {ScreenTypeEnum} from "./enum/ScreenTypeEnum.js";
 import type {IScreenSubmit} from "../interface/IScreenSubmit.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
+import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 
 export const ScreenSubmitSchema: ZodType<IScreenSubmit> = z.object({
-    name: RequiredStringSchema
+    name: NonEmptyStringSchema
         .min(1, "Required.")
         .max(255, "Name must be 255 characters or less."),
 

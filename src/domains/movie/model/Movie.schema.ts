@@ -3,7 +3,7 @@ import type IMovie from "./Movie.interface.js";
 import {CloudinaryImageSchema} from "../../../shared/model/cloudinary-image/CloudinaryImage.js";
 import ISO6391CodeConstant from "../../../shared/constants/language/ISO6391CodeConstant.js";
 import ISO3166Alpha2CodeConstant from "../../../shared/constants/country/ISO3166Alpha2CodeConstant.js";
-import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStringSchema.js";
+import {URLStringSchema} from "../../../shared/schema/strings/URLStringSchema.js";
 
 /**
  * Mongoose schema representing a Movie document.
@@ -204,7 +204,7 @@ export const MovieSchema: Schema<IMovie> = new Schema<IMovie>({
             validator: (urlString) => {
                 if (urlString === undefined || urlString === null) return true;
                 if (urlString === "") return false;
-                const {success} = ValidURLStringSchema.safeParse(urlString);
+                const {success} = URLStringSchema.safeParse(urlString);
                 return success;
             },
         },

@@ -1,6 +1,6 @@
 import {Types} from "mongoose";
 import type ICloudinaryImage from "../../../shared/model/cloudinary-image/ICloudinaryImage.js";
-import type {ValidURLString} from "../../../shared/schema/strings/ValidURLStringSchema.js";
+import type {URLString} from "../../../shared/schema/strings/URLStringSchema.js";
 import type {ISO6391LanguageCode} from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
 
 /**
@@ -105,10 +105,10 @@ export default interface IMovie {
 
     /**
      * Optional trailer URL for the movie.
-     * @type {ValidURLString | null}
+     * @type {URLString | null}
      * @optional
      */
-    trailerURL?: ValidURLString | null;
+    trailerURL?: URLString | null;
 
     /**
      * List of genres the movie belongs to (referenced by ObjectId).

@@ -1,6 +1,6 @@
 import {z} from 'zod';
 import {SeatTypeEnum} from "../enum/SeatTypeEnum.js";
-import {RequiredStringSchema} from "../../../../shared/schema/strings/RequiredStringSchema.js";
+import {NonEmptyStringSchema} from "../../../../shared/schema/strings/NonEmptyStringSchema.js";
 import {BooleanValueSchema} from "../../../../shared/schema/booleans/BooleanValueSchema.js";
 import {PositiveNumberSchema} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {NonNegativeNumberSchema} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
@@ -33,13 +33,13 @@ export const SeatInputBaseSchema = z.object({
  */
 export const SeatInputSchema = SeatInputBaseSchema.extend({
     /** Row label (e.g., "A", "B", up to 10 characters). */
-    row: RequiredStringSchema.max(10, "Must be 10 characters or less."),
+    row: NonEmptyStringSchema.max(10, "Must be 10 characters or less."),
 
     /** Seat number within the row (0 or greater). */
     seatNumber: NonNegativeNumberSchema,
 
     /** Optional display label (e.g., "A5", "VIP‑3", max 50 chars). */
-    seatLabel: RequiredStringSchema.max(50, "Must be 50 characters or less").optional(),
+    seatLabel: NonEmptyStringSchema.max(50, "Must be 50 characters or less").optional(),
 
     /** X-coordinate for seating layout visualizations. */
     x: PositiveNumberSchema,
@@ -54,7 +54,7 @@ export const SeatInputSchema = SeatInputBaseSchema.extend({
  */
 export const SeatsByRowInputSchema = SeatInputBaseSchema.extend({
     /** Row label for the batch of seats (up to 10 characters). */
-    row: RequiredStringSchema.max(10, "Must be 10 characters or less."),
+    row: NonEmptyStringSchema.max(10, "Must be 10 characters or less."),
 
     /** Optional Y-coordinate for the row, for layout rendering. */
     y: PositiveNumberSchema.optional(),

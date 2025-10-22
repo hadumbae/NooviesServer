@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {RequiredStringSchema} from "../strings/RequiredStringSchema.js";
+import {NonEmptyStringSchema} from "../strings/NonEmptyStringSchema.js";
 import {IANATimezoneSchema} from "../date-time/IANATimezoneSchema.js";
 import {ISO3166Alpha2CountryCodeSchema} from "../enums/ISO3166Alpha2CountryCodeSchema.js";
 import {NumberValueSchema} from "../numbers/NumberValueSchema.js";
@@ -58,20 +58,20 @@ export const LocationSchema = z.object({
     /**
      * Street address (e.g., "123 Main St").
      */
-    street: RequiredStringSchema
+    street: NonEmptyStringSchema
         .max(2000, { message: "Must be 2000 characters or less." })
         .optional(),
 
     /**
      * City name (e.g., "Bangkok").
      */
-    city: RequiredStringSchema
+    city: NonEmptyStringSchema
         .max(500, { message: "Must be 500 characters or less." }),
 
     /**
      * State or region (e.g., "California").
      */
-    state: RequiredStringSchema
+    state: NonEmptyStringSchema
         .max(500, { message: "Must be 500 characters or less." })
         .optional(),
 
@@ -83,7 +83,7 @@ export const LocationSchema = z.object({
     /**
      * Postal or ZIP code.
      */
-    postalCode: RequiredStringSchema.optional(),
+    postalCode: NonEmptyStringSchema.optional(),
 
     /**
      * IANA timezone name (e.g., "Asia/Bangkok").
