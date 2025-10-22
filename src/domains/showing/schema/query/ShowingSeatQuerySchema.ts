@@ -1,11 +1,11 @@
 import {z} from "zod";
 import ZodJSONParseTransform from "../../../../shared/utility/zod/transformZodParsedJSON.js";
 
-import {RequiredBoolean} from "../../../../shared/schema/booleans/RequiredBoolean.js";
+import {BooleanValueSchema} from "../../../../shared/schema/booleans/BooleanValueSchema.js";
 
 export const ShowingSeatQuerySchema = z.object({
-    populate: z.string().optional().transform(ZodJSONParseTransform<boolean>(RequiredBoolean)),
-    mapped: z.string().optional().transform(ZodJSONParseTransform<boolean>(RequiredBoolean)),
+    populate: z.string().optional().transform(ZodJSONParseTransform<boolean>(BooleanValueSchema)),
+    mapped: z.string().optional().transform(ZodJSONParseTransform<boolean>(BooleanValueSchema)),
 });
 
 export type ShowingSeatQuery = z.infer<typeof ShowingSeatQuerySchema>;

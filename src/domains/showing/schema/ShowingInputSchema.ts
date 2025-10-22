@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ObjectIdStringSchema } from "../../../shared/schema/strings/ObjectIdStringSchema.js";
 import { RequiredStringSchema } from "../../../shared/schema/strings/RequiredStringSchema.js";
-import { RequiredBoolean } from "../../../shared/schema/booleans/RequiredBoolean.js";
+import { BooleanValueSchema } from "../../../shared/schema/booleans/BooleanValueSchema.js";
 import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import { ShowingStatusEnumSchema } from "./ShowingStatusEnumSchema.js";
 import { SimpleDateStringSchema } from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
@@ -76,10 +76,10 @@ export const ShowingInputSchema = z
         subtitleLanguages: z.array(RequiredStringSchema).nonempty({ message: "Must not be empty." }),
 
         /** Indicates if the showing is a special event. Defaults to `false`. */
-        isSpecialEvent: RequiredBoolean.optional().default(false),
+        isSpecialEvent: BooleanValueSchema.optional().default(false),
 
         /** Indicates if the showing is active and available for booking. Defaults to `true`. */
-        isActive: RequiredBoolean.optional().default(true),
+        isActive: BooleanValueSchema.optional().default(true),
 
         /** ObjectId referencing the movie. */
         movie: ObjectIdStringSchema,

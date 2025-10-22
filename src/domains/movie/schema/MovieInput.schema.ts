@@ -2,7 +2,7 @@ import {z} from "zod";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {ValidURLStringSchema} from "../../../shared/schema/strings/ValidURLStringSchema.js";
-import {CoercedBooleanSchema} from "../../../shared/schema/booleans/CoercedBooleanSchema.js";
+import {CoercedBooleanValueSchema} from "../../../shared/schema/booleans/CoercedBooleanValueSchema.js";
 import {ISO6391CodeEnumSchema} from "../../../shared/schema/enums/language/ISO6391CodeEnumSchema.js";
 import {ISO3166Alpha2CodeEnumSchema} from "../../../shared/schema/enums/country/ISO3166Alpha2CodeEnumSchema.js";
 import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
@@ -44,7 +44,7 @@ export const MovieInputSchema = z.object({
     releaseDate: UTCDateOnlySchema.optional().nullable(),
 
     /** Whether the movie has been officially released. Optional boolean. */
-    isReleased: CoercedBooleanSchema.optional(),
+    isReleased: CoercedBooleanValueSchema.optional(),
 
     /** Runtime in minutes. Required, positive number, max 500. */
     runtime: PositiveNumberSchema.lte(500, "Must be 500 or less."),
@@ -65,7 +65,7 @@ export const MovieInputSchema = z.object({
     trailerURL: ValidURLStringSchema.optional().nullable(),
 
     /** Whether the movie is currently available for viewing. Optional boolean. */
-    isAvailable: CoercedBooleanSchema.optional(),
+    isAvailable: CoercedBooleanValueSchema.optional(),
 });
 
 /**

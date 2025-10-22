@@ -2,14 +2,14 @@ import {z, type ZodType} from "zod";
 import {SeatAsyncIDString, ShowingAsyncIDString} from "../../../shared/schema/helpers/ZodIDHelpers.js";
 import type ISeatMapSubmit from "./interface/ISeatMapSubmit.js";
 import {CoercedNumberSchema} from "../../../shared/schema/numbers/CoercedNumberSchema.js";
-import {RequiredBoolean} from "../../../shared/schema/booleans/RequiredBoolean.js";
+import {BooleanValueSchema} from "../../../shared/schema/booleans/BooleanValueSchema.js";
 
 export const SeatMapSubmitSchema: ZodType<ISeatMapSubmit> = z.object({
-    isAvailable: RequiredBoolean
+    isAvailable: BooleanValueSchema
         .optional()
         .default(true),
 
-    isReserved: RequiredBoolean
+    isReserved: BooleanValueSchema
         .optional()
         .default(false),
 

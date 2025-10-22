@@ -1,7 +1,7 @@
 import {z} from 'zod';
 import {SeatTypeEnum} from "../enum/SeatTypeEnum.js";
 import {RequiredStringSchema} from "../../../../shared/schema/strings/RequiredStringSchema.js";
-import {RequiredBoolean} from "../../../../shared/schema/booleans/RequiredBoolean.js";
+import {BooleanValueSchema} from "../../../../shared/schema/booleans/BooleanValueSchema.js";
 import {PositiveNumberSchema} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {NonNegativeNumberSchema} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
 import {ObjectIdStringSchema} from "../../../../shared/schema/strings/ObjectIdStringSchema.js";
@@ -21,7 +21,7 @@ export const SeatInputBaseSchema = z.object({
     seatType: SeatTypeEnum,
 
     /** Availability status of the seat: `true` if bookable, otherwise `false`. */
-    isAvailable: RequiredBoolean,
+    isAvailable: BooleanValueSchema,
 
     /** Non-negative multiplier applied to a base ticket price (e.g., 1.0, 1.5). */
     priceMultiplier: NonNegativeNumberSchema,

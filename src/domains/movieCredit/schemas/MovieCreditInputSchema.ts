@@ -3,7 +3,7 @@ import {z} from "zod";
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
-import {CoercedBooleanSchema} from "../../../shared/schema/booleans/CoercedBooleanSchema.js";
+import {CoercedBooleanValueSchema} from "../../../shared/schema/booleans/CoercedBooleanValueSchema.js";
 import {RoleTypeDepartmentEnumSchema} from "../../roleType/schemas/RoleTypeDepartment.enum.js";
 
 /**
@@ -74,22 +74,22 @@ const CastSchema = MovieCreditBaseSchema.extend({
     billingOrder: PositiveNumberSchema.optional(),
 
     /** Optional: marks as uncredited */
-    uncredited: CoercedBooleanSchema.optional(),
+    uncredited: CoercedBooleanValueSchema.optional(),
 
     /** Optional: marks as primary role */
-    isPrimary: CoercedBooleanSchema.optional(),
+    isPrimary: CoercedBooleanValueSchema.optional(),
 
     /** Optional: role is voice-only */
-    voiceOnly: CoercedBooleanSchema.optional(),
+    voiceOnly: CoercedBooleanValueSchema.optional(),
 
     /** Optional: cameo appearance */
-    cameo: CoercedBooleanSchema.optional(),
+    cameo: CoercedBooleanValueSchema.optional(),
 
     /** Optional: motion capture role */
-    motionCapture: CoercedBooleanSchema.optional(),
+    motionCapture: CoercedBooleanValueSchema.optional(),
 
     /** Optional: archive footage */
-    archiveFootage: CoercedBooleanSchema.optional(),
+    archiveFootage: CoercedBooleanValueSchema.optional(),
 });
 
 /**
