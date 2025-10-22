@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ObjectIdStringSchema } from "../../../shared/schema/strings/ObjectIdStringSchema.js";
+import { ObjectIdStringSchema } from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
 import { RequiredStringSchema } from "../../../shared/schema/strings/RequiredStringSchema.js";
 import { BooleanValueSchema } from "../../../shared/schema/booleans/BooleanValueSchema.js";
 import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";

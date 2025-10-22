@@ -3,7 +3,7 @@ import {URLParamObjectIDSchema} from "../../../../shared/schema/url/URLParamObje
 import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
 import {URLParamDateStringSchema} from "../../../../shared/schema/url/URLParamDateStringSchema.js";
 import generateURLParamArraySchema from "../../../../shared/utility/zod/generateURLParamArraySchema.js";
-import {ParsedObjectIdStringSchema} from "../../../../shared/schema/strings/ParsedObjectIdStringSchema.js";
+import {ObjectIdSchema} from "../../../../shared/schema/mongoose/ObjectIdSchema.js";
 import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
 
 /**
@@ -19,7 +19,7 @@ export const MovieQueryMatchFiltersSchema = z.object({
     _id: URLParamObjectIDSchema,
     title: URLParamStringSchema,
     releaseDate: URLParamDateStringSchema,
-    genres: generateURLParamArraySchema(ParsedObjectIdStringSchema),
+    genres: generateURLParamArraySchema(ObjectIdSchema),
 });
 
 /**

@@ -4,7 +4,7 @@ import {RequiredStringSchema} from "../../../../shared/schema/strings/RequiredSt
 import {BooleanValueSchema} from "../../../../shared/schema/booleans/BooleanValueSchema.js";
 import {PositiveNumberSchema} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {NonNegativeNumberSchema} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
-import {ObjectIdStringSchema} from "../../../../shared/schema/strings/ObjectIdStringSchema.js";
+import {ObjectIdStringSchema} from "../../../../shared/schema/mongoose/ObjectIdStringSchema.js";
 
 /**
  * 🎯 Base input fields for creating or updating a seat.

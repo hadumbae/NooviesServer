@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import {ObjectIdStringSchema} from "../../../shared/schema/strings/ObjectIdStringSchema.js";
+import {ObjectIdStringSchema} from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
 import {RequiredStringSchema} from "../../../shared/schema/strings/RequiredStringSchema.js";
 import {CoercedBooleanValueSchema} from "../../../shared/schema/booleans/CoercedBooleanValueSchema.js";
 import {RoleTypeDepartmentEnumSchema} from "../../roleType/schemas/RoleTypeDepartment.enum.js";
