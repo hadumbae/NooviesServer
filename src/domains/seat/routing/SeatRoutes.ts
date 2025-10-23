@@ -7,16 +7,16 @@ import {
 import type {ISeatController} from "../controller/SeatController.js";
 import ZodAsyncValidator from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import {SeatInputSchema, SeatsByRowInputSchema} from "../schema/seats/SeatInput.schema.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /** Destructures the seat model and controller from the service provider. */
 const {model, controllers: {controller}} = SeatServiceProvider.register();
 
 /** Middleware to strip undefined or disallowed fields from requests. */
-const unsetMiddleware = UnsetModelFormFields({model});
+const unsetMiddleware = unsetModelFormFields({model});
 
 /**
  * Route-specific middleware configuration for the seat controller.

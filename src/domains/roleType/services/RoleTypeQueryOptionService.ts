@@ -3,7 +3,7 @@ import type IRoleType from "../model/RoleType.interface.js";
 import type { RoleTypeQueryMatchFilters, RoleTypeQueryOptions } from "../schemas/filters/RoleTypeOption.types.js";
 import type { Request } from "express";
 import { RoleTypeQueryOptionsSchema } from "../schemas/filters/RoleTypeOption.schema.js";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type { FilterQuery, SortOrder } from "mongoose";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
@@ -23,7 +23,7 @@ export default class RoleTypeQueryOptionService
      */
     fetchQueryParams(req: Request): RoleTypeQueryOptions {
         const params = RoleTypeQueryOptionsSchema.parse(req.query);
-        return filterNullArray(params);
+        return filterNullishAttributes(params);
     }
 
     /**
@@ -41,7 +41,7 @@ export default class RoleTypeQueryOptionService
             department,
         };
 
-        return filterNullArray(filters);
+        return filterNullishAttributes(filters);
     }
 
     /**
@@ -58,7 +58,7 @@ export default class RoleTypeQueryOptionService
             department: sortByDepartment,
         };
 
-        return filterNullArray(sorts);
+        return filterNullishAttributes(sorts);
     }
 
     /**

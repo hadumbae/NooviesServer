@@ -8,9 +8,9 @@ import PersonServiceProvider from "../provider/PersonServiceProvider.js";
 import { PersonInputSchema } from "../schema/PersonInputSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import { uploadImage } from "@config/image-multr.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import hasProfileImage from "../middleware/hasProfileImage.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 
 /**
@@ -22,7 +22,7 @@ const { model, controllers: { controller } } = PersonServiceProvider.register();
  * Middleware to remove or unset specific model form fields
  * before creating or updating a Person entity.
  */
-const unsetMiddleware = UnsetModelFormFields({ model });
+const unsetMiddleware = unsetModelFormFields({ model });
 
 /**
  * Middleware configuration for the base CRUD routes of Person.

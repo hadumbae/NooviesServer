@@ -1,5 +1,5 @@
 import createHttpError from "http-errors";
-import CloudinaryUtils from "../../../shared/utility/CloudinaryUtils.js";
+import CloudinaryUtils from "../../../shared/utility/cloudinary/CloudinaryUtils.js";
 import MovieModel from "../model/Movie.model.js";
 import {type Document, Types} from "mongoose";
 import type IMovie from "../model/Movie.interface.js";

@@ -7,9 +7,9 @@ import {
 import type { IMovieCreditController } from "../controllers/MovieCreditController.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 import { MovieCreditInputSchema } from "../schemas/MovieCreditInputSchema.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 
 /**
  * Initializes the MovieCredit routes by registering all required services,
@@ -25,7 +25,7 @@ import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 const { model, controllers: { controller } } = MovieCreditServiceProvider.register();
 
 /** Middleware that unsets restricted fields on incoming create/update requests */
-const unsetMiddleware = UnsetModelFormFields({ model });
+const unsetMiddleware = unsetModelFormFields({ model });
 
 /** Middleware configuration for base CRUD routes */
 const middlewareList: BaseRouteMiddleware<typeof controller> = {

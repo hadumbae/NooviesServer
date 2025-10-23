@@ -6,7 +6,7 @@ import {
 import RoleTypeServiceProvider from "../provider/RoleTypeServiceProvider.js";
 import {RoleTypeInputSchema} from "../schemas/RoleTypeInput.schema.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 
 /**
  * Destructure the RoleType components from the service provider.
@@ -16,7 +16,7 @@ const {model, controllers: {controller}} = RoleTypeServiceProvider.register();
 /**
  * Middleware to remove or unset specific model form fields before saving/updating.
  */
-const unsetMiddleware = UnsetModelFormFields({model});
+const unsetMiddleware = unsetModelFormFields({model});
 
 /**
  * Middleware configuration for RoleType routes.

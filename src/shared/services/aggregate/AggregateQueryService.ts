@@ -2,7 +2,7 @@ import type {AggregateCountParams, AggregateQueryParams, AggregateQueryResults} 
 import type {Model, PipelineStage, SortOrder} from "mongoose";
 import type {PopulatePath} from "../../types/PopulatePath.js";
 import type IAggregateQueryService from "./IAggregateQueryService.js";
-import buildAggregationSort from "../../utility/buildAggregationSort.js";
+import buildAggregationSort from "../../utility/mongoose/buildAggregationSort.js";
 
 /**
  * A reusable query service that supports both Mongoose `.find()` and `.aggregate()` queries,

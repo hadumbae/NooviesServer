@@ -4,7 +4,7 @@ import type {
     TheatreQueryOptions,
 } from "../../schema/query/TheatreQueryOption.types.js";
 import { TheatreQueryOptionSchema } from "../../schema/query/TheatreQueryOption.schema.js";
-import filterNullArray from "../../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type { FilterQuery, SortOrder } from "mongoose";
 import type IQueryOptionService from "../../../../shared/types/query-options/QueryOptionService.interface.js";
 import type ITheatre from "../../model/ITheatre.js";
@@ -30,7 +30,7 @@ export default class TheatreQueryOptionService
      */
     fetchQueryParams(req: Request): TheatreQueryOptions {
         const parsed = TheatreQueryOptionSchema.parse(req.query);
-        return filterNullArray(parsed) as TheatreQueryOptions;
+        return filterNullishAttributes(parsed) as TheatreQueryOptions;
     }
 
     /**
@@ -59,7 +59,7 @@ export default class TheatreQueryOptionService
             "location.timezone": timezone,
         };
 
-        return filterNullArray(filters);
+        return filterNullishAttributes(filters);
     }
 
     /**
@@ -87,7 +87,7 @@ export default class TheatreQueryOptionService
             "location.timezone": sortByTimezone,
         };
 
-        return filterNullArray(sorts);
+        return filterNullishAttributes(sorts);
     }
 
     /**

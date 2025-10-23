@@ -1,5 +1,5 @@
 import type {FilterQuery} from "mongoose";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type {ShowingSeatQueryRequest} from "../type/ShowingRequests.js";
 import {
     type ShowingSeatQuery,
@@ -14,6 +14,6 @@ export default class ShowingQueryService implements IShowingQueryService {
     getShowingSeatsQuery(params: {req: ShowingSeatQueryRequest}): FilterQuery<ShowingSeatQuery> {
         const {req} = params;
         const {populate = false, mapped = false} = ShowingSeatQuerySchema.parse(req.query);
-        return filterNullArray({populate, mapped});
+        return filterNullishAttributes({populate, mapped});
     }
 }

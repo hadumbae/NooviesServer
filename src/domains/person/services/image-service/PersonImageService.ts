@@ -6,7 +6,7 @@ import type {IPerson} from "../../interfaces/IPerson.js";
 
 import type {IPersonImageService} from "./IPersonImageService.js";
 import type {RemovePersonProfileImageParams, UploadPersonProfileImageParams} from "./PersonImageTypes.js";
-import CloudinaryUtils from "../../../../shared/utility/CloudinaryUtils.js";
+import CloudinaryUtils from "../../../../shared/utility/cloudinary/CloudinaryUtils.js";
 
 /**
  * Service for managing a person's profile image.

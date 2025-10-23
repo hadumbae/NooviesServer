@@ -5,7 +5,7 @@ import type {
     PopulationPipelineStages,
     ReferenceFilterPipelineStages
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
 import type { IMovieCredit } from "../models/MovieCredit.interface.js";
 import { MovieCreditQueryOptionsSchema } from "../schemas/query/MovieCreditQueryOption.schema.js";
@@ -13,7 +13,7 @@ import type {
     MovieCreditQueryMatchFilters,
     MovieCreditQueryOptions
 } from "../schemas/query/MovieCreditQueryOption.types.js";
-import generateLookupMatchStage from "../../../shared/utility/generateLookupMatchStage.js";
+import generateLookupMatchStage from "../../../shared/utility/mongoose/generateLookupMatchStage.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
@@ -60,7 +60,7 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
     fetchQueryParams(req: Request): MovieCreditQueryOptions {
         const { success, error, data } = MovieCreditQueryOptionsSchema.safeParse(req.query);
         if (!success) throw new ZodParseError({ message: "Validation Failed.", errors: error.errors });
-        return filterNullArray(data);
+        return filterNullishAttributes(data);
     }
 
     /**
@@ -82,7 +82,7 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
             ...matchFilters
         } = options;
 
-        return filterNullArray(matchFilters);
+        return filterNullishAttributes(matchFilters);
     }
 
     /**
@@ -101,7 +101,7 @@ export default class MovieCreditQueryOptionService implements IMovieCreditQueryO
             billingOrder: sortByBillingOrder,
         };
 
-        return filterNullArray(sorts);
+        return filterNullishAttributes(sorts);
     }
 
     /**

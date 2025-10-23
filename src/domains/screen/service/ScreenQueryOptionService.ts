@@ -1,5 +1,5 @@
 import type {Request} from "express";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
 import type {IScreen} from "../interface/IScreen.js";
@@ -33,7 +33,7 @@ export default class ScreenQueryOptionService implements IQueryOptionService<ISc
     fetchQueryParams(req: Request): ScreenQueryOptions {
         const {success, data, error} = ScreenQueryOptionsSchema.safeParse(req.query);
         if (!success) throw new ZodParseError({message: "Invalid Query Params.", errors: error.errors});
-        return filterNullArray(data);
+        return filterNullishAttributes(data);
     }
 
     /**
@@ -57,7 +57,7 @@ export default class ScreenQueryOptionService implements IQueryOptionService<ISc
             name: name && {$regex: name, $options: "i"},
         };
 
-        return filterNullArray(filters);
+        return filterNullishAttributes(filters);
     }
 
     /**
@@ -80,7 +80,7 @@ export default class ScreenQueryOptionService implements IQueryOptionService<ISc
             createdAt: sortByCreatedAt
         };
 
-        return filterNullArray(sorts);
+        return filterNullishAttributes(sorts);
     }
 
     /**
@@ -100,7 +100,7 @@ export default class ScreenQueryOptionService implements IQueryOptionService<ISc
             showingsPerScreen
         };
 
-        return filterNullArray(queryParams);
+        return filterNullishAttributes(queryParams);
     }
 
     /**

@@ -6,7 +6,7 @@ import {
 } from "../../../shared/routing/BaseRoutes.js";
 import type {IShowingController} from "../controller/ShowingController.js";
 import {ShowingInputSchema} from "../schema/ShowingInputSchema.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
@@ -19,7 +19,7 @@ const {model, controllers: {controller}} = ShowingServiceProvider.register();
  * Middleware that removes unset/undefined fields before Showing documents
  * are persisted to the database.
  */
-const unsetMiddleware = UnsetModelFormFields({model});
+const unsetMiddleware = unsetModelFormFields({model});
 
 /**
  * Middleware list specific to the `Showing` routes.

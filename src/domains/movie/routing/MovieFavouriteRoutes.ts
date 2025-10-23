@@ -1,7 +1,7 @@
 import { Router } from "express";
 import MovieServiceProvider from "../provider/MovieServiceProvider.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 
 /**
  * Router instance for Movie favourite-related endpoints.

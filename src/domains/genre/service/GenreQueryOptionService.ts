@@ -2,7 +2,7 @@ import type { Request } from "express";
 import type { GenreQueryMatchFilters, GenreQueryOptions } from "../schema/query/GenreQueryOption.types.js";
 import type { FilterQuery, SortOrder } from "mongoose";
 import { GenreQueryOptionsSchema } from "../schema/query/GenreQueryOption.schema.js";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type IGenre from "../model/Genre.interface.js";
 import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
@@ -22,7 +22,7 @@ export default class GenreQueryOptionService implements IQueryOptionService<any,
      */
     fetchQueryParams(req: Request): GenreQueryOptions {
         const conditions = GenreQueryOptionsSchema.parse(req.query);
-        return filterNullArray(conditions) as GenreQueryOptions;
+        return filterNullishAttributes(conditions) as GenreQueryOptions;
     }
 
     /**
@@ -39,7 +39,7 @@ export default class GenreQueryOptionService implements IQueryOptionService<any,
             name: name && { $regex: name, $options: "i" },
         };
 
-        return filterNullArray(filters);
+        return filterNullishAttributes(filters);
     }
 
     /**
@@ -55,7 +55,7 @@ export default class GenreQueryOptionService implements IQueryOptionService<any,
             name: sortByName,
         };
 
-        return filterNullArray(sorts);
+        return filterNullishAttributes(sorts);
     }
 
     /**

@@ -6,7 +6,7 @@ import {CoercedBooleanValueSchema} from "../../../shared/schema/booleans/Coerced
 import {ISO6391LanguageCodeSchema} from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
 import {ISO3166Alpha2CountryCodeSchema} from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 import {ObjectIdStringSchema} from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
-import refineRequiredImageFile from "../../../shared/utility/refineRequiredImageFile.js";
+import refineRequiredImageFile from "../../../shared/utility/schema/refineRequiredImageFile.js";
 import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
 
 /**

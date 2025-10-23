@@ -9,8 +9,8 @@ import { MovieInputSchema } from "../schema/MovieInput.schema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import { uploadImage } from "@config/image-multr.js";
 import hasPosterImage from "../middleware/hasPosterImage.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
@@ -22,7 +22,7 @@ const { model, controllers: { controller } } = MovieServiceProvider.register();
  * Middleware to remove or unset specific model form fields
  * before creating or updating a Movie entity.
  */
-const unsetMiddleware = UnsetModelFormFields({ model });
+const unsetMiddleware = unsetModelFormFields({ model });
 
 /**
  * Middleware configuration for the base CRUD routes of Movie.

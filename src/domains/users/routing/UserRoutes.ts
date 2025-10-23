@@ -1,5 +1,5 @@
 import UserServiceProvider from "../provider/UserServiceProvider.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import express from "express";
 import isAuth from "../../authentication/middleware/isAuth.js";
 

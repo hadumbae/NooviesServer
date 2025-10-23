@@ -1,6 +1,6 @@
 import type {Request, Response, NextFunction} from "express";
 import type {ZodTypeAny} from "zod";
-import asyncHandler from "../../AsyncHandler.js";
+import asyncHandler from "../../handlers/asyncHandler.js";
 import handleZodError from "../handlers/handleZodError.js";
 
 /**

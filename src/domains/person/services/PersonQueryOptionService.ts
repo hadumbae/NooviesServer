@@ -3,7 +3,7 @@ import { PersonQueryMatchFiltersSchema } from "../schema/query/PersonQueryOption
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import { type FilterQuery, type SortOrder } from "mongoose";
 import type { PersonQueryMatchFilters, PersonQueryOptions } from "../schema/query/PersonQueryOption.types.js";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type { IPerson } from "../interfaces/IPerson.js";
 import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
@@ -50,7 +50,7 @@ export default class PersonQueryOptionService
             ...(name && { name: { $regex: name, $options: "i" } }),
         };
 
-        return filterNullArray(filters);
+        return filterNullishAttributes(filters);
     }
 
     /**
@@ -62,7 +62,7 @@ export default class PersonQueryOptionService
     generateMatchSorts(queries: PersonQueryOptions): Partial<Record<keyof IPerson, SortOrder>> {
         const { sortByName, sortByNationality } = queries;
         const sorts = { name: sortByName, nationality: sortByNationality };
-        return filterNullArray(sorts);
+        return filterNullishAttributes(sorts);
     }
 
     /**

@@ -1,7 +1,7 @@
 import type {Request} from "express";
 import {SeatMapFilterQuerySchema} from "../schema/SeatMapFilterQuerySchema.js";
 import type {FilterQuery} from "mongoose";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type {
     ReferenceFilterPipelineStages
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
@@ -35,13 +35,13 @@ export default class SeatMapQueryService implements ISeatMapQueryService {
             price,
         };
 
-        return filterNullArray(conditions) as FilterQuery<RequestFilters>;
+        return filterNullishAttributes(conditions) as FilterQuery<RequestFilters>;
     }
 
     getSeatMapPopulateFilters({req}: { req: Request<any, any, any, RequestFilters> }): ReferenceFilterPipelineStages {
         const {seatRow, seatNumber, seatType} = SeatMapFilterQuerySchema.parse(req.query);
 
-        const filters: FilterQuery<RequestFilters> = filterNullArray({
+        const filters: FilterQuery<RequestFilters> = filterNullishAttributes({
             "row": seatRow,
             "seatNumber": seatNumber,
             "seatType": seatType,

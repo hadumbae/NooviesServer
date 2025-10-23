@@ -1,6 +1,6 @@
-import cloudinary from "../config/cloudinary.js";
-import ZodParseError from "../errors/ZodParseError.js";
-import {type CloudinaryImageObject, CloudinaryImageObjectSchema} from "../schema/cloudinary/CloudinaryImageObjectSchema.js";
+import cloudinary from "@config/cloudinary.js";
+import ZodParseError from "../../errors/ZodParseError.js";
+import {type CloudinaryImageObject, CloudinaryImageObjectSchema} from "../../schema/cloudinary/CloudinaryImageObjectSchema.js";
 
 /**
  * Interface defining the Cloudinary utility methods.

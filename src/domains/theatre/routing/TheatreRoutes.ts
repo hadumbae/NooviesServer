@@ -5,11 +5,11 @@ import {
     type IBaseRoutesConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {ITheatreController} from "../controller/TheatreController.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import ScreenServiceProvider from "../../screen/provider/ScreenServiceProvider.js";
 import {TheatreInputSchema} from "../schema/TheatreSchema.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 
 /**
  * Extract the Theatre model and controller from the service provider.
@@ -26,7 +26,7 @@ const { controllers: {controller: screenController} } = ScreenServiceProvider.re
  * Middleware that removes unset/undefined fields before Theatre documents
  * are persisted to the database.
  */
-const unsetMiddleware = UnsetModelFormFields({model});
+const unsetMiddleware = unsetModelFormFields({model});
 
 /**
  * Route-specific middleware for Theatre CRUD operations.

@@ -1,7 +1,7 @@
 import type { Request } from "express";
 import type { FilterQuery, SortOrder } from "mongoose";
 import { SeatQueryMatchFiltersSchema } from "../schema/query/SeatQueryOption.schema.js";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type {
     SeatQueryMatchFilters,
     SeatQueryOptions,
@@ -32,7 +32,7 @@ export default class SeatQueryOptionService
      */
     fetchQueryParams(req: Request): SeatQueryOptions {
         const conditions = SeatQueryMatchFiltersSchema.parse(req.query);
-        return filterNullArray(conditions) as SeatQueryOptions;
+        return filterNullishAttributes(conditions) as SeatQueryOptions;
     }
 
     /**
@@ -64,7 +64,7 @@ export default class SeatQueryOptionService
             screen,
         };
 
-        return filterNullArray(filters);
+        return filterNullishAttributes(filters);
     }
 
     /**
@@ -96,7 +96,7 @@ export default class SeatQueryOptionService
             priceMultiplier: sortByPriceMultiplier,
         };
 
-        return filterNullArray(sorts);
+        return filterNullishAttributes(sorts);
     }
 
     /**

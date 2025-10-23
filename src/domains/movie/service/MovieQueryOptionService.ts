@@ -1,6 +1,6 @@
 import type {Request} from 'express';
 import {type FilterQuery, type SortOrder} from "mongoose";
-import filterNullArray from "../../../shared/utility/filterNullArray.js";
+import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import {MovieQueryOptionsSchema} from "../schema/query/MovieQueryOption.schema.js";
 import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
 import type IMovie from "../model/Movie.interface.js";
@@ -29,7 +29,7 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
      */
     fetchQueryParams(req: Request): MovieQueryOptions {
         const params = MovieQueryOptionsSchema.parse(req.query);
-        return filterNullArray(params);
+        return filterNullishAttributes(params);
     }
 
     /**
@@ -54,7 +54,7 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
             genres: genres && {genres: {$in: genres}},
         };
 
-        return filterNullArray(conditions);
+        return filterNullishAttributes(conditions);
     }
 
     /**
@@ -76,7 +76,7 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
             title: sortByTitle,
         };
 
-        return filterNullArray(sorts);
+        return filterNullishAttributes(sorts);
     }
 
     /**

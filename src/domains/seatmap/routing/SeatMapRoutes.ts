@@ -6,9 +6,9 @@ import {
 import type {ISeatMapController} from "../controller/SeatMapController.js";
 import {SeatMapSubmitSchema} from "../schema/SeatMapSubmitSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import SeatMapServiceProvider from "../provider/SeatMapServiceProvider.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
@@ -21,7 +21,7 @@ const {model, controllers: {controller}} = SeatMapServiceProvider.register();
  * Middleware that removes unset or undefined fields before persisting SeatMap documents
  * to the database. This ensures that optional fields are not stored as `undefined`.
  */
-const unsetMiddleware = UnsetModelFormFields({model});
+const unsetMiddleware = unsetModelFormFields({model});
 
 /**
  * Defines route-specific middleware for CRUD operations.

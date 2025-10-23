@@ -1,5 +1,5 @@
 import express, {type RequestHandler} from "express";
-import asyncHandler from "../utility/AsyncHandler.js";
+import asyncHandler from "../utility/handlers/asyncHandler.js";
 import isAuth from "../../domains/authentication/middleware/isAuth.js";
 import type {IBaseCRUDController} from "../controller/base-crud-controller/BaseCRUDController.types.js";
 

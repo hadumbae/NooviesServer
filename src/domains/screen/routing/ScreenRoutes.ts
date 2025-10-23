@@ -7,8 +7,8 @@ import {
 import type {IScreenController} from "../controller/ScreenController.js";
 import {ScreenSubmitSchema} from "../schema/ScreenSubmitSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../shared/utility/AsyncHandler.js";
-import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
+import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
+import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
@@ -20,7 +20,7 @@ const {model, controllers: {controller}} = ScreenServiceProvider.register();
  * Middleware to unset undefined or extraneous fields from the Screen model
  * before persisting data to the database.
  */
-const unsetMiddleware = UnsetModelFormFields({model});
+const unsetMiddleware = unsetModelFormFields({model});
 
 /**
  * Route-specific middleware for the Screen CRUD operations.
