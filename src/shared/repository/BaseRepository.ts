@@ -1,7 +1,7 @@
 import { Error, type Model } from "mongoose";
 import createHttpError from "http-errors";
 import type { PopulatePath } from "../types/mongoose/PopulatePath.js";
-import type IBaseRepository from "../types/repositories/IBaseRepository.js";
+import type IBaseRepository from "./IBaseRepository.js";
 import type {
     BaseRepositoryCountParams,
     BaseRepositoryCreateParams,
@@ -10,7 +10,7 @@ import type {
     BaseRepositoryFindParams,
     BaseRepositoryPaginationParams,
     BaseRepositoryUpdateParams
-} from "../types/repositories/BaseRepository.types.js";
+} from "./BaseRepository.types.js";
 
 /**
  * Constructor options for {@link BaseRepository}.
@@ -40,10 +40,12 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
     /**
      * Creates a new BaseRepository instance.
      *
-     * @param options.model - The Mongoose model to manage.
-     * @param options.populateRefs - Optional default paths to populate in queries.
+     * @param params.model - The Mongoose model to manage.
+     * @param params.populateRefs - Optional default paths to populate in queries.
      */
-    constructor({ model, populateRefs = [] }: IBaseRepositoryConstructor<TSchema>) {
+    constructor(params: IBaseRepositoryConstructor<TSchema>) {
+        const { model, populateRefs = [] } = params;
+
         this.model = model;
         this.populateRefs = populateRefs;
     }

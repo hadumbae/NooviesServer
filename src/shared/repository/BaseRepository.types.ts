@@ -1,5 +1,5 @@
 import { type FilterQuery, type SortOrder, Types } from "mongoose";
-import type { PopulatePath } from "../mongoose/PopulatePath.js";
+import type { PopulatePath } from "../types/mongoose/PopulatePath.js";
 
 /**
  * Parameters for counting documents in a repository.
