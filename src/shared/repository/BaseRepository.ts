@@ -1,7 +1,7 @@
 import { Error, type Model } from "mongoose";
 import createHttpError from "http-errors";
-import type { PopulatePath } from "../types/PopulatePath.js";
-import type IBaseRepository from "../interfaces/IBaseRepository.js";
+import type { PopulatePath } from "../types/mongoose/PopulatePath.js";
+import type IBaseRepository from "../types/repositories/IBaseRepository.js";
 import type {
     BaseRepositoryCountParams,
     BaseRepositoryCreateParams,
@@ -10,7 +10,7 @@ import type {
     BaseRepositoryFindParams,
     BaseRepositoryPaginationParams,
     BaseRepositoryUpdateParams
-} from "../types/BaseRepositoryTypes.js";
+} from "../types/repositories/BaseRepository.types.js";
 
 /**
  * Constructor options for {@link BaseRepository}.

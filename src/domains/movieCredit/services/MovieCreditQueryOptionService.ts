@@ -6,7 +6,7 @@ import type {
     ReferenceFilterPipelineStages
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
-import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type { IMovieCredit } from "../models/MovieCredit.interface.js";
 import { MovieCreditQueryOptionsSchema } from "../schemas/query/MovieCreditQueryOption.schema.js";
 import type {

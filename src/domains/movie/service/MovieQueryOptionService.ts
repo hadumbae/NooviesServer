@@ -2,7 +2,7 @@ import type {Request} from 'express';
 import {type FilterQuery, type SortOrder} from "mongoose";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import {MovieQueryOptionsSchema} from "../schema/query/MovieQueryOption.schema.js";
-import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type IMovie from "../model/Movie.interface.js";
 import type {MovieQueryMatchFilters, MovieQueryOptions} from "../schema/query/MovieQueryOption.types.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";

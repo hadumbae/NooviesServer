@@ -9,7 +9,7 @@ import MovieService from "../service/movie/MovieService.js";
 import MovieQueryOptionService from "../service/MovieQueryOptionService.js";
 import MovieFavouriteService from "../service/user/MovieFavouriteService.js";
 import MovieFavouriteController from "../controller/MovieFavouriteController.js";
-import type { PopulatePath } from "../../../shared/types/PopulatePath.js";
+import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 
 /**

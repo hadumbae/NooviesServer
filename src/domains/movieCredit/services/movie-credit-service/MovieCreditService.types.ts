@@ -1,6 +1,6 @@
 import type { IMovieCredit } from "../../models/MovieCredit.interface.js";
 import { Types } from "mongoose";
-import type { PopulatePath } from "../../../../shared/types/PopulatePath.js";
+import type { PopulatePath } from "../../../../shared/types/mongoose/PopulatePath.js";
 
 /**
  * Parameters required to fetch movie credits for a specific person.

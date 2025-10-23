@@ -5,7 +5,7 @@ import { type FilterQuery, type SortOrder } from "mongoose";
 import type { PersonQueryMatchFilters, PersonQueryOptions } from "../schema/query/PersonQueryOption.types.js";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type { IPerson } from "../interfaces/IPerson.js";
-import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**

@@ -6,7 +6,7 @@ import type {
     SeatQueryMatchFilters,
     SeatQueryOptions,
 } from "../schema/query/SeatQueryOption.types.js";
-import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type ISeat from "../model/Seat.interface.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 

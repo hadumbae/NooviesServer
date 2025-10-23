@@ -1,7 +1,7 @@
 import type {Request} from "express";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
-import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type {IScreen} from "../interface/IScreen.js";
 import {
     type ScreenQueryMatchFilters,

@@ -4,7 +4,7 @@ import type { FilterQuery, SortOrder } from "mongoose";
 import { GenreQueryOptionsSchema } from "../schema/query/GenreQueryOption.schema.js";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type IGenre from "../model/Genre.interface.js";
-import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**

@@ -1,6 +1,6 @@
 import type {AggregateCountParams, AggregateQueryParams, AggregateQueryResults} from "./AggregateQueryService.types.js";
 import type {Model, PipelineStage, SortOrder} from "mongoose";
-import type {PopulatePath} from "../../types/PopulatePath.js";
+import type {PopulatePath} from "../../types/mongoose/PopulatePath.js";
 import type IAggregateQueryService from "./IAggregateQueryService.js";
 import buildAggregationSort from "../../utility/mongoose/buildAggregationSort.js";
 

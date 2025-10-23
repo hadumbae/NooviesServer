@@ -9,7 +9,7 @@ import Showing from "../model/Showing.model.js";
 import Theatre from "../../theatre/model/Theatre.js";
 import createHttpError from "http-errors";
 import {Types} from "mongoose";
-import type {PopulatePath} from "../../../shared/types/PopulatePath.js";
+import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
 
 /**
  * Service providing CRUD operations for showings, implementing {@link IShowingCRUDService}.

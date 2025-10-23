@@ -6,7 +6,7 @@ import type {
 import { TheatreQueryOptionSchema } from "../../schema/query/TheatreQueryOption.schema.js";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type { FilterQuery, SortOrder } from "mongoose";
-import type IQueryOptionService from "../../../../shared/types/query-options/QueryOptionService.interface.js";
+import type IQueryOptionService from "../../../../shared/types/query-options/IQueryOptionService.js";
 import type ITheatre from "../../model/ITheatre.js";
 import type { QueryOptionTypes } from "../../../../shared/types/query-options/QueryOptionService.types.js";
 

@@ -1,4 +1,4 @@
-import type IQueryOptionService from "../../../shared/types/query-options/QueryOptionService.interface.js";
+import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type IRoleType from "../model/RoleType.interface.js";
 import type { RoleTypeQueryMatchFilters, RoleTypeQueryOptions } from "../schemas/filters/RoleTypeOption.types.js";
 import type { Request } from "express";

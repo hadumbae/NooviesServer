@@ -1,7 +1,7 @@
 import type IShowing from "../../model/IShowing.js";
 import type {TimeString} from "../../../../shared/schema/date-time/TimeStringSchema.js";
 import type {IANATimezone} from "../../../../shared/schema/date-time/IANATimezoneSchema.js";
-import type {PopulatePath} from "../../../../shared/types/PopulatePath.js";
+import type {PopulatePath} from "../../../../shared/types/mongoose/PopulatePath.js";
 import type {ShowingInput} from "../../schema/ShowingInputSchema.js";
 import {Types} from "mongoose";
 import type {SimpleDateString} from "../../../../shared/schema/date-time/SimpleDateStringSchema.js";

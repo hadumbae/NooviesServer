@@ -2,7 +2,7 @@ import PersonModel from "../model/Person.model.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
-import type { PopulatePath } from "../../../shared/types/PopulatePath.js";
+import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
 import PersonQueryOptionService from "../services/PersonQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import PersonImageService from "../services/image-service/PersonImageService.js";
