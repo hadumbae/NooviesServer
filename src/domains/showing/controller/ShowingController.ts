@@ -8,7 +8,7 @@ import type {
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
 import type {ShowingInput} from "../schema/ShowingInputSchema.js";
-import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 
 /**
  * Interface representing the controller for showing entities.

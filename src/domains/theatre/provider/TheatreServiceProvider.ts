@@ -1,7 +1,7 @@
 import Theatre from "../model/Theatre.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import TheatreController from "../controller/TheatreController.js";
-import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
+import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
 import TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";

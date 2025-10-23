@@ -1,5 +1,5 @@
 import MovieCredit from "../models/MovieCredit.model.js";
-import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
+import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import MovieCreditController from "../controllers/MovieCreditController.js";
 import MovieCreditQueryOptionService from "../services/MovieCreditQueryOptionService.js";
 import MovieCreditService from "../services/movie-credit-service/MovieCreditService.js";

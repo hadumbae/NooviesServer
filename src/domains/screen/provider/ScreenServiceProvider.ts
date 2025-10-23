@@ -4,7 +4,7 @@ import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import ScreenController from "../controller/ScreenController.js";
 
 import ScreenQueryOptionService from "../service/ScreenQueryOptionService.js";
-import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
+import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import ScreenService from "../service/ScreenService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import ScreenSeatService from "../service/screen-seat-service/ScreenSeatService.js";

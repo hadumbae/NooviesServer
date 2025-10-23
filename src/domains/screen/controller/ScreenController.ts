@@ -4,7 +4,7 @@ import type {Request, Response} from "express";
 import ScreenQueryOptionService from "../service/ScreenQueryOptionService.js";
 import ScreenService from "../service/ScreenService.js";
 import type ScreenSeatService from "../service/screen-seat-service/ScreenSeatService.js";
-import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor

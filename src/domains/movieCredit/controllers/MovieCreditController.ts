@@ -10,7 +10,7 @@ import type {
 import type {
     PopulationPipelineStages,
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
-import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {MovieCreditQueryMatchFilters} from "../schemas/query/MovieCreditQueryOption.types.js";
 

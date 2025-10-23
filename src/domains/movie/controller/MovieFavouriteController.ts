@@ -2,7 +2,7 @@ import BaseController, {type IBaseControllerConstructor} from "../../../shared/c
 import type {Request, Response} from "express";
 import type MovieQueryOptionService from "../service/MovieQueryOptionService.js";
 import type MovieFavouriteService from "../service/user/MovieFavouriteService.js";
-import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 
 interface IMovieFavouriteController {
     addToFavourites(req: Request, res: Response): Promise<Response>;

@@ -2,7 +2,7 @@ import SeatMap from "../model/SeatMap.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import SeatMapController from "../controller/SeatMapController.js";
 import SeatMapService from "../service/SeatMapService.js";
-import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
+import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import SeatMapQueryService from "../service/SeatMapQueryService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 

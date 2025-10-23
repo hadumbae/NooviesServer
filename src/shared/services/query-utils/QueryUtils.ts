@@ -1,7 +1,7 @@
 import type {Request} from "express";
 import ZodParseError from "../../errors/ZodParseError.js";
 import {type QueryOptionParams, QueryOptionParamsSchema} from "../../schema/query/QueryOptionParamsSchema.js";
-import type {IQueryUtils} from "../../interfaces/query/IQueryUtils.js";
+import type {IQueryUtils} from "./IQueryUtils.js";
 import {
     type QueryPaginationParams,
     QueryPaginationParamsSchema

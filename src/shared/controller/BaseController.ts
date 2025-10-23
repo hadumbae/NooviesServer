@@ -1,5 +1,5 @@
-import type {IQueryUtils} from "../interfaces/query/IQueryUtils.js";
-import QueryUtils from "../utility/query/QueryUtils.js";
+import type {IQueryUtils} from "../services/query-utils/IQueryUtils.js";
+import QueryUtils from "../services/query-utils/QueryUtils.js";
 
 export interface IBaseControllerConstructor {
     queryUtils?: IQueryUtils;

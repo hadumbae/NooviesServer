@@ -1,6 +1,6 @@
 import GenreModel from "../model/Genre.model.js";
 import GenreController from "../controller/GenreController.js";
-import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
+import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import GenreQueryOptionService from "../service/GenreQueryOptionService.js";
 import GenreRepository from "../repositories/GenreRepository.js";

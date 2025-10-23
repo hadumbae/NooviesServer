@@ -3,7 +3,7 @@ import type { IPerson } from "../interfaces/IPerson.js";
 import type PersonQueryOptionService from "../services/PersonQueryOptionService.js";
 import type { Request, Response } from "express";
 import type PersonImageService from "../services/image-service/PersonImageService.js";
-import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type { PersonQueryMatchFilters } from "../schema/query/PersonQueryOption.types.js";
 import type {
     IBaseCRUDController,

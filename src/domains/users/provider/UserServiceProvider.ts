@@ -4,7 +4,7 @@ import type IUser from "../model/IUser.js";
 import UserController from "../controller/UserController.js";
 
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import QueryUtils from "../../../shared/utility/query/QueryUtils.js";
+import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import UserService from "../service/UserService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 

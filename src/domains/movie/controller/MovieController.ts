@@ -5,7 +5,7 @@ import MovieImageService from "../service/MovieImageService.js";
 import type IMovieService from "../service/movie/IMovieService.js";
 import type MovieService from "../service/movie/MovieService.js";
 import type MovieQueryOptionService from "../service/MovieQueryOptionService.js";
-import isValidObjectId from "../../../shared/utility/query/isValidObjectId.js";
+import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
