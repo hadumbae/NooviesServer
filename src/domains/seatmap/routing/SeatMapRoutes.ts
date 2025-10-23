@@ -9,7 +9,7 @@ import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 import SeatMapServiceProvider from "../provider/SeatMapServiceProvider.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
-import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
  * Extract the SeatMap controller and model from the SeatMap service provider.

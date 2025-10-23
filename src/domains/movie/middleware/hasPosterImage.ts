@@ -1,38 +1,28 @@
-import type {Request, Response, NextFunction} from "express";
-import ZodValidatorErrorHandler from "../../../shared/utility/zod/ZodParseErrorHandler.js";
-import {MoviePosterImageInputSchema} from "../schema/MovieInput.schema.js";
+import type { Request, Response, NextFunction } from "express";
+import { MoviePosterImageInputSchema } from "../schema/MovieInput.schema.js";
+import handleZodError from "../../../shared/utility/schema/handlers/handleZodError.js";
 
 /**
- * Middleware that validates incoming movie poster image upload requests.
+ * Express middleware that validates an uploaded movie poster image.
  *
- * @description
- * This middleware ensures that the uploaded file in the request matches
- * the expected schema defined by `MoviePosterImageInputSchema`.
+ * This middleware:
+ * 1. Constructs a temporary request body containing the uploaded file (`req.file`).
+ * 2. Validates the body using {@link MoviePosterImageInputSchema}.
+ * 3. If validation succeeds, assigns the validated data to `req.validatedBody`.
+ * 4. If validation fails, calls {@link handleZodError} to throw a structured Zod validation error.
  *
- * - Extracts the uploaded file from `req.file`.
- * - Validates the structure using Zod.
- * - On success, attaches the validated data to `req.validatedBody`.
- * - On validation failure, passes the error to `ZodValidatorErrorHandler`.
+ * @param req - The Express request object, expected to include `req.file` from Multer middleware.
+ * @param res - The Express response object.
+ * @param next - The next middleware function in the chain.
  *
- * @param req - Express request object, expected to contain a `file` property from multer or similar middleware
- * @param res - Express response object
- * @param next - Express next function to continue middleware chain
+ * @returns void
  *
  * @example
  * ```ts
- * import express from "express";
- * import uploadPosterValidator from "./middleware/uploadPosterValidator.js";
- *
- * const router = express.Router();
- *
- * router.post(
- *   "/poster",
- *   upload.single("file"),
- *   uploadPosterValidator,
- *   (req, res) => {
- *     res.json({ success: true, data: req.validatedBody });
- *   }
- * );
+ * app.post("/movies/poster", upload.single("file"), validateMoviePoster, (req, res) => {
+ *   const { file } = req.validatedBody;
+ *   // process the validated movie poster
+ * });
  * ```
  */
 export default (req: Request, res: Response, next: NextFunction) => {
@@ -44,6 +34,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
         req.validatedBody = MoviePosterImageInputSchema.parse(requestBody);
         next();
     } catch (e: any) {
-        ZodValidatorErrorHandler(e);
+        handleZodError(e);
     }
 };

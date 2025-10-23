@@ -11,7 +11,7 @@ import { uploadImage } from "@config/image-multr.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 import hasProfileImage from "../middleware/hasProfileImage.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
-import validateZodSchema from "../../../shared/utility/zod/validateZodSchema.js";
+import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 
 /**
  * Destructure the Person model and controller from the service provider.

@@ -4,7 +4,7 @@ import {
     createBaseRoutes,
 } from "../../../shared/routing/BaseRoutes.js";
 import {GenreInputSchema} from "../schema/GenreInputSchema.js";
-import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
 
 /**

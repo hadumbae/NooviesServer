@@ -5,12 +5,12 @@ import {
     type IBaseRoutesConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {ISeatController} from "../controller/SeatController.js";
-import ZodAsyncValidator from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import ZodAsyncValidator from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 import {SeatInputSchema, SeatsByRowInputSchema} from "../schema/seats/SeatInput.schema.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
-import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /** Destructures the seat model and controller from the service provider. */
 const {model, controllers: {controller}} = SeatServiceProvider.register();

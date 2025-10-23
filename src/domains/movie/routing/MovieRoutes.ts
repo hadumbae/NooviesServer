@@ -11,7 +11,7 @@ import { uploadImage } from "@config/image-multr.js";
 import hasPosterImage from "../middleware/hasPosterImage.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
-import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
  * Destructure the Movie model and controller from the service provider.

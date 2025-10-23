@@ -3,7 +3,7 @@ import { NonNegativeNumberSchema } from "../numbers/NonNegativeNumberSchema.js";
 import { PositiveNumberSchema } from "../numbers/PositiveNumberSchema.js";
 import { URLStringSchema } from "../strings/URLStringSchema.js";
 import { NonEmptyStringSchema } from "../strings/NonEmptyStringSchema.js";
-import preprocessEmptyToUndefined from "../../utility/zod/preprocessEmptyToUndefined.js";
+import preprocessEmptyToUndefined from "../../utility/schema/preprocessors/preprocessEmptyToUndefined.js";
 
 /**
  * Schema variant of {@link PositiveNumberSchema} that

@@ -5,7 +5,7 @@ import {
 } from "../../../shared/routing/BaseRoutes.js";
 import RoleTypeServiceProvider from "../provider/RoleTypeServiceProvider.js";
 import {RoleTypeInputSchema} from "../schemas/RoleTypeInput.schema.js";
-import validateZodSchema from "../../../shared/utility/zod/validateZodSchema.js";
+import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
 
 /**

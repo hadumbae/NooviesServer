@@ -1,5 +1,5 @@
 import {z} from "zod";
-import ZodJSONParseTransform from "../../../shared/utility/zod/transformZodParsedJSON.js";
+import ZodJSONParseTransform from "../../../shared/utility/schema/url-params/transformZodParsedJSON.js";
 import {type SeatType, SeatTypeEnum} from "../../seat/schema/enum/SeatTypeEnum.js";
 import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import {BooleanValueSchema} from "../../../shared/schema/booleans/BooleanValueSchema.js";

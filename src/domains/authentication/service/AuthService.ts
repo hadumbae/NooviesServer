@@ -1,4 +1,3 @@
-import {safeParse} from "../../../shared/utility/zod/ZodParsers.js";
 import {type UserRegisterData, UserRegisterSubmitSchema} from "../schema/UserRegisterSubmitSchema.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import bcrypt from "bcryptjs";
@@ -63,12 +62,12 @@ export default class AuthService implements IAuthService {
     }
     
     validateUserRegisterData(userData: UserRegisterData): UserRegisterData {
-        const {data, errors} = safeParse<typeof UserRegisterSubmitSchema, UserRegisterData>({
-            schema: UserRegisterSubmitSchema,
-            data: userData,
-        });
+        const {data, success, error} = UserRegisterSubmitSchema.safeParse(userData);
 
-        if (errors) throw new ZodParseError({errors, message: "Invalid Register Details."});
+        if (!success) {
+            const {errors} = error;
+            throw new ZodParseError({errors, message: "Invalid Register Details."});
+        }
 
         return data!;
     }

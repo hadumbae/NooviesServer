@@ -1,14 +1,14 @@
 import type {Request, Response, NextFunction} from "express";
 import type {ZodTypeAny} from "zod";
-import asyncHandler from "../AsyncHandler.js";
-import ZodValidatorErrorHandler from "./ZodParseErrorHandler.js";
+import asyncHandler from "../../AsyncHandler.js";
+import handleZodError from "../handlers/handleZodError.js";
 
 /**
  * Creates an Express middleware to asynchronously validate `req.body` against a Zod schema.
  *
  * - Uses `schema.parseAsync` to handle asynchronous refinements or transformations.
  * - On success, attaches the parsed and validated body to `req.validatedBody`.
- * - On failure, passes the error to {@link ZodValidatorErrorHandler}, which throws a structured error.
+ * - On failure, passes the error to {@link handleZodError}, which throws a structured error.
  *
  * @param schema - The Zod schema to validate `req.body` against.
  * @returns An Express middleware wrapped in {@link asyncHandler} to properly handle async errors.
@@ -51,9 +51,9 @@ export default (schema: ZodTypeAny) =>
             try {
                 req.validatedBody = await schema.parseAsync(req.body);
                 next();
-            } catch (e: any) {
-                console.debug("Request Body: ", req.body);
-                ZodValidatorErrorHandler(e);
+            } catch (e: unknown) {
+                console.debug("Failed Request Body: ", req.body);
+                handleZodError(e);
             }
         }
     );

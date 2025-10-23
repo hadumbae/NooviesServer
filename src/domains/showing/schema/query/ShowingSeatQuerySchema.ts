@@ -1,5 +1,5 @@
 import {z} from "zod";
-import ZodJSONParseTransform from "../../../../shared/utility/zod/transformZodParsedJSON.js";
+import ZodJSONParseTransform from "../../../../shared/utility/schema/url-params/transformZodParsedJSON.js";
 
 import {BooleanValueSchema} from "../../../../shared/schema/booleans/BooleanValueSchema.js";
 

@@ -8,7 +8,7 @@ import type {ITheatreController} from "../controller/TheatreController.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 import ScreenServiceProvider from "../../screen/provider/ScreenServiceProvider.js";
 import {TheatreInputSchema} from "../schema/TheatreSchema.js";
-import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
 
 /**

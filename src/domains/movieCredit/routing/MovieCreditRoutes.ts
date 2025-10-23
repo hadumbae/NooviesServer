@@ -5,7 +5,7 @@ import {
     type IBaseRoutesConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type { IMovieCreditController } from "../controllers/MovieCreditController.js";
-import validateZodSchema from "../../../shared/utility/zod/validateZodSchema.js";
+import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 import { MovieCreditInputSchema } from "../schemas/MovieCreditInputSchema.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
 import isAuth from "../../authentication/middleware/isAuth.js";

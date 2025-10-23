@@ -7,7 +7,7 @@ import {
 import type {IShowingController} from "../controller/ShowingController.js";
 import {ShowingInputSchema} from "../schema/ShowingInputSchema.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
-import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
  * Extract the Showing controller and model from the Showing service provider

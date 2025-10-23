@@ -1,6 +1,6 @@
 import { type RefinementCtx, z } from "zod";
-import { isMulterFile } from "./zod/TypeChecks.js";
 import ImageTypeConstant from "../constants/ImageTypeConstant.js";
+import isMulterFile from "./schema/file-upload/isMulterFile.js";
 
 /**
  * Parameters for `refineRequiredImageFile`.

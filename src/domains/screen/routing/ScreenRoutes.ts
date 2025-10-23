@@ -9,7 +9,7 @@ import {ScreenSubmitSchema} from "../schema/ScreenSubmitSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/AsyncHandler.js";
 import UnsetModelFormFields from "../../../shared/utility/UnsetModelFormFields.js";
-import validateZodSchemaAsync from "../../../shared/utility/zod/validateZodSchemaAsync.js";
+import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
  * Extract the Screen model and controller from the service provider.
