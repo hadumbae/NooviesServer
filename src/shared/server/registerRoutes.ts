@@ -1,4 +1,4 @@
-import type {Express} from "express";
+import type { Express } from "express";
 import AuthRoutes from "../../domains/authentication/routing/AuthRoutes.js";
 import PersonRoutes from "../../domains/person/routing/PersonRoutes.js";
 import MovieRoutes from "../../domains/movie/routing/MovieRoutes.js";
@@ -13,7 +13,16 @@ import MovieFavouriteRoutes from "../../domains/movie/routing/MovieFavouriteRout
 import MovieCreditRoutes from "../../domains/movieCredit/routing/MovieCreditRoutes.js";
 import RoleTypeRoutes from "../../domains/roleType/routing/RoleTypeRoutes.js";
 
-const registerRoutes = (app: Express) => {
+/**
+ * Registers all application routes on the provided Express app.
+ *
+ * This function attaches domain-specific route handlers to their
+ * corresponding paths, including authentication, users, movies,
+ * seats, theatres, and other admin routes.
+ *
+ * @param app - The Express application instance to register the routes on.
+ */
+export default function registerRoutes(app: Express) {
     app.use("/auth", AuthRoutes);
     app.use("/api/v1/users", UserRoutes);
 
@@ -33,5 +42,3 @@ const registerRoutes = (app: Express) => {
     app.use("/api/v1/admin/theatres", TheatreRoutes);
     app.use("/api/v1/admin/seatmaps", SeatMapRoutes);
 };
-
-export default registerRoutes;
