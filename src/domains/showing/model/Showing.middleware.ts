@@ -2,7 +2,7 @@ import {ShowingSchema} from "./Showing.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import type IShowing from "./IShowing.js";
 import SeatMapService from "../../seatmap/service/SeatMapService.js";
-import SeatMap from "../../seatmap/model/SeatMap.js";
+import SeatMap from "../../seatmap/model/SeatMap.model.js";
 
 /**
  * @fileoverview
