@@ -47,6 +47,9 @@ export const TheatreQueryMatchSortSchema = z.object({
     /** Sort by city ascending or descending. */
     sortByCity: URLParamMongooseSortOrderSchema,
 
+    /** Sort by state ascending or descending. */
+    sortByState: URLParamMongooseSortOrderSchema,
+
     /** Sort by country ascending or descending. */
     sortByCountry: URLParamMongooseSortOrderSchema,
 

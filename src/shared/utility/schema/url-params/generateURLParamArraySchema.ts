@@ -21,21 +21,27 @@ import {z, type ZodTypeAny} from "zod";
  * ```
  */
 export default function generateURLParamArraySchema<TSchema extends ZodTypeAny>(schema: TSchema) {
-    return z.preprocess(
-        (value) => {
-            if (Array.isArray(value)) return value;
+    /**
+     * Preprocess to an array. Return `undefined` for any failure.
+     * The resulting value will be parsed by the schema.
+     * @param value Value to preprocess.
+     */
+    const preprocessToArray = (value: any) => {
+        if (Array.isArray(value)) return value;
 
-            if (typeof value === "string") {
-                try {
-                    const parsed = JSON.parse(value);
-                    return Array.isArray(parsed) ? parsed : undefined;
-                } catch (e: any) {
-                    return undefined;
-                }
+        if (typeof value === "string") {
+            try {
+                const parsed = JSON.parse(value);
+                return Array.isArray(parsed) ? parsed : undefined;
+            } catch (e: any) {
+                return undefined;
             }
+        }
 
-            return undefined;
-        },
-        z.array(schema, {invalid_type_error: "Must be an array."}),
-    ).optional();
+        return undefined;
+    };
+
+    return z
+        .preprocess(preprocessToArray, z.array(schema, {invalid_type_error: "Must be an array."}))
+        .optional();
 }
