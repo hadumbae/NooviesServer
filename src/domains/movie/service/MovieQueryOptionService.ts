@@ -29,6 +29,7 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
      */
     fetchQueryParams(req: Request): MovieQueryOptions {
         const params = MovieQueryOptionsSchema.parse(req.query);
+
         return filterNullishAttributes(params);
     }
 
@@ -45,13 +46,17 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
      * // filters: { title: { $regex: "Matrix", $options: "i" }, genres: { $in: ["Action"] } }
      */
     generateMatchFilters(options: MovieQueryOptions): FilterQuery<MovieQueryMatchFilters> {
-        const {_id, title, releaseDate, genres} = options;
+        const {_id, title, releaseDate, genres, originalTitle, isReleased, country, isAvailable} = options;
 
         const conditions = {
             _id,
             releaseDate,
             title: title && {$regex: title, $options: "i"},
-            genres: genres && {genres: {$in: genres}},
+            genres: genres && {$all: genres},
+            originalTitle,
+            isReleased,
+            isAvailable,
+            country,
         };
 
         return filterNullishAttributes(conditions);
@@ -69,11 +74,22 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
      * // sorts: { title: 1, releaseDate: -1 }
      */
     generateMatchSorts(options: MovieQueryOptions): Partial<Record<keyof IMovie, SortOrder>> {
-        const {sortByReleaseDate, sortByTitle} = options;
+        const {
+            sortByReleaseDate,
+            sortByTitle,
+            sortByOriginalTitle,
+            sortByIsReleased,
+            sortByIsAvailable,
+            sortByCountry,
+        } = options;
 
         const sorts = {
             releaseDate: sortByReleaseDate,
             title: sortByTitle,
+            originalTitle: sortByOriginalTitle,
+            isReleased: sortByIsReleased,
+            isAvailable: sortByIsAvailable,
+            country: sortByCountry,
         };
 
         return filterNullishAttributes(sorts);

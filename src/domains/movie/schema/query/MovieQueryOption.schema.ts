@@ -5,6 +5,8 @@ import {URLParamDateOnlySchema} from "../../../../shared/schema/url/URLParamDate
 import generateURLParamArraySchema from "../../../../shared/utility/schema/url-params/generateURLParamArraySchema.js";
 import {ObjectIdSchema} from "../../../../shared/schema/mongoose/ObjectIdSchema.js";
 import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
+import {URLParamBooleanSchema} from "../../../../shared/schema/url/URLParamBooleanSchema.js";
+import {ISO3166Alpha2CountryCodeSchema} from "../../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 
 /**
  * Schema for filtering movies in query parameters.
@@ -20,6 +22,10 @@ export const MovieQueryMatchFiltersSchema = z.object({
     title: URLParamStringSchema,
     releaseDate: URLParamDateOnlySchema,
     genres: generateURLParamArraySchema(ObjectIdSchema),
+    originalTitle: URLParamStringSchema,
+    isReleased: URLParamBooleanSchema,
+    country: ISO3166Alpha2CountryCodeSchema.optional(),
+    isAvailable: URLParamBooleanSchema,
 });
 
 /**
@@ -32,6 +38,10 @@ export const MovieQueryMatchFiltersSchema = z.object({
 export const MovieQueryMatchSortsSchema = z.object({
     sortByReleaseDate: URLParamMongooseSortOrderSchema,
     sortByTitle: URLParamMongooseSortOrderSchema,
+    sortByOriginalTitle: URLParamMongooseSortOrderSchema,
+    sortByIsReleased: URLParamMongooseSortOrderSchema,
+    sortByIsAvailable: URLParamMongooseSortOrderSchema,
+    sortByCountry: URLParamMongooseSortOrderSchema,
 });
 
 /**
