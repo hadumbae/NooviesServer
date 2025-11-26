@@ -1,10 +1,11 @@
-import SeatMap from "../model/SeatMap.js";
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
+import SeatMap from "../model/SeatMap.model.js";
 import SeatMapController from "../controller/SeatMapController.js";
-import SeatMapService from "../service/SeatMapService.js";
+import SeatMapService from "../service/seat-map-service/SeatMapService.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import SeatMapQueryService from "../service/SeatMapQueryService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
+import SeatMapRepository from "../repositories/SeatMapRepository.js";
+import SeatMapPopulateRefs from "../constants/SeatMapPopulateRefs.js";
 
 /**
  * Service provider for SeatMap-related operations.
@@ -38,10 +39,10 @@ export default class SeatMapServiceProvider {
         /**
          * References to populate on queries for the SeatMap resource.
          */
-        const populateRefs = ["seat", "showing"];
+        const populateRefs = SeatMapPopulateRefs;
 
         const queryUtils = QueryUtils;
-        const repository = new BaseRepository({model, populateRefs});
+        const repository = new SeatMapRepository({populateRefs});
 
         const service = new SeatMapService();
         const queryService = new SeatMapQueryService();

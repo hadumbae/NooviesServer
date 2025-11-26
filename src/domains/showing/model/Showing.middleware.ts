@@ -1,7 +1,7 @@
 import {ShowingSchema} from "./Showing.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import type IShowing from "./IShowing.js";
-import SeatMapService from "../../seatmap/service/SeatMapService.js";
+import SeatMapService from "../../seatmap/service/seat-map-service/SeatMapService.js";
 import SeatMap from "../../seatmap/model/SeatMap.model.js";
 
 /**
@@ -87,7 +87,7 @@ ShowingSchema.post(
 
         if ((this as any)._wasNew) {
             const service = new SeatMapService();
-            await service.createShowingSeatMap({showingID: _id.toString()});
+            await service.createShowingSeatMap({showingID: _id});
         }
     },
 );

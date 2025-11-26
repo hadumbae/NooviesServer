@@ -52,14 +52,12 @@ const routes = createBaseRoutes<ISeatMapController>(baseConfig);
 /**
  * Additional custom SeatMap routes for seat map management:
  *
- * GET `/showing/:_id/seating/get` - Fetches the seat map for a specific showing.
  * POST `/showing/:_id/seating/create` - Creates a seat map for a showing.
  * PATCH `/update/:_id/toggle/availability` - Toggles seat availability.
  *
  * All routes are protected with authentication middleware (`isAuth`) and
  * use `asyncHandler` to handle promise rejections automatically.
  */
-routes.get('/showing/:_id/seating/get', isAuth, asyncHandler(controller.getShowingSeatMap.bind(controller)));
 routes.post('/showing/:_id/seating/create', isAuth, asyncHandler(controller.createSeatMap.bind(controller)));
 routes.patch('/update/:_id/toggle/availability', isAuth, asyncHandler(controller.toggleSeatMapAvailability.bind(controller)));
 

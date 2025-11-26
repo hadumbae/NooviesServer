@@ -21,7 +21,7 @@ interface IBaseRepositoryConstructor<TSchema> {
     /** Mongoose model for the repository. */
     model: Model<TSchema>;
     /** Optional default paths to populate for queries. */
-    populateRefs?: PopulatePath[];
+    readonly populateRefs?: PopulatePath[];
 }
 
 /**

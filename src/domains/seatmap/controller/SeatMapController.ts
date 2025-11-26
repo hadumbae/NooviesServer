@@ -1,56 +1,126 @@
-import type {Request, Response} from "express";
+import type { Request, Response } from "express";
 
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 
-import type ISeatMap from "../model/ISeatMap.js";
-import type {ISeatMapQueryService} from "../service/SeatMapQueryService.js";
-import type ISeatMapService from "../service/ISeatMapService.js";
+import type ISeatMap from "../model/SeatMap.interface.js";
+import SeatMapQueryService from "../service/SeatMapQueryService.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+import type SeatMapService from "../service/seat-map-service/SeatMapService.js";
+import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 
+/**
+ * Constructor parameters for `SeatMapController`.
+ *
+ * Extends the base CRUD controller constructor with required service instances.
+ */
 export interface ISeatMapControllerConstructor extends IBaseCRUDControllerConstructor<ISeatMap> {
-    service: ISeatMapService;
-    queryService: ISeatMapQueryService;
+    /** Instance of the `SeatMapService` handling seat map business logic. */
+    service: SeatMapService;
+
+    /** Instance of the `SeatMapQueryService` for querying seat map data. */
+    queryService: SeatMapQueryService;
 }
 
+/**
+ * Controller interface for `SeatMap` HTTP endpoints.
+ *
+ * Extends the base CRUD controller with seat map-specific methods.
+ */
 export interface ISeatMapController extends IBaseCRUDController {
+    /**
+     * Creates a seat map for a specific showing.
+     *
+     * @param req - Express request object containing showing ID in `req.params._id`.
+     * @param res - Express response object.
+     * @returns A JSON response indicating success.
+     */
     createSeatMap(req: Request, res: Response): Promise<Response>;
-    getShowingSeatMap(req: Request, res: Response): Promise<Response>;
+
+    /**
+     * Toggles the availability of a specific seat map.
+     *
+     * @param req - Express request object containing seat map ID in `req.params._id`.
+     * @param res - Express response object.
+     * @returns A JSON response containing the updated seat map.
+     */
     toggleSeatMapAvailability(req: Request, res: Response): Promise<Response>;
 }
 
+/**
+ * Controller class for handling `SeatMap` endpoints.
+ *
+ * Provides CRUD operations via `BaseCRUDController` and additional
+ * seat map-specific actions such as creation and toggling availability.
+ */
 export default class SeatMapController extends BaseCRUDController<ISeatMap> implements ISeatMapController {
-    protected service: ISeatMapService;
-    protected queryService: ISeatMapQueryService;
+    /** Service for performing seat map business logic. */
+    protected service: SeatMapService;
 
+    /** Service for querying seat map data. */
+    protected queryService: SeatMapQueryService;
+
+    /**
+     * Creates a new `SeatMapController` instance.
+     *
+     * @param params - Object containing service instances and base controller parameters.
+     *
+     * @example
+     * ```ts
+     * const controller = new SeatMapController({
+     *   service: seatMapService,
+     *   queryService: seatMapQueryService,
+     *   model: SeatMapModel
+     * });
+     * ```
+     */
     constructor(params: ISeatMapControllerConstructor) {
-        const {service, queryService, ...superParams} = params;
+        const { service, queryService, ...superParams } = params;
         super(superParams);
 
         this.service = service;
         this.queryService = queryService;
     }
 
+    /**
+     * Creates seat maps for a given showing ID from the request parameters.
+     *
+     * @param req - Express request object containing `_id` param for the showing.
+     * @param res - Express response object.
+     * @returns JSON response with a success message.
+     *
+     * @example
+     * ```ts
+     * POST /showings/:_id/seat-map
+     * ```
+     */
     async createSeatMap(req: Request, res: Response): Promise<Response> {
-        const {_id: showingID} = req.params;
-        await this.service.createShowingSeatMap({showingID});
-        return res.status(200).json({message: "Seat Map created."});
+        const { _id } = req.params;
+        const showingID = isValidObjectId(_id);
+
+        await this.service.createShowingSeatMap({ showingID });
+        return res.status(200).json({ message: "Seat Map created." });
     }
 
-    async getShowingSeatMap(req: Request, res: Response): Promise<Response> {
-        const {_id: showingID} = req.params;
-        const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
-
-        const data = await this.service.getShowingSeatMap({showingID, page, perPage});
-        return res.status(200).json(data);
-    }
-
+    /**
+     * Toggles the availability of a seat map by its ID from the request parameters.
+     *
+     * @param req - Express request object containing `_id` param for the seat map.
+     * @param res - Express response object.
+     * @returns JSON response with the updated `ISeatMap` object.
+     *
+     * @example
+     * ```ts
+     * PATCH /seat-maps/:_id/toggle-availability
+     * ```
+     */
     async toggleSeatMapAvailability(req: Request, res: Response): Promise<Response> {
-        const {_id: seatMapID} = req.params;
-        const data = await this.service.toggleSeatMapAvailability({seatMapID});
-        console.log(data);
-        return res.status(200).json(data);
+        const { _id } = req.params;
+        const seatMapID = isValidObjectId(_id);
+
+        const seatMap = await this.service.toggleSeatMapAvailability({ seatMapID });
+        return res.status(200).json(seatMap);
     }
 }

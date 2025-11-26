@@ -30,8 +30,8 @@ export default interface ISeatMap {
     /** Unique identifier of the seat map document. Provided by MongoDB. */
     readonly _id?: Types.ObjectId;
 
-    /** Price of the seat for the associated showing. */
-    price: number;
+    /** Optional price of the seat for the associated showing. */
+    price?: number;
 
     /**
      * ObjectId reference to the showing this seat is part of.
