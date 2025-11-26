@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 
 import type ISeatMap from "../model/SeatMap.interface.js";
-import SeatMapQueryService from "../service/SeatMapQueryService.js";
+import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
 import type {
     IBaseCRUDController,
     IBaseCRUDControllerConstructor
@@ -21,7 +21,7 @@ export interface ISeatMapControllerConstructor extends IBaseCRUDControllerConstr
     service: SeatMapService;
 
     /** Instance of the `SeatMapQueryService` for querying seat map data. */
-    queryService: SeatMapQueryService;
+    queryService: SeatMapQueryOptionService;
 }
 
 /**
@@ -60,7 +60,7 @@ export default class SeatMapController extends BaseCRUDController<ISeatMap> impl
     protected service: SeatMapService;
 
     /** Service for querying seat map data. */
-    protected queryService: SeatMapQueryService;
+    protected queryService: SeatMapQueryOptionService;
 
     /**
      * Creates a new `SeatMapController` instance.

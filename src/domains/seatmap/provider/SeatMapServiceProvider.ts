@@ -2,7 +2,7 @@ import SeatMap from "../model/SeatMap.model.js";
 import SeatMapController from "../controller/SeatMapController.js";
 import SeatMapService from "../service/seat-map-service/SeatMapService.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
-import SeatMapQueryService from "../service/SeatMapQueryService.js";
+import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import SeatMapRepository from "../repositories/SeatMapRepository.js";
 import SeatMapPopulateRefs from "../constants/SeatMapPopulateRefs.js";
@@ -45,7 +45,7 @@ export default class SeatMapServiceProvider {
         const repository = new SeatMapRepository({populateRefs});
 
         const service = new SeatMapService();
-        const queryService = new SeatMapQueryService();
+        const queryService = new SeatMapQueryOptionService();
         const aggregateService = new AggregateQueryService({model, populateRefs});
 
         const controller = new SeatMapController({repository, service, queryService, queryUtils, aggregateService});

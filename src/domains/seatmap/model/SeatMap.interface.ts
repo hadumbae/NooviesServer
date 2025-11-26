@@ -1,5 +1,5 @@
 import {Types} from "mongoose";
-import type {SeatMapStatus} from "../schema/SeatMapStatusEnumSchema.js";
+import type {SeatMapStatus} from "../schema/enum/SeatMapStatusEnumSchema.js";
 
 /**
  * Represents a mapping between a specific seat and a specific showing,

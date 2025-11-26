@@ -42,5 +42,5 @@ import {z, ZodEffects, type ZodTypeAny} from "zod";
 export default function preprocessEmptyToUndefined<TSchema extends ZodTypeAny = ZodTypeAny>(
     schema: TSchema
 ): ZodEffects<TSchema, TSchema["_output"], unknown> {
-    return z.preprocess((val) => (val === "" ? undefined : val), schema);
+    return z.preprocess((val) => (typeof val === "string" && val.trim() === "" ? undefined : val), schema);
 }

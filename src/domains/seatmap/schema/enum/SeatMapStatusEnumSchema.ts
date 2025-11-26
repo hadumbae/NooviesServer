@@ -1,5 +1,5 @@
 import {z} from "zod";
-import SeatMapStatusConstant from "../constants/SeatMapStatusConstant.js";
+import SeatMapStatusConstant from "../../constants/SeatMapStatusConstant.js";
 
 /**
  * Zod enum schema representing all valid seat map statuses.

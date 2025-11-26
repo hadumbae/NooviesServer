@@ -4,7 +4,7 @@ import {
     type IBaseRoutesConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {ISeatMapController} from "../controller/SeatMapController.js";
-import {SeatMapSubmitSchema} from "../schema/SeatMapSubmitSchema.js";
+import {SeatMapInputSchema} from "../schema/SeatMapInput.schema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import SeatMapServiceProvider from "../provider/SeatMapServiceProvider.js";
@@ -30,8 +30,8 @@ const unsetMiddleware = unsetModelFormFields({model});
  */
 const middlewareList: BaseRouteMiddleware<typeof controller> = {
     path: {
-        create: [validateZodSchemaAsync(SeatMapSubmitSchema), unsetMiddleware],
-        update: [validateZodSchemaAsync(SeatMapSubmitSchema), unsetMiddleware],
+        create: [validateZodSchemaAsync(SeatMapInputSchema), unsetMiddleware],
+        update: [validateZodSchemaAsync(SeatMapInputSchema), unsetMiddleware],
     }
 };
 
