@@ -24,6 +24,9 @@ import "./Showing.indexes.js";
  * and performance optimizations for common queries.
  */
 
+import "./Showing.virtuals.js";
+import "./Showing.middleware.js";
+
 /**
  * The Mongoose model for `Showing` documents.
  *
