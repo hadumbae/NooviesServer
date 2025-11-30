@@ -1,6 +1,6 @@
-import { PersonSchema } from "./Person.schema.js";
-import type { HydratedDocument, Query } from "mongoose";
-import type { IPerson } from "../interfaces/IPerson.js";
+import {PersonSchema} from "./Person.schema.js";
+import type {HydratedDocument, Query} from "mongoose";
+import type {IPerson} from "../interfaces/IPerson.js";
 import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
 
 /**
@@ -18,22 +18,20 @@ import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
  * @example
  * // Person.find().lean({ virtuals: true }) will automatically populate counts
  */
-PersonSchema.pre(["find", "findOne", "findOneAndUpdate"], { query: true }, function (
-    this: Query<any, IPerson>, next: () => void
-) {
-    const hasVirtuals = typeof this._mongooseOptions.lean === "object" && this._mongooseOptions.lean.virtuals === true;
+PersonSchema.pre(
+    ["find", "findOne", "findOneAndUpdate"],
+    {query: true},
+    async function (this: Query<any, IPerson>) {
+        const hasVirtuals = typeof this._mongooseOptions.lean === "object" && this._mongooseOptions.lean.virtuals === true;
 
-    if (hasVirtuals) {
-        console.log("Populating...");
-
-        this.populate([
-            { path: "movieCount" },
-            { path: "creditCount" },
-        ]);
+        if (hasVirtuals) {
+            this.populate([
+                {path: "movieCount"},
+                {path: "creditCount"},
+            ]);
+        }
     }
-
-    next();
-});
+);
 
 /**
  * Pre-document deletion middleware.
@@ -47,14 +45,16 @@ PersonSchema.pre(["find", "findOne", "findOneAndUpdate"], { query: true }, funct
  * @example
  * // person.deleteOne() will remove all related MovieCredit documents
  */
-PersonSchema.pre("deleteOne", { query: false, document: true }, async function (
-    this: HydratedDocument<IPerson>
-) {
-    const { _id } = this;
-    if (!_id) return;
+PersonSchema.pre(
+    "deleteOne",
+    {query: false, document: true},
+    async function (this: HydratedDocument<IPerson>) {
+        const {_id} = this;
+        if (!_id) return;
 
-    await MovieCredit.deleteMany({ person: _id });
-});
+        await MovieCredit.deleteMany({person: _id});
+    }
+);
 
 /**
  * Pre-query deletion middleware.
@@ -68,11 +68,14 @@ PersonSchema.pre("deleteOne", { query: false, document: true }, async function (
  * @example
  * // Person.deleteMany({ _id: someId }) will remove related MovieCredit documents
  */
-PersonSchema.pre(["deleteOne", "deleteMany"], { query: true, document: false }, async function (
-    this: Query<any, IPerson>
-) {
-    const { _id } = this.getFilter();
-    if (!_id) return;
+PersonSchema.pre(
+    ["deleteOne", "deleteMany"],
+    {query: true, document: false},
+    async function (this: Query<any, IPerson>
+    ) {
+        const {_id} = this.getFilter();
+        if (!_id) return;
 
-    await MovieCredit.deleteMany({ movie: _id });
-});
+        await MovieCredit.deleteMany({movie: _id});
+    }
+);
