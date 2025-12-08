@@ -14,7 +14,7 @@ export default class ScreenSeatService implements IScreenSeatService {
 
         pipelines.push({$match: {screen: screenID}});
         pipelines.push(...populateStages);
-        pipelines.push({$sort: {row: 1, seatNumber: 1}});
+        pipelines.push({$sort: {row: 1, seatNumber: 1, y: 1}});
         pipelines.push(groupStage);
         pipelines.push(projectStage);
         pipelines.push({$sort: {row: 1}});
