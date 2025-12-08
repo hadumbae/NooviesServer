@@ -1,4 +1,3 @@
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import SeatController from "../controller/SeatController.js";
 
 import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
@@ -6,6 +5,7 @@ import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import SeatQueryService from "../service/query-service/SeatQueryService.js";
 import Seat from "../model/Seat.model.js";
+import SeatRepository from "../repositories/SeatRepository.js";
 
 /**
  * Service provider for the `Seat` domain.
@@ -41,7 +41,7 @@ export default class SeatServiceProvider {
         const queryUtils = QueryUtils;
 
         /** Generic repository providing CRUD access to seats. */
-        const repository = new BaseRepository({model, populateRefs});
+        const repository = new SeatRepository({model, populateRefs});
 
         /** Domain-specific service for advanced seat queries. */
         const queryService = new SeatQueryService();

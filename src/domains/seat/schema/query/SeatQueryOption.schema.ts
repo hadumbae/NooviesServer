@@ -1,6 +1,19 @@
-import { z } from "zod";
+/**
+ * @file SeatQueryMatchSchemas.ts
+ *
+ * @summary
+ * Zod schemas for matching, filtering, and sorting Seat documents using query parameters.
+ *
+ * @description
+ * These schemas validate optional query parameters for fetching Seat data.
+ * - `SeatQueryMatchFiltersSchema` validates filtering parameters.
+ * - `SeatQueryMatchSortsSchema` validates sorting parameters.
+ * - `SeatQueryOptionsSchema` merges filters and sorts for a complete query object.
+ */
 
+import { z } from "zod";
 import { SeatTypeEnum } from "../enum/SeatTypeEnum.js";
+import { SeatLayoutTypeEnum } from "../enum/SeatLayoutTypeEnum.js";
 import { URLParamNonNegativeNumberSchema } from "../../../../shared/schema/url/URLParamNonNegativeNumberSchema.js";
 import { URLParamStringSchema } from "../../../../shared/schema/url/URLParamStringSchema.js";
 import { URLParamObjectIDSchema } from "../../../../shared/schema/url/URLParamObjectIDSchema.js";
@@ -9,14 +22,24 @@ import { URLParamMongooseSortOrderSchema } from "../../../../shared/schema/url/U
 import { URLParamPositiveNumberSchema } from "../../../../shared/schema/url/URLParamPositiveNumberSchema.js";
 
 /**
- * Zod schema for matching/filtering Seat documents.
+ * @summary Zod schema for filtering/matching Seat documents.
  *
- * @remarks
- * All properties are optional when passed as query parameters.
- * Supports filtering by seat ID, row, seat number, label, type, availability, theatre, screen, and price multiplier.
+ * @description
+ * All fields are optional when passed as query parameters.
+ * Supports filtering by seat ID, row, seat number, label, type, availability,
+ * theatre, screen, layout type, and price multiplier.
+ *
+ * @example
+ * ```ts
+ * const filters = SeatQueryMatchFiltersSchema.parse({
+ *   row: "B",
+ *   seatType: "VIP",
+ *   isAvailable: true,
+ * });
+ * ```
  */
 export const SeatQueryMatchFiltersSchema = z.object({
-    /** Unique identifier for the seat. */
+    /** Unique identifier for the seat (MongoDB ObjectID). */
     _id: URLParamObjectIDSchema,
 
     /** Row identifier or label (e.g., "A", "B"). */
@@ -30,6 +53,9 @@ export const SeatQueryMatchFiltersSchema = z.object({
 
     /** Type of seat (enum). Optional. */
     seatType: SeatTypeEnum.optional(),
+
+    /** Seat layout type (e.g., SEAT, NON-SEAT). Optional. */
+    layoutType: SeatLayoutTypeEnum.optional(),
 
     /** Whether the seat is currently available. */
     isAvailable: URLParamBooleanSchema,
@@ -45,10 +71,19 @@ export const SeatQueryMatchFiltersSchema = z.object({
 });
 
 /**
- * Zod schema for sorting Seat documents.
+ * @summary Zod schema for sorting Seat documents.
  *
- * Each property corresponds to a field that can be used in Mongoose `$sort`.
+ * @description
+ * Each property corresponds to a field that can be used in a Mongoose `$sort`.
  * Use `1` for ascending and `-1` for descending.
+ *
+ * @example
+ * ```ts
+ * const sorts = SeatQueryMatchSortsSchema.parse({
+ *   sortByRow: 1,
+ *   sortBySeatNumber: -1,
+ * });
+ * ```
  */
 export const SeatQueryMatchSortsSchema = z.object({
     sortByTheatre: URLParamMongooseSortOrderSchema,
@@ -62,15 +97,19 @@ export const SeatQueryMatchSortsSchema = z.object({
 });
 
 /**
- * Combined Zod schema for all Seat query options.
+ * @summary Combined Zod schema for all Seat query options.
  *
- * Merges match filters and sorting into a single schema.
+ * @description
+ * Merges {@link SeatQueryMatchFiltersSchema} and {@link SeatQueryMatchSortsSchema}
+ * into a single schema for validating complete query parameters.
  *
  * @example
- * // Example: Fetch seats in row "A", sorted by seat number ascending
- * const query = {
+ * ```ts
+ * // Fetch seats in row "A", sorted by seat number ascending
+ * const queryOptions = SeatQueryOptionsSchema.parse({
  *   row: "A",
  *   sortBySeatNumber: 1
- * };
+ * });
+ * ```
  */
 export const SeatQueryOptionsSchema = SeatQueryMatchFiltersSchema.merge(SeatQueryMatchSortsSchema);

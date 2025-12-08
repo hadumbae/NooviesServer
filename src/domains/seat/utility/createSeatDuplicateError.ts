@@ -2,61 +2,43 @@ import type { ZodIssue } from "zod";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 
 /**
- * Creates a {@link ZodParseError} describing duplicate seat conflicts.
+ * Creates a {@link ZodParseError} for duplicate seat conflicts.
  *
- * This is used to enforce that each seat within a theatre is uniquely
- * identified by its theatre, screen, row, and seat number.
- *
- * If the provided `indexString` matches a known duplicate pattern
- * (e.g. `"theatre_1_screen_1_row_1_seatNumber_1"`), a structured
- * error is returned with field-specific issues for:
- *
- * - **theatre** – A seat in this theatre already exists.
- * - **screen** – A seat on this screen already exists.
- * - **row** – This row already contains a seat with this number.
- * - **seatNumber** – This seat number is already taken in the selected row.
+ * Includes all relevant fields: theatre, screen, and either row+seatNumber or x+y.
  *
  * @param indexString - Unique identifier string for a seat.
- * @returns A {@link ZodParseError} if the seat is a duplicate, otherwise `undefined`.
- *
- * @example
- * ```ts
- * const error = createSeatDuplicateError("theatre_1_screen_1_row_1_seatNumber_1");
- * if (error) {
- *   console.error(error.message);
- *   // => "Duplicate seat detected: theatre, screen, row, and seat number must form a unique combination."
- * }
- * ```
+ * @returns A {@link ZodParseError} if a duplicate exists, otherwise `undefined`.
  */
 export default function createSeatDuplicateError(indexString: string) {
+    console.log("Error Here!: ", indexString);
+
     if (indexString === "theatre_1_screen_1_row_1_seatNumber_1") {
+        console.log("Same Row And Number");
+
         const errors: ZodIssue[] = [
-            {
-                path: ["theatre"],
-                code: "custom",
-                message: "A seat in this theatre already exists.",
-            },
-            {
-                path: ["screen"],
-                code: "custom",
-                message: "A seat on this screen already exists.",
-            },
-            {
-                path: ["row"],
-                code: "custom",
-                message: "This row already contains a seat with this number.",
-            },
-            {
-                path: ["seatNumber"],
-                code: "custom",
-                message: "This seat number is already taken in the selected row.",
-            },
+            { path: ["theatre"], code: "custom", message: "Seat in this theatre already exists." },
+            { path: ["screen"], code: "custom", message: "Seat on this screen already exists." },
+            { path: ["row"], code: "custom", message: "Row already has this seat number." },
+            { path: ["seatNumber"], code: "custom", message: "Seat number already taken in this row." },
         ];
 
         return new ZodParseError({
             errors,
-            message:
-                "Duplicate seat detected: theatre, screen, row, and seat number must form a unique combination.",
+            message: "Duplicate seat: row + seat number must be unique.",
+        });
+    } else if (indexString === "theatre_1_screen_1_x_1_y_1") {
+        console.log("Same X And Y");
+
+        const errors: ZodIssue[] = [
+            { path: ["theatre"], code: "custom", message: "Seat in this theatre already exists." },
+            { path: ["screen"], code: "custom", message: "Seat on this screen already exists." },
+            { path: ["x"], code: "custom", message: "X coordinate already used." },
+            { path: ["y"], code: "custom", message: "Y coordinate already used." },
+        ];
+
+        return new ZodParseError({
+            errors,
+            message: "Duplicate seat: coordinates (x, y) must be unique.",
         });
     }
 }

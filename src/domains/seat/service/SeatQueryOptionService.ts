@@ -1,3 +1,17 @@
+/**
+ * @file SeatQueryOptionService.ts
+ *
+ * @summary Service for parsing, validating, and generating query options for Seat documents.
+ *
+ * @description
+ * Implements {@link IQueryOptionService} to standardize query handling for {@link ISeat}:
+ * - Extracts query parameters from Express requests
+ * - Validates filters using {@link SeatQueryMatchFiltersSchema}
+ * - Generates Mongoose `$match` filters
+ * - Generates Mongoose `$sort` options
+ * - Combines filters and sorts into a single query object
+ */
+
 import type { Request } from "express";
 import type { FilterQuery, SortOrder } from "mongoose";
 import { SeatQueryMatchFiltersSchema } from "../schema/query/SeatQueryOption.schema.js";
@@ -11,24 +25,33 @@ import type ISeat from "../model/Seat.interface.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Service responsible for parsing, validating, and generating query options
- * for {@link ISeat} documents.
+ * @class SeatQueryOptionService
  *
- * Implements {@link IQueryOptionService} to provide standardized methods for:
- * - Extracting query parameters from Express requests
- * - Generating Mongoose `$match` filters
- * - Generating Mongoose `$sort` options
- * - Combining filters and sorts into query option objects
+ * @implements IQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters>
+ *
+ * @summary Service class for managing Seat query options.
+ *
+ * @description
+ * Provides standardized methods to:
+ * - Parse query parameters from Express requests
+ * - Generate Mongoose `$match` filters
+ * - Generate Mongoose `$sort` options
+ * - Combine filters and sorts into a single query option object
  */
 export default class SeatQueryOptionService
     implements IQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters> {
 
     /**
-     * Parses query parameters from an Express request and validates them
-     * against {@link SeatQueryMatchFiltersSchema}.
+     * Parses and validates query parameters from an Express request.
      *
      * @param req - Express request object
      * @returns Validated and filtered {@link SeatQueryOptions}
+     *
+     * @example
+     * ```ts
+     * const service = new SeatQueryOptionService();
+     * const queryParams = service.fetchQueryParams(req);
+     * ```
      */
     fetchQueryParams(req: Request): SeatQueryOptions {
         const conditions = SeatQueryMatchFiltersSchema.parse(req.query);
@@ -36,10 +59,15 @@ export default class SeatQueryOptionService
     }
 
     /**
-     * Generates Mongoose `$match` filters for querying seats.
+     * Generates Mongoose `$match` filters for Seat documents.
      *
      * @param params - Validated {@link SeatQueryOptions}
-     * @returns Mongoose-compatible filter object of type {@link FilterQuery<SeatQueryMatchFilters>}
+     * @returns Mongoose-compatible filter object ({@link FilterQuery<SeatQueryMatchFilters>})
+     *
+     * @example
+     * ```ts
+     * const matchFilters = service.generateMatchFilters(queryParams);
+     * ```
      */
     generateMatchFilters(params: SeatQueryOptions): FilterQuery<SeatQueryMatchFilters> {
         const {
@@ -48,6 +76,7 @@ export default class SeatQueryOptionService
             seatNumber,
             seatLabel,
             seatType,
+            layoutType,
             isAvailable,
             theatre,
             screen,
@@ -59,6 +88,7 @@ export default class SeatQueryOptionService
             seatLabel: seatLabel && { $regex: seatLabel, $options: "i" },
             seatNumber,
             seatType,
+            layoutType,
             isAvailable,
             theatre,
             screen,
@@ -68,10 +98,15 @@ export default class SeatQueryOptionService
     }
 
     /**
-     * Generates Mongoose `$sort` options for querying seats.
+     * Generates Mongoose `$sort` options for Seat documents.
      *
      * @param params - Validated {@link SeatQueryOptions}
-     * @returns Partial record mapping seat fields to {@link SortOrder}
+     * @returns Partial record mapping Seat fields to {@link SortOrder}
+     *
+     * @example
+     * ```ts
+     * const sorts = service.generateMatchSorts(queryParams);
+     * ```
      */
     generateMatchSorts(params: SeatQueryOptions): Partial<Record<keyof ISeat, SortOrder>> {
         const {
@@ -100,10 +135,16 @@ export default class SeatQueryOptionService
     }
 
     /**
-     * Combines match filters and sort options into a single query option object.
+     * Combines `$match` filters and `$sort` options into a single query option object.
      *
      * @param options - Validated {@link SeatQueryOptions}
      * @returns {@link QueryOptionTypes} containing `match` filters and sorts
+     *
+     * @example
+     * ```ts
+     * const queryOptions = service.generateQueryOptions(queryParams);
+     * // { match: { filters: {...}, sorts: {...} } }
+     * ```
      */
     generateQueryOptions(options: SeatQueryOptions): QueryOptionTypes<ISeat, SeatQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);

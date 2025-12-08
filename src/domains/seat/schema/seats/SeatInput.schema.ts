@@ -5,48 +5,120 @@ import {BooleanValueSchema} from "../../../../shared/schema/booleans/BooleanValu
 import {PositiveNumberSchema} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {NonNegativeNumberSchema} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
 import {ObjectIdStringSchema} from "../../../../shared/schema/mongoose/ObjectIdStringSchema.js";
+import {SeatLayoutTypeEnum} from "../enum/SeatLayoutTypeEnum.js";
 
 /**
- * 🎯 Base input fields for creating or updating a seat.
- * Contains IDs, availability status, and price multiplier.
+ * ## SeatInputBaseSchema
+ *
+ * Base Zod schema for all seat inputs.
+ * Contains properties common to both seating and non-seating layout types.
+ *
+ * @properties
+ * - `theatre` — ObjectId string referencing the theatre.
+ * - `screen` — ObjectId string referencing the screen.
+ * - `row` — Row identifier (max 10 characters).
+ * - `x` — X-coordinate in the seating layout (positive number).
+ * - `y` — Y-coordinate in the seating layout (positive number).
+ * - `layoutType` — Layout classification (SEAT, AISLE, STAIR).
  */
 export const SeatInputBaseSchema = z.object({
-    /** ID of the theatre this seat belongs to, as a MongoDB ObjectId string. */
     theatre: ObjectIdStringSchema,
-
-    /** ID of the screen this seat belongs to, as a MongoDB ObjectId string. */
     screen: ObjectIdStringSchema,
+    row: NonEmptyStringSchema.max(10, "Must be 10 characters or less."),
+    x: PositiveNumberSchema,
+    y: PositiveNumberSchema,
+    layoutType: SeatLayoutTypeEnum,
+});
 
-    /** Type of seat (e.g., standard, VIP, couple). */
+/**
+ * ## SeatInputAisleSchema
+ *
+ * Schema for an AISLE in the theatre layout.
+ * Extends the base schema and restricts `layoutType` to "AISLE".
+ */
+export const SeatInputAisleSchema = SeatInputBaseSchema.extend({
+    layoutType: z.literal("AISLE"),
+});
+
+/**
+ * ## SeatInputStairSchema
+ *
+ * Schema for a STAIR in the theatre layout.
+ * Extends the base schema and restricts `layoutType` to "STAIR".
+ */
+export const SeatInputStairSchema = SeatInputBaseSchema.extend({
+    layoutType: z.literal("STAIR"),
+});
+
+/**
+ * ## SeatInputSeatingSchema
+ *
+ * Schema for actual seating positions (SEAT layout type).
+ * Extends the base schema and includes additional seat-specific properties:
+ * - `seatType` — Type/category of seat (e.g., VIP, REGULAR).
+ * - `seatNumber` — Numeric identifier within the row.
+ * - `seatLabel` — Optional display label (max 50 characters).
+ * - `isAvailable` — Boolean indicating booking availability.
+ * - `priceMultiplier` — Multiplier applied to the base ticket price.
+ */
+export const SeatInputSeatingSchema = SeatInputBaseSchema.extend({
+    layoutType: z.literal("SEAT"),
     seatType: SeatTypeEnum,
-
-    /** Availability status of the seat: `true` if bookable, otherwise `false`. */
+    seatNumber: NonNegativeNumberSchema,
+    seatLabel: NonEmptyStringSchema.max(50, "Must be 50 characters or less").optional(),
     isAvailable: BooleanValueSchema,
-
-    /** Non-negative multiplier applied to a base ticket price (e.g., 1.0, 1.5). */
     priceMultiplier: NonNegativeNumberSchema,
 });
 
 /**
- * 🪑 Input schema for individual seat creation or update.
- * Extends `SeatInputBaseSchema` with placement and labeling fields.
+ * ## SeatInputSchema
+ *
+ * Discriminated union schema for seat input validation.
+ * Differentiates between seating and non-seating layout types based on `layoutType`.
+ *
+ * @example
+ * ```ts
+ * // Seating input
+ * const seatInput = SeatInputSchema.parse({
+ *   theatre: "64f1c0c8ab1234567890abcd",
+ *   screen: "64f1c0c8ab1234567890abce",
+ *   row: "A",
+ *   seatNumber: 1,
+ *   seatType: "VIP",
+ *   layoutType: "SEAT",
+ *   x: 1,
+ *   y: 1,
+ *   seatLabel: "VIP-1",
+ *   isAvailable: true,
+ *   priceMultiplier: 1.5,
+ * });
+ *
+ * // Aisle input
+ * const aisleInput = SeatInputSchema.parse({
+ *   theatre: "64f1c0c8ab1234567890abcd",
+ *   screen: "64f1c0c8ab1234567890abce",
+ *   row: "B",
+ *   layoutType: "AISLE",
+ *   x: 5,
+ *   y: 1,
+ * });
+ *
+ * // Stair input
+ * const stairInput = SeatInputSchema.parse({
+ *   theatre: "64f1c0c8ab1234567890abcd",
+ *   screen: "64f1c0c8ab1234567890abce",
+ *   row: "C",
+ *   layoutType: "STAIR",
+ *   x: 10,
+ *   y: 2,
+ * });
+ * ```
  */
-export const SeatInputSchema = SeatInputBaseSchema.extend({
-    /** Row label (e.g., "A", "B", up to 10 characters). */
-    row: NonEmptyStringSchema.max(10, "Must be 10 characters or less."),
-
-    /** Seat number within the row (0 or greater). */
-    seatNumber: NonNegativeNumberSchema,
-
-    /** Optional display label (e.g., "A5", "VIP‑3", max 50 chars). */
-    seatLabel: NonEmptyStringSchema.max(50, "Must be 50 characters or less").optional(),
-
-    /** X-coordinate for seating layout visualizations. */
-    x: PositiveNumberSchema,
-
-    /** Y-coordinate for seating layout visualizations. */
-    y: PositiveNumberSchema,
-});
+export const SeatInputSchema = z.discriminatedUnion("layoutType", [
+    SeatInputAisleSchema,
+    SeatInputStairSchema,
+    SeatInputSeatingSchema,
+]);
 
 /**
  * 📋 Input schema for submitting multiple seats in a given row.
