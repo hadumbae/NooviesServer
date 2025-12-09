@@ -4,17 +4,17 @@ import type TheatreQueryOptionService from "../services/query/TheatreQueryOption
 import type { Request } from "express";
 import type { TheatreQueryMatchFilters } from "../schema/query/TheatreQueryOption.types.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
  * Interface representing the public contract for {@link TheatreController}.
  *
- * Extends {@link IBaseCRUDController} and can be extended to add theatre-specific endpoints.
+ * Extends {@link BaseControllerCRUDMethods} and can be extended to add theatre-specific endpoints.
  */
-export interface ITheatreController extends IBaseCRUDController {}
+export interface ITheatreController extends BaseControllerCRUDMethods {}
 
 /**
  * Constructor parameters for {@link TheatreController}.

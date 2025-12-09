@@ -7,9 +7,9 @@ import type MovieService from "../service/movie/MovieService.js";
 import type MovieQueryOptionService from "../service/MovieQueryOptionService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {MovieQueryMatchFilters} from "../schema/query/MovieQueryOption.types.js";
 
@@ -32,11 +32,11 @@ export interface IMovieControllerConstructor extends IBaseCRUDControllerConstruc
 /**
  * Interface for {@link MovieController}.
  *
- * Extends {@link IBaseCRUDController} with movie-specific endpoints:
+ * Extends {@link BaseControllerCRUDMethods} with movie-specific endpoints:
  * - Updating/deleting poster images
  * - Fetching paginated movies with recent showings
  */
-export interface IMovieController extends IBaseCRUDController {
+export interface IMovieController extends BaseControllerCRUDMethods {
     /**
      * Updates the poster image of a movie.
      *

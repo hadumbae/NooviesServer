@@ -4,9 +4,9 @@ import type {IMovieCredit} from "../models/MovieCredit.interface.js";
 import type MovieCreditQueryOptionService from "../services/MovieCreditQueryOptionService.js";
 import type MovieCreditService from "../services/movie-credit-service/MovieCreditService.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {
     PopulationPipelineStages,
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
@@ -29,7 +29,7 @@ export interface IMovieCreditControllerConstructor extends IBaseCRUDControllerCo
  * Extends the base CRUD controller and adds access to
  * services specialized for movie credit operations.
  */
-export interface IMovieCreditController extends IBaseCRUDController {
+export interface IMovieCreditController extends BaseControllerCRUDMethods {
     /** Service for CRUD operations on movie credits. */
     service: MovieCreditService;
     /** Service for parsing and converting query parameters into database operations. */

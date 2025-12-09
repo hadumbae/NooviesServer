@@ -4,15 +4,15 @@ import type { Request } from "express";
 import type GenreQueryOptionService from "../service/GenreQueryOptionService.js";
 import type { GenreQueryMatchFilters } from "../schema/query/GenreQueryOption.types.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
  * Interface for the Genre controller, extending the base CRUD controller interface.
  */
-export interface IGenreController extends IBaseCRUDController {}
+export interface IGenreController extends BaseControllerCRUDMethods {}
 
 /**
  * Constructor interface for {@link GenreController}.

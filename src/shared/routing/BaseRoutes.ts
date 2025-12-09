@@ -1,25 +1,25 @@
 import express, {type RequestHandler} from "express";
 import asyncHandler from "../utility/handlers/asyncHandler.js";
 import isAuth from "../../domains/authentication/middleware/isAuth.js";
-import type {IBaseCRUDController} from "../controller/base-crud-controller/BaseCRUDController.types.js";
+import type {BaseControllerCRUDMethods} from "../controller/base-crud-controller/BaseControllerCRUDMethods.js";
 
-type RoutePath<TController extends IBaseCRUDController> = {
+type RoutePath<TController extends BaseControllerCRUDMethods> = {
     method: "get" | "post" | "put" | "patch" | "delete",
     path: string;
     fn: keyof TController;
 };
 
-export type BaseRouteMiddleware<TController extends IBaseCRUDController> = {
+export type BaseRouteMiddleware<TController extends BaseControllerCRUDMethods> = {
     all?: RequestHandler[];
     path?: Partial<Record<keyof TController, RequestHandler[]>>
 }
 
-export interface IBaseRoutesConfig<TController extends IBaseCRUDController = IBaseCRUDController> {
+export interface IBaseRoutesConfig<TController extends BaseControllerCRUDMethods = BaseControllerCRUDMethods> {
     crudController: TController;
     middlewareList?: BaseRouteMiddleware<TController>
 }
 
-export const createBaseRoutes = <TController extends IBaseCRUDController>(config: IBaseRoutesConfig<TController>) => {
+export const createBaseRoutes = <TController extends BaseControllerCRUDMethods>(config: IBaseRoutesConfig<TController>) => {
         const {crudController, middlewareList} = config;
         const {all: allMiddleware, path: pathMiddleware} = middlewareList || {};
 

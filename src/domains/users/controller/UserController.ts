@@ -4,15 +4,15 @@ import type IUser from "../model/IUser.js";
 import type UserService from "../service/UserService.js";
 import createHttpError from "http-errors";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 
 export interface IUserControllerConstructor extends IBaseCRUDControllerConstructor<IUser> {
     service: UserService;
 }
 
-export interface IUserController extends IBaseCRUDController {
+export interface IUserController extends BaseControllerCRUDMethods {
     updateUserPassword(req: Request, res: Response): Promise<Response>,
 }
 

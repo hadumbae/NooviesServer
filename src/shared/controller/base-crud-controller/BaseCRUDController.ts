@@ -2,12 +2,10 @@ import {type Request, type Response} from "express";
 import type BaseRepository from "../../repository/BaseRepository.js";
 import BaseController from "../BaseController.js";
 import isValidObjectId from "../../utility/mongoose/isValidObjectId.js";
-import type {
-    PopulationPipelineStages,
-} from "../../types/mongoose/AggregatePipelineStages.js";
+import type {PopulationPipelineStages} from "../../types/mongoose/AggregatePipelineStages.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {AggregateQueryParams} from "../../services/aggregate/AggregateQueryService.types.js";
-import type {IBaseCRUDController, IBaseCRUDControllerConstructor} from "./BaseCRUDController.types.js";
+import type {BaseControllerCRUDMethods, IBaseCRUDControllerConstructor} from "./BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
 
 /**
@@ -24,7 +22,7 @@ import type {QueryOptionTypes} from "../../types/query-options/QueryOptionServic
 export default class BaseCRUDController<
     TSchema extends Record<string, any>,
     TMatchFilters = any,
-> extends BaseController implements IBaseCRUDController<TSchema, TMatchFilters> {
+> extends BaseController implements BaseControllerCRUDMethods<TSchema, TMatchFilters> {
     /** Repository instance for direct database interactions (create, read, update, delete). */
     protected readonly repository: BaseRepository<TSchema>;
 
@@ -55,7 +53,7 @@ export default class BaseCRUDController<
      */
     async all(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals, limit} = this.queryUtils.fetchOptionsFromQuery(req);
-        const items = await this.repository.find({populate, virtuals, limit});
+        const items = await this.repository.find({options: {populate, virtuals, limit}});
         return res.status(200).json(items);
     }
 
@@ -74,8 +72,7 @@ export default class BaseCRUDController<
         const items = await this.repository.paginate({
             page,
             perPage,
-            populate,
-            virtuals,
+            options: {populate, virtuals}
         });
 
         return res.status(200).json({totalItems, items});
@@ -92,7 +89,7 @@ export default class BaseCRUDController<
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const data = req.validatedBody as Partial<TSchema>;
 
-        const item = await this.repository.create({data, populate, virtuals});
+        const item = await this.repository.create({data, options: {populate, virtuals}});
 
         return res.status(200).json(item);
     }
@@ -110,7 +107,7 @@ export default class BaseCRUDController<
         const _id = isValidObjectId(entityID);
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
-        const item = await this.repository.findById({_id, populate, virtuals});
+        const item = await this.repository.findById({_id, options: {populate, virtuals}});
 
         return res.status(200).json(item);
     }
@@ -131,7 +128,7 @@ export default class BaseCRUDController<
         const unset = req.unsetFields;
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
-        const item = await this.repository.update({_id, data, unset, populate, virtuals});
+        const item = await this.repository.update({_id, data, unset, options: {populate, virtuals}});
 
         return res.status(200).json(item);
     }

@@ -3,9 +3,9 @@ import type IRoleType from "../model/RoleType.interface.js";
 import type RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionService.js";
 import type { Request } from "express";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type { RoleTypeQueryMatchFilters } from "../schemas/filters/RoleTypeOption.types.js";
 
@@ -22,9 +22,9 @@ export interface IRoleTypeControllerConstructor extends IBaseCRUDControllerConst
 
 /**
  * Public interface for the {@link RoleTypeController}.
- * Inherits CRUD operations from {@link IBaseCRUDController}.
+ * Inherits CRUD operations from {@link BaseControllerCRUDMethods}.
  */
-export interface IRoleTypeController extends IBaseCRUDController {}
+export interface IRoleTypeController extends BaseControllerCRUDMethods {}
 
 /**
  * Controller for handling requests related to {@link IRoleType}.

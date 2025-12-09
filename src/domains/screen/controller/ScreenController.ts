@@ -6,9 +6,9 @@ import ScreenService from "../service/ScreenService.js";
 import type ScreenSeatService from "../service/screen-seat-service/ScreenSeatService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {ScreenQueryMatchFilters} from "../schema/query/ScreenQueryOption.types.js";
 
@@ -18,7 +18,7 @@ import type {ScreenQueryMatchFilters} from "../schema/query/ScreenQueryOption.ty
  * Extends the base CRUD controller with screen-specific endpoints
  * for fetching screens by theatre and seats by row.
  */
-export interface IScreenController extends IBaseCRUDController {
+export interface IScreenController extends BaseControllerCRUDMethods {
     /**
      * Fetches a paginated list of screens for a specific theatre.
      *

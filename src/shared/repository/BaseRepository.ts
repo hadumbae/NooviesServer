@@ -1,7 +1,7 @@
-import { Error, type Model } from "mongoose";
+import {Error, type Model} from "mongoose";
 import createHttpError from "http-errors";
-import type { PopulatePath } from "../types/mongoose/PopulatePath.js";
-import type IBaseRepository from "./IBaseRepository.js";
+import type {PopulatePath} from "../types/mongoose/PopulatePath.js";
+import type BaseRepositoryCRUD from "./BaseRepositoryCRUD.js";
 import type {
     BaseRepositoryCountParams,
     BaseRepositoryCreateParams,
@@ -11,142 +11,151 @@ import type {
     BaseRepositoryPaginationParams,
     BaseRepositoryUpdateParams
 } from "./BaseRepository.types.js";
+import DuplicateIndexError from "../errors/DuplicateIndexError.js";
 
 /**
  * Constructor options for {@link BaseRepository}.
  *
- * @template TSchema - Mongoose schema type for the repository.
+ * @template TSchema - Mongoose document type handled by the repository.
  */
-interface IBaseRepositoryConstructor<TSchema> {
-    /** Mongoose model for the repository. */
-    model: Model<TSchema>;
-    /** Optional default paths to populate for queries. */
+interface BaseRepositoryConstructor<TSchema> {
+    /** Mongoose model used for all CRUD operations. */
+    readonly model: Model<TSchema>;
+    /** Default populate paths applied when no explicit paths are provided. */
     readonly populateRefs?: PopulatePath[];
 }
 
 /**
- * Generic base repository providing common CRUD and pagination methods
- * for Mongoose models.
+ * Generic base repository implementing common CRUD and pagination
+ * functionality for Mongoose models.
  *
- * Handles standard database operations and error handling,
- * including duplicate key errors, fetch errors, and persistence errors.
+ * Provides consistent error handling, uniqueness-violation detection,
+ * and optional population/virtual configuration across operations.
  *
- * @template TSchema - Type of Mongoose document managed by the repository.
+ * @template TSchema - Mongoose document type handled by the repository.
  */
-export default class BaseRepository<TSchema extends Record<string, any>> implements IBaseRepository<TSchema> {
+export default class BaseRepository<TSchema extends Record<string, unknown>>
+    implements BaseRepositoryCRUD<TSchema>
+{
     private readonly model: Model<TSchema>;
     private readonly populateRefs: PopulatePath[];
 
     /**
-     * Creates a new BaseRepository instance.
+     * Creates a new repository instance.
      *
-     * @param params.model - The Mongoose model to manage.
-     * @param params.populateRefs - Optional default paths to populate in queries.
+     * @param model - The backing Mongoose model.
+     * @param populateRefs - Optional default populate reference paths.
      */
-    constructor(params: IBaseRepositoryConstructor<TSchema>) {
-        const { model, populateRefs = [] } = params;
-
+    constructor({model, populateRefs}: BaseRepositoryConstructor<TSchema>) {
         this.model = model;
-        this.populateRefs = populateRefs;
+        this.populateRefs = populateRefs ?? [];
     }
 
     /**
-     * Counts documents matching the provided filters.
+     * Counts documents matching optional filters.
      *
-     * @param params.filters - Optional filters to apply.
-     * @returns The number of documents matching the filters.
+     * @param filters - Optional MongoDB filter conditions.
+     * @returns Number of matching documents.
      */
-    async count(params?: BaseRepositoryCountParams<TSchema>): Promise<number> {
-        const { filters = {} } = params || {};
-        return this.model.countDocuments(filters);
+    async count({filters}: BaseRepositoryCountParams<TSchema> = {}): Promise<number> {
+        return this.model.countDocuments(filters ?? {});
     }
 
     /**
-     * Finds documents matching the provided filters.
+     * Finds documents matching the given query parameters.
      *
-     * @param params.filters - Optional filters to apply.
-     * @param params.populate - Whether to populate referenced paths.
-     * @param params.virtuals - Whether to include virtuals in lean queries.
-     * @param params.populatePath - Specific paths to populate instead of default.
-     * @param params.limit - Optional maximum number of results.
-     * @returns Array of documents matching the query.
+     * @param params.filters - Optional MongoDB filter conditions.
+     * @param params.options.populate - Enable population on this query.
+     * @param params.options.populatePaths - Override default populate paths.
+     * @param params.options.virtuals - Include virtuals via `lean({virtuals})`.
+     * @param params.options.limit - Optional maximum result count.
+     * @returns Array of documents matching the filters.
      */
-    async find(params?: BaseRepositoryFindParams<TSchema>): Promise<any> {
-        const { populate = false, virtuals = false, filters = {}, populatePath, limit } = params || {};
-        const query = this.model.find(filters);
+    async find(params: BaseRepositoryFindParams<TSchema> = {}): Promise<TSchema[]> {
+        const {filters, options: {populatePaths, populate, virtuals, limit} = {}} = params;
+        const query = this.model.find(filters ?? {});
 
         if (typeof limit === "number") query.limit(limit);
-        if (populate) query.populate(populatePath || this.populateRefs);
-        if (virtuals) query.lean({ virtuals: true });
+        if (populate) query.populate(populatePaths || this.populateRefs);
+        if (virtuals) query.lean({virtuals: true});
 
         return query;
     }
 
     /**
-     * Finds a document by its ID.
+     * Retrieves a document by its `_id`.
      *
-     * @param _id - The document ID.
-     * @param populate - Whether to populate referenced paths.
-     * @param populatePath - Specific paths to populate.
-     * @param virtuals - Whether to include virtuals in lean queries.
-     * @returns The document if found.
-     * @throws {HttpError} 404 if document is not found.
+     * @param params._id - ID of the target document.
+     * @param params.options.populate - Enable population for this query.
+     * @param params.options.populatePaths - Override default populate paths.
+     * @param params.options.virtuals - Enable virtuals through lean.
+     * @returns The found document.
+     * @throws 404 error if the document does not exist.
      */
-    async findById({ _id, populatePath, populate, virtuals = false }: BaseRepositoryFindByIDParams): Promise<any> {
+    async findById(params: BaseRepositoryFindByIDParams): Promise<TSchema> {
+        const {_id, options: {populatePaths, populate, virtuals} = {}} = params;
+
         try {
             const query = this.model.findById(_id);
-            if (populate) query.populate(populatePath || this.populateRefs);
-            if (virtuals) query.lean({ virtuals: true });
-            return query;
+
+            if (populate) query.populate(populatePaths || this.populateRefs);
+            if (virtuals) query.lean({virtuals: true});
+
+            return query.orFail();
         } catch (error: unknown) {
             this.throwFetchError(error);
         }
     }
 
     /**
-     * Creates a new document.
+     * Creates and persists a new document.
      *
-     * @param params.data - The document data to create.
-     * @param params.populate - Whether to populate referenced paths after creation.
-     * @param params.populatePath - Specific paths to populate.
-     * @param params.virtuals - Whether to include virtuals in lean queries.
-     * @returns The created document.
-     * @throws {ZodParseError|HttpError} On duplicate key or persistence error.
+     * @param params.data - Document fields to create.
+     * @param params.options.populate - Whether to populate after creation.
+     * @param params.options.populatePaths - Override default populate paths.
+     * @param params.options.virtuals - Convert to object with virtuals.
+     * @returns The created document (populated/virtualized if requested).
+     * @throws Duplicate index or persistence errors.
      */
-    async create(params: BaseRepositoryCreateParams<TSchema>): Promise<any> {
-        const { data, populatePath, populate, virtuals = false } = params;
+    async create(params: BaseRepositoryCreateParams<TSchema>): Promise<TSchema> {
+        const {data, options: {populatePaths, populate, virtuals} = {}} = params;
+
         try {
             const doc = new this.model(data);
             await doc.save();
-            if (populate) await doc.populate(populatePath || this.populateRefs);
-            if (virtuals) await doc.lean({ virtuals });
-            return doc;
+
+            if (populate) await doc.populate(populatePaths || this.populateRefs);
+
+            return virtuals ? doc.toObject({virtuals: true}) : doc;
         } catch (error: unknown) {
             this.throwPersistError(error);
         }
     }
 
     /**
-     * Updates an existing document by ID.
+     * Updates a document by `_id`.
      *
-     * @param params._id - The ID of the document to update.
-     * @param params.data - Fields to update.
-     * @param params.unset - Fields to unset.
-     * @param params.populate - Whether to populate referenced paths after update.
-     * @param params.populatePath - Specific paths to populate.
-     * @param params.virtuals - Whether to include virtuals in lean queries.
+     * @param params._id - ID of the document to update.
+     * @param params.data - Fields to set via `$set`.
+     * @param params.unset - Fields to remove via `$unset`.
+     * @param params.options.populate - Populate after update.
+     * @param params.options.populatePaths - Override default populate paths.
+     * @param params.options.virtuals - Include virtuals via lean.
      * @returns The updated document.
-     * @throws {ZodParseError|HttpError} On duplicate key, persistence, or not found error.
+     * @throws Duplicate key, persistence, or not-found errors.
      */
-    async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<any> {
-        const { _id, data, unset, populatePath, populate, virtuals = false } = params;
-        const updateObject: Record<string, any> = { $set: data };
+    async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<TSchema> {
+        const {_id, data, unset, options: {populatePaths, populate, virtuals} = {}} = params;
+
+        const updateObject: Record<string, unknown> = {$set: data};
         if (unset) updateObject.$unset = unset;
 
         try {
-            const query = this.model.findByIdAndUpdate(_id, updateObject, { new: true });
-            if (populate) query.populate(populatePath || this.populateRefs);
-            if (virtuals) query.lean({ virtuals });
+            const query = this.model.findByIdAndUpdate(_id, updateObject, {new: true});
+
+            if (populate) query.populate(populatePaths || this.populateRefs);
+            if (virtuals) query.lean({virtuals});
+
             return await query.orFail();
         } catch (error: unknown) {
             this.throwPersistError(error);
@@ -154,88 +163,87 @@ export default class BaseRepository<TSchema extends Record<string, any>> impleme
     }
 
     /**
-     * Deletes a document by its ID.
+     * Deletes a document by ID.
      *
-     * @param _id - The ID of the document to delete.
-     * @throws {HttpError} 404 if document is not found.
+     * @param _id - ID of the document to delete.
+     * @throws 404 if the document does not exist.
      */
-    async destroy({ _id }: BaseRepositoryDestroyParams): Promise<any> {
-        const doc = await this.model.findById({ _id });
+    async destroy({_id}: BaseRepositoryDestroyParams): Promise<void> {
+        const doc = await this.model.findById({_id});
         if (!doc) throw createHttpError(404, "Not found!");
+
         await doc.deleteOne();
     }
 
     /**
-     * Retrieves documents in a paginated format.
+     * Retrieves a paginated subset of documents.
      *
-     * @param params.page - The page number (1-based).
+     * @param params.page - 1-based page number.
      * @param params.perPage - Number of documents per page.
-     * @param params.filters - Optional filters to apply.
-     * @param params.sort - Optional sorting criteria.
-     * @param params.virtuals - Whether to include virtuals in lean queries.
-     * @param params.populate - Whether to populate referenced paths.
-     * @param params.populatePath - Specific paths to populate.
-     * @returns Array of documents for the requested page.
+     * @param params.filters - Optional MongoDB filter conditions.
+     * @param params.sort - Optional sort configuration.
+     * @param params.options.populate - Enable population.
+     * @param params.options.populatePaths - Override populate paths.
+     * @param params.options.virtuals - Include virtuals in lean results.
+     * @returns The documents on the requested page.
      */
-    async paginate(params: BaseRepositoryPaginationParams<TSchema>): Promise<any> {
-        const { page, perPage, filters = {}, sort = {}, virtuals = false, populatePath, populate } = params;
+    async paginate(params: BaseRepositoryPaginationParams<TSchema>): Promise<TSchema[]> {
+        const {page, perPage, filters, sort, options: {populatePaths, virtuals, populate} = {}} = params;
 
         const query = this.model
-            .find(filters)
-            .sort(sort)
+            .find(filters ?? {})
+            .sort(sort ?? {})
             .skip((page - 1) * perPage)
             .limit(perPage);
 
-        if (populate) query.populate(populatePath || this.populateRefs);
-        return query.lean(virtuals && { virtuals });
+        if (populate) query.populate(populatePaths || this.populateRefs);
+        if (virtuals) query.lean({virtuals});
+
+        return query;
     }
 
     /**
-     * Protected helper to throw duplicate key errors.
+     * Handles duplicate index errors.
      *
-     * Should be overridden by subclasses to provide model-specific
-     * field-level error messages.
+     * Subclasses may override this to map index names to friendly messages.
      *
-     * @param indexString - The MongoDB index name that was violated.
-     * @throws {Error} Default implementation throws a generic error.
+     * @param indexString - MongoDB index name that was violated.
+     * @throws A {@link DuplicateIndexError}.
      */
-    protected throwDuplicateError(indexString: string) {
-        throw new Error(`Duplicate Error: ${indexString}`);
+    protected throwDuplicateError(indexString: string): never {
+        throw new DuplicateIndexError({
+            message: `Duplicate Error: ${indexString}`,
+            index: indexString,
+            model: this.model.modelName,
+        });
     }
 
     /**
-     * Protected helper to throw fetch errors.
+     * Normalizes Mongoose fetch errors.
      *
-     * Converts Mongoose DocumentNotFoundError to HTTP 404 error.
+     * Converts `DocumentNotFoundError` to a standard 404.
      *
-     * @param error - The original error thrown by Mongoose.
-     * @throws {HttpError} 404 if document not found, otherwise rethrows original error.
+     * @param error - Error thrown during retrieval.
+     * @throws Http 404 or rethrows original error.
      */
-    protected throwFetchError(error: unknown): void {
+    protected throwFetchError(error: unknown): never {
         if (error instanceof Error && error.name === 'DocumentNotFoundError') {
             throw createHttpError(404, "Not found!");
-        } else {
-            throw error;
         }
+        throw error;
     }
 
     /**
-     * Protected helper to handle persistence errors.
+     * Normalizes persistence errors (duplicate keys, write errors).
      *
-     * Converts MongoDB duplicate key errors into calls to `throwDuplicateError`.
-     * Otherwise delegates to `throwFetchError`.
-     *
-     * @param error - The original error thrown by Mongoose during save or update.
-     * @throws {ZodParseError|HttpError} Based on the underlying error type.
+     * @param error - Error thrown during save/update operations.
+     * @throws Duplicate index or translated fetch error.
      */
-    protected throwPersistError(error: unknown): void {
+    protected throwPersistError(error: unknown): never {
         if (typeof error === "object" && error !== null && "code" in error && error.code === 11000) {
             const indexName = (error as any).errmsg.match(/index: (\S+)/)?.[1];
-            console.log("Error Index: ", indexName);
-
             this.throwDuplicateError(indexName);
-        } else {
-            this.throwFetchError(error);
         }
+        this.throwFetchError(error);
     }
 }

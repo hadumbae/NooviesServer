@@ -5,9 +5,9 @@ import BaseCRUDController from "../../../shared/controller/base-crud-controller/
 import type ISeatMap from "../model/SeatMap.interface.js";
 import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type SeatMapService from "../service/seat-map-service/SeatMapService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 
@@ -29,7 +29,7 @@ export interface ISeatMapControllerConstructor extends IBaseCRUDControllerConstr
  *
  * Extends the base CRUD controller with seat map-specific methods.
  */
-export interface ISeatMapController extends IBaseCRUDController {
+export interface ISeatMapController extends BaseControllerCRUDMethods {
     /**
      * Creates a seat map for a specific showing.
      *

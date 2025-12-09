@@ -4,9 +4,9 @@ import type ISeat from "../model/Seat.interface.js";
 import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
 import type SeatQueryService from "../service/query-service/SeatQueryService.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { SeatsByRowSubmitData } from "../schema/seats/SeatInput.types.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type { SeatQueryMatchFilters } from "../schema/query/SeatQueryOption.types.js";
@@ -29,9 +29,9 @@ export interface ISeatControllerConstructor extends IBaseCRUDControllerConstruct
 /**
  * Public interface for {@link SeatController}.
  *
- * Extends {@link IBaseCRUDController} and can be extended to add additional seat-specific endpoints.
+ * Extends {@link BaseControllerCRUDMethods} and can be extended to add additional seat-specific endpoints.
  */
-export interface ISeatController extends IBaseCRUDController {}
+export interface ISeatController extends BaseControllerCRUDMethods {}
 
 /**
  * Controller responsible for managing {@link ISeat} documents.

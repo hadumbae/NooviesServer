@@ -1,110 +1,88 @@
-import { type FilterQuery, type SortOrder, Types } from "mongoose";
-import type { PopulatePath } from "../types/mongoose/PopulatePath.js";
+import {type FilterQuery, type SortOrder, Types} from "mongoose";
+import type {RequestOptions} from "../types/request-options/RequestOptions.js";
 
 /**
- * Parameters for counting documents in a repository.
- *
- * @template TSchema - Type of the Mongoose document.
+ * Base parameter shapes for repository methods.
+ * Generic types reflect the Mongoose document type.
+ */
+
+/**
+ * Parameters for counting documents.
+ * @template TSchema - Mongoose document type.
  */
 export type BaseRepositoryCountParams<TSchema = Record<string, any>> = {
-    /** Optional filters to apply when counting documents. */
-    filters?: Record<string, unknown>;
+    /** Optional filter conditions. */
+    filters?: FilterQuery<TSchema>;
 };
 
 /**
- * Parameters for finding multiple documents in a repository.
- *
- * @template TSchema - Type of the Mongoose document.
+ * Parameters for finding multiple documents.
+ * @template TSchema - Mongoose document type.
  */
 export type BaseRepositoryFindParams<TSchema = Record<string, any>> = {
-    /** Optional filters to narrow the search. */
+    /** Filter conditions for the query. */
     filters?: FilterQuery<TSchema>;
-    /** Specific paths to populate instead of the repository's default. */
-    populatePath?: PopulatePath[];
-    /** Whether to populate referenced paths. Defaults to `false`. */
-    populate?: boolean;
-    /** Whether to include virtual fields in lean queries. Defaults to `false`. */
-    virtuals?: boolean;
-    /** Optional limit for the number of returned documents. */
-    limit?: number;
+    /** Optional request-level behavior flags. */
+    options?: RequestOptions;
 };
 
 /**
- * Parameters for finding a document by its ID.
+ * Parameters for finding a document by ID.
  */
 export type BaseRepositoryFindByIDParams = {
-    /** The MongoDB ObjectId of the document. */
+    /** Target document ID. */
     _id: Types.ObjectId;
-    /** Whether to include virtual fields in lean queries. */
-    virtuals?: boolean;
-    /** Whether to populate referenced paths. */
-    populate?: boolean;
-    /** Specific paths to populate instead of the repository's default. */
-    populatePath?: PopulatePath[];
+    /** Optional request-level behavior flags. */
+    options?: RequestOptions;
 };
 
 /**
- * Parameters for creating a new document in the repository.
- *
- * @template TSchema - Type of the Mongoose document.
+ * Parameters for creating a document.
+ * @template TSchema - Mongoose document type.
  */
 export type BaseRepositoryCreateParams<TSchema = Record<string, any>> = {
     /** Partial document data to create. */
     data: Partial<TSchema>;
-    /** Specific paths to populate after creation. */
-    populatePath?: PopulatePath[];
-    /** Whether to populate referenced paths after creation. */
-    populate?: boolean;
-    /** Whether to include virtual fields in lean queries after creation. */
-    virtuals?: boolean;
+    /** Optional request-level behavior flags. */
+    options?: RequestOptions;
 };
 
 /**
- * Parameters for updating an existing document in the repository.
- *
- * @template TSchema - Type of the Mongoose document.
+ * Parameters for updating a document.
+ * @template TSchema - Mongoose document type.
  */
 export type BaseRepositoryUpdateParams<TSchema = Record<string, any>> = {
-    /** The MongoDB ObjectId of the document to update. */
+    /** Document ID to update. */
     _id: Types.ObjectId;
     /** Fields to update. */
     data: Partial<TSchema>;
-    /** Fields to unset (remove). */
+    /** Fields to remove. */
     unset?: Partial<TSchema>;
-    /** Specific paths to populate after update. */
-    populatePath?: string[];
-    /** Whether to populate referenced paths after update. */
-    populate?: boolean;
-    /** Whether to include virtual fields in lean queries after update. */
-    virtuals?: boolean;
+    /** Optional request-level behavior flags. */
+    options?: RequestOptions;
 };
 
 /**
- * Parameters for deleting a document from the repository.
+ * Parameters for deleting a document.
  */
 export type BaseRepositoryDestroyParams = {
-    /** The MongoDB ObjectId of the document to delete. */
+    /** Document ID to delete. */
     _id: Types.ObjectId;
 };
 
 /**
- * Parameters for paginating documents in the repository.
- *
- * @template TSchema - Type of the Mongoose document.
+ * Parameters for paginated document queries.
+ * @template TSchema - Mongoose document type.
  */
 export type BaseRepositoryPaginationParams<TSchema = Record<string, any>> = {
-    /** The page number (1-based). */
+    /** 1-based page number. */
     page: number;
     /** Number of documents per page. */
     perPage: number;
-    /** Sorting criteria. Can be a string, array, or object. */
+    /** Sort criteria (string, tuple array, or object). */
     sort?: string | [string, SortOrder][] | Record<string, SortOrder>;
-    /** Optional filters to narrow the results. */
+    /** Optional filter conditions. */
     filters?: FilterQuery<TSchema>;
-    /** Specific paths to populate. */
-    populatePath?: string[];
-    /** Whether to populate referenced paths. */
-    populate?: boolean;
-    /** Whether to include virtual fields in lean queries. */
-    virtuals?: boolean;
+    /** Optional request-level behavior flags. */
+    options?: RequestOptions;
 };

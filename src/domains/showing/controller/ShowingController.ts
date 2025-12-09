@@ -4,9 +4,9 @@ import type IShowing from "../model/IShowing.js";
 import ShowingQueryService from "../service/ShowingQueryService.js";
 import type ShowingCRUDService from "../service/ShowingCRUDService.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {ShowingInput} from "../schema/ShowingInputSchema.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 
@@ -17,7 +17,7 @@ import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js
  * Extends the base CRUD controller interface to provide
  * showing-specific controller behavior.
  */
-export interface IShowingController extends IBaseCRUDController {}
+export interface IShowingController extends BaseControllerCRUDMethods {}
 
 /**
  * Constructor parameters for {@link ShowingController}.

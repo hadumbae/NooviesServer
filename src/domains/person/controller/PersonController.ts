@@ -6,9 +6,9 @@ import type PersonImageService from "../services/image-service/PersonImageServic
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type { PersonQueryMatchFilters } from "../schema/query/PersonQueryOption.types.js";
 import type {
-    IBaseCRUDController,
+    BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
-} from "../../../shared/controller/base-crud-controller/BaseCRUDController.types.js";
+} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
@@ -29,11 +29,11 @@ interface IPersonControllerConstructor extends IBaseCRUDControllerConstructor<IP
 /**
  * Interface defining additional methods for {@link PersonController}.
  *
- * Extends {@link IBaseCRUDController} with endpoints for profile image management:
+ * Extends {@link BaseControllerCRUDMethods} with endpoints for profile image management:
  * - Updating profile images
  * - Deleting profile images
  */
-export interface IPersonController extends IBaseCRUDController {
+export interface IPersonController extends BaseControllerCRUDMethods {
     /**
      * Updates a person's profile image.
      *
@@ -117,7 +117,7 @@ export default class PersonController extends BaseCRUDController<IPerson> implem
         const profileImage = req.file as Express.Multer.File;
 
         await this.imageService.updateProfileImage({ personId, image: profileImage });
-        const person = await this.repository.findById({ _id: personId, populate, virtuals });
+        const person = await this.repository.findById({ _id: personId, options: {populate, virtuals} });
 
         return res.status(200).json(person);
     }
