@@ -73,8 +73,11 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
      */
     async find(params: BaseRepositoryFindParams<TSchema> = {}): Promise<TSchema[]> {
         const {filters, options: {populatePaths, populate, virtuals, limit} = {}} = params;
+
+        // $ Find Documents
         const query = this.model.find(filters ?? {});
 
+        // $ Apply Query Options
         if (typeof limit === "number") query.limit(limit);
         if (populate) query.populate(populatePaths || this.populateRefs);
         if (virtuals) query.lean({virtuals: true});
@@ -98,6 +101,7 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
         try {
             const query = this.model.findById(_id);
 
+            // $ Populate, Append Virtuals
             if (populate) query.populate(populatePaths || this.populateRefs);
             if (virtuals) query.lean({virtuals: true});
 
@@ -121,11 +125,12 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
         const {data, options: {populatePaths, populate, virtuals} = {}} = params;
 
         try {
+            // $ Save Document
             const doc = new this.model(data);
             await doc.save();
 
+            // $ Populate, Append Virtuals
             if (populate) await doc.populate(populatePaths || this.populateRefs);
-
             return virtuals ? doc.toObject({virtuals: true}) : doc;
         } catch (error: unknown) {
             this.throwPersistError(error);
@@ -147,12 +152,14 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
     async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<TSchema> {
         const {_id, data, unset, options: {populatePaths, populate, virtuals} = {}} = params;
 
+        // $ Create Update Object
         const updateObject: Record<string, unknown> = {$set: data};
         if (unset) updateObject.$unset = unset;
 
         try {
             const query = this.model.findByIdAndUpdate(_id, updateObject, {new: true});
 
+            // $ Populate, Append Virtuals
             if (populate) query.populate(populatePaths || this.populateRefs);
             if (virtuals) query.lean({virtuals});
 
@@ -169,9 +176,11 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
      * @throws 404 if the document does not exist.
      */
     async destroy({_id}: BaseRepositoryDestroyParams): Promise<void> {
+        // $ Find Or Fail
         const doc = await this.model.findById({_id});
         if (!doc) throw createHttpError(404, "Not found!");
 
+        // $ Delete
         await doc.deleteOne();
     }
 
@@ -190,12 +199,14 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
     async paginate(params: BaseRepositoryPaginationParams<TSchema>): Promise<TSchema[]> {
         const {page, perPage, filters, sort, options: {populatePaths, virtuals, populate} = {}} = params;
 
+        // $ Paginated Query, With Sorting And Filters
         const query = this.model
             .find(filters ?? {})
             .sort(sort ?? {})
             .skip((page - 1) * perPage)
             .limit(perPage);
 
+        // $ Populate, Append Virtuals
         if (populate) query.populate(populatePaths || this.populateRefs);
         if (virtuals) query.lean({virtuals});
 
@@ -227,9 +238,12 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
      * @throws Http 404 or rethrows original error.
      */
     protected throwFetchError(error: unknown): never {
+        // $ Not Found
         if (error instanceof Error && error.name === 'DocumentNotFoundError') {
             throw createHttpError(404, "Not found!");
         }
+
+        // $ General
         throw error;
     }
 
@@ -240,10 +254,13 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
      * @throws Duplicate index or translated fetch error.
      */
     protected throwPersistError(error: unknown): never {
+        // $ Index Uniqueness
         if (typeof error === "object" && error !== null && "code" in error && error.code === 11000) {
             const indexName = (error as any).errmsg.match(/index: (\S+)/)?.[1];
             this.throwDuplicateError(indexName);
         }
-        this.throwFetchError(error);
+
+        // $ General
+        throw error;
     }
 }
