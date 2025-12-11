@@ -2,10 +2,6 @@ import { Model, model } from "mongoose";
 import type IShowing from "./IShowing.js";
 import { ShowingSchema } from "./Showing.schema.js";
 
-import "./Showing.middleware.js";
-import "./Showing.virtuals.js";
-import "./Showing.indexes.js";
-
 /**
  * @fileoverview
  * Defines and exports the Mongoose `Showing` model.
@@ -25,7 +21,7 @@ import "./Showing.indexes.js";
  */
 
 import "./Showing.virtuals.js";
-import "./Showing.middleware.js";
+import "./Showing.indexes.js";
 
 /**
  * The Mongoose model for `Showing` documents.
