@@ -1,3 +1,20 @@
+/**
+ * @file BaseCRUDController.ts
+ * @summary
+ * Generic controller implementing standard CRUD operations and
+ * aggregation-based querying for Mongoose entities.
+ *
+ * @description
+ * This class centralizes all reusable controller behavior:
+ * - Basic CRUD (find, create, update, delete)
+ * - Pagination utilities
+ * - Population/virtual field control
+ * - Aggregate pipeline queries via {@link AggregateQueryService}
+ *
+ * Designed to be subclassed per entity while keeping controllers thin,
+ * predictable, and consistent.
+ */
+
 import {type Request, type Response} from "express";
 import type BaseRepository from "../../repository/BaseRepository.js";
 import BaseController from "../BaseController.js";
@@ -5,39 +22,36 @@ import isValidObjectId from "../../utility/mongoose/isValidObjectId.js";
 import type {PopulationPipelineStages} from "../../types/mongoose/AggregatePipelineStages.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {AggregateQueryParams} from "../../services/aggregate/AggregateQueryService.types.js";
-import type {BaseControllerCRUDMethods, IBaseCRUDControllerConstructor} from "./BaseControllerCRUDMethods.js";
+import type {
+    BaseControllerCRUDMethods,
+    IBaseCRUDControllerConstructor,
+} from "./BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
+import {Types} from "mongoose";
 
 /**
- * A generic base controller providing standard CRUD operations
- * and aggregation query support for Mongoose-based entities.
+ * Base controller implementing CRUD and aggregation utilities.
  *
- * Designed for reuse across different entity controllers by
- * delegating persistence logic to a {@link BaseRepository} and
- * advanced querying to an {@link AggregateQueryService}.
- *
- * @typeParam TSchema - The schema type handled by the controller.
- * @typeParam TMatchFilters - The type representing query match filters.
+ * @typeParam TSchema - Mongoose document type with required `_id`.
+ * @typeParam TMatchFilters - Shape of match filters parsed for queries.
  */
 export default class BaseCRUDController<
-    TSchema extends Record<string, any>,
+    TSchema extends { _id: Types.ObjectId },
     TMatchFilters = any,
 > extends BaseController implements BaseControllerCRUDMethods<TSchema, TMatchFilters> {
-    /** Repository instance for direct database interactions (create, read, update, delete). */
+    /** Repository providing the entity’s CRUD operations. */
     protected readonly repository: BaseRepository<TSchema>;
 
-    /** Aggregate query service for handling queries that require pipelines, population, and pagination. */
+    /** Aggregation service offering pipeline, filtering, sorting, and pagination. */
     protected readonly aggregateService: AggregateQueryService<TSchema>;
 
     /**
-     * Creates a new instance of {@link BaseCRUDController}.
+     * Creates a new CRUD controller instance.
      *
-     * @param params - Constructor parameters including the repository, aggregate service,
-     * and options passed to the {@link BaseController}.
+     * @param params - Includes repository, aggregate service, and BaseController options.
      */
     constructor(params: IBaseCRUDControllerConstructor<TSchema>) {
         const {repository, aggregateService, ...superParams} = params;
-
         super(superParams);
 
         this.repository = repository;
@@ -45,11 +59,9 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Retrieves all items with optional population, virtuals, and limit options.
+     * Retrieve all items, with optional population, virtuals, and limits.
      *
-     * @param req - Express request object.
-     * @param res - Express response object.
-     * @returns A JSON response containing all items.
+     * @returns A JSON array of all matching items.
      */
     async all(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals, limit} = this.queryUtils.fetchOptionsFromQuery(req);
@@ -58,11 +70,9 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Retrieves a paginated list of items.
+     * Retrieve paginated items.
      *
-     * @param req - Express request object.
-     * @param res - Express response object.
-     * @returns A JSON response containing total item count and the paginated items.
+     * @returns A JSON object containing `totalItems` and the current page of items.
      */
     async paginated(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
@@ -72,53 +82,43 @@ export default class BaseCRUDController<
         const items = await this.repository.paginate({
             page,
             perPage,
-            options: {populate, virtuals}
+            options: {populate, virtuals},
         });
 
         return res.status(200).json({totalItems, items});
     }
 
     /**
-     * Creates a new item using validated request body.
+     * Create a new item from the validated request body.
      *
-     * @param req - Express request object containing a validated body (`req.validatedBody`).
-     * @param res - Express response object.
-     * @returns A JSON response containing the created item.
+     * @returns A JSON object containing the newly created item.
      */
     async create(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
         const data = req.validatedBody as Partial<TSchema>;
 
         const item = await this.repository.create({data, options: {populate, virtuals}});
-
         return res.status(200).json(item);
     }
 
     /**
-     * Retrieves a single item by its MongoDB `_id`.
+     * Retrieve a single item by its MongoDB `_id`.
      *
-     * @param req - Express request object containing `_id` in params.
-     * @param res - Express response object.
-     * @returns A JSON response containing the found item.
-     * @throws If `_id` is not a valid MongoDB ObjectId.
+     * @throws If the provided `_id` is invalid.
      */
-    async get(req: Request<TSchema>, res: Response): Promise<Response> {
+    async get(req: Request, res: Response): Promise<Response> {
         const {_id: entityID} = req.params;
         const _id = isValidObjectId(entityID);
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
         const item = await this.repository.findById({_id, options: {populate, virtuals}});
-
         return res.status(200).json(item);
     }
 
     /**
-     * Updates an existing item by its MongoDB `_id`.
+     * Update an item by its MongoDB `_id` using validated body data.
      *
-     * @param req - Express request object containing `_id` in params and validated body (`req.validatedBody`).
-     * @param res - Express response object.
-     * @returns A JSON response containing the updated item.
-     * @throws If `_id` is not a valid MongoDB ObjectId.
+     * @throws If the provided `_id` is invalid.
      */
     async update(req: Request, res: Response): Promise<Response> {
         const {_id: entityID} = req.params;
@@ -129,34 +129,26 @@ export default class BaseCRUDController<
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
         const item = await this.repository.update({_id, data, unset, options: {populate, virtuals}});
-
         return res.status(200).json(item);
     }
 
     /**
-     * Deletes an item by its MongoDB `_id`.
+     * Delete an item by its MongoDB `_id`.
      *
-     * @param req - Express request object containing `_id` in params.
-     * @param res - Express response object.
-     * @returns A JSON response confirming deletion.
-     * @throws If `_id` is not a valid MongoDB ObjectId.
+     * @throws If the provided `_id` is invalid.
      */
     async delete(req: Request, res: Response): Promise<Response> {
         const {_id: entityID} = req.params;
         const _id = isValidObjectId(entityID);
 
         await this.repository.destroy({_id});
-
         return res.status(200).json({message: "Deleted."});
     }
 
     /**
-     * Executes an aggregate query using {@link AggregateQueryService}
-     * with support for pagination, filters, and population pipelines.
+     * Execute an aggregate query with filters, sorts, pipelines, and pagination.
      *
-     * @param req - Express request object.
-     * @param res - Express response object.
-     * @returns A JSON response containing aggregate query results.
+     * @returns A JSON response containing aggregated results.
      */
     async query(req: Request, res: Response): Promise<Response> {
         const {paginated, ...optionParams} = this.queryUtils.fetchOptionsFromQuery(req);
@@ -173,16 +165,12 @@ export default class BaseCRUDController<
             : {...baseParams, paginated: false};
 
         const data = await this.aggregateService.query(queryParams);
-
         return res.status(200).json(data);
     }
 
     /**
-     * Builds query options for aggregate queries.
-     * Override this in subclasses to provide entity-specific filters and sorts.
-     *
-     * @param req - Express request object.
-     * @returns Query option types for the given request.
+     * Build query-option metadata (filters, sorts, etc.).
+     * Override in subclasses to support entity-specific logic.
      */
     fetchQueryOptions(req: Request): QueryOptionTypes<TSchema, TMatchFilters> {
         return {
@@ -191,10 +179,8 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Builds population pipelines for aggregate queries.
-     * Override this in subclasses to define custom population logic.
-     *
-     * @returns An array of population pipeline stages.
+     * Build population pipeline stages for aggregate queries.
+     * Override in subclasses to support entity-specific lookups.
      */
     fetchPopulatePipelines(): PopulationPipelineStages {
         return [];

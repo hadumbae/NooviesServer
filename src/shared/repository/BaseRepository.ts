@@ -1,4 +1,4 @@
-import {Error, type Model} from "mongoose";
+import {Error, type Model, Types} from "mongoose";
 import createHttpError from "http-errors";
 import type {PopulatePath} from "../types/mongoose/PopulatePath.js";
 import type BaseRepositoryCRUD from "./BaseRepositoryCRUD.js";
@@ -34,7 +34,7 @@ interface BaseRepositoryConstructor<TSchema> {
  *
  * @template TSchema - Mongoose document type handled by the repository.
  */
-export default class BaseRepository<TSchema extends Record<string, unknown>>
+export default class BaseRepository<TSchema extends { _id: Types.ObjectId }>
     implements BaseRepositoryCRUD<TSchema>
 {
     private readonly model: Model<TSchema>;
@@ -74,10 +74,10 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
     async find(params: BaseRepositoryFindParams<TSchema> = {}): Promise<TSchema[]> {
         const {filters, options: {populatePaths, populate, virtuals, limit} = {}} = params;
 
-        // $ Find Documents
+        // --- Find Documents ---
         const query = this.model.find(filters ?? {});
 
-        // $ Apply Query Options
+        // --- Apply Query Options ---
         if (typeof limit === "number") query.limit(limit);
         if (populate) query.populate(populatePaths || this.populateRefs);
         if (virtuals) query.lean({virtuals: true});
@@ -101,10 +101,11 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
         try {
             const query = this.model.findById(_id);
 
-            // $ Populate, Append Virtuals
+            // --- Populate, Append Virtuals ---
             if (populate) query.populate(populatePaths || this.populateRefs);
             if (virtuals) query.lean({virtuals: true});
 
+            // --- Fetch Or Fail ---
             return query.orFail();
         } catch (error: unknown) {
             this.throwFetchError(error);
@@ -125,13 +126,16 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
         const {data, options: {populatePaths, populate, virtuals} = {}} = params;
 
         try {
-            // $ Save Document
-            const doc = new this.model(data);
-            await doc.save();
+            // --- Save Document ---
+            const doc = await this.model.create(data);
+            const query = this.model.findById(doc._id);
 
-            // $ Populate, Append Virtuals
-            if (populate) await doc.populate(populatePaths || this.populateRefs);
-            return virtuals ? doc.toObject({virtuals: true}) : doc;
+            // --- Populate, Append Virtuals ---
+            if (populate) query.populate(populatePaths || this.populateRefs);
+            if (virtuals) query.lean({virtuals: true});
+
+            // --- Fetch Or Fail ---
+            return query.orFail();
         } catch (error: unknown) {
             this.throwPersistError(error);
         }
@@ -152,17 +156,18 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
     async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<TSchema> {
         const {_id, data, unset, options: {populatePaths, populate, virtuals} = {}} = params;
 
-        // $ Create Update Object
+        // --- Create Update Object ---
         const updateObject: Record<string, unknown> = {$set: data};
         if (unset) updateObject.$unset = unset;
 
         try {
             const query = this.model.findByIdAndUpdate(_id, updateObject, {new: true});
 
-            // $ Populate, Append Virtuals
+            // --- Populate, Append Virtuals ---
             if (populate) query.populate(populatePaths || this.populateRefs);
             if (virtuals) query.lean({virtuals});
 
+            // --- Fetch Or Fail ---
             return await query.orFail();
         } catch (error: unknown) {
             this.throwPersistError(error);
@@ -176,11 +181,11 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
      * @throws 404 if the document does not exist.
      */
     async destroy({_id}: BaseRepositoryDestroyParams): Promise<void> {
-        // $ Find Or Fail
+        // --- Find Or Fail ---
         const doc = await this.model.findById({_id});
         if (!doc) throw createHttpError(404, "Not found!");
 
-        // $ Delete
+        // --- Delete ---
         await doc.deleteOne();
     }
 
@@ -199,14 +204,14 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
     async paginate(params: BaseRepositoryPaginationParams<TSchema>): Promise<TSchema[]> {
         const {page, perPage, filters, sort, options: {populatePaths, virtuals, populate} = {}} = params;
 
-        // $ Paginated Query, With Sorting And Filters
+        // --- Paginated Query, With Sorting And Filters ---
         const query = this.model
             .find(filters ?? {})
             .sort(sort ?? {})
             .skip((page - 1) * perPage)
             .limit(perPage);
 
-        // $ Populate, Append Virtuals
+        // --- Populate, Append Virtuals ---
         if (populate) query.populate(populatePaths || this.populateRefs);
         if (virtuals) query.lean({virtuals});
 
@@ -238,12 +243,12 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
      * @throws Http 404 or rethrows original error.
      */
     protected throwFetchError(error: unknown): never {
-        // $ Not Found
+        // --- Not Found ---
         if (error instanceof Error && error.name === 'DocumentNotFoundError') {
             throw createHttpError(404, "Not found!");
         }
 
-        // $ General
+        // --- General ---
         throw error;
     }
 
@@ -254,13 +259,18 @@ export default class BaseRepository<TSchema extends Record<string, unknown>>
      * @throws Duplicate index or translated fetch error.
      */
     protected throwPersistError(error: unknown): never {
-        // $ Index Uniqueness
+        // --- Index Uniqueness ---
         if (typeof error === "object" && error !== null && "code" in error && error.code === 11000) {
             const indexName = (error as any).errmsg.match(/index: (\S+)/)?.[1];
             this.throwDuplicateError(indexName);
         }
 
-        // $ General
+        // --- Failure In Fetching Created Document ---
+        if (error instanceof Error && error.name === 'DocumentNotFoundError') {
+            throw createHttpError(500, "An error occurred. Please try again.");
+        }
+
+        // --- General ---
         throw error;
     }
 }

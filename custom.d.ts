@@ -1,14 +1,15 @@
 import {Types} from "mongoose";
 
 declare module "express" {
-    export interface Request<TSchema = any> {
+    export interface Request {
         authUserID?: Types.ObjectId | string;
         authUserAdmin?: boolean;
 
-        unsetFields?: Partial<TSchema>;
-        validatedBody?: Partial<TSchema>;
+        validatedBody?: any;
         validatedParams?: Record<any, any>;
         validatedQuery?: Record<any, any>;
         validatedFiles?: [];
+
+        unsetFields?: any;
     }
 }

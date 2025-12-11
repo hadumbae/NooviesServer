@@ -1,102 +1,136 @@
+/**
+ * @file BaseControllerCRUDMethods.ts
+ * @summary
+ * Contracts defining the standard CRUD and query capabilities
+ * shared by all generic Mongoose-based controllers.
+ *
+ * @description
+ * These interfaces formalize the API expected from CRUD controllers:
+ * - Basic item operations (create, read, update, delete)
+ * - Pagination utilities
+ * - Aggregate query execution
+ * - Query-option parsing (filters, sorts, limits)
+ * - Population pipeline configuration
+ *
+ * The goal is to provide a consistent, type-safe structure that all controllers
+ * can implement while still allowing specialized logic via generics.
+ */
+
 import type {Request, Response} from "express";
 import type {PopulationPipelineStages} from "../../types/mongoose/AggregatePipelineStages.js";
 import type {IBaseControllerConstructor} from "../BaseController.js";
 import type BaseRepository from "../../repository/BaseRepository.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
+import {Types} from "mongoose";
 
 /**
- * Contract for generic CRUD controllers.
- * Provides standard CRUD + query utilities for Mongoose entities.
+ * Standard CRUD and query methods available to all entity controllers.
  *
- * @template TSchema - Document schema type.
- * @template TMatchFilters - Type used for query filters.
+ * @template TSchema - Mongoose document schema with required `_id`.
+ * @template TMatchFilters - Filter shape used in query-option parsing.
  */
 export interface BaseControllerCRUDMethods<
-    TSchema = Record<string, any>,
+    TSchema extends {_id: Types.ObjectId},
     TMatchFilters = any,
 > {
     /**
-     * Fetch all items, optionally populated or limited.
-     * @param req - Express request object.
-     * @param res - Express response object.
-     * @returns Express response containing all items.
+     * Fetch all items with optional population or limits.
+     *
+     * @param req - Express request.
+     * @param res - Express response.
+     * @returns A response containing all matching items.
      */
     all(req: Request, res: Response): Promise<Response>;
 
     /**
      * Fetch paginated items.
-     * @param req - Express request object.
-     * @param res - Express response object.
-     * @returns Express response with pagination metadata and items.
+     *
+     * Expects pagination parameters in the request (e.g., `page`, `limit`).
+     *
+     * @param req - Express request.
+     * @param res - Express response.
+     * @returns A response including items and pagination metadata.
      */
     paginated(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Create a new item.
-     * @param req - Express request containing validated body.
-     * @param res - Express response object.
-     * @returns Express response with the created item.
+     * Create a new item using validated request body data.
+     *
+     * @param req - Express request with validated body.
+     * @param res - Express response.
+     * @returns A response containing the created item.
      */
     create(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Get a single item by its `_id`.
-     * @param req - Express request containing `_id` param.
-     * @param res - Express response object.
-     * @returns Express response with the found item.
+     * Retrieve one item by its `_id`.
+     *
+     * @param req - Express request with an `_id` route param.
+     * @param res - Express response.
+     * @returns A response containing the found item, if any.
      */
-    get(req: Request<TSchema>, res: Response): Promise<Response>;
+    get(req: Request, res: Response): Promise<Response>;
 
     /**
      * Update an item by its `_id`.
-     * @param req - Express request containing `_id` param and update body.
-     * @param res - Express response object.
-     * @returns Express response with the updated item.
+     *
+     * @param req - Express request containing the `_id` param and the update body.
+     * @param res - Express response.
+     * @returns A response containing the updated item.
      */
-    update(req: Request<TSchema>, res: Response): Promise<Response>;
+    update(req: Request, res: Response): Promise<Response>;
 
     /**
      * Delete an item by `_id`.
-     * @param req - Express request containing `_id` param.
-     * @param res - Express response object.
-     * @returns Express response indicating deletion success.
+     *
+     * @param req - Express request with `_id` param.
+     * @param res - Express response.
+     * @returns A response confirming deletion.
      */
     delete(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Execute an aggregate query with filters, sorts, pipelines, and pagination.
+     * Execute a fully configurable aggregate query:
+     * filters, sorting, pipelines, pagination, and lookup population.
+     *
      * @param req - Express request containing query parameters.
-     * @param res - Express response object.
-     * @returns Express response with query results.
+     * @param res - Express response.
+     * @returns A response with processed aggregation results.
      */
     query(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Parse query options (filters, sorts, etc.) from the request.
-     * @param req - Express request object.
-     * @returns Parsed query option parameters.
+     * Parse filters, sorts, pagination, and other query options from the request.
+     *
+     * @param req - Express request.
+     * @returns A structured and validated set of query options.
      */
     fetchQueryOptions(req: Request): QueryOptionTypes<TSchema, TMatchFilters>;
 
     /**
-     * Provide population pipelines for aggregate queries.
-     * @returns Array of population pipeline stages.
+     * Provide Mongoose aggregation pipeline stages that populate related entities.
+     *
+     * Used by `query()` to assemble a full pipeline.
+     *
+     * @returns Population-related pipeline stages.
      */
     fetchPopulatePipelines(): PopulationPipelineStages;
 }
 
 /**
- * Constructor parameters for {@link BaseCRUDController}.
+ * Constructor parameters for a CRUD controller subclass.
  *
- * @template TSchema - Document schema type handled by the controller.
+ * Includes the required repository and aggregate query service.
+ *
+ * @template TSchema - Mongoose document schema handled by the controller.
  */
 export interface IBaseCRUDControllerConstructor<
-    TSchema extends Record<string, any>
+    TSchema extends { _id: Types.ObjectId }
 > extends IBaseControllerConstructor {
-    /** Repository instance for CRUD operations. */
+    /** Repository responsible for the entity’s CRUD operations. */
     repository: BaseRepository<TSchema>;
 
-    /** Aggregate query service for pipeline-based queries. */
+    /** Service providing configurable aggregate query execution. */
     aggregateService: AggregateQueryService<TSchema>;
 }
