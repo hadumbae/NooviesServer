@@ -1,17 +1,18 @@
 /**
  * @file ShowingServiceProvider.ts
- * @description
- * Centralized service provider for all Showing-related components.
+ * @summary Centralized service provider for the Showing module.
  *
- * This provider wires together:
- * - The Mongoose Showing model.
+ * @description
+ * Wires together all Showing-related components, including:
+ * - The Mongoose `Showing` model.
  * - Repository and data-access utilities.
  * - CRUD, query, and aggregation services.
- * - Lifecycle middleware (e.g., seat-map creation and cleanup).
- * - The Showing controller for HTTP routing.
+ * - Lifecycle middleware (e.g. seat-map creation and cleanup).
+ * - The HTTP controller exposing Showing endpoints.
  *
- * By exposing a single static {@link register} method, the provider acts as a
- * lightweight dependency-injection container for the Showings module.
+ * This provider functions as a lightweight dependency container,
+ * ensuring all Showing components are constructed and registered
+ * in a consistent, predictable order.
  */
 
 import Showing from "../model/Showing.model.js";
@@ -26,37 +27,63 @@ import ShowingLifestyleService from "../service/lifestyle-service/ShowingLifesty
 import {ShowingSchema} from "../model/Showing.schema.js";
 
 /**
- * Registers all Showing-related services, repository layers, middleware, and controllers.
+ * @summary Service provider for the Showing module.
  *
  * @remarks
- * This class exists as a convenience bootstrapper for the Showings module.
- * It centralizes construction of every component that depends on the Showing model:
+ * This class centralizes construction and registration of all components
+ * that depend on the `Showing` model. It exists purely as a bootstrapper
+ * and contains no business logic of its own.
  *
- * - Repository setup with default populate paths.
- * - CRUD, query, and aggregation services.
- * - Lifecycle middleware that manages seat-map creation and cleanup.
- * - The HTTP controller exposing all Showing endpoints.
- *
- * @example
- * ```ts
- * const { controllers } = ShowingServiceProvider.register();
- * app.use("/api/showings", controllers.controller.router);
- * ```
+ * Responsibilities:
+ * - Register Showing lifecycle middleware.
+ * - Construct repositories and services.
+ * - Wire dependencies into the HTTP controller.
  */
 export default class ShowingServiceProvider {
     /**
-     * Initialize and bind all Showing components.
+     * Registers Showing lifecycle middleware and schema hooks.
      *
-     * @returns Object containing:
+     * @remarks
+     * This method attaches all lifecycle hooks to `ShowingSchema`,
+     * including seat-map creation on insert and cascading cleanup
+     * on deletion.
      *
-     * - **model**: Mongoose Showing model.
-     * - **repository**: Configured `BaseRepository`.
-     * - **services**:
-     *   - `crudService`: Create/update logic with validations.
-     *   - `queryService`: Filtering and list utilities.
-     *   - `aggregateService`: Analytics and aggregation pipelines.
-     * - **controllers**:
-     *   - `controller`: Main HTTP controller for CRUD and query endpoints.
+     * It is intentionally separated from {@link register} so that
+     * middleware can be initialized during model import.
+     *
+     * @returns Registered middleware dependencies.
+     */
+    static registerMiddleware() {
+        // --- Lifecycle Middleware ---
+        const seatMapService = new SeatMapService();
+        const middlewareService = new ShowingLifestyleService({seatMapService});
+
+        middlewareService.registerHooks(ShowingSchema);
+
+        return {
+            seatMapService,
+            middlewareService,
+        };
+    }
+
+    /**
+     * Initializes and wires all Showing-related components.
+     *
+     * @returns An object containing:
+     * - **model** — The Mongoose `Showing` model.
+     * - **repository** — Configured `BaseRepository` instance.
+     * - **services**
+     *   - `crudService` — Create and update operations.
+     *   - `queryService` — Filtering and list utilities.
+     *   - `aggregateService` — Aggregation and analytics pipelines.
+     * - **controllers**
+     *   - `controller` — HTTP controller exposing Showing endpoints.
+     *
+     * @example
+     * ```ts
+     * const { controllers } = ShowingServiceProvider.register();
+     * app.use("/api/showings", controllers.controller.router);
+     * ```
      */
     static register() {
         // --- Model ---
@@ -71,13 +98,8 @@ export default class ShowingServiceProvider {
 
         const repository = new BaseRepository({model, populateRefs});
 
-        // --- Query Utils ---
+        // --- Query Utilities ---
         const queryUtils = QueryUtils;
-
-        // --- Middleware (lifecycle hooks) ---
-        const seatMapService = new SeatMapService();
-        const middlewareService = new ShowingLifestyleService({seatMapService});
-        middlewareService.registerHooks(ShowingSchema);
 
         // --- Services ---
         const crudService = new ShowingCRUDService({populateRefs});

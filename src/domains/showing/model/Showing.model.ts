@@ -1,34 +1,44 @@
 import { Model, model } from "mongoose";
 import type IShowing from "./IShowing.js";
 import { ShowingSchema } from "./Showing.schema.js";
+import ShowingServiceProvider from "../provider/ShowingServiceProvider.js";
 
 /**
- * @fileoverview
- * Defines and exports the Mongoose `Showing` model.
+ * @file Showing.model.ts
+ * @summary Mongoose model definition for `Showing`.
  *
  * @description
- * The `Showing` model represents individual movie showings within theatres,
- * including scheduling, pricing, language, and related metadata.
+ * Represents an individual movie showing within a theatre, including
+ * scheduling, pricing, language, and related metadata.
  *
- * This model integrates the following:
- * - **Schema Definition** (`Showing.schema.js`)
- * - **Middleware Hooks** (`Showing.middleware.js`)
- * - **Virtual Fields** (`Showing.virtuals.js`)
- * - **Indexes** (`Showing.indexes.js`)
+ * This model composes multiple concerns:
+ * - **Schema** — structural definition and validation (`Showing.schema.js`)
+ * - **Virtuals** — derived and aggregated fields (`Showing.virtuals.js`)
+ * - **Indexes** — query and performance optimization (`Showing.indexes.js`)
+ * - **Lifecycle Hooks** — side effects and cascading behavior (registered via `ShowingServiceProvider`)
  *
- * Together, these modules ensure validation, relational consistency,
- * and performance optimizations for common queries.
+ * Together, these components ensure data integrity, relational consistency,
+ * and predictable lifecycle behavior.
  */
 
 import "./Showing.virtuals.js";
 import "./Showing.indexes.js";
 
 /**
- * The Mongoose model for `Showing` documents.
+ * Registers all Showing-related middleware and lifecycle hooks.
+ *
+ * This call is intentionally colocated with the model definition to ensure
+ * hooks are registered exactly once during model initialization.
+ */
+ShowingServiceProvider.registerMiddleware();
+
+/**
+ * @summary Mongoose model for `Showing` documents.
  *
  * @type {Model<IShowing>}
- * @see IShowing for the TypeScript interface definition.
- * @see ShowingSchema for the underlying schema structure.
+ *
+ * @see IShowing - TypeScript interface for Showing documents.
+ * @see ShowingSchema - Underlying schema definition.
  */
 const Showing: Model<IShowing> = model<IShowing>("Showing", ShowingSchema);
 

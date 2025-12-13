@@ -3,24 +3,30 @@ import {type HydratedDocument, type Query, Schema} from "mongoose";
 import type IShowing from "../../model/IShowing.js";
 import SeatMap from "../../../seatmap/model/SeatMap.model.js";
 
+/**
+ * @summary Constructor dependencies for `ShowingLifestyleService`.
+ */
 type ShowingLifestyleServiceConstructor = {
     /** Service responsible for creating seat maps for new showings. */
     seatMapService: SeatMapService;
 };
 
 /**
- * Registers lifecycle hooks for the Showing model.
+ * @summary Lifecycle hook manager for the Showing model.
+ *
+ * @description
+ * Encapsulates all Mongoose lifecycle behavior related to `Showing` documents.
  *
  * Responsibilities:
- * - Create a seat map whenever a showing is newly inserted.
- * - Populate seat-related virtuals when lean queries request them.
- * - Cascade-delete related seat maps when a showing is removed.
+ * - Automatically create a seat map when a showing is newly inserted.
+ * - Populate seat-related virtuals when lean queries request virtuals.
+ * - Cascade-delete associated seat maps when a showing is removed.
  */
 export default class ShowingLifestyleService {
     private seatMapService: SeatMapService;
 
     /**
-     * @param params - Dependencies for hook behavior.
+     * @param params - Required dependencies for lifecycle behavior.
      */
     constructor(params: ShowingLifestyleServiceConstructor) {
         const {seatMapService} = params;
@@ -28,15 +34,22 @@ export default class ShowingLifestyleService {
     }
 
     /**
-     * Marks whether the document is newly created
-     * so the post-save hook can detect new insertions.
+     * @summary Tracks whether a document is newly created.
+     *
+     * @description
+     * Stores the original `isNew` state so the post-save hook can distinguish
+     * between inserts and updates.
      */
-    private handlePreSave = async (doc: HydratedDocument<IShowing>) => {
-        (doc as any)._wasNew = doc.isNew;
+    private handlePreSave = async function (this: HydratedDocument<IShowing>) {
+        (this as any)._wasNew = (this as any).isNew;
     };
 
     /**
-     * Creates a seat map for a newly inserted showing.
+     * @summary Creates a seat map after a new showing is inserted.
+     *
+     * @description
+     * Runs only for newly created documents and delegates seat map creation
+     * to `SeatMapService`.
      */
     private handlePostSave = async (doc: HydratedDocument<IShowing>) => {
         const {_id} = doc;
@@ -48,16 +61,19 @@ export default class ShowingLifestyleService {
     };
 
     /**
-     * Automatically populates seat-related virtuals
-     * when lean queries request them with `virtuals: true`.
+     * @summary Populates seat-related virtuals for lean queries.
+     *
+     * @description
+     * Automatically applies population when `lean({ virtuals: true })`
+     * is requested, ensuring virtual seat counts are available.
      */
-    private handlePreSaveQuery = async (query: Query<any, IShowing>) => {
+    private handlePreFindQuery = async function (this: Query<any, IShowing>) {
         const hasVirtuals =
-            typeof query._mongooseOptions.lean === "object" &&
-            query._mongooseOptions.lean.virtuals === true;
+            typeof (this as any)._mongooseOptions.lean === "object" &&
+            (this as any)._mongooseOptions.lean.virtuals === true;
 
         if (hasVirtuals) {
-            query.populate([
+            (this as any).populate([
                 {path: "seatMapCount"},
                 {path: "availableSeatsCount"},
                 {path: "reservedSeatsCount"},
@@ -67,7 +83,10 @@ export default class ShowingLifestyleService {
     };
 
     /**
-     * Cascades deletion of seat maps when a showing document is deleted.
+     * @summary Cascades seat map deletion when a showing document is removed.
+     *
+     * @description
+     * Triggered when deletion occurs via a document operation.
      */
     private handlePostDeleteDocument = async (doc: HydratedDocument<IShowing>) => {
         const {_id} = doc;
@@ -77,7 +96,10 @@ export default class ShowingLifestyleService {
     };
 
     /**
-     * Cascades deletion of seat maps when a showing is removed via a query.
+     * @summary Cascades seat map deletion when a showing is removed via a query.
+     *
+     * @description
+     * Handles deletions executed through query-based operations.
      */
     private handlePostDeleteQuery = async (query: Query<any, IShowing>) => {
         const {_id: showingID} = query.getFilter();
@@ -85,19 +107,19 @@ export default class ShowingLifestyleService {
     };
 
     /**
-     * Registers all lifecycle hooks on the given schema.
+     * @summary Registers all lifecycle hooks on a Showing schema.
      *
-     * @param schema - The Showing schema to attach hooks to.
+     * @param schema - The Mongoose schema to attach hooks to.
      */
     public registerHooks(schema: Schema) {
         // --- Create Seat Map ---
-        schema.pre("save", {document: true, query: false}, this.handlePreSave as any);
-        schema.post("save", {document: true, query: false}, this.handlePostSave);
+        schema.pre("save", {document: true}, this.handlePreSave);
+        schema.post("save", {document: true}, this.handlePostSave);
 
-        // --- Populate For Virtuals ---
-        schema.pre(["find", "findOne", "findOneAndUpdate"], {document: false, query: true}, this.handlePreSaveQuery as any);
+        // --- Populate Virtuals ---
+        schema.pre(["find", "findOne", "findOneAndUpdate"], {query: true}, this.handlePreFindQuery);
 
-        // --- Delete Related Seat Map ---
+        // --- Cascade Delete Seat Maps ---
         schema.post("deleteOne", {document: true, query: false}, this.handlePostDeleteDocument);
         schema.post(["deleteOne", "deleteMany"], {document: false, query: true}, this.handlePostDeleteQuery);
     }
