@@ -22,7 +22,7 @@ export type BySeatMapIDParams = {
  *
  * Provides methods for creating seat maps and toggling seat availability.
  */
-export interface ISeatMapService {
+export interface SeatMapServiceMethods {
     /**
      * Creates a seat map for a given showing.
      *

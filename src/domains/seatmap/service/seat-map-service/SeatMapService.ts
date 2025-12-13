@@ -3,9 +3,9 @@ import SeatMap from "../../model/SeatMap.model.js";
 import Showing from "../../../showing/model/Showing.model.js";
 import type ISeatMap from "../../model/SeatMap.interface.js";
 import Seat from "../../../seat/model/Seat.model.js";
-import type { AnyBulkWriteOperation } from "mongoose";
-import type { PopulatePath } from "../../../../shared/types/mongoose/PopulatePath.js";
-import type { BySeatMapIDParams, ByShowingIDParams, ISeatMapService } from "./SeatMapService.types.js";
+import type {AnyBulkWriteOperation} from "mongoose";
+import type {PopulatePath} from "../../../../shared/types/mongoose/PopulatePath.js";
+import type {BySeatMapIDParams, ByShowingIDParams, SeatMapServiceMethods} from "./SeatMapService.types.js";
 
 /**
  * Constructor parameters for `SeatMapService`.
@@ -24,9 +24,9 @@ type SeatMapServiceConstructor = {
  * Provides methods to create seat maps for showings and toggle the availability
  * of individual seat maps. Supports optional population of related references.
  *
- * @implements ISeatMapService
+ * @implements SeatMapServiceMethods
  */
-export default class SeatMapService implements ISeatMapService {
+export default class SeatMapService implements SeatMapServiceMethods {
     /**
      * Internal reference paths to populate when querying `SeatMap` documents.
      * Set via the constructor or defaults to an empty array.
@@ -44,7 +44,7 @@ export default class SeatMapService implements ISeatMapService {
      * const seatMapService = new SeatMapService({ populateRefs: ["seat", "showing"] });
      * ```
      */
-    constructor({ populateRefs = [] }: SeatMapServiceConstructor = {}) {
+    constructor({populateRefs = []}: SeatMapServiceConstructor = {}) {
         this._populateRefs = populateRefs;
     }
 
@@ -62,20 +62,43 @@ export default class SeatMapService implements ISeatMapService {
      * await seatMapService.createShowingSeatMap({ showingID: someShowingId });
      * ```
      */
-    async createShowingSeatMap({ showingID }: ByShowingIDParams): Promise<void> {
+    async createShowingSeatMap({showingID}: ByShowingIDParams): Promise<void> {
+        // --- Fetch Showing ---
         const showing = await Showing.findById(showingID);
-        if (!showing) throw createHttpError(404, "Showing Not Found.");
 
-        const { theatre, screen } = showing;
-        const seats = await Seat.find({ theatre, screen, isAvailable: true });
+        if (!showing) {
+            throw createHttpError(404, "Showing Not Found.");
+        }
 
-        if (seats.length === 0) return;
+        // --- Fetch Seats ---
+        const {_id: seatShowing, ticketPrice: seatBasePrice, theatre, screen} = showing;
 
-        const seatMap: AnyBulkWriteOperation<ISeatMap>[] = seats.map((seat) => {
-            const document: ISeatMap = { seat: seat._id, showing: showing._id, status: "AVAILABLE" };
-            return { insertOne: { document } };
+        const seats = await Seat.find({
+            theatre,
+            screen,
+            isAvailable: true,
         });
 
+        if (seats.length === 0) {
+            return;
+        }
+
+        // --- Build Seat Map Array ---
+        const seatMap: AnyBulkWriteOperation<ISeatMap>[] = [];
+
+        for (const {_id: seatID, priceMultiplier} of seats) {
+            const document: ISeatMap = {
+                seat: seatID,
+                showing: seatShowing,
+                basePrice: seatBasePrice,
+                priceMultiplier,
+                status: "AVAILABLE",
+            };
+
+            seatMap.push({insertOne: {document}});
+        }
+
+        // --- Create Seat Map ---
         await SeatMap.bulkWrite(seatMap);
     }
 
@@ -95,11 +118,18 @@ export default class SeatMapService implements ISeatMapService {
      * console.log(updatedSeatMap.status); // "AVAILABLE" or "UNAVAILABLE"
      * ```
      */
-    async toggleSeatMapAvailability({ seatMapID }: BySeatMapIDParams): Promise<ISeatMap> {
-        const seatMap = await SeatMap.findById(seatMapID).populate(this._populateRefs);
-        if (!seatMap) throw createHttpError(404, "Seat Map not found.");
+    async toggleSeatMapAvailability({seatMapID}: BySeatMapIDParams): Promise<ISeatMap> {
+        // --- Get Seat Map ---
 
-        const { status } = seatMap;
+        const seatMap = await SeatMap.findById(seatMapID).populate(this._populateRefs);
+
+        if (!seatMap) {
+            throw createHttpError(404, "Seat Map not found.");
+        }
+
+        // --- Update Seat Map ---
+
+        const {status} = seatMap;
 
         if (status !== "AVAILABLE" && status !== "UNAVAILABLE") {
             return seatMap;
@@ -108,7 +138,7 @@ export default class SeatMapService implements ISeatMapService {
         const newStatus = status === "UNAVAILABLE" ? "AVAILABLE" : "UNAVAILABLE";
 
         const updatedSeatMap = await SeatMap
-            .findByIdAndUpdate(seatMapID, { status: newStatus }, { new: true })
+            .findByIdAndUpdate(seatMapID, {status: newStatus}, {new: true})
             .populate(this._populateRefs);
 
         return updatedSeatMap!;

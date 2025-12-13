@@ -1,24 +1,18 @@
 /**
- * @file SeatMapSchema
- * @description
- * Defines the Mongoose schema for mapping seats to specific movie showings.
- * Each document represents a single seat within a specific showing and stores its
- * status, optional overridden price, and indexing constraints.
+ * @file SeatMapSchema.ts
+ * @summary
+ * Mongoose schema defining the mapping between a seat and a showing.
  *
- * This schema serves as a join-table between the `Showing` and `Seat` models,
- * enforcing uniqueness of `(showing, seat)` pairs while tracking the lifecycle
- * of each seat (available, reserved, sold, unavailable).
+ * Acts as a join-table between `Showing` and `Seat`, enforcing unique
+ * `(showing, seat)` pairs while tracking price data and availability state.
  *
  * @example
- * ```ts
  * import SeatMapModel from "@/models/SeatMap";
  *
- * // Query all available seats for a showing
  * const seats = await SeatMapModel.find({
  *   showing: showingId,
  *   status: "AVAILABLE",
  * });
- * ```
  */
 
 import {Schema} from "mongoose";
@@ -26,88 +20,74 @@ import type ISeatMap from "./SeatMap.interface.js";
 import SeatMapStatusConstant from "../constants/SeatMapStatusConstant.js";
 
 /**
- * SeatMapSchema
- *
- * @description
- * A schema that defines the association between a `Showing` and a `Seat`.
- * Also tracks the price (if overridden) and current seat status.
+ * @summary
+ * Schema describing the relationship between a `Showing` and a `Seat`,
+ * including pricing fields and seat availability.
  */
 export const SeatMapSchema = new Schema<ISeatMap>({
-    /**
-     * @property showing
-     * @description
-     * Reference to the movie showing this seat belongs to.
-     *
-     * @type ObjectId (ref: Showing)
-     * @required
-     */
+    /** Reference to the showing (`Showing`). */
     showing: {
         type: Schema.Types.ObjectId,
         ref: "Showing",
         required: [true, "Showing is required."],
     },
 
-    /**
-     * @property seat
-     * @description
-     * Reference to a seat within the theatre layout.
-     *
-     * @type ObjectId (ref: Seat)
-     * @required
-     */
+    /** Reference to the seat (`Seat`). */
     seat: {
         type: Schema.Types.ObjectId,
         ref: "Seat",
         required: [true, "Seat is required."],
     },
 
-    /**
-     * @property price
-     * @description
-     * Optional seat-specific price override.
-     * If omitted, the system should fall back to `Showing.ticketPrice`.
-     *
-     * @type number
-     * @minimum 0
-     * @optional
-     */
-    price: {
+    /** Base price for the seat during the showing. */
+    basePrice: {
         type: Number,
-        min: [0, "Price must be greater than 0."],
+        required: [true, "Base Price is required."],
+        validate: {
+            message: "Base Price must be more than 0.",
+            validator: (val: number) => val > 0,
+        },
+    },
+
+    /** Multiplier applied to the base price. Must be > 0. */
+    priceMultiplier: {
+        type: Number,
+        required: [true, "Price Multiplier is required."],
+        validate: {
+            message: "Price Multiplier must be more than 0.",
+            validator: (val: number) => val > 0,
+        },
+    },
+
+    /** Optional explicit price override, must be > 0 if provided. */
+    overridePrice: {
+        type: Number,
+        validate: {
+            message: "Override Price must be more than 0.",
+            validator: (val: any) =>
+                val === null || val === undefined || (typeof val === "number" && val > 0),
+        },
     },
 
     /**
-     * @property status
-     * @description
-     * Current status of the seat within this showing.
+     * Status of the seat during the showing.
      *
-     * Allowed values are defined by `SeatMapStatusConstant`, e.g.:
-     * - `AVAILABLE`
-     * - `RESERVED`
-     * - `SOLD`
-     * - `UNAVAILABLE`
-     *
-     * @default AVAILABLE
-     * @required
+     * @default "AVAILABLE"
+     * @see SeatMapStatusConstant
      */
     status: {
         type: String,
         enum: {
             values: SeatMapStatusConstant,
-            message: `Invalid Seat Map Status. Must be: ${SeatMapStatusConstant.join(", ")}`
+            message: `Invalid Seat Map Status. Must be: ${SeatMapStatusConstant.join(", ")}`,
         },
         required: [true, "Status is required."],
         default: "AVAILABLE",
     },
 });
 
-/**
- * Enforces uniqueness: a single seat cannot appear more than once
- * in the same showing.
- */
+/** Enforce uniqueness of `(showing, seat)` pairs. */
 SeatMapSchema.index({showing: 1, seat: 1}, {unique: true});
 
-/**
- * Optimizes queries for seat availability by showing and status.
- */
+/** Index optimized for availability queries. */
 SeatMapSchema.index({showing: 1, status: 1});

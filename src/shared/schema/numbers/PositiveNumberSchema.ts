@@ -2,31 +2,25 @@ import { z } from "zod";
 import { NumberValueSchema } from "./NumberValueSchema.js";
 
 /**
- * Schema for validating positive numbers (greater than 0).
+ * @summary
+ * Zod schema for validating numbers greater than 0.
  *
- * @remarks
- * - Extends {@link NumberValueSchema} with a `.positive()` refinement.
- * - Throws a validation error if the value is 0 or less.
- * - Ideal for fields such as `ticketPrice`, `quantity`, or any numeric value
- *   that must be strictly positive.
+ * Extends {@link NumberValueSchema} with `.positive()` refinement.
  *
  * @example
- * ```ts
- * PositiveNumberSchema.parse(1);     // ✅ passes
- * PositiveNumberSchema.parse(42);    // ✅ passes
- * PositiveNumberSchema.parse(0);     // ❌ throws ZodError: "Must be 1 or more."
- * PositiveNumberSchema.parse(-5);    // ❌ throws ZodError: "Must be 1 or more."
- * ```
+ * PositiveNumberSchema.parse(1);   // ✅ passes
+ * PositiveNumberSchema.parse(42);  // ✅ passes
+ * PositiveNumberSchema.parse(0);   // ❌ throws ZodError
+ * PositiveNumberSchema.parse(-5);  // ❌ throws ZodError
  */
 export const PositiveNumberSchema = NumberValueSchema.positive({
-    message: "Must be 1 or more.",
+    message: "Must be more than 0.",
 });
 
 /**
- * TypeScript type representing a positive number.
+ * @summary
+ * Type representing a positive number (>0).
  *
- * @remarks
- * - Inferred from {@link PositiveNumberSchema}.
- * - Ensures the value is a number > 0.
+ * Inferred from {@link PositiveNumberSchema}.
  */
 export type PositiveNumber = z.infer<typeof PositiveNumberSchema>;

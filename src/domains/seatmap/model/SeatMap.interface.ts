@@ -2,54 +2,45 @@ import {Types} from "mongoose";
 import type {SeatMapStatus} from "../schema/enum/SeatMapStatusEnumSchema.js";
 
 /**
- * Represents a mapping between a specific seat and a specific showing,
- * including pricing and current availability status.
+ * @file ISeatMap.ts
+ * @summary
+ * Document type describing a seat’s state for a specific showing,
+ * including pricing and availability.
  *
- * @remarks
- * A `SeatMap` describes the state of an individual seat during a showing.
- * It links three entities:
+ * Each SeatMap links:
+ * - a showing (`IShowing`)
+ * - a seat (`ISeat`)
+ * - a status (from {@link SeatMapStatus})
  *
- * - A **showing** (`IShowing`)
- * - A **seat** (`ISeat`)
- * - A **status** (derived from {@link SeatMapStatusConstant})
- *
- * This interface is used as the Mongoose document type backing the
- * `seat_maps` collection.
+ * Stored in the `seat_maps` collection.
  *
  * @example
- * ```ts
  * const seatMap: ISeatMap = {
  *   price: 300,
  *   showing: new Types.ObjectId(),
  *   seat: new Types.ObjectId(),
  *   status: "AVAILABLE",
  * };
- * ```
  */
 export default interface ISeatMap {
-    /** Unique identifier of the seat map document. Provided by MongoDB. */
+    /** MongoDB-generated identifier. */
     readonly _id?: Types.ObjectId;
 
-    /** Optional price of the seat for the associated showing. */
-    price?: number;
-
-    /**
-     * ObjectId reference to the showing this seat is part of.
-     * Corresponds to an {@link IShowing} document.
-     */
+    /** Reference to the showing (`IShowing`). */
     showing: Types.ObjectId;
 
-    /**
-     * ObjectId reference to the seat being represented.
-     * Corresponds to an {@link ISeat} document.
-     */
+    /** Reference to the seat (`ISeat`). */
     seat: Types.ObjectId;
 
-    /**
-     * Current status of this seat during the showing.
-     *
-     * @see SeatMapStatus
-     * @see SeatMapStatusConstant
-     */
+    /** Base price for this seat during the showing. */
+    basePrice: number;
+
+    /** Multiplier applied to the base price. */
+    priceMultiplier: number;
+
+    /** Optional override price that replaces computed pricing. */
+    overridePrice?: number;
+
+    /** Availability state for this seat. */
     status: SeatMapStatus;
 }
