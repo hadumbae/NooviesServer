@@ -23,7 +23,7 @@ import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js"
  *   .exec();
  * ```
  *
- * @see ISeatMap – For the underlying model interface.
+ * @see SeatMapSchemaFields – For the underlying model interface.
  */
 const SeatMapPopulateRefs: PopulatePath[] = ["seat", "showing"] as const;
 

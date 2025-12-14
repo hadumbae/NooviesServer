@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 
-import type ISeatMap from "../model/SeatMap.interface.js";
 import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
 import type {
     BaseControllerCRUDMethods,
@@ -10,13 +9,14 @@ import type {
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type SeatMapService from "../service/seat-map-service/SeatMapService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
+import type {SeatMapSchemaFields} from "../model/SeatMap.types.js";
 
 /**
  * Constructor parameters for `SeatMapController`.
  *
  * Extends the base CRUD controller constructor with required service instances.
  */
-export interface ISeatMapControllerConstructor extends IBaseCRUDControllerConstructor<ISeatMap> {
+export interface ISeatMapControllerConstructor extends IBaseCRUDControllerConstructor<SeatMapSchemaFields> {
     /** Instance of the `SeatMapService` handling seat map business logic. */
     service: SeatMapService;
 
@@ -29,7 +29,7 @@ export interface ISeatMapControllerConstructor extends IBaseCRUDControllerConstr
  *
  * Extends the base CRUD controller with seat map-specific methods.
  */
-export interface ISeatMapController extends BaseControllerCRUDMethods {
+export interface ISeatMapController extends BaseControllerCRUDMethods<SeatMapSchemaFields> {
     /**
      * Creates a seat map for a specific showing.
      *
@@ -55,7 +55,7 @@ export interface ISeatMapController extends BaseControllerCRUDMethods {
  * Provides CRUD operations via `BaseCRUDController` and additional
  * seat map-specific actions such as creation and toggling availability.
  */
-export default class SeatMapController extends BaseCRUDController<ISeatMap> implements ISeatMapController {
+export default class SeatMapController extends BaseCRUDController<SeatMapSchemaFields> implements ISeatMapController {
     /** Service for performing seat map business logic. */
     protected service: SeatMapService;
 
@@ -109,7 +109,7 @@ export default class SeatMapController extends BaseCRUDController<ISeatMap> impl
      *
      * @param req - Express request object containing `_id` param for the seat map.
      * @param res - Express response object.
-     * @returns JSON response with the updated `ISeatMap` object.
+     * @returns JSON response with the updated `SeatMapSchemaFields` object.
      *
      * @example
      * ```ts

@@ -1,10 +1,10 @@
 /**
  * @file SeatMap.model.ts
  * @description
- * Defines the Mongoose model for {@link ISeatMap}, representing
+ * Defines the Mongoose model for {@link SeatMapSchemaFields}, representing
  * a mapping of seats to showings with pricing and status.
  *
- * The model uses the {@link SeatMapSchema} schema definition
+ * The model uses the {@link SeatMapSchemaFields} schema definition
  * and provides standard Mongoose model methods for CRUD operations.
  *
  * @example
@@ -22,15 +22,16 @@
  */
 
 import {Model, model} from "mongoose";
-import type ISeatMap from "./SeatMap.interface.js";
 import {SeatMapSchema} from "./SeatMap.schema.js";
+import type {SeatMapSchemaFields} from "./SeatMap.types.js";
 
+import "./SeatMap.virtuals.js"
 /**
- * Mongoose model for seat mappings (`ISeatMap`).
+ * Mongoose model for seat mappings (`SeatMapSchemaFields`).
  *
  * Provides methods such as `create`, `find`, `findById`, `update`, and `delete`
  * for managing seat assignments within showings.
  */
-const SeatMap: Model<ISeatMap> = model<ISeatMap>("SeatMap", SeatMapSchema);
+const SeatMap: Model<SeatMapSchemaFields> = model<SeatMapSchemaFields>("SeatMap", SeatMapSchema);
 
 export default SeatMap;

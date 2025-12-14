@@ -1,5 +1,4 @@
 import type { Request } from "express";
-import type ISeatMap from "../../model/SeatMap.interface.js";
 import type { SeatMapMatchFilters, SeatMapQueryOptions } from "../../schema/query-option/SeatMapQueryOption.types.js";
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import { SeatMapQueryOptionSchema } from "../../schema/query-option/SeatMapQueryOption.schema.js";
@@ -14,6 +13,7 @@ import type {
 } from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
 import generateLookupMatchStage from "../../../../shared/utility/mongoose/generateLookupMatchStage.js";
 import buildAggregationSort from "../../../../shared/utility/mongoose/buildAggregationSort.js";
+import type {SeatMapSchemaFields} from "../../model/SeatMap.types.js";
 
 /**
  * Service for parsing, validating, and generating Mongoose query options
@@ -24,7 +24,7 @@ import buildAggregationSort from "../../../../shared/utility/mongoose/buildAggre
  * filtering and population pipelines.
  */
 export default class SeatMapQueryOptionService
-    implements IReferenceQueryOptionService<ISeatMap, SeatMapQueryOptions, SeatMapMatchFilters> {
+    implements IReferenceQueryOptionService<SeatMapSchemaFields, SeatMapQueryOptions, SeatMapMatchFilters> {
 
     /**
      * Parses and validates query parameters from an Express request.
@@ -65,7 +65,7 @@ export default class SeatMapQueryOptionService
      * @param options - Validated SeatMap query options.
      * @returns SortQuery containing only non-nullish direct field sorts.
      */
-    generateMatchSorts(options: SeatMapQueryOptions): SortQuery<ISeatMap> {
+    generateMatchSorts(options: SeatMapQueryOptions): SortQuery<SeatMapSchemaFields> {
         const { sortByPrice, sortByStatus } = options;
 
         return filterNullishAttributes({ price: sortByPrice, status: sortByStatus });
@@ -158,7 +158,7 @@ export default class SeatMapQueryOptionService
      * @param options - Validated SeatMap query options.
      * @returns Complete query option object suitable for aggregation or find queries.
      */
-    generateQueryOptions(options: SeatMapQueryOptions): QueryOptionTypes<ISeatMap, SeatMapMatchFilters> {
+    generateQueryOptions(options: SeatMapQueryOptions): QueryOptionTypes<SeatMapSchemaFields, SeatMapMatchFilters> {
         return {
             match: {
                 filters: this.generateMatchFilters(options),

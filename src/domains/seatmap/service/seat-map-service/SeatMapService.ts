@@ -1,11 +1,11 @@
 import createHttpError from "http-errors";
 import SeatMap from "../../model/SeatMap.model.js";
 import Showing from "../../../showing/model/Showing.model.js";
-import type ISeatMap from "../../model/SeatMap.interface.js";
 import Seat from "../../../seat/model/Seat.model.js";
 import type {AnyBulkWriteOperation} from "mongoose";
 import type {PopulatePath} from "../../../../shared/types/mongoose/PopulatePath.js";
 import type {BySeatMapIDParams, ByShowingIDParams, SeatMapServiceMethods} from "./SeatMapService.types.js";
+import type {SeatMapInputData, SeatMapSchemaFields} from "../../model/SeatMap.types.js";
 
 /**
  * Constructor parameters for `SeatMapService`.
@@ -76,6 +76,7 @@ export default class SeatMapService implements SeatMapServiceMethods {
         const seats = await Seat.find({
             theatre,
             screen,
+            layoutType: "SEAT",
             isAvailable: true,
         });
 
@@ -84,10 +85,10 @@ export default class SeatMapService implements SeatMapServiceMethods {
         }
 
         // --- Build Seat Map Array ---
-        const seatMap: AnyBulkWriteOperation<ISeatMap>[] = [];
+        const seatMap: AnyBulkWriteOperation<SeatMapInputData>[] = [];
 
         for (const {_id: seatID, priceMultiplier} of seats) {
-            const document: ISeatMap = {
+            const document: SeatMapInputData = {
                 seat: seatID,
                 showing: seatShowing,
                 basePrice: seatBasePrice,
@@ -109,7 +110,7 @@ export default class SeatMapService implements SeatMapServiceMethods {
      * If the seat map has a status other than "AVAILABLE" or "UNAVAILABLE", it is returned as-is.
      *
      * @param params - Object containing the seat map ID.
-     * @returns The updated `ISeatMap` document with populated references (if configured).
+     * @returns The updated `SeatMapSchemaFields` document with populated references (if configured).
      * @throws Will throw a 404 error if the seat map does not exist.
      *
      * @example
@@ -118,7 +119,7 @@ export default class SeatMapService implements SeatMapServiceMethods {
      * console.log(updatedSeatMap.status); // "AVAILABLE" or "UNAVAILABLE"
      * ```
      */
-    async toggleSeatMapAvailability({seatMapID}: BySeatMapIDParams): Promise<ISeatMap> {
+    async toggleSeatMapAvailability({seatMapID}: BySeatMapIDParams): Promise<SeatMapSchemaFields> {
         // --- Get Seat Map ---
 
         const seatMap = await SeatMap.findById(seatMapID).populate(this._populateRefs);

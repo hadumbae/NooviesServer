@@ -1,5 +1,5 @@
-import type ISeatMap from "../../model/SeatMap.interface.js";
 import { Types } from "mongoose";
+import type {SeatMapSchemaFields} from "../../model/SeatMap.types.js";
 
 /**
  * Parameters required to identify a SeatMap by its associated showing.
@@ -40,7 +40,7 @@ export interface SeatMapServiceMethods {
      * Toggles the availability of a specific seat map.
      *
      * @param params - Object containing the `seatMapID` of the seat map to update.
-     * @returns A promise that resolves to the updated `ISeatMap` instance.
+     * @returns A promise that resolves to the updated `SeatMapSchemaFields` instance.
      *
      * @example
      * ```ts
@@ -48,5 +48,5 @@ export interface SeatMapServiceMethods {
      * console.log(updatedSeatMap);
      * ```
      */
-    toggleSeatMapAvailability(params: BySeatMapIDParams): Promise<ISeatMap>;
+    toggleSeatMapAvailability(params: BySeatMapIDParams): Promise<SeatMapSchemaFields>;
 }

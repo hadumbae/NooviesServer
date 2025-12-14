@@ -16,15 +16,15 @@
  */
 
 import {Schema} from "mongoose";
-import type ISeatMap from "./SeatMap.interface.js";
 import SeatMapStatusConstant from "../constants/SeatMapStatusConstant.js";
+import type {SeatMapSchemaFields} from "./SeatMap.types.js";
 
 /**
  * @summary
  * Schema describing the relationship between a `Showing` and a `Seat`,
  * including pricing fields and seat availability.
  */
-export const SeatMapSchema = new Schema<ISeatMap>({
+export const SeatMapSchema = new Schema<SeatMapSchemaFields>({
     /** Reference to the showing (`Showing`). */
     showing: {
         type: Schema.Types.ObjectId,

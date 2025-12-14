@@ -18,7 +18,7 @@ import type IQueryOptionService from "./IQueryOptionService.js";
  *
  * @example
  * ```ts
- * class SeatMapReferenceQueryService implements IReferenceQueryOptionService<ISeatMap, SeatMapQueryOptions, SeatMapMatchFilters> {
+ * class SeatMapReferenceQueryService implements IReferenceQueryOptionService<SeatMapSchemaFields, SeatMapQueryOptions, SeatMapMatchFilters> {
  *   generateReferenceFilters(params: SeatMapQueryOptions): ReferenceFilterPipelineStages {
  *     // implementation
  *   }

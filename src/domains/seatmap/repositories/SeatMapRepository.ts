@@ -1,9 +1,9 @@
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import type ISeatMap from "../model/SeatMap.interface.js";
 import type {ZodIssue} from "zod";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
 import SeatMap from "../model/SeatMap.model.js";
+import type {SeatMapSchemaFields} from "../model/SeatMap.types.js";
 
 type SeatMapRepositoryConstructorParams = {
     /** Optional array of reference paths to populate when fetching documents */
@@ -12,7 +12,7 @@ type SeatMapRepositoryConstructorParams = {
 
 /**
  * Repository class responsible for managing persistence operations
- * for {@link ISeatMap} entities.
+ * for {@link SeatMapSchemaFields} entities.
  *
  * @remarks
  * Extends the generic {@link BaseRepository} to provide
@@ -37,7 +37,7 @@ type SeatMapRepositoryConstructorParams = {
  * }
  * ```
  */
-export default class SeatMapRepository extends BaseRepository<ISeatMap> {
+export default class SeatMapRepository extends BaseRepository<SeatMapSchemaFields> {
     constructor({populateRefs}: SeatMapRepositoryConstructorParams) {
         super({model: SeatMap, populateRefs});
     }
@@ -58,7 +58,7 @@ export default class SeatMapRepository extends BaseRepository<ISeatMap> {
      * repo.throwDuplicateError("showing_1_seat_1");
      * ```
      */
-    protected throwDuplicateError(indexString: string) {
+    protected throwDuplicateError(indexString: string): never {
         console.debug("Seat Map Repository Duplicate Index: ", indexString);
 
         if (indexString === "showing_1_seat_1") {
@@ -80,5 +80,10 @@ export default class SeatMapRepository extends BaseRepository<ISeatMap> {
                 message: "Duplicate seat mapping detected. Each seat can be assigned only once per showing."
             });
         }
+
+        throw new ZodParseError({
+            errors: [],
+            message: "Duplicate seat mapping detected."
+        });
     }
 }
