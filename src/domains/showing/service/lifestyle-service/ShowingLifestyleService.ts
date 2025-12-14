@@ -101,8 +101,8 @@ export default class ShowingLifestyleService {
      * @description
      * Handles deletions executed through query-based operations.
      */
-    private handlePostDeleteQuery = async (query: Query<any, IShowing>) => {
-        const {_id: showingID} = query.getFilter();
+    private handlePostDeleteQuery = async function (this: Query<any, IShowing>) {
+        const {_id: showingID} = (this as any).getFilter();
         await SeatMap.deleteMany({showing: showingID});
     };
 
