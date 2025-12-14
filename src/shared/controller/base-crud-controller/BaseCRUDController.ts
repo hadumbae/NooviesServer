@@ -27,7 +27,7 @@ import type {
     IBaseCRUDControllerConstructor,
 } from "./BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
-import {Types} from "mongoose";
+import type {ModelObject} from "../../types/ModelObject.js";
 
 /**
  * Base controller implementing CRUD and aggregation utilities.
@@ -36,7 +36,7 @@ import {Types} from "mongoose";
  * @typeParam TMatchFilters - Shape of match filters parsed for queries.
  */
 export default class BaseCRUDController<
-    TSchema extends { _id: Types.ObjectId },
+    TSchema extends ModelObject,
     TMatchFilters = any,
 > extends BaseController implements BaseControllerCRUDMethods<TSchema, TMatchFilters> {
     /** Repository providing the entity’s CRUD operations. */
@@ -165,6 +165,9 @@ export default class BaseCRUDController<
             : {...baseParams, paginated: false};
 
         const data = await this.aggregateService.query(queryParams);
+
+        console.log("Data: ", data);
+
         return res.status(200).json(data);
     }
 

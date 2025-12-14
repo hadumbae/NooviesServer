@@ -22,13 +22,14 @@ import type {
     BaseRepositoryPaginationParams,
     BaseRepositoryUpdateParams,
 } from "./BaseRepository.types.js";
+import type {ModelObject} from "../types/ModelObject.js";
 
 /**
  * CRUD and pagination contract for repository implementations.
  *
  * @typeParam TSchema - The Mongoose document type handled by the repository.
  */
-export default interface BaseRepositoryCRUD<TSchema extends Record<string, unknown>> {
+export default interface BaseRepositoryCRUD<TSchema extends ModelObject> {
     /**
      * Count documents optionally filtered by a query.
      *

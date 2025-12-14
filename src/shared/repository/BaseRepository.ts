@@ -1,4 +1,4 @@
-import {Error, type Model, Types} from "mongoose";
+import {Error, type Model} from "mongoose";
 import createHttpError from "http-errors";
 import type {PopulatePath} from "../types/mongoose/PopulatePath.js";
 import type BaseRepositoryCRUD from "./BaseRepositoryCRUD.js";
@@ -12,13 +12,14 @@ import type {
     BaseRepositoryUpdateParams
 } from "./BaseRepository.types.js";
 import DuplicateIndexError from "../errors/DuplicateIndexError.js";
+import type {ModelObject} from "../types/ModelObject.js";
 
 /**
  * Constructor options for {@link BaseRepository}.
  *
  * @template TSchema - Mongoose document type handled by the repository.
  */
-interface BaseRepositoryConstructor<TSchema> {
+interface BaseRepositoryConstructor<TSchema extends ModelObject> {
     /** Mongoose model used for all CRUD operations. */
     readonly model: Model<TSchema>;
     /** Default populate paths applied when no explicit paths are provided. */
@@ -34,9 +35,7 @@ interface BaseRepositoryConstructor<TSchema> {
  *
  * @template TSchema - Mongoose document type handled by the repository.
  */
-export default class BaseRepository<TSchema extends { _id: Types.ObjectId }>
-    implements BaseRepositoryCRUD<TSchema>
-{
+export default class BaseRepository<TSchema extends ModelObject> implements BaseRepositoryCRUD<TSchema> {
     private readonly model: Model<TSchema>;
     private readonly populateRefs: PopulatePath[];
 

@@ -22,7 +22,7 @@ import type {IBaseControllerConstructor} from "../BaseController.js";
 import type BaseRepository from "../../repository/BaseRepository.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
-import {Types} from "mongoose";
+import type {ModelObject} from "../../types/ModelObject.js";
 
 /**
  * Standard CRUD and query methods available to all entity controllers.
@@ -31,7 +31,7 @@ import {Types} from "mongoose";
  * @template TMatchFilters - Filter shape used in query-option parsing.
  */
 export interface BaseControllerCRUDMethods<
-    TSchema extends {_id: Types.ObjectId},
+    TSchema extends ModelObject,
     TMatchFilters = any,
 > {
     /**
@@ -125,9 +125,7 @@ export interface BaseControllerCRUDMethods<
  *
  * @template TSchema - Mongoose document schema handled by the controller.
  */
-export interface IBaseCRUDControllerConstructor<
-    TSchema extends { _id: Types.ObjectId }
-> extends IBaseControllerConstructor {
+export interface IBaseCRUDControllerConstructor<TSchema extends ModelObject> extends IBaseControllerConstructor {
     /** Repository responsible for the entity’s CRUD operations. */
     repository: BaseRepository<TSchema>;
 

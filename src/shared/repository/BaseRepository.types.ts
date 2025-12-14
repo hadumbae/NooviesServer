@@ -1,5 +1,6 @@
 import {type FilterQuery, type SortOrder, Types} from "mongoose";
 import type {RequestOptions} from "../types/request-options/RequestOptions.js";
+import type {ModelObject} from "../types/ModelObject.js";
 
 /**
  * Base parameter shapes for repository methods.
@@ -10,7 +11,7 @@ import type {RequestOptions} from "../types/request-options/RequestOptions.js";
  * Parameters for counting documents.
  * @template TSchema - Mongoose document type.
  */
-export type BaseRepositoryCountParams<TSchema = Record<string, any>> = {
+export type BaseRepositoryCountParams<TSchema = ModelObject> = {
     /** Optional filter conditions. */
     filters?: FilterQuery<TSchema>;
 };
@@ -19,7 +20,7 @@ export type BaseRepositoryCountParams<TSchema = Record<string, any>> = {
  * Parameters for finding multiple documents.
  * @template TSchema - Mongoose document type.
  */
-export type BaseRepositoryFindParams<TSchema = Record<string, any>> = {
+export type BaseRepositoryFindParams<TSchema = ModelObject> = {
     /** Filter conditions for the query. */
     filters?: FilterQuery<TSchema>;
     /** Optional request-level behavior flags. */
@@ -40,7 +41,7 @@ export type BaseRepositoryFindByIDParams = {
  * Parameters for creating a document.
  * @template TSchema - Mongoose document type.
  */
-export type BaseRepositoryCreateParams<TSchema = Record<string, any>> = {
+export type BaseRepositoryCreateParams<TSchema = ModelObject> = {
     /** Partial document data to create. */
     data: Partial<TSchema>;
     /** Optional request-level behavior flags. */
@@ -51,7 +52,7 @@ export type BaseRepositoryCreateParams<TSchema = Record<string, any>> = {
  * Parameters for updating a document.
  * @template TSchema - Mongoose document type.
  */
-export type BaseRepositoryUpdateParams<TSchema = Record<string, any>> = {
+export type BaseRepositoryUpdateParams<TSchema = ModelObject> = {
     /** Document ID to update. */
     _id: Types.ObjectId;
     /** Fields to update. */
@@ -74,7 +75,7 @@ export type BaseRepositoryDestroyParams = {
  * Parameters for paginated document queries.
  * @template TSchema - Mongoose document type.
  */
-export type BaseRepositoryPaginationParams<TSchema = Record<string, any>> = {
+export type BaseRepositoryPaginationParams<TSchema = ModelObject> = {
     /** 1-based page number. */
     page: number;
     /** Number of documents per page. */
