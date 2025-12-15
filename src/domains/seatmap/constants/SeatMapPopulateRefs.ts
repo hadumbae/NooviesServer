@@ -1,20 +1,21 @@
-import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
 
 /**
- * ## SeatMap Populate References
- *
+ * @constant SeatMapPopulateRefs
+ * @description
  * Default population paths for the `SeatMap` Mongoose model.
  *
- * These values provide a consistent set of reference paths that can be reused
- * throughout repositories, services, and controllers when performing Mongoose
- * `.populate()` operations.
+ * Provides a reusable, type-safe set of references for `.populate()`
+ * calls across repositories, services, and controllers.
  *
- * Using this constant helps avoid hard-coding string paths and ensures that
- * population keys remain type-safe and synchronized with the underlying schema.
+ * Ensures consistency and prevents hard-coded string paths, while
+ * keeping population logic synchronized with the schema.
  *
  * @remarks
- * The `as const` assertion preserves literal string types and infers the tuple
- * as a readonly array of `"seat"` and `"showing"`.
+ * - Uses `as const` to preserve literal string types and readonly tuple inference.
+ * - Populates:
+ *   - `showing`
+ *   - `seat` with nested population of `screen` and `theatre`
  *
  * @example
  * ```ts
@@ -23,8 +24,17 @@ import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js"
  *   .exec();
  * ```
  *
- * @see SeatMapSchemaFields – For the underlying model interface.
+ * @see SeatMapSchemaFields – Interface for the underlying model fields.
  */
-const SeatMapPopulateRefs: PopulatePath[] = ["seat", "showing"] as const;
+const SeatMapPopulateRefs: PopulatePath[] = [
+    "showing",
+    {
+        path: "seat",
+        populate: [
+            { path: "screen" },
+            { path: "theatre" },
+        ],
+    },
+] as const;
 
 export default SeatMapPopulateRefs;
