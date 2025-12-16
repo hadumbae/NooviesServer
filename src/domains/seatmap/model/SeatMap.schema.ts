@@ -87,7 +87,10 @@ export const SeatMapSchema = new Schema<SeatMapSchemaFields>({
 });
 
 /** Enforce uniqueness of `(showing, seat)` pairs. */
-SeatMapSchema.index({showing: 1, seat: 1}, {unique: true});
+SeatMapSchema.index(
+    {showing: 1, seat: 1},
+    {unique: true, partialFilterExpression: {seat: {$exists: true}}},
+);
 
 /** Index optimized for availability queries. */
 SeatMapSchema.index({showing: 1, status: 1});
