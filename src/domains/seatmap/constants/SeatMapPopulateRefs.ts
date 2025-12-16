@@ -1,4 +1,4 @@
-import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
 
 /**
  * @constant SeatMapPopulateRefs
@@ -27,12 +27,23 @@ import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.j
  * @see SeatMapSchemaFields – Interface for the underlying model fields.
  */
 const SeatMapPopulateRefs: PopulatePath[] = [
-    "showing",
+    {
+        path: "showing",
+        populate: [
+            {path: "movie", populate: [{path: "genres"}]},
+            {path: "screen"},
+            {path: "theatre"},
+            {path: "seatMapCount"},
+            {path: "availableSeatsCount"},
+            {path: "reservedSeatsCount"},
+            {path: "unreservedSeatsCount"},
+        ],
+    },
     {
         path: "seat",
         populate: [
-            { path: "screen" },
-            { path: "theatre" },
+            {path: "screen"},
+            {path: "theatre"},
         ],
     },
 ] as const;
