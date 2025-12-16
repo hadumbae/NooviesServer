@@ -1,10 +1,7 @@
 import {Types} from "mongoose";
 import type ILocation from "../../../shared/model/location/ILocation.js";
 
-/**
- * Interface representing a theatre where movies are shown.
- */
-export default interface ITheatre {
+export interface TheatreSchemaFields {
     /**
      * The unique identifier for the theatre document.
      */

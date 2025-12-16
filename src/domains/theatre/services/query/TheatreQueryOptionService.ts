@@ -7,15 +7,15 @@ import { TheatreQueryOptionSchema } from "../../schema/query/TheatreQueryOption.
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type { FilterQuery, SortOrder } from "mongoose";
 import type IQueryOptionService from "../../../../shared/types/query-options/IQueryOptionService.js";
-import type ITheatre from "../../model/ITheatre.js";
 import type { QueryOptionTypes } from "../../../../shared/types/query-options/QueryOptionService.types.js";
+import type {TheatreSchemaFields} from "../../model/Theatre.types.js";
 
 /**
  * Service responsible for parsing request query parameters and generating
  * Mongoose-compatible filters and sorting instructions for Theatre documents.
  */
 export default class TheatreQueryOptionService
-    implements IQueryOptionService<ITheatre, TheatreQueryOptions, TheatreQueryMatchFilters> {
+    implements IQueryOptionService<TheatreSchemaFields, TheatreQueryOptions, TheatreQueryMatchFilters> {
 
     /**
      * Parses query parameters from an Express request and validates them
@@ -72,7 +72,7 @@ export default class TheatreQueryOptionService
      * @param params - Parsed Theatre query options
      * @returns Partial record mapping Theatre fields to Mongoose sort orders
      */
-    generateMatchSorts(params: TheatreQueryOptions): Partial<Record<keyof ITheatre, SortOrder>> {
+    generateMatchSorts(params: TheatreQueryOptions): Partial<Record<keyof TheatreSchemaFields, SortOrder>> {
         const {
             sortByName,
             sortBySeatCapacity,
@@ -113,7 +113,7 @@ export default class TheatreQueryOptionService
      * //   }
      * // }
      */
-    generateQueryOptions(options: TheatreQueryOptions): QueryOptionTypes<ITheatre, TheatreQueryMatchFilters> {
+    generateQueryOptions(options: TheatreQueryOptions): QueryOptionTypes<TheatreSchemaFields, TheatreQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
 

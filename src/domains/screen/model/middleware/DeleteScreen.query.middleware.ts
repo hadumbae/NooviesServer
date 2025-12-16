@@ -1,8 +1,8 @@
 import type {Query} from "mongoose";
 import type {IScreen} from "../../interface/IScreen.js";
-import Theatre from "../../../theatre/model/Theatre.js";
 import Showing from "../../../showing/model/Showing.model.js";
 import Seat from "../../../seat/model/Seat.model.js";
+import Theatre from "../../../theatre/model/Theatre.model.js";
 
 /**
  * Delete

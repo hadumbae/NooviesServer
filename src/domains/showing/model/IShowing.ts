@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
 import type { IScreen } from "../../screen/interface/IScreen.js";
-import type ITheatre from "../../theatre/model/ITheatre.js";
 import type IMovie from "../../movie/model/Movie.interface.js";
 import type { ShowingStatusCode } from "../schema/ShowingStatusEnumSchema.js";
+import type {TheatreSchemaFields} from "../../theatre/model/Theatre.types.js";
 
 /**
  * Represents a movie showing within a theatre.
@@ -71,9 +71,9 @@ export default interface IShowing {
      * Reference to the theatre where the showing takes place.
      *
      * @remarks
-     * Can be either the theatre's ObjectId or the full `ITheatre` object.
+     * Can be either the theatre's ObjectId or the full `TheatreSchemaFields` object.
      */
-    theatre: Types.ObjectId | ITheatre;
+    theatre: Types.ObjectId | TheatreSchemaFields;
 
     /**
      * Reference to the screen on which the movie is shown.

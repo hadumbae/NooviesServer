@@ -1,6 +1,3 @@
-import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type ITheatre from "../model/ITheatre.js";
-import type TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";
 import type { Request } from "express";
 import type { TheatreQueryMatchFilters } from "../schema/query/TheatreQueryOption.types.js";
 import type {
@@ -8,13 +5,16 @@ import type {
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";
+import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
+import type {TheatreSchemaFields} from "../model/Theatre.types.js";
 
 /**
  * Interface representing the public contract for {@link TheatreController}.
  *
  * Extends {@link BaseControllerCRUDMethods} and can be extended to add theatre-specific endpoints.
  */
-export interface ITheatreController extends BaseControllerCRUDMethods {}
+export interface ITheatreController extends BaseControllerCRUDMethods<TheatreSchemaFields> {}
 
 /**
  * Constructor parameters for {@link TheatreController}.
@@ -22,13 +22,13 @@ export interface ITheatreController extends BaseControllerCRUDMethods {}
  * Extends {@link IBaseCRUDControllerConstructor} with an additional
  * {@link TheatreQueryOptionService} for handling query filters and sorting.
  */
-export interface ITheatreControllerConstructor extends IBaseCRUDControllerConstructor<ITheatre> {
+export interface ITheatreControllerConstructor extends IBaseCRUDControllerConstructor<TheatreSchemaFields> {
     /** Service for parsing, validating, and generating query filters and sorts. */
     optionService: TheatreQueryOptionService;
 }
 
 /**
- * Controller responsible for handling CRUD operations for {@link ITheatre}.
+ * Controller responsible for handling CRUD operations for {@link TheatreSchemaFields}.
  *
  * Extends {@link BaseCRUDController} and adds the ability to:
  * - Parse query parameters from Express requests
@@ -41,7 +41,7 @@ export interface ITheatreControllerConstructor extends IBaseCRUDControllerConstr
  * // - Match theatres with name "Grand"
  * // - Sort results by name ascending
  */
-export default class TheatreController extends BaseCRUDController<ITheatre> implements ITheatreController {
+export default class TheatreController extends BaseCRUDController<TheatreSchemaFields> implements ITheatreController {
     /** Service for handling query options, filters, and sorts for theatres. */
     protected optionService: TheatreQueryOptionService;
 
@@ -81,7 +81,7 @@ export default class TheatreController extends BaseCRUDController<ITheatre> impl
      * //   }
      * // }
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<ITheatre, TheatreQueryMatchFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<TheatreSchemaFields, TheatreQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }

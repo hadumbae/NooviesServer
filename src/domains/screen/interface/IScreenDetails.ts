@@ -1,5 +1,5 @@
 import type {IScreen} from "./IScreen.js";
-import type ITheatre from "../../theatre/model/ITheatre.js";
+import type {TheatreSchemaFields} from "../../theatre/model/Theatre.types.js";
 
 /**
  * Extended interface of `IScreen` that includes enriched details
@@ -7,7 +7,7 @@ import type ITheatre from "../../theatre/model/ITheatre.js";
  */
 export interface IScreenDetails extends IScreen {
     /** The full theatre object this screen belongs to. */
-    theatre: ITheatre;
+    theatre: TheatreSchemaFields;
 
     /** The total number of seats available in the screen. */
     seatCount: number;

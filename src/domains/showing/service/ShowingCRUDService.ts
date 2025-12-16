@@ -6,10 +6,10 @@ import type {
     ShowingCreateParams, IShowingCRUDServiceConstructor, ShowingDateTimeReturns, ShowingUpdateParams
 } from "./crud-service/ShowingCRUDService.types.js";
 import Showing from "../model/Showing.model.js";
-import Theatre from "../../theatre/model/Theatre.js";
 import createHttpError from "http-errors";
 import {Types} from "mongoose";
 import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import Theatre from "../../theatre/model/Theatre.model.js";
 
 /**
  * Service providing CRUD operations for showings, implementing {@link IShowingCRUDService}.
