@@ -1,3 +1,15 @@
+/**
+ * @file IReferenceQueryOptionService.ts
+ * @summary Interface for query option services supporting reference-based filters and population pipelines.
+ *
+ * @description
+ * Extends `IQueryOptionService` to add methods for generating MongoDB aggregation stages
+ * that handle references and population, in addition to standard `$match` filters and `$sort` options.
+ *
+ * This interface is useful for services managing documents that have relationships
+ * to other collections, allowing consistent handling of both direct and referenced queries.
+ */
+
 import type {
     PopulationPipelineStages,
     ReferenceFilterPipelineStages,
@@ -6,11 +18,7 @@ import type {
 import type IQueryOptionService from "./IQueryOptionService.js";
 
 /**
- * Interface for query option services that support reference-based filters
- * and population pipelines in addition to standard match filters.
- *
- * Extends `IQueryOptionService` with methods for generating MongoDB
- * aggregation stages related to references and population.
+ * Interface for query option services with reference-aware pipelines.
  *
  * @template TSchema - The type of the underlying Mongoose schema.
  * @template TOptions - The type representing query options (filters, sorts, etc.).
@@ -32,20 +40,25 @@ import type IQueryOptionService from "./IQueryOptionService.js";
 export default interface IReferenceQueryOptionService<TSchema, TOptions, TMatchFilters>
     extends IQueryOptionService<TSchema, TOptions, TMatchFilters> {
     /**
-     * Generates aggregation pipeline stages for applying reference-based filters
-     * based on the provided query options.
+     * Generates aggregation pipeline stages for applying reference-based filters.
      *
-     * @param params - The query options containing reference filter criteria.
+     * @param params - Query options containing reference filter criteria.
      * @returns Aggregation pipeline stages that filter documents based on references.
      */
     generateReferenceFilters(params: TOptions): ReferenceFilterPipelineStages;
 
+    /**
+     * Generates aggregation pipeline stages for sorting based on references.
+     *
+     * @param params - Query options containing reference sort criteria.
+     * @returns Aggregation pipeline stages for sorting documents based on references.
+     */
     generateReferenceSorts(params: TOptions): ReferenceSortPipelineStages;
 
     /**
-     * Generates aggregation pipeline stages for populating references in the schema.
+     * Generates aggregation pipeline stages for populating referenced documents.
      *
-     * @returns Aggregation pipeline stages for population.
+     * @returns Aggregation pipeline stages to populate references in the schema.
      */
     generatePopulationPipelines(): PopulationPipelineStages;
 }

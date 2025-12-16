@@ -1,57 +1,55 @@
 /**
  * @file SeatQueryOptionService.ts
- *
- * @summary Service for parsing, validating, and generating query options for Seat documents.
+ * @summary Service for parsing, validating, and generating query options for Seat documents, including reference pipelines.
  *
  * @description
- * Implements {@link IQueryOptionService} to standardize query handling for {@link ISeat}:
- * - Extracts query parameters from Express requests
- * - Validates filters using {@link SeatQueryMatchFiltersSchema}
- * - Generates Mongoose `$match` filters
- * - Generates Mongoose `$sort` options
- * - Combines filters and sorts into a single query object
+ * Implements `IReferenceQueryOptionService` to standardize query handling for `ISeat`.
+ * Provides methods to:
+ * - Extract and validate query parameters from Express requests
+ * - Generate Mongoose `$match` filters and `$sort` options
+ * - Build reference filters for related documents (e.g., Showings)
+ * - Generate population pipelines for related documents
+ * - Combine filters, sorts, and reference stages into a unified query object
+ *
+ * @example
+ * ```ts
+ * const service = new SeatQueryOptionService();
+ * const queryParams = service.fetchQueryParams(req);
+ * const queryOptions = service.generateQueryOptions(queryParams);
+ * ```
  */
 
 import type { Request } from "express";
-import type { FilterQuery, SortOrder } from "mongoose";
+import type { FilterQuery, PipelineStage, SortOrder } from "mongoose";
 import { SeatQueryMatchFiltersSchema } from "../schema/query/SeatQueryOption.schema.js";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type {
     SeatQueryMatchFilters,
     SeatQueryOptions,
 } from "../schema/query/SeatQueryOption.types.js";
-import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type ISeat from "../model/Seat.interface.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {
+    PopulationPipelineStages,
+    ReferenceFilterPipelineStages,
+    ReferenceSortPipelineStages,
+} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+import generateLookupMatchStage from "../../../shared/utility/mongoose/generateLookupMatchStage.js";
+import type IReferenceQueryOptionService from "../../../shared/types/query-options/IReferenceQueryOptionService.js";
 
 /**
- * @class SeatQueryOptionService
+ * Service class for managing query options for Seat documents, including reference pipelines.
  *
- * @implements IQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters>
- *
- * @summary Service class for managing Seat query options.
- *
- * @description
- * Provides standardized methods to:
- * - Parse query parameters from Express requests
- * - Generate Mongoose `$match` filters
- * - Generate Mongoose `$sort` options
- * - Combine filters and sorts into a single query option object
+ * @implements IReferenceQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters>
  */
 export default class SeatQueryOptionService
-    implements IQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters> {
+    implements IReferenceQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters> {
 
     /**
      * Parses and validates query parameters from an Express request.
      *
      * @param req - Express request object
-     * @returns Validated and filtered {@link SeatQueryOptions}
-     *
-     * @example
-     * ```ts
-     * const service = new SeatQueryOptionService();
-     * const queryParams = service.fetchQueryParams(req);
-     * ```
+     * @returns Validated and filtered `SeatQueryOptions`
      */
     fetchQueryParams(req: Request): SeatQueryOptions {
         const conditions = SeatQueryMatchFiltersSchema.parse(req.query);
@@ -61,13 +59,8 @@ export default class SeatQueryOptionService
     /**
      * Generates Mongoose `$match` filters for Seat documents.
      *
-     * @param params - Validated {@link SeatQueryOptions}
-     * @returns Mongoose-compatible filter object ({@link FilterQuery<SeatQueryMatchFilters>})
-     *
-     * @example
-     * ```ts
-     * const matchFilters = service.generateMatchFilters(queryParams);
-     * ```
+     * @param params - Validated `SeatQueryOptions`
+     * @returns Mongoose-compatible filter object (`FilterQuery<SeatQueryMatchFilters>`)
      */
     generateMatchFilters(params: SeatQueryOptions): FilterQuery<SeatQueryMatchFilters> {
         const {
@@ -100,13 +93,8 @@ export default class SeatQueryOptionService
     /**
      * Generates Mongoose `$sort` options for Seat documents.
      *
-     * @param params - Validated {@link SeatQueryOptions}
-     * @returns Partial record mapping Seat fields to {@link SortOrder}
-     *
-     * @example
-     * ```ts
-     * const sorts = service.generateMatchSorts(queryParams);
-     * ```
+     * @param params - Validated `SeatQueryOptions`
+     * @returns Partial record mapping Seat fields to `SortOrder`
      */
     generateMatchSorts(params: SeatQueryOptions): Partial<Record<keyof ISeat, SortOrder>> {
         const {
@@ -135,23 +123,76 @@ export default class SeatQueryOptionService
     }
 
     /**
-     * Combines `$match` filters and `$sort` options into a single query option object.
+     * Generates reference filter pipeline stages for related documents.
      *
-     * @param options - Validated {@link SeatQueryOptions}
-     * @returns {@link QueryOptionTypes} containing `match` filters and sorts
+     * @param params - Validated `SeatQueryOptions`
+     * @returns Mongoose aggregation pipeline stages (`ReferenceFilterPipelineStages`)
+     */
+    generateReferenceFilters(params: SeatQueryOptions): ReferenceFilterPipelineStages {
+        const { showing } = params;
+        const pipelineStages: ReferenceFilterPipelineStages = [];
+        const matchStages: Record<string, any> = {};
+
+        if (showing) {
+            const lookup: PipelineStage.Lookup = generateLookupMatchStage({
+                from: "showings",
+                localField: "screen",
+                foreignField: "screen",
+                as: "showing",
+                filters: { _id: showing },
+            });
+
+            pipelineStages.push(lookup);
+            matchStages.showing = { $ne: [] };
+        }
+
+        if (Object.keys(matchStages).length > 0) {
+            pipelineStages.push({ $match: matchStages });
+            pipelineStages.push({ $unset: ["showing"] });
+        }
+
+        return pipelineStages;
+    }
+
+    /**
+     * Generates reference sort pipeline stages (currently empty).
      *
-     * @example
-     * ```ts
-     * const queryOptions = service.generateQueryOptions(queryParams);
-     * // { match: { filters: {...}, sorts: {...} } }
-     * ```
+     * @param params - Validated `SeatQueryOptions`
+     * @returns Reference sort pipeline stages (`ReferenceSortPipelineStages`)
+     */
+    generateReferenceSorts(params: SeatQueryOptions): ReferenceSortPipelineStages {
+        return [];
+    }
+
+    /**
+     * Generates aggregation pipeline stages for populating referenced documents (e.g., screens, theatres).
+     *
+     * @returns Population pipeline stages (`PopulationPipelineStages`)
+     */
+    generatePopulationPipelines(): PopulationPipelineStages {
+        return [
+            { $lookup: { from: "screens", localField: "screen", foreignField: "_id", as: "screen" } },
+            { $lookup: { from: "theatres", localField: "theatre", foreignField: "_id", as: "theatre" } },
+            { $unwind: { path: "screen", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "theatre", preserveNullAndEmptyArrays: true } },
+        ];
+    }
+
+    /**
+     * Combines `$match` filters, `$sort` options, reference filters, and population pipelines into a single query object.
+     *
+     * @param options - Validated `SeatQueryOptions`
+     * @returns `QueryOptionTypes<ISeat, SeatQueryMatchFilters>` containing match filters, sorts, and reference pipelines
      */
     generateQueryOptions(options: SeatQueryOptions): QueryOptionTypes<ISeat, SeatQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
+        const referenceFilters = this.generateReferenceFilters(options);
+        const referenceSorts = this.generateReferenceSorts(options);
 
         return {
             match: { filters: matchFilters, sorts: matchSorts },
+            reference: { filters: referenceFilters, sorts: referenceSorts },
         };
     }
 }
