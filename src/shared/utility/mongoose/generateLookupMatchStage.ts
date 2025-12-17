@@ -13,28 +13,24 @@
  */
 
 import type { PipelineStage } from "mongoose";
-
-/**
- * Parameters for `generateLookupMatchStage`.
- */
-type LookupParams = {
-    from: string;
-    as: string;
-    localField: string;
-    foreignField: string;
-    filters?: Record<string, any>;
-    project?: Record<string, 1>;
-};
+import type { LookupMatchStageOptions } from "../../types/mongoose/LookupMatchStage.types.js";
 
 /**
  * Generates a MongoDB `$lookup` aggregation stage with optional filtering and projection.
  *
- * @param params - Configuration for the `$lookup` stage.
+ * @param params - Configuration object for the `$lookup` stage.
+ * @param params.from - Name of the foreign collection to join.
+ * @param params.as - Field name to store the joined documents.
+ * @param params.localField - Local field to match on.
+ * @param params.foreignField - Foreign field to match on.
+ * @param params.filters - Optional filters applied to the joined documents.
+ * @param params.project - Optional projection of specific fields from the joined documents.
+ *
  * @returns A `PipelineStage.Lookup` object suitable for a Mongoose aggregation pipeline.
  *
  * @remarks
- * - Matches `localField` to `foreignField` using `$expr` for dynamic aggregation variable binding.
- * - `filters` restrict the joined documents further.
+ * - Uses `$expr` to dynamically match `localField` and `foreignField`.
+ * - `filters` further restrict the joined documents.
  * - `project` allows selecting specific fields from the joined documents.
  *
  * @example
@@ -49,16 +45,18 @@ type LookupParams = {
  * });
  * ```
  */
-export default function generateLookupMatchStage(params: LookupParams): PipelineStage.Lookup {
+export default function generateLookupMatchStage(
+    params: LookupMatchStageOptions
+): PipelineStage.Lookup {
     const { from, as, localField, foreignField, project, filters = {} } = params;
     const pipeline: (PipelineStage.Match | PipelineStage.Project)[] = [];
 
-    // --- Has Project Stage ---
+    // --- Project Stage ---
     if (project) {
         pipeline.push({ $project: { _id: 1, ...project } });
     }
 
-    // --- Match Via Expression, Filters ---
+    // --- Match Stage with Filters ---
     pipeline.push({
         $match: {
             ...filters,
@@ -68,7 +66,7 @@ export default function generateLookupMatchStage(params: LookupParams): Pipeline
         },
     });
 
-    // --- Lookup Stage ---
+    // --- Return Lookup Stage ---
     return {
         $lookup: {
             from,

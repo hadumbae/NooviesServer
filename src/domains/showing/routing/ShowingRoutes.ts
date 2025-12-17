@@ -4,7 +4,7 @@ import {
     createBaseRoutes,
     type IBaseRoutesConfig
 } from "../../../shared/routing/BaseRoutes.js";
-import type {IShowingController} from "../controller/ShowingController.js";
+import type {ShowingControllerMethods} from "../controller/ShowingController.js";
 import {ShowingInputSchema} from "../schema/ShowingInputSchema.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
@@ -41,7 +41,7 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
  * @property crudController - The controller handling showing CRUD operations.
  * @property middlewareList - Middleware hooks applied to specific CRUD routes.
  */
-const baseConfig: IBaseRoutesConfig<IShowingController> = {
+const baseConfig: IBaseRoutesConfig<ShowingControllerMethods> = {
     crudController: controller,
     middlewareList,
 };
@@ -65,6 +65,6 @@ const baseConfig: IBaseRoutesConfig<IShowingController> = {
  * app.use("/showings", showingRoutes);
  * ```
  */
-const routes = createBaseRoutes<IShowingController>(baseConfig);
+const routes = createBaseRoutes<ShowingControllerMethods>(baseConfig);
 
 export default routes;
