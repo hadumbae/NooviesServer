@@ -16,7 +16,7 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
  * Count of screens associated with the theatre.
  *
  * Resolved via a virtual population on the Screen model.
- *
+ */
 TheatreSchema.virtual("screenCount", {
     ref: "Screen",
     localField: "_id",

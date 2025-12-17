@@ -1,8 +1,8 @@
 import {Model, model} from "mongoose";
 import {TheatreSchema} from "./Theatre.schema.js";
 
-import "./Theatre.middleware.js";
 import "./Theatre.virtuals.js";
+import "./Theatre.middleware.js";
 import type {TheatreSchemaFields} from "./Theatre.types.js";
 
 /**
