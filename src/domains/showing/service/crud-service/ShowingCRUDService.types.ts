@@ -51,7 +51,7 @@ export type ShowingCreateParams = {
     /** Input data for the new showing. */
     data: ShowingInput;
     /** Optional array of paths to populate related documents. */
-    populatePath?: PopulatePath[];
+    populatePaths?: PopulatePath[];
     /** Whether to populate referenced documents. Defaults to false. */
     populate?: boolean;
     /** Whether to include virtual fields in the returned object. Defaults to false. */
@@ -69,7 +69,7 @@ export type ShowingUpdateParams = {
     /** Optional fields to unset/remove from the document. */
     unset?: Partial<IShowing>;
     /** Optional array of paths to populate after update. */
-    populatePath?: string[];
+    populatePaths?: string[];
     /** Whether to populate referenced documents. Defaults to false. */
     populate?: boolean;
     /** Whether to include virtual fields in the returned object. Defaults to false. */

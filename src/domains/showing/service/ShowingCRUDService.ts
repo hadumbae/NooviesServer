@@ -92,7 +92,7 @@ export default class ShowingCRUDService implements IShowingCRUDService {
      * @returns A Promise resolving to the created {@link IShowing}.
      */
     async create(params: ShowingCreateParams): Promise<IShowing> {
-        const {data, populatePath, populate, virtuals = false} = params;
+        const {data, populatePaths, populate, virtuals = false} = params;
         const {startAtTime, startAtDate, endAtTime, endAtDate, ...showingData} = data;
 
         // ⚡ Start & End ⚡
@@ -105,13 +105,25 @@ export default class ShowingCRUDService implements IShowingCRUDService {
             endAtTime
         });
 
-        // ⚡ Showing ⚡
-        const doc = new Showing({...showingData, startTime, endTime});
-        await doc.save();
+        // --- Create Showing ---
+        const doc = await Showing.create({
+            ...showingData,
+            startTime,
+            endTime,
+        });
 
-        // ⚡ Options ⚡
-        if (populate) await doc.populate(populatePath ?? this.populateRefs);
-        return virtuals ? doc.toObject({virtuals}) : doc;
+        // --- Fetch Showing With Options ---
+        const query = Showing.findById(doc._id);
+        if (populate) query.populate(populatePaths ?? this.populateRefs);
+        if (virtuals) query.lean({virtuals: true});
+        const showing = await query;
+
+        // --- Showing Not Found ---
+        if (!showing) {
+            throw createHttpError(500, "Showing not found!");
+        }
+
+        return showing;
     }
 
     /**
@@ -128,7 +140,7 @@ export default class ShowingCRUDService implements IShowingCRUDService {
      * @returns A Promise resolving to the updated {@link IShowing}.
      */
     async update(params: ShowingUpdateParams): Promise<IShowing> {
-        const {_id, data, unset, populatePath, populate, virtuals = false} = params;
+        const {_id, data, unset, populatePaths, populate, virtuals = false} = params;
 
         // ⚡ Start & End ⚡
         const {startAtTime, startAtDate, endAtTime, endAtDate, ...updateData} = data;
@@ -147,7 +159,7 @@ export default class ShowingCRUDService implements IShowingCRUDService {
 
         // ⚡ Query Options ⚡
         const query = Showing.findByIdAndUpdate(_id, updateObject, {new: true});
-        if (populate) query.populate(populatePath ?? this.populateRefs);
+        if (populate) query.populate(populatePaths ?? this.populateRefs);
         if (virtuals) query.lean({virtuals});
         const showing = await query;
 
