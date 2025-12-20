@@ -7,6 +7,7 @@ import {ShowingStatusEnumSchema} from "../ShowingStatusEnumSchema.js";
 import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
 import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
 import {ISO3166Alpha2CountryCodeSchema} from "../../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
+import {URLParamPositiveNumberSchema} from "../../../../shared/schema/url/URLParamPositiveNumberSchema.js";
 
 /**
  * @file ShowingQuerySchemas.ts
@@ -29,11 +30,12 @@ export const ShowingQueryMatchFilterSchema = z.object({
     movie: URLParamObjectIDSchema,
     theatre: URLParamObjectIDSchema,
     screen: URLParamObjectIDSchema,
-    language: ISO6391LanguageCodeSchema,
+    language: ISO6391LanguageCodeSchema.optional(),
     subtitleLanguages: generateURLParamArraySchema(ISO6391LanguageCodeSchema),
     isSpecialEvent: URLParamBooleanSchema,
+    ticketPrice: URLParamPositiveNumberSchema,
     isActive: URLParamBooleanSchema,
-    status: ShowingStatusEnumSchema,
+    status: ShowingStatusEnumSchema.optional(),
 });
 
 // --- Sort Options ---
