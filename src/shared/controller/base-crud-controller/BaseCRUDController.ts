@@ -166,8 +166,6 @@ export default class BaseCRUDController<
 
         const data = await this.aggregateService.query(queryParams);
 
-        console.log("Data: ", data);
-
         return res.status(200).json(data);
     }
 
