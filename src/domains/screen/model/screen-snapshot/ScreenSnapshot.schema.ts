@@ -1,18 +1,14 @@
 /**
- * @file ScreenSnapshotSchema.ts
- *
- * @summary
- * Mongoose schema for a cinema screen snapshot.
+ * @file ScreenSnapshot.schema.ts
  *
  * @description
- * Represents the state of a screen at a specific point in time,
- * such as when embedded in a theatre or showing document.
- * Validates essential screen properties:
- * - `name` (screen identifier)
- * - `screenType` (e.g., Standard, IMAX, 4DX)
+ * Mongoose schema for an immutable cinema screen snapshot.
  *
- * This schema is typically used as an embedded subdocument rather than
- * a top-level collection.
+ * Captures the state of a screen at a specific point in time for embedding in
+ * snapshot-based documents (e.g. theatres, showings). This prevents historical
+ * drift if the source screen configuration changes later.
+ *
+ * Typically used as an embedded subdocument rather than a top-level collection.
  */
 
 import { Schema } from "mongoose";
@@ -20,25 +16,27 @@ import ScreenTypeConstant from "../../constant/ScreenTypeConstant.js";
 import type { ScreenSnapshotSchemaFields } from "./ScreenSnapshot.types.js";
 
 /**
- * Mongoose schema defining a screen snapshot with validation.
+ * Screen snapshot schema.
  *
- * @example
- * ```ts
- * const exampleScreen: ScreenSnapshotSchemaFields = {
- *   name: "Screen 1",
- *   screenType: "IMAX",
- * };
- * ```
+ * Stores the owning theatre reference and immutable screen properties such as
+ * name and screen type.
  */
 export const ScreenSnapshotSchema = new Schema<ScreenSnapshotSchemaFields>({
+    theatre: {
+        type: Schema.Types.ObjectId,
+        ref: "Theatre",
+        required: [true, "Theatre is required."],
+    },
+
     name: {
         type: String,
         maxLength: [255, "Name must be 255 characters or less."],
         required: true,
     },
+
     screenType: {
         type: String,
         enum: ScreenTypeConstant,
         required: [true, "Screen Type is required."],
-    }
+    },
 });
