@@ -1,20 +1,22 @@
 /**
- * @file SeatMapSnapshot.schema.ts
+ * @file ReservedSeatSnapshot.schema.ts
  *
  * @description
- * Mongoose schema defining an immutable snapshot of a seat within a seat map.
- * Captures seat identity, classification, label, and pricing at the time of
- * snapshot creation to prevent drift from later seat map changes.
+ * Mongoose schema for an immutable reserved seat snapshot.
+ *
+ * Captures the identity, classification, label, and final pricing of a seat at
+ * reservation or showing creation time. This ensures historical integrity if
+ * the underlying seat map or pricing rules change later.
  */
 
 import { Schema } from "mongoose";
-import type { SeatMapSnapshotSchemaFields } from "./SeatMapSnapshot.types.js";
-import SeatTypeConstant from "../../../seat/constant/SeatTypeConstant.js";
+import type { ReservedSeatSnapshotSchemaFields } from "./ReservedSeatSnapshot.types.js";
+import SeatTypeConstant from "../../../../seat/constant/SeatTypeConstant.js";
 
 /**
- * Seat map snapshot schema.
+ * Reserved seat snapshot schema.
  */
-export const SeatMapSnapshotSchema = new Schema<SeatMapSnapshotSchemaFields>({
+export const ReservedSeatSnapshotSchema = new Schema<ReservedSeatSnapshotSchemaFields>({
     seatIdentifier: {
         type: String,
         minlength: [1, "Seat Identifier must not be an empty string."],
