@@ -4,9 +4,13 @@
  * @description
  * Mongoose schema for an immutable reserved seat snapshot.
  *
- * Captures the identity, classification, label, and final pricing of a seat at
- * reservation or showing creation time. This ensures historical integrity if
- * the underlying seat map or pricing rules change later.
+ * Persists the finalized state of a single seat at reservation or showing
+ * creation time, including its originating seat map reference, stable
+ * identifier, classification, optional display label, and final price.
+ *
+ * This schema is embedded into higher-level snapshots (e.g. reserved showings)
+ * to guarantee historical and financial integrity if seat layouts, metadata,
+ * or pricing rules change after the reservation is created.
  */
 
 import { Schema } from "mongoose";
@@ -15,8 +19,19 @@ import SeatTypeConstant from "../../../../seat/constant/SeatTypeConstant.js";
 
 /**
  * Reserved seat snapshot schema.
+ *
+ * Represents a single seat exactly as it existed at snapshot time and must
+ * not be mutated after creation.
  */
 export const ReservedSeatSnapshotSchema = new Schema<ReservedSeatSnapshotSchemaFields>({
+    /** Reference to the originating seat map entry. */
+    seatMap: {
+        type: Schema.Types.ObjectId,
+        ref: "SeatMap",
+        required: [true, "Seat Map is required."],
+    },
+
+    /** Stable identifier linking back to the original seat definition. */
     seatIdentifier: {
         type: String,
         minlength: [1, "Seat Identifier must not be an empty string."],
@@ -24,12 +39,14 @@ export const ReservedSeatSnapshotSchema = new Schema<ReservedSeatSnapshotSchemaF
         required: [true, "Seat Identifier is required."],
     },
 
+    /** Logical seat classification (e.g. regular, VIP, disabled). */
     seatType: {
         type: String,
         enum: SeatTypeConstant,
         required: [true, "Seat Type is required."],
     },
 
+    /** Optional human-readable seat label (e.g. \"A12\"). */
     seatLabel: {
         type: String,
         minlength: [1, "Seat Label must not be an empty string."],
@@ -37,11 +54,12 @@ export const ReservedSeatSnapshotSchema = new Schema<ReservedSeatSnapshotSchemaF
         trim: true,
     },
 
+    /** Final price assigned to the seat at snapshot time. */
     pricePaid: {
         type: Number,
         validate: {
             message: "Price Paid must be more than 0.",
-            validator: (val: any) =>
+            validator: (val: unknown) =>
                 val === null ||
                 val === undefined ||
                 (typeof val === "number" && val > 0),
