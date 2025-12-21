@@ -1,6 +1,5 @@
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import type {Request} from "express";
-import type IShowing from "../../model/IShowing.js";
 import type {ShowingQueryMatchFilters, ShowingQueryOptions} from "../../schema/query/ShowingQueryOption.types.js";
 import {ShowingQueryOptionSchema} from "../../schema/query/ShowingQueryOption.schema.js";
 import ZodParseError from "../../../../shared/errors/ZodParseError.js";
@@ -15,6 +14,7 @@ import type {
 import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/LookupMatchStage.types.js";
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
+import type {ShowingSchemaFields} from "../../model/Showing.types.js";
 
 /**
  * @file ShowingQueryOptionService.ts
@@ -31,7 +31,7 @@ import generateReferenceFilterPipelineStages
  * - Produce fully combined query option objects
  * - Generate population pipelines for joining referenced documents
  */
-export default class ShowingQueryOptionService implements IReferenceQueryOptionService<IShowing, ShowingQueryOptions, ShowingQueryMatchFilters> {
+export default class ShowingQueryOptionService implements IReferenceQueryOptionService<ShowingSchemaFields, ShowingQueryOptions, ShowingQueryMatchFilters> {
 
     /**
      * Parses and validates query parameters from an Express request.
@@ -82,7 +82,7 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
      * @param options - Validated query options.
      * @returns A `SortQuery` object for Mongoose queries.
      */
-    generateMatchSorts(options: ShowingQueryOptions): SortQuery<IShowing> {
+    generateMatchSorts(options: ShowingQueryOptions): SortQuery<ShowingSchemaFields> {
         return filterNullishAttributes({
             startTime: options.sortByStartTime,
             endTime: options.sortByEndTime,
@@ -161,7 +161,7 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
      * @param options - Validated query options.
      * @returns Fully combined query options suitable for repository or aggregation use.
      */
-    generateQueryOptions(options: ShowingQueryOptions): QueryOptionTypes<IShowing, ShowingQueryMatchFilters> {
+    generateQueryOptions(options: ShowingQueryOptions): QueryOptionTypes<ShowingSchemaFields, ShowingQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
         const referenceFilters = this.generateReferenceFilters(options);

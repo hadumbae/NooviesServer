@@ -1,6 +1,6 @@
 import type SeatMapService from "../../../seatmap/service/seat-map-service/SeatMapService.js";
 import {type HydratedDocument, type Query, Schema} from "mongoose";
-import type IShowing from "../../model/IShowing.js";
+import type ShowingSchemaFields from "../../model/Showing.types.js";
 import SeatMap from "../../../seatmap/model/SeatMap.model.js";
 
 /**
@@ -40,7 +40,7 @@ export default class ShowingLifestyleService {
      * Stores the original `isNew` state so the post-save hook can distinguish
      * between inserts and updates.
      */
-    private handlePreSave = async function (this: HydratedDocument<IShowing>) {
+    private handlePreSave = async function (this: HydratedDocument<ShowingSchemaFields>) {
         (this as any)._wasNew = (this as any).isNew;
     };
 
@@ -51,7 +51,7 @@ export default class ShowingLifestyleService {
      * Runs only for newly created documents and delegates seat map creation
      * to `SeatMapService`.
      */
-    private handlePostSave = async (doc: HydratedDocument<IShowing>) => {
+    private handlePostSave = async (doc: HydratedDocument<ShowingSchemaFields>) => {
         const {_id} = doc;
         if (!_id) return;
 
@@ -67,7 +67,7 @@ export default class ShowingLifestyleService {
      * Automatically applies population when `lean({ virtuals: true })`
      * is requested, ensuring virtual seat counts are available.
      */
-    private handlePreFindQuery = async function (this: Query<any, IShowing>) {
+    private handlePreFindQuery = async function (this: Query<any, ShowingSchemaFields>) {
         const hasVirtuals =
             typeof (this as any)._mongooseOptions.lean === "object" &&
             (this as any)._mongooseOptions.lean.virtuals === true;
@@ -88,7 +88,7 @@ export default class ShowingLifestyleService {
      * @description
      * Triggered when deletion occurs via a document operation.
      */
-    private handlePostDeleteDocument = async (doc: HydratedDocument<IShowing>) => {
+    private handlePostDeleteDocument = async (doc: HydratedDocument<ShowingSchemaFields>) => {
         const {_id} = doc;
         if (!_id) return;
 
@@ -101,7 +101,7 @@ export default class ShowingLifestyleService {
      * @description
      * Handles deletions executed through query-based operations.
      */
-    private handlePostDeleteQuery = async function (this: Query<any, IShowing>) {
+    private handlePostDeleteQuery = async function (this: Query<any, ShowingSchemaFields>) {
         const {_id: showingID} = (this as any).getFilter();
         await SeatMap.deleteMany({showing: showingID});
     };

@@ -12,7 +12,7 @@ import {Types} from "mongoose";
 import createHttpError from "http-errors";
 import User from "@models/User.js";
 import Showing from "../../../showing/model/Showing.model.js";
-import type IShowing from "../../../showing/model/IShowing.js";
+import type {ShowingSchemaFields} from "../../../showing/model/Showing.types.js";
 
 interface UserMovieParams {
     userID: Types.ObjectId | string;
@@ -24,7 +24,7 @@ interface IMovieFavouriteService {
 
     removeMovieFromFavourite(params: UserMovieParams): Promise<IMovie>;
 
-    fetchMovieWithDetails(params: UserMovieParams): Promise<{ showings: IShowing[], movie: IMovie }>;
+    fetchMovieWithDetails(params: UserMovieParams): Promise<{ showings: ShowingSchemaFields[], movie: IMovie }>;
 }
 
 export default class MovieFavouriteService implements IMovieFavouriteService {
@@ -60,7 +60,7 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
         return movie;
     }
 
-    async fetchMovieWithDetails({userID, movieID}: UserMovieParams): Promise<{ showings: IShowing[], movie: IMovie }> {
+    async fetchMovieWithDetails({userID, movieID}: UserMovieParams): Promise<{ showings: ShowingSchemaFields[], movie: IMovie }> {
         const [user, movie] = await Promise.all([
             User.findById(userID).select("_id favourites").lean(),
             MovieModel.findById(movieID).populate(["genres"]).lean(),

@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type IShowing from "../model/IShowing.js";
 import type ShowingCRUDService from "../service/ShowingCRUDService.js";
 import type {
     BaseControllerCRUDMethods,
@@ -11,6 +10,7 @@ import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js
 import type { ShowingQueryMatchFilters } from "../schema/query/ShowingQueryOption.types.js";
 import type ShowingQueryOptionService from "../service/query-option/ShowingQueryOptionService.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {ShowingSchemaFields} from "../model/Showing.types.js";
 
 /**
  * Interface for Showing controller methods.
@@ -18,12 +18,12 @@ import type { QueryOptionTypes } from "../../../shared/types/query-options/Query
  * @remarks
  * Extends base CRUD methods with showing-specific types.
  */
-export interface ShowingControllerMethods extends BaseControllerCRUDMethods<IShowing, ShowingQueryMatchFilters> {}
+export interface ShowingControllerMethods extends BaseControllerCRUDMethods<ShowingSchemaFields, ShowingQueryMatchFilters> {}
 
 /**
  * Constructor parameters for {@link ShowingController}.
  */
-export interface ShowingControllerConstructor extends IBaseCRUDControllerConstructor<IShowing> {
+export interface ShowingControllerConstructor extends IBaseCRUDControllerConstructor<ShowingSchemaFields> {
     /** Service handling create/update operations for showings. */
     crudService: ShowingCRUDService;
     /** Service handling query operations for showings. */
@@ -38,7 +38,7 @@ export interface ShowingControllerConstructor extends IBaseCRUDControllerConstru
  * Provides methods for creating, updating, and querying showings.
  * Integrates {@link ShowingCRUDService} and {@link ShowingQueryOptionService}.
  */
-export default class ShowingController extends BaseCRUDController<IShowing> implements ShowingControllerMethods {
+export default class ShowingController extends BaseCRUDController<ShowingSchemaFields> implements ShowingControllerMethods {
     /** Service for creating and updating showings. */
     crudService: ShowingCRUDService;
 
@@ -63,7 +63,7 @@ export default class ShowingController extends BaseCRUDController<IShowing> impl
      *
      * @param req - Express request object with validated showing data in `req.validatedBody`.
      * @param res - Express response object used to return the created showing.
-     * @returns The created {@link IShowing} as JSON with HTTP 200 status.
+     * @returns The created {@link ShowingSchemaFields} as JSON with HTTP 200 status.
      *
      * @example
      * ```ts
@@ -88,7 +88,7 @@ export default class ShowingController extends BaseCRUDController<IShowing> impl
      *
      * @param req - Express request object with `_id` in `req.params` and updated data in `req.validatedBody`.
      * @param res - Express response object used to return the updated showing.
-     * @returns The updated {@link IShowing} as JSON with HTTP 200 status.
+     * @returns The updated {@link ShowingSchemaFields} as JSON with HTTP 200 status.
      *
      * @throws {Error} If `_id` is not a valid ObjectId.
      *
@@ -117,7 +117,7 @@ export default class ShowingController extends BaseCRUDController<IShowing> impl
      * @param req - Express request object containing query parameters.
      * @returns Combined query options including native and reference filters and sorts.
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<IShowing, any> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<ShowingSchemaFields, any> {
         const options = this.queryService.fetchQueryParams(req);
         return this.queryService.generateQueryOptions(options);
     }

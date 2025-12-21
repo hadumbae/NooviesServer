@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import type { SeatMapStatus } from "../schema/enum/SeatMapStatusEnumSchema.js";
 import type ISeat from "../../seat/model/Seat.interface.js";
-import type IShowing from "../../showing/model/IShowing.js";
+import type {ShowingSchemaFields} from "../../showing/model/Showing.types.js";
 
 /**
  * @interface SeatMapInputData
@@ -16,7 +16,7 @@ export interface SeatMapInputData {
      * Reference to the associated showing.
      * Accepts either a populated `IShowing` document or its ObjectId.
      */
-    showing: Types.ObjectId | IShowing;
+    showing: Types.ObjectId | ShowingSchemaFields;
 
     /**
      * Reference to the associated seat.

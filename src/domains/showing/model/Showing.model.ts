@@ -1,5 +1,4 @@
 import { Model, model } from "mongoose";
-import type IShowing from "./IShowing.js";
 import { ShowingSchema } from "./Showing.schema.js";
 import ShowingServiceProvider from "../provider/ShowingServiceProvider.js";
 
@@ -23,6 +22,7 @@ import ShowingServiceProvider from "../provider/ShowingServiceProvider.js";
 
 import "./Showing.virtuals.js";
 import "./Showing.indexes.js";
+import type {ShowingSchemaFields} from "./Showing.types.js";
 
 /**
  * Registers all Showing-related middleware and lifecycle hooks.
@@ -35,11 +35,11 @@ ShowingServiceProvider.registerMiddleware();
 /**
  * @summary Mongoose model for `Showing` documents.
  *
- * @type {Model<IShowing>}
+ * @type {Model<ShowingSchemaFields>}
  *
- * @see IShowing - TypeScript interface for Showing documents.
+ * @see ShowingSchemaFields - TypeScript interface for Showing documents.
  * @see ShowingSchema - Underlying schema definition.
  */
-const Showing: Model<IShowing> = model<IShowing>("Showing", ShowingSchema);
+const Showing: Model<ShowingSchemaFields> = model<ShowingSchemaFields>("Showing", ShowingSchema);
 
 export default Showing;

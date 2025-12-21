@@ -1,4 +1,4 @@
-import type IShowing from "../../model/IShowing.js";
+import type ShowingSchemaFields from "../../model/Showing.types.js";
 import type {TimeString} from "../../../../shared/schema/date-time/TimeStringSchema.js";
 import type {IANATimezone} from "../../../../shared/schema/date-time/IANATimezoneSchema.js";
 import type {PopulatePath} from "../../../../shared/types/mongoose/PopulatePath.js";
@@ -67,7 +67,7 @@ export type ShowingUpdateParams = {
     /** Input data for updating the showing. */
     data: ShowingInput;
     /** Optional fields to unset/remove from the document. */
-    unset?: Partial<IShowing>;
+    unset?: Partial<ShowingSchemaFields>;
     /** Optional array of paths to populate after update. */
     populatePaths?: string[];
     /** Whether to populate referenced documents. Defaults to false. */
@@ -112,15 +112,15 @@ export interface IShowingCRUDService {
      * Create a new showing in the database.
      *
      * @param params - Creation parameters including input data and population/virtual options.
-     * @returns A Promise resolving to the created {@link IShowing}.
+     * @returns A Promise resolving to the created {@link ShowingSchemaFields}.
      */
-    create(params: ShowingCreateParams): Promise<IShowing>;
+    create(params: ShowingCreateParams): Promise<ShowingSchemaFields>;
 
     /**
      * Update an existing showing by its ID.
      *
      * @param params - Update parameters including the `_id`, input data, optional unset fields, and population/virtual options.
-     * @returns A Promise resolving to the updated {@link IShowing}.
+     * @returns A Promise resolving to the updated {@link ShowingSchemaFields}.
      */
-    update(params: ShowingUpdateParams): Promise<IShowing>;
+    update(params: ShowingUpdateParams): Promise<ShowingSchemaFields>;
 }

@@ -1,7 +1,7 @@
 import { Schema, type SchemaDefinitionProperty } from "mongoose";
-import type IShowing from "./IShowing.js";
 import ShowingStatusConstant from "../constants/ShowingStatusConstant.js";
 import ISO6391CodeConstant from "../../../shared/constants/language/ISO6391CodeConstant.js";
+import type {ShowingSchemaFields} from "./Showing.types.js";
 
 /**
  * @fileoverview
@@ -34,7 +34,7 @@ const LanguageDefinition: SchemaDefinitionProperty = {
  * The `ShowingSchema` defines the structure and validation
  * of the `Showing` collection in MongoDB.
  */
-export const ShowingSchema = new Schema<IShowing>(
+export const ShowingSchema = new Schema<ShowingSchemaFields>(
     {
         /**
          * Reference to the movie being shown.

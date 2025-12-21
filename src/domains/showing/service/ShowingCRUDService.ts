@@ -1,4 +1,3 @@
-import type IShowing from "../model/IShowing.js";
 import {DateTime} from "luxon";
 import type {
     BuildShowingDateParams, GetShowingDateTimeParams,
@@ -10,6 +9,7 @@ import createHttpError from "http-errors";
 import {Types} from "mongoose";
 import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
 import Theatre from "../../theatre/model/Theatre.model.js";
+import type {ShowingSchemaFields} from "../model/Showing.types.js";
 
 /**
  * Service providing CRUD operations for showings, implementing {@link IShowingCRUDService}.
@@ -89,9 +89,9 @@ export default class ShowingCRUDService implements IShowingCRUDService {
      * @param params.populate - Whether to populate referenced documents. Defaults to false.
      * @param params.virtuals - Whether to include virtual fields in the returned object. Defaults to false.
      * @throws Throws if the theatre associated with the showing is not found.
-     * @returns A Promise resolving to the created {@link IShowing}.
+     * @returns A Promise resolving to the created {@link ShowingSchemaFields}.
      */
-    async create(params: ShowingCreateParams): Promise<IShowing> {
+    async create(params: ShowingCreateParams): Promise<ShowingSchemaFields> {
         const {data, populatePaths, populate, virtuals = false} = params;
         const {startAtTime, startAtDate, endAtTime, endAtDate, ...showingData} = data;
 
@@ -137,9 +137,9 @@ export default class ShowingCRUDService implements IShowingCRUDService {
      * @param params.populate - Whether to populate referenced documents. Defaults to false.
      * @param params.virtuals - Whether to include virtual fields in the returned object. Defaults to false.
      * @throws Throws `404` if the showing to update is not found.
-     * @returns A Promise resolving to the updated {@link IShowing}.
+     * @returns A Promise resolving to the updated {@link ShowingSchemaFields}.
      */
-    async update(params: ShowingUpdateParams): Promise<IShowing> {
+    async update(params: ShowingUpdateParams): Promise<ShowingSchemaFields> {
         const {_id, data, unset, populatePaths, populate, virtuals = false} = params;
 
         // ⚡ Start & End ⚡
