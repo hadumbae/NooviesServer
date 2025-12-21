@@ -25,5 +25,5 @@ export interface ReservedSeatSnapshotSchemaFields {
     seatLabel?: string;
 
     /** Final price assigned to the seat at snapshot time. */
-    price: number;
+    pricePaid: number;
 }

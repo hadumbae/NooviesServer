@@ -37,10 +37,10 @@ export const ReservedSeatSnapshotSchema = new Schema<ReservedSeatSnapshotSchemaF
         trim: true,
     },
 
-    price: {
+    pricePaid: {
         type: Number,
         validate: {
-            message: "Price must be more than 0.",
+            message: "Price Paid must be more than 0.",
             validator: (val: any) =>
                 val === null ||
                 val === undefined ||
