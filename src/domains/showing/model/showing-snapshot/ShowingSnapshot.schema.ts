@@ -1,15 +1,13 @@
 /**
  * @file ShowingSnapshot.schema.ts
  *
- * @summary
+ * @description
  * Mongoose schema for an immutable movie showing snapshot.
  *
- * @description
- * Defines the persisted snapshot of a showing at a specific point in time.
- * All referenced entities (movie, theatre, screen, seat) are embedded as
- * snapshots to ensure historical integrity if source data changes later.
+ * All referenced entities (movie, theatre, screen, seating) are embedded as
+ * snapshots to preserve historical integrity when source data changes.
  *
- * This schema is intended for embedding in:
+ * Intended for embedding in:
  * - Reservations
  * - Tickets
  * - Booking records
@@ -20,16 +18,12 @@ import { Schema, type SchemaDefinitionProperty } from "mongoose";
 import type { ShowingSnapshotSchemaFields } from "./ShowingSnapshot.types.js";
 import { MovieSnapshotSchema } from "../../../movie/model/movie-snapshot/MovieSnapshot.schema.js";
 import { TheatreSnapshotSchema } from "../../../theatre/model/theatre-snapshot/TheatreSnapshot.schema.js";
-import { SeatSnapshotSchema } from "../../../seat/model/seat-snapshot/SeatSnapshot.model.js";
 import { ScreenSnapshotSchema } from "../../../screen/model/screen-snapshot/ScreenSnapshot.schema.js";
 import ISO6391CodeConstant from "../../../../shared/constants/language/ISO6391CodeConstant.js";
+import { SeatMapSnapshotSchema } from "../../../seatmap/model/seat-map-snapshot/SeatMapSnapshot.schema.js";
 
 /**
  * Reusable ISO-639-1 language field definition.
- *
- * Ensures:
- * - Valid ISO-639-1 language codes
- * - Required presence when applied
  */
 const LanguageDefinition: SchemaDefinitionProperty = {
     type: String,
@@ -38,44 +32,29 @@ const LanguageDefinition: SchemaDefinitionProperty = {
 };
 
 /**
- * Mongoose schema defining a showing snapshot.
- *
- * @remarks
- * - Embedded snapshot documents are assumed immutable
- * - Time and pricing fields are validated at write time
- * - `endTime`, if provided, must be later than `startTime`
- *
- * @example
- * ```ts
- * {
- *   startTime: new Date("2025-01-01T19:30:00Z"),
- *   ticketPrice: 12.5,
- *   language: "en",
- *   subtitleLanguages: ["en", "zh"],
- *   isSpecialEvent: false
- * }
- * ```
+ * Showing snapshot schema.
  */
 export const ShowingSnapshotSchema = new Schema<ShowingSnapshotSchemaFields>({
-    /** Snapshot of the movie being shown */
-    movie: MovieSnapshotSchema,
-
-    /** Snapshot of the hosting theatre */
-    theatre: TheatreSnapshotSchema,
-
-    /** Snapshot of the seat configuration */
-    seat: SeatSnapshotSchema,
-
-    /** Snapshot of the screen used */
-    screen: ScreenSnapshotSchema,
-
-    /** Scheduled start time of the showing */
+    movie: {
+        type: MovieSnapshotSchema,
+        required: [true, "Movie is required."],
+    },
+    theatre: {
+        type: TheatreSnapshotSchema,
+        required: [true, "Theatre is required."],
+    },
+    screen: {
+        type: ScreenSnapshotSchema,
+        required: [true, "Screen is required."],
+    },
+    seating: {
+        type: [SeatMapSnapshotSchema],
+        required: [true, "Seating is required."],
+    },
     startTime: {
         type: Date,
         required: [true, "Start Time is required."],
     },
-
-    /** Optional scheduled end time (must be after start time) */
     endTime: {
         type: Date,
         default: null,
@@ -86,18 +65,12 @@ export const ShowingSnapshotSchema = new Schema<ShowingSnapshotSchemaFields>({
             message: "The End Time must be later than the Start Time.",
         },
     },
-
-    /** Base ticket price at the time of the showing */
     ticketPrice: {
         type: Number,
         min: [0.01, "Ticket Price must be greater than 0."],
         required: true,
     },
-
-    /** Primary spoken language of the movie */
     language: LanguageDefinition,
-
-    /** Available subtitle languages (ISO-639-1 codes) */
     subtitleLanguages: {
         type: [LanguageDefinition],
         validate: {
@@ -108,11 +81,9 @@ export const ShowingSnapshotSchema = new Schema<ShowingSnapshotSchemaFields>({
         },
         required: [true, "Subtitle array is required."],
     },
-
-    /** Indicates whether this showing is marked as a special event */
     isSpecialEvent: {
         type: Boolean,
         default: false,
-        required: true,
+        required: [true, "IsSpecialEvent flag is required."],
     },
 });
