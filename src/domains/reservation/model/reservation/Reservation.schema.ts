@@ -126,8 +126,8 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
                 if (this.status !== "RESERVED") return true;
                 if (!date) return false;
 
-                const now = DateTime.now().toUTC();
-                const checkDate = DateTime.fromJSDate(date).toUTC();
+                const now = DateTime.utc();
+                const checkDate = DateTime.fromJSDate(date).toUTC().endOf("day");
 
                 return checkDate > now;
             },
