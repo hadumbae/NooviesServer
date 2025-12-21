@@ -23,73 +23,81 @@ import { TheatreSnapshotSchema } from "../../../../theatre/model/theatre-snapsho
 import { ScreenSnapshotSchema } from "../../../../screen/model/screen-snapshot/ScreenSnapshot.schema.js";
 import { ReservedSeatSnapshotSchema } from "../seat-map-snapshot/ReservedSeatSnapshot.schema.js";
 
-/**
- * Reusable ISO-639-1 language field definition.
- */
+/** Reusable ISO-639-1 language field definition. */
 const LanguageDefinition: SchemaDefinitionProperty = {
     type: String,
     enum: { values: ISO6391CodeConstant, message: "Invalid ISO-6391 Code." },
     required: [true, "Required."],
 };
 
-/**
- * Reserved showing snapshot schema.
- */
-export const ReservedShowingSnapshotSchema =
-    new Schema<ReservedShowingSnapshotSchemaFields>({
-        movie: {
-            type: MovieSnapshotSchema,
-            required: [true, "Movie is required."],
-        },
-        theatre: {
-            type: TheatreSnapshotSchema,
-            required: [true, "Theatre is required."],
-        },
-        screen: {
-            type: ScreenSnapshotSchema,
-            required: [true, "Screen is required."],
-        },
-        selectedSeats: {
-            type: [ReservedSeatSnapshotSchema],
-            required: [true, "Selected seats are required."],
-        },
+/** Reserved showing snapshot schema. */
+export const ReservedShowingSnapshotSchema = new Schema<ReservedShowingSnapshotSchemaFields>({
+    /** Embedded movie snapshot at reservation time. */
+    movie: {
+        type: MovieSnapshotSchema,
+        required: [true, "Movie is required."],
+    },
 
-        startTime: {
-            type: Date,
-            required: [true, "Start Time is required."],
-        },
-        endTime: {
-            type: Date,
-            default: null,
-            validate: {
-                validator: function (value: Date | null | undefined) {
-                    return !value || value > this.startTime;
-                },
-                message: "The End Time must be later than the Start Time.",
+    /** Embedded theatre snapshot at reservation time. */
+    theatre: {
+        type: TheatreSnapshotSchema,
+        required: [true, "Theatre is required."],
+    },
+
+    /** Embedded screen snapshot at reservation time. */
+    screen: {
+        type: ScreenSnapshotSchema,
+        required: [true, "Screen is required."],
+    },
+
+    /** Array of selected seats with snapshots at reservation time. */
+    selectedSeats: {
+        type: [ReservedSeatSnapshotSchema],
+        required: [true, "Selected seats are required."],
+    },
+
+    /** Scheduled start time of the showing. */
+    startTime: {
+        type: Date,
+        required: [true, "Start Time is required."],
+    },
+
+    /** Optional end time; must be later than startTime if present. */
+    endTime: {
+        type: Date,
+        default: null,
+        validate: {
+            validator: function (value: Date | null | undefined) {
+                return !value || value > this.startTime;
             },
+            message: "The End Time must be later than the Start Time.",
         },
+    },
 
-        language: LanguageDefinition,
-        subtitleLanguages: {
-            type: [LanguageDefinition],
-            validate: {
-                validator: function (langs) {
-                    return Array.isArray(langs) && langs.length > 0;
-                },
-                message: "Must be an array of ISO-6391 codes.",
+    /** Primary spoken language of the showing (ISO-639-1). */
+    language: LanguageDefinition,
+
+    /** Subtitle languages available for the showing (ISO-639-1). */
+    subtitleLanguages: {
+        type: [LanguageDefinition],
+        validate: {
+            validator: function (langs) {
+                return Array.isArray(langs) && langs.length > 0;
             },
-            required: [true, "Subtitle array is required."],
+            message: "Must be an array of ISO-6391 codes.",
         },
+        required: [true, "Subtitle array is required."],
+    },
 
-        isSpecialEvent: {
-            type: Boolean,
-            default: false,
-            required: [true, "IsSpecialEvent flag is required."],
-        },
+    /** Indicates whether the showing is a special event screening. */
+    isSpecialEvent: {
+        type: Boolean,
+    },
 
-        pricePaid: {
-            type: Number,
-            min: [0.01, "Price Paid must be greater than 0."],
-            required: true,
-        },
-    });
+    /** Total price paid for the reservation. */
+    pricePaid: {
+        type: Number,
+        min: [0.01, "Price Paid must be greater than 0."],
+        required: true,
+    },
+});

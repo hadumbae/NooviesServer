@@ -17,16 +17,17 @@ import type { MovieSnapshotSchemaFields } from "../../../../movie/model/movie-sn
 import type { ReservedSeatSnapshotSchemaFields } from "../seat-map-snapshot/ReservedSeatSnapshot.types.js";
 
 /**
- * Reserved showing snapshot schema fields.
+ * Immutable snapshot of a reserved showing, capturing theatre, screen, movie,
+ * and seat details at reservation time to ensure historical integrity.
  */
 export interface ReservedShowingSnapshotSchemaFields {
-    /** Theatre snapshot at reservation time. */
+    /** Theatre snapshot at the time of reservation. */
     theatre: TheatreSchemaFields;
 
-    /** Screen snapshot at reservation time. */
+    /** Screen snapshot at the time of reservation. */
     screen: ScreenSnapshotSchemaFields;
 
-    /** Movie snapshot at reservation time. */
+    /** Movie snapshot at the time of reservation. */
     movie: MovieSnapshotSchemaFields;
 
     /** Seats selected and priced at reservation time. */
@@ -35,7 +36,7 @@ export interface ReservedShowingSnapshotSchemaFields {
     /** Scheduled start time of the showing. */
     startTime: Date;
 
-    /** Optional end time; must be later than `startTime` when present. */
+    /** Optional end time; must be later than startTime if present. */
     endTime?: Date | null;
 
     /** Primary spoken language of the showing (ISO-639-1). */
@@ -44,8 +45,8 @@ export interface ReservedShowingSnapshotSchemaFields {
     /** Subtitle languages available for the showing (ISO-639-1). */
     subtitleLanguages: ISO6391LanguageCode[];
 
-    /** Indicates whether the showing is a special event screening. */
-    isSpecialEvent: boolean;
+    /** Optional flag for special event screenings. */
+    isSpecialEvent?: boolean;
 
     /** Total price paid for the reservation. */
     pricePaid: number;
