@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
+import {Types} from "mongoose";
 
 /**
  * Express middleware to authenticate requests using a JWT stored in cookies.
@@ -53,7 +54,12 @@ export default function isAuth(req: Request, res: Response, next: NextFunction) 
 
     // --- SET AUTH DETAILS ---
     const { user, isAdmin } = decodedToken as any;
-    req.authUserID = user;
+
+    if (!Types.ObjectId.isValid(user)) {
+        throw createHttpError(401, "Invalid user identification.");
+    }
+
+    req.authUserID = Types.ObjectId.createFromHexString(user);
     req.authUserAdmin = isAdmin;
 
     next();

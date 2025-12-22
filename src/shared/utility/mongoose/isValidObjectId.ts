@@ -25,7 +25,7 @@ export default function isValidObjectId(_id: string | Types.ObjectId): Types.Obj
     }
 
     if (Types.ObjectId.isValid(_id)) {
-        return new Types.ObjectId(_id);
+        return Types.ObjectId.createFromHexString(_id);
     }
 
     throw createHttpError(400, "Invalid ID format!");

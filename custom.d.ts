@@ -2,7 +2,7 @@ import {Types} from "mongoose";
 
 declare module "express" {
     export interface Request {
-        authUserID?: Types.ObjectId | string;
+        authUserID?: Types.ObjectId;
         authUserAdmin?: boolean;
 
         validatedBody?: any;
