@@ -1,28 +1,65 @@
-import {type UserRegisterData, UserRegisterSubmitSchema} from "../schema/UserRegisterSubmitSchema.js";
+import { type UserRegisterInput } from "../schema/UserRegisterInputSchema.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import bcrypt from "bcryptjs";
 import User from "../../users/model/User.js";
-import {Types} from "mongoose";
+import { Types } from "mongoose";
 import createHttpError from "http-errors";
-import {z, type ZodIssue} from "zod";
+import { z, type ZodIssue } from "zod";
 import jwt from "jsonwebtoken";
-import type {UserCredentials} from "../types/UserCredentials.js";
-import type IUser from "@models/IUser.js";
+import type { UserCredentials } from "../types/UserCredentials.js";
+import type UserSchemaFields from "@models/UserSchemaFields.js";
+import type { UserLoginInput } from "../schema/UserLoginInputSchema.js";
+import type { AuthServiceMethods } from "./AuthService.types.js";
 
-export interface IAuthService {
-    login(params: { email: string, password: string }): Promise<UserCredentials>;
+/**
+ * Service class handling authentication operations.
+ *
+ * Implements `AuthServiceMethods` and provides business logic for:
+ * - Registering new users
+ * - Logging in users
+ * - Toggling admin roles
+ * - Checking for existing emails
+ *
+ * @example
+ * ```ts
+ * const authService = new AuthService();
+ *
+ * // Register a user
+ * const newUser = await authService.register({
+ *   name: "Jane Doe",
+ *   email: "jane@example.com",
+ *   password: "securePassword123",
+ *   confirm: "securePassword123"
+ * });
+ *
+ * // Login
+ * const credentials = await authService.login({
+ *   email: "jane@example.com",
+ *   password: "securePassword123"
+ * });
+ *
+ * // Toggle admin role
+ * const updatedUser = await authService.toggleAdmin(newUser._id);
+ *
+ * // Check for existing email
+ * await authService.checkForExistingEmail("jane@example.com");
+ * ```
+ */
+export default class AuthService implements AuthServiceMethods {
+    /**
+     * Registers a new user.
+     *
+     * @param data - User registration input.
+     * @returns The created user document.
+     * @throws ZodParseError if the email is already in use.
+     */
+    async register(data: UserRegisterInput): Promise<UserSchemaFields> {
+        const { name, email, password } = data;
 
-    register(params: UserRegisterData): Promise<IUser>;
+        // --- CHECK EMAIL ---
+        await this.checkForExistingEmail(email);
 
-    toggleAdmin(params: { userID: Types.ObjectId | string }): Promise<IUser>;
-}
-
-export default class AuthService implements IAuthService {
-    async register(params: UserRegisterData): Promise<IUser> {
-        const data = this.validateUserRegisterData(params);
-        const {name, email, password} = data!;
-
-        await this.checkForExistingEmail({email});
+        // --- CREATE USER ---
         const hashedPassword = await bcrypt.hash(password, 12);
 
         return User.create({
@@ -33,51 +70,84 @@ export default class AuthService implements IAuthService {
         });
     }
 
-    async login(params: { email: string, password: string }): Promise<UserCredentials> {
-        const user = await User.findOne({email: params.email});
+    /**
+     * Logs in a user.
+     *
+     * @param data - User login input containing email and password.
+     * @returns User credentials including JWT token.
+     * @throws HttpError 404 if user is not found.
+     * @throws ZodParseError if password is incorrect.
+     */
+    async login(data: UserLoginInput): Promise<UserCredentials> {
+        const { email: inputEmail, password: inputPassword } = data;
+
+        // --- FETCH USER ---
+        const user = await User.findOne({ email: inputEmail });
         if (!user) throw createHttpError(404, "User not found!");
 
-        const isValid = await bcrypt.compare(params.password, user.password);
+        const { _id, name, email, roles, password } = user;
 
+        // --- VALIDATE PASSWORD ---
+        const isValid = await bcrypt.compare(inputPassword, password);
         if (!isValid) {
-            const error = {code: "invalid_string", message: "Incorrect Password.", path: ["password"]};
-            throw new ZodParseError({message: "Authentication failed.", errors: [error as ZodIssue]});
+            const error = { code: "invalid_string", message: "Incorrect Password.", path: ["password"] };
+            throw new ZodParseError({ message: "Authentication failed.", errors: [error as ZodIssue] });
         }
 
-        const {_id, name, email, isAdmin = false} = user;
-        const tokenData = {name, email, isAdmin, user: _id};
+        // --- USER DETAILS ---
+        const userDetails = {
+            user: _id,
+            isAdmin: roles.includes("ADMIN"),
+            roles,
+            name,
+            email,
+        };
 
-        const key = "somesupersecretsecretsecret";
-        const token: string = jwt.sign(tokenData, key, {expiresIn: "24h"});
+        const token: string = jwt.sign(userDetails, "somesupersecretsecretsecret", { expiresIn: "72h" });
 
-        return {...tokenData, token};
+        return { ...userDetails, token };
     }
 
-    async toggleAdmin({userID}: { userID: Types.ObjectId | string }): Promise<IUser> {
+    /**
+     * Toggles the admin role for a user.
+     *
+     * @param userID - The ObjectId of the user.
+     * @returns The updated user document.
+     * @throws HttpError 404 if the user is not found.
+     */
+    async toggleAdmin(userID: Types.ObjectId): Promise<UserSchemaFields> {
+        // --- FETCH USER ---
         const user = await User.findById(userID);
         if (!user) throw createHttpError(404, "User not found!");
 
-        user.isAdmin = !user.isAdmin;
+        const { roles } = user;
+
+        // --- TOGGLE ROLE ---
+        if (roles.includes("ADMIN")) {
+            user.roles = roles.filter((r) => r !== "ADMIN");
+        } else {
+            user.roles = [...roles, "ADMIN"];
+        }
+
+        // --- SAVE ---
         return user.save();
     }
-    
-    validateUserRegisterData(userData: UserRegisterData): UserRegisterData {
-        const {data, success, error} = UserRegisterSubmitSchema.safeParse(userData);
 
-        if (!success) {
-            const {errors} = error;
-            throw new ZodParseError({errors, message: "Invalid Register Details."});
-        }
-
-        return data!;
-    }
-
-    async checkForExistingEmail({email}: {email: string}) {
-        const emailCount = await User.countDocuments({email});
-
+    /**
+     * Checks whether an email is already in use.
+     *
+     * @param email - Email to check.
+     * @throws ZodParseError if the email already exists.
+     */
+    async checkForExistingEmail(email: string) {
+        const emailCount = await User.countDocuments({ email });
         if (emailCount > 0) {
-            const errors: ZodIssue[] = [{code: z.ZodIssueCode.custom, path: ['email'], message: "Email is already in use!"}];
-            throw new ZodParseError({errors: errors});
+            const errors: ZodIssue[] = [{
+                code: z.ZodIssueCode.custom,
+                path: ['email'],
+                message: "Email is already in use!"
+            }];
+            throw new ZodParseError({ errors });
         }
     }
-};
+}

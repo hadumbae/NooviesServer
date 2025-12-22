@@ -1,6 +1,6 @@
 import type {Request, Response} from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type IUser from "../model/IUser.js";
+import type UserSchemaFields from "@models/UserSchemaFields.js";
 import type UserService from "../service/UserService.js";
 import createHttpError from "http-errors";
 import type {
@@ -8,7 +8,7 @@ import type {
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 
-export interface IUserControllerConstructor extends IBaseCRUDControllerConstructor<IUser> {
+export interface IUserControllerConstructor extends IBaseCRUDControllerConstructor<UserSchemaFields> {
     service: UserService;
 }
 
@@ -16,7 +16,7 @@ export interface IUserController extends BaseControllerCRUDMethods {
     updateUserPassword(req: Request, res: Response): Promise<Response>,
 }
 
-export default class UserController extends BaseCRUDController<IUser> implements IUserController {
+export default class UserController extends BaseCRUDController<UserSchemaFields> implements IUserController {
     service: UserService;
 
     constructor(params: IUserControllerConstructor) {

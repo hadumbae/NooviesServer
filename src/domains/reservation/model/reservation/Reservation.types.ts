@@ -13,7 +13,7 @@
 import type { ReservedShowingSnapshotSchemaFields } from "../snapshots/showing-snapshot/ReservedShowingSnapshot.types.js";
 import type { ShowingSchemaFields } from "../../../showing/model/Showing.types.js";
 import type { SeatMapSchemaFields } from "../../../seatmap/model/SeatMap.types.js";
-import type IUser from "@models/IUser.js";
+import type UserSchemaFields from "@models/UserSchemaFields.js";
 import { Types } from "mongoose";
 import type { ISO4217CurrencyCode } from "../../../../shared/schema/enums/ISO4217CurrencyCodeEnumSchema.js";
 import type { ReservationStatus } from "../../schemas/enum/ReservationStatusEnumSchema.js";
@@ -35,7 +35,7 @@ export interface ReservationSchemaFields {
     snapshot: ReservedShowingSnapshotSchemaFields;
 
     /** Reserving user (ID or populated document). */
-    user: Types.ObjectId | IUser;
+    user: Types.ObjectId | UserSchemaFields;
 
     /** Referenced showing (ID or populated document). */
     showing: Types.ObjectId | ShowingSchemaFields;
