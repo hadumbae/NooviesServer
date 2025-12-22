@@ -1,6 +1,6 @@
 import {TheatreSchema} from "./Theatre.schema.js";
 import type {Query} from "mongoose";
-import Screen from "../../screen/model/Screen.js";
+import Screen from "../../screen/model/Screen.model.js";
 import Seat from "../../seat/model/Seat.model.js";
 import Showing from "../../showing/model/Showing.model.js";
 import type {TheatreSchemaFields} from "./Theatre.types.js";

@@ -5,7 +5,7 @@ import {
     type IBaseRoutesConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {IScreenController} from "../controller/ScreenController.js";
-import {ScreenSubmitSchema} from "../schema/ScreenSubmitSchema.js";
+import {ScreenInputSchema} from "../schema/ScreenInputSchema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
@@ -26,7 +26,7 @@ const unsetMiddleware = unsetModelFormFields({model});
  * Route-specific middleware for the Screen CRUD operations.
  *
  * - **create**:
- *   1. Validates the request body against {@link ScreenSubmitSchema}.
+ *   1. Validates the request body against {@link ScreenInputSchema}.
  *   2. Removes unset/undefined fields via {@link unsetMiddleware}.
  *
  * - **update**:
@@ -36,8 +36,8 @@ const unsetMiddleware = unsetModelFormFields({model});
  */
 const middlewareList: BaseRouteMiddleware<typeof controller> = {
     path: {
-        create: [validateZodSchemaAsync(ScreenSubmitSchema), unsetMiddleware],
-        update: [validateZodSchemaAsync(ScreenSubmitSchema), unsetMiddleware],
+        create: [validateZodSchemaAsync(ScreenInputSchema), unsetMiddleware],
+        update: [validateZodSchemaAsync(ScreenInputSchema), unsetMiddleware],
     },
 };
 

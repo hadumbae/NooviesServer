@@ -1,4 +1,4 @@
-import Screen from "../model/Screen.js";
+import Screen from "../model/Screen.model.js";
 
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import ScreenController from "../controller/ScreenController.js";

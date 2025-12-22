@@ -5,7 +5,7 @@ import type {TheatreSchemaFields} from "../../theatre/model/Theatre.types.js";
 /**
  * Interface representing a cinema screen within a theatre.
  */
-export interface IScreen {
+export interface ScreenSchemaFields {
     /**
      * Unique identifier for the screen (MongoDB ObjectId).
      */

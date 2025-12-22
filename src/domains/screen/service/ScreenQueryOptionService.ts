@@ -2,7 +2,7 @@ import type {Request} from "express";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
-import type {IScreen} from "../interface/IScreen.js";
+import type {ScreenSchemaFields} from "../model/Screen.types.js";
 import {
     type ScreenQueryMatchFilters,
     type ScreenQueryParams,
@@ -13,7 +13,7 @@ import type {FilterQuery, SortOrder} from "mongoose";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 
 /**
- * Service for parsing, validating, and generating query options for {@link IScreen} documents.
+ * Service for parsing, validating, and generating query options for {@link ScreenSchemaFields} documents.
  *
  * Implements {@link IQueryOptionService} to provide a standardized way to:
  * - Extract query parameters from Express requests
@@ -21,7 +21,7 @@ import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOp
  * - Generate Mongoose `$sort` specifications
  * - Extract additional query parameters (`options`) such as `showingsPerScreen`
  */
-export default class ScreenQueryOptionService implements IQueryOptionService<IScreen, ScreenQueryOptions, ScreenQueryMatchFilters> {
+export default class ScreenQueryOptionService implements IQueryOptionService<ScreenSchemaFields, ScreenQueryOptions, ScreenQueryMatchFilters> {
 
     /**
      * Parses and validates query parameters from an Express request.
@@ -70,7 +70,7 @@ export default class ScreenQueryOptionService implements IQueryOptionService<ISc
      * const sorts = service.generateMatchSorts({ sortByCapacity: -1, sortByName: 1 });
      * // sorts: { capacity: -1, name: 1 }
      */
-    generateMatchSorts(options: ScreenQueryOptions): Partial<Record<keyof IScreen, SortOrder>> {
+    generateMatchSorts(options: ScreenQueryOptions): Partial<Record<keyof ScreenSchemaFields, SortOrder>> {
         const {sortByName, sortByCapacity, sortByScreenType, sortByCreatedAt} = options;
 
         const sorts = {
@@ -120,7 +120,7 @@ export default class ScreenQueryOptionService implements IQueryOptionService<ISc
      * //   options: { showingsPerScreen: 5 }
      * // }
      */
-    generateQueryOptions(options: ScreenQueryOptions): QueryOptionTypes<IScreen, ScreenQueryMatchFilters> {
+    generateQueryOptions(options: ScreenQueryOptions): QueryOptionTypes<ScreenSchemaFields, ScreenQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
         const params = this.generateParams(options);

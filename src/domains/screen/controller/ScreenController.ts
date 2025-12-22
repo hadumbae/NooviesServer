@@ -1,5 +1,5 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type {IScreen} from "../interface/IScreen.js";
+import type {ScreenSchemaFields} from "../model/Screen.types.js";
 import type {Request, Response} from "express";
 import ScreenQueryOptionService from "../service/ScreenQueryOptionService.js";
 import ScreenService from "../service/ScreenService.js";
@@ -18,7 +18,7 @@ import type {ScreenQueryMatchFilters} from "../schema/query/ScreenQueryOption.ty
  * Extends the base CRUD controller with screen-specific endpoints
  * for fetching screens by theatre and seats by row.
  */
-export interface IScreenController extends BaseControllerCRUDMethods {
+export interface IScreenController extends BaseControllerCRUDMethods<ScreenSchemaFields, ScreenQueryMatchFilters> {
     /**
      * Fetches a paginated list of screens for a specific theatre.
      *
@@ -43,7 +43,7 @@ export interface IScreenController extends BaseControllerCRUDMethods {
  *
  * Extends the base CRUD controller constructor with screen-specific services.
  */
-export interface IScreenControllerConstructor extends IBaseCRUDControllerConstructor<IScreen> {
+export interface IScreenControllerConstructor extends IBaseCRUDControllerConstructor<ScreenSchemaFields> {
     /** Service for CRUD operations and business logic on screens. */
     service: ScreenService;
 
@@ -69,7 +69,7 @@ export interface IScreenControllerConstructor extends IBaseCRUDControllerConstru
  * // Fetch seats for a screen grouped by row:
  * // GET /screens/:id/seats
  */
-export default class ScreenController extends BaseCRUDController<IScreen> implements IScreenController {
+export default class ScreenController extends BaseCRUDController<ScreenSchemaFields> implements IScreenController {
     /** Service handling screen CRUD operations and business logic. */
     protected service: ScreenService;
 
@@ -99,7 +99,7 @@ export default class ScreenController extends BaseCRUDController<IScreen> implem
      * @param req - Express request object
      * @returns {@link QueryOptionTypes} for screens
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<IScreen, ScreenQueryMatchFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<ScreenSchemaFields, ScreenQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }

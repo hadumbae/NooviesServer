@@ -14,7 +14,7 @@
  */
 
 import { Types } from "mongoose";
-import type { IScreen } from "../../screen/interface/IScreen.js";
+import type { ScreenSchemaFields } from "../../screen/model/Screen.types.js";
 import type IMovie from "../../movie/model/Movie.interface.js";
 import type { ShowingStatusCode } from "../schema/ShowingStatusEnumSchema.js";
 import type { TheatreSchemaFields } from "../../theatre/model/Theatre.types.js";
@@ -58,7 +58,7 @@ export interface ShowingSchemaFields {
     theatre: Types.ObjectId | TheatreSchemaFields;
 
     /** Screen on which the showing is presented (ID or populated document). */
-    screen: Types.ObjectId | IScreen;
+    screen: Types.ObjectId | ScreenSchemaFields;
 
     /** Current lifecycle status of the showing. */
     status: ShowingStatusCode;

@@ -1,7 +1,7 @@
 import {Types} from "mongoose";
-import Screen from "../model/Screen.js";
+import Screen from "../model/Screen.model.js";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
-import type {IScreen} from "../interface/IScreen.js";
+import type {ScreenSchemaFields} from "../model/Screen.types.js";
 
 export interface IScreenService {
     fetchPaginatedScreensByTheatre(
@@ -12,7 +12,7 @@ export interface IScreenService {
             showingsPerScreen?: number,
             sort?: Record<string, any>,
         }
-    ): Promise<PaginationReturns<IScreen>>;
+    ): Promise<PaginationReturns<ScreenSchemaFields>>;
 }
 
 export default class ScreenService implements IScreenService {
