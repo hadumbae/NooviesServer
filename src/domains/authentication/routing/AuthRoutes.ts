@@ -54,7 +54,6 @@ router.post(
 // API - /auth/logout
 router.post(
     "/logout",
-    isAuth,
     asyncHandler(controller.logout.bind(controller)),
 );
 

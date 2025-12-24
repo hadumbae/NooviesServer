@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from 'express';
+import type {Request, Response, NextFunction} from 'express';
 import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
 import {Types} from "mongoose";
@@ -33,7 +33,7 @@ import {Types} from "mongoose";
  */
 export default function isAuth(req: Request, res: Response, next: NextFunction) {
     // --- GET TOKEN ---
-    const { authToken: token } = req.cookies;
+    const {authToken: token} = req.cookies;
 
     if (!token) {
         throw createHttpError(401, "Unauthorized.");
@@ -53,13 +53,13 @@ export default function isAuth(req: Request, res: Response, next: NextFunction) 
     }
 
     // --- SET AUTH DETAILS ---
-    const { user, isAdmin } = decodedToken as any;
+    const {user, isAdmin} = decodedToken as any;
 
-    if (!Types.ObjectId.isValid(user)) {
+    if (!user || !user._id || !Types.ObjectId.isValid(user._id)) {
         throw createHttpError(401, "Invalid user identification.");
     }
 
-    req.authUserID = Types.ObjectId.createFromHexString(user);
+    req.authUserID = Types.ObjectId.createFromHexString(user._id);
     req.authUserAdmin = isAdmin;
 
     next();

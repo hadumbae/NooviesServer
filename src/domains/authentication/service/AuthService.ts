@@ -1,15 +1,15 @@
-import { type UserRegisterInput } from "../schema/UserRegisterInputSchema.js";
+import {type UserRegisterInput} from "../schema/UserRegisterInputSchema.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import bcrypt from "bcryptjs";
 import User from "../../users/model/User.js";
-import { Types } from "mongoose";
+import {Types} from "mongoose";
 import createHttpError from "http-errors";
-import { z, type ZodIssue } from "zod";
+import {z, type ZodIssue} from "zod";
 import jwt from "jsonwebtoken";
-import type { UserCredentials } from "../types/UserCredentials.js";
+import type {UserCredentials} from "../types/UserCredentials.js";
 import type UserSchemaFields from "@models/UserSchemaFields.js";
-import type { UserLoginInput } from "../schema/UserLoginInputSchema.js";
-import type { AuthServiceMethods } from "./AuthService.types.js";
+import type {UserLoginInput} from "../schema/UserLoginInputSchema.js";
+import type {AuthServiceMethods} from "./AuthService.types.js";
 
 /**
  * Service class handling authentication operations.
@@ -54,7 +54,7 @@ export default class AuthService implements AuthServiceMethods {
      * @throws ZodParseError if the email is already in use.
      */
     async register(data: UserRegisterInput): Promise<UserSchemaFields> {
-        const { name, email, password } = data;
+        const {name, email, password} = data;
 
         // --- CHECK EMAIL ---
         await this.checkForExistingEmail(email);
@@ -79,33 +79,33 @@ export default class AuthService implements AuthServiceMethods {
      * @throws ZodParseError if password is incorrect.
      */
     async login(data: UserLoginInput): Promise<UserCredentials> {
-        const { email: inputEmail, password: inputPassword } = data;
+        const {email: inputEmail, password: inputPassword} = data;
 
         // --- FETCH USER ---
-        const user = await User.findOne({ email: inputEmail });
+        const user = await User.findOne({email: inputEmail});
         if (!user) throw createHttpError(404, "User not found!");
 
-        const { _id, name, email, roles, password } = user;
+        const {_id, name, email, roles, password} = user;
 
         // --- VALIDATE PASSWORD ---
         const isValid = await bcrypt.compare(inputPassword, password);
         if (!isValid) {
-            const error = { code: "invalid_string", message: "Incorrect Password.", path: ["password"] };
-            throw new ZodParseError({ message: "Authentication failed.", errors: [error as ZodIssue] });
+            const error = {code: "invalid_string", message: "Incorrect Password.", path: ["password"]};
+            throw new ZodParseError({message: "Authentication failed.", errors: [error as ZodIssue]});
         }
 
         // --- USER DETAILS ---
         const userDetails = {
-            user: _id,
             isAdmin: roles.includes("ADMIN"),
-            roles,
-            name,
-            email,
+            user: {_id, roles, name, email},
         };
 
-        const token: string = jwt.sign(userDetails, "somesupersecretsecretsecret", { expiresIn: "72h" });
+        const token: string = jwt.sign(userDetails, "somesupersecretsecretsecret", {expiresIn: "72h"});
 
-        return { ...userDetails, token };
+        return {
+            ...userDetails,
+            token
+        };
     }
 
     /**
@@ -120,7 +120,7 @@ export default class AuthService implements AuthServiceMethods {
         const user = await User.findById(userID);
         if (!user) throw createHttpError(404, "User not found!");
 
-        const { roles } = user;
+        const {roles} = user;
 
         // --- TOGGLE ROLE ---
         if (roles.includes("ADMIN")) {
@@ -140,14 +140,14 @@ export default class AuthService implements AuthServiceMethods {
      * @throws ZodParseError if the email already exists.
      */
     async checkForExistingEmail(email: string) {
-        const emailCount = await User.countDocuments({ email });
+        const emailCount = await User.countDocuments({email});
         if (emailCount > 0) {
             const errors: ZodIssue[] = [{
                 code: z.ZodIssueCode.custom,
                 path: ['email'],
                 message: "Email is already in use!"
             }];
-            throw new ZodParseError({ errors });
+            throw new ZodParseError({errors});
         }
     }
 }

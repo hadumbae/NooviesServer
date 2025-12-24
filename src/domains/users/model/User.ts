@@ -56,6 +56,7 @@ const UserSchema = new Schema<UserSchemaFields>({
                 return new Set(arr).size === arr.length;
             },
         },
+        default: ["USER"],
         required: [true, "`Roles` are required."],
     }
 }, { timestamps: true });

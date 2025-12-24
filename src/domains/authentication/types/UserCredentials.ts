@@ -1,5 +1,5 @@
-import { Types } from "mongoose";
-import type { UserRole } from "../../users/schema/enum/UserRoleEnumSchema.js";
+import {Types} from "mongoose";
+import type {UserRole} from "../../users/schema/enum/UserRoleEnumSchema.js";
 
 /**
  * Represents the credentials and basic information of an authenticated user.
@@ -26,21 +26,12 @@ import type { UserRole } from "../../users/schema/enum/UserRoleEnumSchema.js";
  * ```
  */
 export type UserCredentials = {
-    /** The unique identifier of the user. */
-    user: Types.ObjectId;
-
-    /** Whether the user has admin privileges. */
-    isAdmin: boolean;
-
-    /** The full name of the user. */
-    name: string;
-
-    /** The user's email address. */
-    email: string;
-
-    /** JWT token for authentication. */
     token: string;
-
-    /** Array of roles assigned to the user. */
-    roles: UserRole[];
+    isAdmin: boolean;
+    user: {
+        _id: Types.ObjectId;
+        name: string;
+        email: string;
+        roles: UserRole[];
+    }
 };

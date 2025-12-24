@@ -80,7 +80,7 @@ export default class AuthController implements AuthControllerMethods {
             .status(200)
             .cookie("hasAuthToken", true, cookieOptions)
             .cookie("authToken", loginData.token, { httpOnly: true, ...cookieOptions })
-            .json(loginData);
+            .json(loginData.user);
     }
 
     /**
