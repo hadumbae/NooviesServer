@@ -1,18 +1,15 @@
 /**
  * @file BaseCRUDController.ts
- * @summary
- * Generic controller implementing standard CRUD operations and
- * aggregation-based querying for Mongoose entities.
  *
- * @description
- * This class centralizes all reusable controller behavior:
- * - Basic CRUD (find, create, update, delete)
- * - Pagination utilities
- * - Population/virtual field control
- * - Aggregate pipeline queries via {@link AggregateQueryService}
+ * Generic controller implementing CRUD and aggregate query operations.
  *
- * Designed to be subclassed per entity while keeping controllers thin,
- * predictable, and consistent.
+ * Centralizes reusable controller behavior:
+ * - CRUD operations
+ * - Pagination
+ * - Population and virtual handling
+ * - Aggregation-based querying
+ *
+ * Intended to be extended by entity-specific controllers.
  */
 
 import {type Request, type Response} from "express";
@@ -30,25 +27,27 @@ import type {QueryOptionTypes} from "../../types/query-options/QueryOptionServic
 import type {ModelObject} from "../../types/ModelObject.js";
 
 /**
- * Base controller implementing CRUD and aggregation utilities.
+ * Base CRUD controller with aggregation support.
  *
- * @typeParam TSchema - Mongoose document type with required `_id`.
- * @typeParam TMatchFilters - Shape of match filters parsed for queries.
+ * @typeParam TSchema - Document shape handled by the controller.
+ * @typeParam TMatchFilters - Shape of match filters used in aggregate queries.
  */
 export default class BaseCRUDController<
     TSchema extends ModelObject,
     TMatchFilters = any,
-> extends BaseController implements BaseControllerCRUDMethods<TSchema, TMatchFilters> {
-    /** Repository providing the entity’s CRUD operations. */
+> extends BaseController
+    implements BaseControllerCRUDMethods<TSchema, TMatchFilters>
+{
+    /** Repository handling persistence operations. */
     protected readonly repository: BaseRepository<TSchema>;
 
-    /** Aggregation service offering pipeline, filtering, sorting, and pagination. */
+    /** Service executing aggregate queries. */
     protected readonly aggregateService: AggregateQueryService<TSchema>;
 
     /**
-     * Creates a new CRUD controller instance.
+     * Create a CRUD controller instance.
      *
-     * @param params - Includes repository, aggregate service, and BaseController options.
+     * @param params - Repository, aggregate service, and base controller options.
      */
     constructor(params: IBaseCRUDControllerConstructor<TSchema>) {
         const {repository, aggregateService, ...superParams} = params;
@@ -59,9 +58,7 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Retrieve all items, with optional population, virtuals, and limits.
-     *
-     * @returns A JSON array of all matching items.
+     * Retrieve all items.
      */
     async all(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals, limit} = this.queryUtils.fetchOptionsFromQuery(req);
@@ -71,8 +68,6 @@ export default class BaseCRUDController<
 
     /**
      * Retrieve paginated items.
-     *
-     * @returns A JSON object containing `totalItems` and the current page of items.
      */
     async paginated(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
@@ -89,9 +84,7 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Create a new item from the validated request body.
-     *
-     * @returns A JSON object containing the newly created item.
+     * Create a new item.
      */
     async create(req: Request, res: Response): Promise<Response> {
         const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
@@ -102,7 +95,7 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Retrieve a single item by its MongoDB `_id`.
+     * Retrieve an item by ObjectId.
      *
      * @throws If the provided `_id` is invalid.
      */
@@ -116,7 +109,18 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Update an item by its MongoDB `_id` using validated body data.
+     * Retrieve an item by slug.
+     */
+    async getBySlug(req: Request, res: Response): Promise<Response> {
+        const {slug} = req.params;
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
+
+        const item = await this.repository.findBySlug({slug, options: {populate, virtuals}});
+        return res.status(200).json(item);
+    }
+
+    /**
+     * Update an item by ObjectId.
      *
      * @throws If the provided `_id` is invalid.
      */
@@ -133,7 +137,7 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Delete an item by its MongoDB `_id`.
+     * Delete an item by ObjectId.
      *
      * @throws If the provided `_id` is invalid.
      */
@@ -146,9 +150,7 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Execute an aggregate query with filters, sorts, pipelines, and pagination.
-     *
-     * @returns A JSON response containing aggregated results.
+     * Execute an aggregate query.
      */
     async query(req: Request, res: Response): Promise<Response> {
         const {paginated, ...optionParams} = this.queryUtils.fetchOptionsFromQuery(req);
@@ -165,13 +167,13 @@ export default class BaseCRUDController<
             : {...baseParams, paginated: false};
 
         const data = await this.aggregateService.query(queryParams);
-
         return res.status(200).json(data);
     }
 
     /**
-     * Build query-option metadata (filters, sorts, etc.).
-     * Override in subclasses to support entity-specific logic.
+     * Build query-option metadata.
+     *
+     * Override in subclasses to support entity-specific filtering.
      */
     fetchQueryOptions(req: Request): QueryOptionTypes<TSchema, TMatchFilters> {
         return {
@@ -180,7 +182,8 @@ export default class BaseCRUDController<
     }
 
     /**
-     * Build population pipeline stages for aggregate queries.
+     * Build population pipelines for aggregate queries.
+     *
      * Override in subclasses to support entity-specific lookups.
      */
     fetchPopulatePipelines(): PopulationPipelineStages {

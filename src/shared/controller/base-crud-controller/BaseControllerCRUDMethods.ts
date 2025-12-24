@@ -1,19 +1,14 @@
 /**
  * @file BaseControllerCRUDMethods.ts
- * @summary
- * Contracts defining the standard CRUD and query capabilities
- * shared by all generic Mongoose-based controllers.
  *
- * @description
- * These interfaces formalize the API expected from CRUD controllers:
- * - Basic item operations (create, read, update, delete)
- * - Pagination utilities
- * - Aggregate query execution
- * - Query-option parsing (filters, sorts, limits)
+ * Standard CRUD and query contracts for Mongoose-backed controllers.
+ *
+ * Defines the required controller surface for:
+ * - CRUD operations
+ * - Pagination
+ * - Aggregate queries
+ * - Query-option parsing
  * - Population pipeline configuration
- *
- * The goal is to provide a consistent, type-safe structure that all controllers
- * can implement while still allowing specialized logic via generics.
  */
 
 import type {Request, Response} from "express";
@@ -23,112 +18,109 @@ import type BaseRepository from "../../repository/BaseRepository.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
 import type {ModelObject} from "../../types/ModelObject.js";
+import {Types} from "mongoose";
 
 /**
- * Standard CRUD and query methods available to all entity controllers.
+ * CRUD and query methods required by all entity controllers.
  *
- * @template TSchema - Mongoose document schema with required `_id`.
- * @template TMatchFilters - Filter shape used in query-option parsing.
+ * @template TSchema - Document shape handled by the controller.
+ * @template TMatchFilters - Filter shape used during query parsing.
  */
 export interface BaseControllerCRUDMethods<
-    TSchema extends ModelObject,
-    TMatchFilters = any,
+    TSchema extends ModelObject = {_id: Types.ObjectId},
+    TMatchFilters = unknown,
 > {
     /**
-     * Fetch all items with optional population or limits.
+     * Retrieve all items.
      *
      * @param req - Express request.
      * @param res - Express response.
-     * @returns A response containing all matching items.
      */
     all(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Fetch paginated items.
-     *
-     * Expects pagination parameters in the request (e.g., `page`, `limit`).
+     * Retrieve paginated items.
      *
      * @param req - Express request.
      * @param res - Express response.
-     * @returns A response including items and pagination metadata.
      */
     paginated(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Create a new item using validated request body data.
+     * Create a new item.
      *
      * @param req - Express request with validated body.
      * @param res - Express response.
-     * @returns A response containing the created item.
      */
     create(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Retrieve one item by its `_id`.
+     * Retrieve a single item by ObjectId.
      *
-     * @param req - Express request with an `_id` route param.
+     * @param req - Express request with `_id` route param.
      * @param res - Express response.
-     * @returns A response containing the found item, if any.
      */
     get(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Update an item by its `_id`.
+     * Retrieve a single item by slug.
      *
-     * @param req - Express request containing the `_id` param and the update body.
+     * @param req - Express request with `slug` route param.
      * @param res - Express response.
-     * @returns A response containing the updated item.
+     */
+    getBySlug(req: Request, res: Response): Promise<Response>;
+
+    /**
+     * Update an item by ObjectId.
+     *
+     * @param req - Express request with update payload.
+     * @param res - Express response.
      */
     update(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Delete an item by `_id`.
+     * Delete an item by ObjectId.
      *
-     * @param req - Express request with `_id` param.
+     * @param req - Express request with `_id` route param.
      * @param res - Express response.
-     * @returns A response confirming deletion.
      */
     delete(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Execute a fully configurable aggregate query:
-     * filters, sorting, pipelines, pagination, and lookup population.
+     * Execute a configurable aggregate query.
      *
      * @param req - Express request containing query parameters.
      * @param res - Express response.
-     * @returns A response with processed aggregation results.
      */
     query(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Parse filters, sorts, pagination, and other query options from the request.
+     * Parse and normalize query options from the request.
      *
      * @param req - Express request.
-     * @returns A structured and validated set of query options.
+     * @returns Parsed query options.
      */
     fetchQueryOptions(req: Request): QueryOptionTypes<TSchema, TMatchFilters>;
 
     /**
-     * Provide Mongoose aggregation pipeline stages that populate related entities.
+     * Provide population-related aggregation pipeline stages.
      *
-     * Used by `query()` to assemble a full pipeline.
-     *
-     * @returns Population-related pipeline stages.
+     * @returns Population pipeline stages.
      */
     fetchPopulatePipelines(): PopulationPipelineStages;
 }
 
 /**
- * Constructor parameters for a CRUD controller subclass.
+ * Constructor parameters for CRUD controller implementations.
  *
- * Includes the required repository and aggregate query service.
- *
- * @template TSchema - Mongoose document schema handled by the controller.
+ * @template TSchema - Document shape handled by the controller.
  */
-export interface IBaseCRUDControllerConstructor<TSchema extends ModelObject> extends IBaseControllerConstructor {
-    /** Repository responsible for the entity’s CRUD operations. */
+export interface IBaseCRUDControllerConstructor<TSchema extends ModelObject>
+    extends IBaseControllerConstructor
+{
+    /** Repository handling persistence operations. */
     repository: BaseRepository<TSchema>;
 
-    /** Service providing configurable aggregate query execution. */
+    /** Aggregate query execution service. */
     aggregateService: AggregateQueryService<TSchema>;
 }

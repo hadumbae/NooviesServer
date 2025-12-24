@@ -2,7 +2,7 @@ import MovieCreditServiceProvider from "../provider/MovieCreditServiceProvider.j
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type { IMovieCreditController } from "../controllers/MovieCreditController.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
@@ -36,7 +36,7 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
 };
 
 /** Base route configuration object */
-const baseConfig: IBaseRoutesConfig<IMovieCreditController> = {
+const baseConfig: BaseRouteConfig<IMovieCreditController> = {
     crudController: controller,
     middlewareList,
 };

@@ -2,7 +2,7 @@ import ShowingServiceProvider from "../provider/ShowingServiceProvider.js";
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {ShowingControllerMethods} from "../controller/ShowingController.js";
 import {ShowingInputSchema} from "../schema/ShowingInputSchema.js";
@@ -41,7 +41,7 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
  * @property crudController - The controller handling showing CRUD operations.
  * @property middlewareList - Middleware hooks applied to specific CRUD routes.
  */
-const baseConfig: IBaseRoutesConfig<ShowingControllerMethods> = {
+const baseConfig: BaseRouteConfig<ShowingControllerMethods> = {
     crudController: controller,
     middlewareList,
 };

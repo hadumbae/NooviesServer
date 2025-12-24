@@ -3,63 +3,79 @@ import type {RequestOptions} from "../types/request-options/RequestOptions.js";
 import type {ModelObject} from "../types/ModelObject.js";
 
 /**
- * Base parameter shapes for repository methods.
- * Generic types reflect the Mongoose document type.
+ * Base repository parameter types.
+ *
+ * Shared parameter shapes for repository methods.
+ * Generic types correspond to the underlying Mongoose schema shape.
  */
 
 /**
  * Parameters for counting documents.
- * @template TSchema - Mongoose document type.
+ *
+ * @template TSchema - Mongoose document shape.
  */
 export type BaseRepositoryCountParams<TSchema = ModelObject> = {
-    /** Optional filter conditions. */
+    /** Query filter conditions. */
     filters?: FilterQuery<TSchema>;
 };
 
 /**
- * Parameters for finding multiple documents.
- * @template TSchema - Mongoose document type.
+ * Parameters for retrieving multiple documents.
+ *
+ * @template TSchema - Mongoose document shape.
  */
 export type BaseRepositoryFindParams<TSchema = ModelObject> = {
-    /** Filter conditions for the query. */
+    /** Query filter conditions. */
     filters?: FilterQuery<TSchema>;
-    /** Optional request-level behavior flags. */
+    /** Request-level behavior options. */
     options?: RequestOptions;
 };
 
 /**
- * Parameters for finding a document by ID.
+ * Parameters for retrieving a document by ObjectId.
  */
 export type BaseRepositoryFindByIDParams = {
-    /** Target document ID. */
+    /** Target document ObjectId. */
     _id: Types.ObjectId;
-    /** Optional request-level behavior flags. */
+    /** Request-level behavior options. */
+    options?: RequestOptions;
+};
+
+/**
+ * Parameters for retrieving a document by slug.
+ */
+export type BaseRepositoryFindBySlugParams = {
+    /** Unique slug identifier. */
+    slug: string;
+    /** Request-level behavior options. */
     options?: RequestOptions;
 };
 
 /**
  * Parameters for creating a document.
- * @template TSchema - Mongoose document type.
+ *
+ * @template TSchema - Mongoose document shape.
  */
 export type BaseRepositoryCreateParams<TSchema = ModelObject> = {
-    /** Partial document data to create. */
+    /** Data used to create the document. */
     data: Partial<TSchema>;
-    /** Optional request-level behavior flags. */
+    /** Request-level behavior options. */
     options?: RequestOptions;
 };
 
 /**
  * Parameters for updating a document.
- * @template TSchema - Mongoose document type.
+ *
+ * @template TSchema - Mongoose document shape.
  */
 export type BaseRepositoryUpdateParams<TSchema = ModelObject> = {
-    /** Document ID to update. */
+    /** Target document ObjectId. */
     _id: Types.ObjectId;
     /** Fields to update. */
     data: Partial<TSchema>;
-    /** Fields to remove. */
+    /** Fields to explicitly unset. */
     unset?: Partial<TSchema>;
-    /** Optional request-level behavior flags. */
+    /** Request-level behavior options. */
     options?: RequestOptions;
 };
 
@@ -67,23 +83,24 @@ export type BaseRepositoryUpdateParams<TSchema = ModelObject> = {
  * Parameters for deleting a document.
  */
 export type BaseRepositoryDestroyParams = {
-    /** Document ID to delete. */
+    /** Target document ObjectId. */
     _id: Types.ObjectId;
 };
 
 /**
- * Parameters for paginated document queries.
- * @template TSchema - Mongoose document type.
+ * Parameters for paginated queries.
+ *
+ * @template TSchema - Mongoose document shape.
  */
 export type BaseRepositoryPaginationParams<TSchema = ModelObject> = {
-    /** 1-based page number. */
+    /** 1-based page index. */
     page: number;
     /** Number of documents per page. */
     perPage: number;
-    /** Sort criteria (string, tuple array, or object). */
+    /** Sort definition. */
     sort?: string | [string, SortOrder][] | Record<string, SortOrder>;
-    /** Optional filter conditions. */
+    /** Query filter conditions. */
     filters?: FilterQuery<TSchema>;
-    /** Optional request-level behavior flags. */
+    /** Request-level behavior options. */
     options?: RequestOptions;
 };

@@ -2,7 +2,7 @@ import MovieServiceProvider from "../provider/MovieServiceProvider.js";
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type { IMovieController } from "../controller/MovieController.js";
 import { MovieInputSchema } from "../schema/MovieInput.schema.js";
@@ -42,9 +42,9 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
 /**
  * Configuration object for generating base CRUD routes.
  *
- * @type {IBaseRoutesConfig<IMovieController>}
+ * @type {BaseRouteConfig<IMovieController>}
  */
-const baseConfig: IBaseRoutesConfig<IMovieController> = {
+const baseConfig: BaseRouteConfig<IMovieController> = {
     crudController: controller,
     middlewareList
 };

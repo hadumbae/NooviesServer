@@ -2,7 +2,7 @@ import TheatreServiceProvider from "../provider/TheatreServiceProvider.js";
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {ITheatreController} from "../controller/TheatreController.js";
 import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
@@ -55,9 +55,9 @@ const middlewareList: BaseRouteMiddleware<typeof theatreController> = {
  * - `middlewareList` ensures all create/update requests are validated
  *   and cleaned before being processed.
  *
- * @type {IBaseRoutesConfig<ITheatreController>}
+ * @type {BaseRouteConfig<ITheatreController>}
  */
-const baseConfig: IBaseRoutesConfig<ITheatreController> = {
+const baseConfig: BaseRouteConfig<ITheatreController> = {
     crudController: theatreController,
     middlewareList
 };

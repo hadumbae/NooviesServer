@@ -1,16 +1,10 @@
 /**
  * @file BaseRepositoryCRUD.ts
- * @summary
- * Standard CRUD and pagination contract implemented by all repository layers.
  *
- * @description
- * Defines the minimal data-access interface used by controllers and services:
- * - Basic CRUD operations
- * - Optional filtering, population, and virtual field behavior
- * - Pagination utilities
+ * Base CRUD and pagination contract for repository implementations.
  *
- * This interface is framework-agnostic and intended to wrap any
- * Mongoose model or equivalent data provider.
+ * Defines the minimal data-access interface consumed by services and controllers.
+ * Intended to abstract Mongoose models or equivalent persistence layers.
  */
 
 import type {
@@ -18,6 +12,7 @@ import type {
     BaseRepositoryCreateParams,
     BaseRepositoryDestroyParams,
     BaseRepositoryFindByIDParams,
+    BaseRepositoryFindBySlugParams,
     BaseRepositoryFindParams,
     BaseRepositoryPaginationParams,
     BaseRepositoryUpdateParams,
@@ -25,63 +20,71 @@ import type {
 import type {ModelObject} from "../types/ModelObject.js";
 
 /**
- * CRUD and pagination contract for repository implementations.
+ * Repository CRUD and pagination interface.
  *
- * @typeParam TSchema - The Mongoose document type handled by the repository.
+ * @typeParam TSchema - Document shape handled by the repository.
  */
 export default interface BaseRepositoryCRUD<TSchema extends ModelObject> {
     /**
-     * Count documents optionally filtered by a query.
+     * Count documents matching optional filters.
      *
-     * @param params - Count query filters and options.
-     * @returns A promise resolving to the number of matching documents.
+     * @param params - Filter parameters.
+     * @returns Number of matching documents.
      */
     count(params?: BaseRepositoryCountParams<TSchema>): Promise<number>;
 
     /**
-     * Find multiple documents matching optional filters.
+     * Retrieve multiple documents.
      *
      * @param params - Query filters and request options.
-     * @returns A promise resolving to a list of documents.
+     * @returns Matching documents.
      */
     find(params?: BaseRepositoryFindParams<TSchema>): Promise<TSchema[]>;
 
     /**
-     * Find a single document by its ID.
+     * Retrieve a document by ObjectId.
      *
-     * @param params - Document ID and request options.
-     * @returns A promise resolving to the found document.
+     * @param params - Document identifier and options.
+     * @returns The matching document.
      */
     findById(params: BaseRepositoryFindByIDParams): Promise<TSchema>;
 
     /**
+     * Retrieve a document by slug.
+     *
+     * @param params - Slug identifier and options.
+     * @returns The matching document.
+     */
+    findBySlug(params: BaseRepositoryFindBySlugParams): Promise<TSchema>;
+
+    /**
      * Create a new document.
      *
-     * @param params - Payload data and request options.
-     * @returns A promise resolving to the created document.
+     * @param params - Creation payload and options.
+     * @returns The created document.
      */
     create(params: BaseRepositoryCreateParams<TSchema>): Promise<TSchema>;
 
     /**
      * Update an existing document.
      *
-     * @param params - Document ID, updated fields, unset fields, and options.
-     * @returns A promise resolving to the updated document.
+     * @param params - Identifier, update data, unset fields, and options.
+     * @returns The updated document.
      */
     update(params: BaseRepositoryUpdateParams<TSchema>): Promise<TSchema>;
 
     /**
-     * Delete a document by ID.
+     * Delete a document.
      *
-     * @param params - Document ID to remove.
+     * @param params - Document identifier.
      */
     destroy(params: BaseRepositoryDestroyParams): Promise<void>;
 
     /**
-     * Retrieve paginated documents.
+     * Retrieve documents using pagination.
      *
-     * @param params - Pagination parameters, filters, sorting, and request options.
-     * @returns A promise resolving to the documents for the current page.
+     * @param params - Pagination, filtering, sorting, and options.
+     * @returns Documents for the requested page.
      */
     paginate(params: BaseRepositoryPaginationParams<TSchema>): Promise<TSchema[]>;
 }

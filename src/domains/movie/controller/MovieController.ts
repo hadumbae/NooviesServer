@@ -36,7 +36,7 @@ export interface IMovieControllerConstructor extends IBaseCRUDControllerConstruc
  * - Updating/deleting poster images
  * - Fetching paginated movies with recent showings
  */
-export interface IMovieController extends BaseControllerCRUDMethods {
+export interface IMovieController extends BaseControllerCRUDMethods<IMovie, MovieQueryMatchFilters> {
     /**
      * Updates the poster image of a movie.
      *
@@ -175,5 +175,9 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
         });
 
         return res.status(200).json({ items, totalItems });
+    }
+
+    async test(req: Request, res: Response): Promise<Response> {
+        return res.status(200);
     }
 }

@@ -1,3 +1,16 @@
+/**
+ * @file BaseRepository.ts
+ *
+ * Generic base repository for Mongoose-backed data access.
+ *
+ * Provides a standardized CRUD + pagination implementation with:
+ * - Consistent error normalization
+ * - Duplicate index detection
+ * - Optional population and virtual handling
+ *
+ * Designed to be extended or used directly by concrete repositories.
+ */
+
 import {Error, type Model} from "mongoose";
 import createHttpError from "http-errors";
 import type {PopulatePath} from "../types/mongoose/PopulatePath.js";
@@ -7,43 +20,43 @@ import type {
     BaseRepositoryCreateParams,
     BaseRepositoryDestroyParams,
     BaseRepositoryFindByIDParams,
+    BaseRepositoryFindBySlugParams,
     BaseRepositoryFindParams,
     BaseRepositoryPaginationParams,
     BaseRepositoryUpdateParams
 } from "./BaseRepository.types.js";
 import DuplicateIndexError from "../errors/DuplicateIndexError.js";
 import type {ModelObject} from "../types/ModelObject.js";
+import populateQuery from "../utility/mongoose/populateQuery.js";
 
 /**
  * Constructor options for {@link BaseRepository}.
  *
- * @template TSchema - Mongoose document type handled by the repository.
+ * @template TSchema - Document shape handled by the repository.
  */
 interface BaseRepositoryConstructor<TSchema extends ModelObject> {
-    /** Mongoose model used for all CRUD operations. */
+    /** Backing Mongoose model. */
     readonly model: Model<TSchema>;
-    /** Default populate paths applied when no explicit paths are provided. */
+    /** Default populate paths applied to queries. */
     readonly populateRefs?: PopulatePath[];
 }
 
 /**
- * Generic base repository implementing common CRUD and pagination
- * functionality for Mongoose models.
+ * Generic CRUD and pagination repository for Mongoose models.
  *
- * Provides consistent error handling, uniqueness-violation detection,
- * and optional population/virtual configuration across operations.
- *
- * @template TSchema - Mongoose document type handled by the repository.
+ * @template TSchema - Document shape handled by the repository.
  */
-export default class BaseRepository<TSchema extends ModelObject> implements BaseRepositoryCRUD<TSchema> {
+export default class BaseRepository<TSchema extends ModelObject>
+    implements BaseRepositoryCRUD<TSchema>
+{
     private readonly model: Model<TSchema>;
     private readonly populateRefs: PopulatePath[];
 
     /**
-     * Creates a new repository instance.
+     * Create a repository instance.
      *
-     * @param model - The backing Mongoose model.
-     * @param populateRefs - Optional default populate reference paths.
+     * @param model - Backing Mongoose model.
+     * @param populateRefs - Default populate paths.
      */
     constructor({model, populateRefs}: BaseRepositoryConstructor<TSchema>) {
         this.model = model;
@@ -51,9 +64,9 @@ export default class BaseRepository<TSchema extends ModelObject> implements Base
     }
 
     /**
-     * Counts documents matching optional filters.
+     * Count documents matching optional filters.
      *
-     * @param filters - Optional MongoDB filter conditions.
+     * @param params - Filter parameters.
      * @returns Number of matching documents.
      */
     async count({filters}: BaseRepositoryCountParams<TSchema> = {}): Promise<number> {
@@ -61,50 +74,48 @@ export default class BaseRepository<TSchema extends ModelObject> implements Base
     }
 
     /**
-     * Finds documents matching the given query parameters.
+     * Retrieve multiple documents.
      *
-     * @param params.filters - Optional MongoDB filter conditions.
-     * @param params.options.populate - Enable population on this query.
-     * @param params.options.populatePaths - Override default populate paths.
-     * @param params.options.virtuals - Include virtuals via `lean({virtuals})`.
-     * @param params.options.limit - Optional maximum result count.
-     * @returns Array of documents matching the filters.
+     * @param params - Filters and request options.
+     * @returns Matching documents.
      */
     async find(params: BaseRepositoryFindParams<TSchema> = {}): Promise<TSchema[]> {
-        const {filters, options: {populatePaths, populate, virtuals, limit} = {}} = params;
+        const {
+            filters,
+            options: {populatePaths = this.populateRefs, populate, virtuals, limit} = {},
+        } = params;
 
-        // --- Find Documents ---
-        const query = this.model.find(filters ?? {});
+        const query = populateQuery({
+            query: this.model.find(filters ?? {}),
+            options: {populate, virtuals, populatePaths},
+        });
 
-        // --- Apply Query Options ---
-        if (typeof limit === "number") query.limit(limit);
-        if (populate) query.populate(populatePaths || this.populateRefs);
-        if (virtuals) query.lean({virtuals: true});
+        if (typeof limit === "number") {
+            query.limit(limit);
+        }
 
         return query;
     }
 
     /**
-     * Retrieves a document by its `_id`.
+     * Retrieve a document by ObjectId.
      *
-     * @param params._id - ID of the target document.
-     * @param params.options.populate - Enable population for this query.
-     * @param params.options.populatePaths - Override default populate paths.
-     * @param params.options.virtuals - Enable virtuals through lean.
-     * @returns The found document.
-     * @throws 404 error if the document does not exist.
+     * @param params - Identifier and request options.
+     * @returns The matching document.
+     * @throws 404 if not found.
      */
     async findById(params: BaseRepositoryFindByIDParams): Promise<TSchema> {
-        const {_id, options: {populatePaths, populate, virtuals} = {}} = params;
+        const {
+            _id,
+            options: {populatePaths = this.populateRefs, populate, virtuals} = {}
+        } = params;
 
         try {
-            const query = this.model.findById(_id);
+            const query = populateQuery({
+                query: this.model.findById(_id),
+                options: {populate, virtuals, populatePaths},
+            });
 
-            // --- Populate, Append Virtuals ---
-            if (populate) query.populate(populatePaths || this.populateRefs);
-            if (virtuals) query.lean({virtuals: true});
-
-            // --- Fetch Or Fail ---
             return query.orFail();
         } catch (error: unknown) {
             this.throwFetchError(error);
@@ -112,28 +123,49 @@ export default class BaseRepository<TSchema extends ModelObject> implements Base
     }
 
     /**
-     * Creates and persists a new document.
+     * Retrieve a document by slug.
      *
-     * @param params.data - Document fields to create.
-     * @param params.options.populate - Whether to populate after creation.
-     * @param params.options.populatePaths - Override default populate paths.
-     * @param params.options.virtuals - Convert to object with virtuals.
-     * @returns The created document (populated/virtualized if requested).
-     * @throws Duplicate index or persistence errors.
+     * @param params - Slug identifier and request options.
+     * @returns The matching document.
+     * @throws 404 if not found.
      */
-    async create(params: BaseRepositoryCreateParams<TSchema>): Promise<TSchema> {
-        const {data, options: {populatePaths, populate, virtuals} = {}} = params;
+    async findBySlug(params: BaseRepositoryFindBySlugParams): Promise<TSchema> {
+        const {
+            slug,
+            options: {populatePaths = this.populateRefs, populate, virtuals} = {},
+        } = params;
 
         try {
-            // --- Save Document ---
+            const query = populateQuery({
+                query: this.model.findOne({slug}),
+                options: {populate, virtuals, populatePaths},
+            });
+
+            return query.orFail();
+        } catch (error: unknown) {
+            this.throwFetchError(error);
+        }
+    }
+
+    /**
+     * Create and persist a document.
+     *
+     * @param params - Creation payload and options.
+     * @returns The created document.
+     */
+    async create(params: BaseRepositoryCreateParams<TSchema>): Promise<TSchema> {
+        const {
+            data,
+            options: {populatePaths = this.populateRefs, populate, virtuals} = {},
+        } = params;
+
+        try {
             const doc = await this.model.create(data);
-            const query = this.model.findById(doc._id);
+            const query = populateQuery({
+                query: this.model.findById(doc._id),
+                options: {populate, virtuals, populatePaths},
+            });
 
-            // --- Populate, Append Virtuals ---
-            if (populate) query.populate(populatePaths || this.populateRefs);
-            if (virtuals) query.lean({virtuals: true});
-
-            // --- Fetch Or Fail ---
             return query.orFail();
         } catch (error: unknown) {
             this.throwPersistError(error);
@@ -141,89 +173,78 @@ export default class BaseRepository<TSchema extends ModelObject> implements Base
     }
 
     /**
-     * Updates a document by `_id`.
+     * Update a document by ObjectId.
      *
-     * @param params._id - ID of the document to update.
-     * @param params.data - Fields to set via `$set`.
-     * @param params.unset - Fields to remove via `$unset`.
-     * @param params.options.populate - Populate after update.
-     * @param params.options.populatePaths - Override default populate paths.
-     * @param params.options.virtuals - Include virtuals via lean.
+     * @param params - Identifier, update data, and options.
      * @returns The updated document.
-     * @throws Duplicate key, persistence, or not-found errors.
      */
     async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<TSchema> {
-        const {_id, data, unset, options: {populatePaths, populate, virtuals} = {}} = params;
+        const {
+            _id,
+            data,
+            unset,
+            options: {populatePaths = this.populateRefs, populate, virtuals} = {},
+        } = params;
 
-        // --- Create Update Object ---
         const updateObject: Record<string, unknown> = {$set: data};
         if (unset) updateObject.$unset = unset;
 
         try {
-            const query = this.model.findByIdAndUpdate(_id, updateObject, {new: true});
+            const query = populateQuery({
+                query: this.model.findByIdAndUpdate(_id, updateObject, {new: true}),
+                options: {populate, virtuals, populatePaths},
+            });
 
-            // --- Populate, Append Virtuals ---
-            if (populate) query.populate(populatePaths || this.populateRefs);
-            if (virtuals) query.lean({virtuals});
-
-            // --- Fetch Or Fail ---
-            return await query.orFail();
+            return query.orFail();
         } catch (error: unknown) {
             this.throwPersistError(error);
         }
     }
 
     /**
-     * Deletes a document by ID.
+     * Delete a document by ObjectId.
      *
-     * @param _id - ID of the document to delete.
-     * @throws 404 if the document does not exist.
+     * @param params - Identifier of the document to delete.
+     * @throws 404 if not found.
      */
-    async destroy({_id}: BaseRepositoryDestroyParams): Promise<void> {
-        // --- Find Or Fail ---
+    async destroy({ _id }: BaseRepositoryDestroyParams): Promise<void> {
         const doc = await this.model.findById({_id});
         if (!doc) throw createHttpError(404, "Not found!");
 
-        // --- Delete ---
         await doc.deleteOne();
     }
 
     /**
-     * Retrieves a paginated subset of documents.
+     * Retrieve documents using pagination.
      *
-     * @param params.page - 1-based page number.
-     * @param params.perPage - Number of documents per page.
-     * @param params.filters - Optional MongoDB filter conditions.
-     * @param params.sort - Optional sort configuration.
-     * @param params.options.populate - Enable population.
-     * @param params.options.populatePaths - Override populate paths.
-     * @param params.options.virtuals - Include virtuals in lean results.
-     * @returns The documents on the requested page.
+     * @param params - Pagination, filters, sorting, and options.
+     * @returns Documents for the requested page.
      */
     async paginate(params: BaseRepositoryPaginationParams<TSchema>): Promise<TSchema[]> {
-        const {page, perPage, filters, sort, options: {populatePaths, virtuals, populate} = {}} = params;
+        const {
+            page,
+            perPage,
+            filters,
+            sort,
+            options: {populatePaths = this.populateRefs, virtuals, populate} = {},
+        } = params;
 
-        // --- Paginated Query, With Sorting And Filters ---
         const query = this.model
             .find(filters ?? {})
             .sort(sort ?? {})
             .skip((page - 1) * perPage)
             .limit(perPage);
 
-        // --- Populate, Append Virtuals ---
-        if (populate) query.populate(populatePaths || this.populateRefs);
-        if (virtuals) query.lean({virtuals});
-
-        return query;
+        return populateQuery({
+            query,
+            options: {populate, virtuals, populatePaths},
+        });
     }
 
     /**
-     * Handles duplicate index errors.
+     * Throw a normalized duplicate index error.
      *
-     * Subclasses may override this to map index names to friendly messages.
-     *
-     * @param indexString - MongoDB index name that was violated.
-     * @throws A {@link DuplicateIndexError}.
+     * @param indexString - Violated MongoDB index name.
      */
     protected throwDuplicateError(indexString: string): never {
         throw new DuplicateIndexError({
@@ -234,42 +255,34 @@ export default class BaseRepository<TSchema extends ModelObject> implements Base
     }
 
     /**
-     * Normalizes Mongoose fetch errors.
-     *
-     * Converts `DocumentNotFoundError` to a standard 404.
+     * Normalize fetch-related errors.
      *
      * @param error - Error thrown during retrieval.
-     * @throws Http 404 or rethrows original error.
+     * @throws 404 or rethrows the original error.
      */
     protected throwFetchError(error: unknown): never {
-        // --- Not Found ---
-        if (error instanceof Error && error.name === 'DocumentNotFoundError') {
+        if (error instanceof Error && error.name === "DocumentNotFoundError") {
             throw createHttpError(404, "Not found!");
         }
 
-        // --- General ---
         throw error;
     }
 
     /**
-     * Normalizes persistence errors (duplicate keys, write errors).
+     * Normalize persistence-related errors.
      *
-     * @param error - Error thrown during save/update operations.
-     * @throws Duplicate index or translated fetch error.
+     * @param error - Error thrown during write operations.
      */
     protected throwPersistError(error: unknown): never {
-        // --- Index Uniqueness ---
         if (typeof error === "object" && error !== null && "code" in error && error.code === 11000) {
             const indexName = (error as any).errmsg.match(/index: (\S+)/)?.[1];
             this.throwDuplicateError(indexName);
         }
 
-        // --- Failure In Fetching Created Document ---
-        if (error instanceof Error && error.name === 'DocumentNotFoundError') {
+        if (error instanceof Error && error.name === "DocumentNotFoundError") {
             throw createHttpError(500, "An error occurred. Please try again.");
         }
 
-        // --- General ---
         throw error;
     }
 }

@@ -1,7 +1,7 @@
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type { IPersonController } from "../controller/PersonController.js";
 import PersonServiceProvider from "../provider/PersonServiceProvider.js";
@@ -41,9 +41,9 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
 /**
  * Configuration object for creating base CRUD routes for Person.
  *
- * @type {IBaseRoutesConfig<IPersonController>}
+ * @type {BaseRouteConfig<IPersonController>}
  */
-const baseConfig: IBaseRoutesConfig<IPersonController> = {
+const baseConfig: BaseRouteConfig<IPersonController> = {
     crudController: controller,
     middlewareList
 };

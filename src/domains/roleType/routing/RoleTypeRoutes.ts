@@ -1,7 +1,7 @@
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import RoleTypeServiceProvider from "../provider/RoleTypeServiceProvider.js";
 import {RoleTypeInputSchema} from "../schemas/RoleTypeInput.schema.js";
@@ -36,11 +36,11 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
 /**
  * Configuration object for base routes.
  *
- * @type {IBaseRoutesConfig}
+ * @type {BaseRouteConfig}
  * @description
  * Provides the CRUD controller and associated middleware for automatic route creation.
  */
-const baseConfig: IBaseRoutesConfig = {
+const baseConfig: BaseRouteConfig = {
     crudController: controller,
     middlewareList,
 };

@@ -2,7 +2,7 @@ import ScreenServiceProvider from "../provider/ScreenServiceProvider.js";
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {IScreenController} from "../controller/ScreenController.js";
 import {ScreenInputSchema} from "../schema/ScreenInputSchema.js";
@@ -48,9 +48,9 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
  * The `crudController` handles the logic for each route,
  * while `middlewareList` attaches route-specific middleware.
  *
- * @type {IBaseRoutesConfig<IScreenController>}
+ * @type {BaseRouteConfig<IScreenController>}
  */
-const baseConfig: IBaseRoutesConfig<IScreenController> = {
+const baseConfig: BaseRouteConfig<IScreenController> = {
     crudController: controller,
     middlewareList
 };

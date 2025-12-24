@@ -1,7 +1,7 @@
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {ISeatMapController} from "../controller/SeatMapController.js";
 import {SeatMapInputSchema} from "../schema/SeatMapInput.schema.js";
@@ -39,7 +39,7 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
  * Configuration object for creating base SeatMap routes.
  * Combines the controller and route-specific middleware.
  */
-const baseConfig: IBaseRoutesConfig<ISeatMapController> = {
+const baseConfig: BaseRouteConfig<ISeatMapController> = {
     crudController: controller,
     middlewareList,
 };

@@ -2,7 +2,7 @@ import SeatServiceProvider from "../provider/SeatServiceProvider.js";
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
-    type IBaseRoutesConfig
+    type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {ISeatController} from "../controller/SeatController.js";
 import ZodAsyncValidator from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
@@ -37,7 +37,7 @@ const middlewareList: BaseRouteMiddleware<typeof controller> = {
  *
  * @typeParam ISeatController - Interface describing the seat controller.
  */
-const baseConfig: IBaseRoutesConfig<ISeatController> = {
+const baseConfig: BaseRouteConfig<ISeatController> = {
     crudController: controller,
     middlewareList,
 };
