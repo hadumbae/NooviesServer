@@ -8,15 +8,18 @@ import generateSlug from "../../../shared/utility/generateSlug.js";
  * Automatically regenerates the slug when the genre name changes.
  */
 GenreSchema.pre(
-    "save",
+    "validate",
     {document: true},
     function (this: HydratedDocument<GenreSchemaFields>, next: () => void) {
+        console.log("Is Name Modified? ", this.isModified("name"));
+
         if (this.isModified("name")) {
             this.slug = generateSlug(this.name);
+            console.log("Slug:  ", this.slug);
         }
 
         next();
-    }
+    },
 );
 
 /**

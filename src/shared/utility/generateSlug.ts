@@ -14,5 +14,5 @@ export default function generateSlug(text: string) {
     const slug = slugify(text, {lower: true, strict: true});
     const nID = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 6);
 
-    return `${slug}-${nID}`;
+    return `${slug}-${nID()}`;
 }
