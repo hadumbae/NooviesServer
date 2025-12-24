@@ -1,7 +1,7 @@
 import {Types} from "mongoose";
-import type ICloudinaryImage from "../../../shared/model/cloudinary-image/ICloudinaryImage.js";
 import type {URLString} from "../../../shared/schema/strings/URLStringSchema.js";
 import type {ISO6391LanguageCode} from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
+import type {CloudinaryImageObject} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
 
 /**
  * Interface representing a Movie document.
@@ -98,10 +98,10 @@ export default interface IMovie {
 
     /**
      * Optional poster image for the movie.
-     * @type {ICloudinaryImage | null}
+     * @type {CloudinaryImageObject | null}
      * @optional
      */
-    posterImage?: ICloudinaryImage | null;
+    posterImage?: CloudinaryImageObject | null;
 
     /**
      * Optional trailer URL for the movie.

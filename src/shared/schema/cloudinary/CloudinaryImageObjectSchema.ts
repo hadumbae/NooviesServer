@@ -1,29 +1,8 @@
-import { z } from "zod";
-import { NonNegativeNumberSchema } from "../numbers/NonNegativeNumberSchema.js";
+import {z} from "zod";
 import { PositiveNumberSchema } from "../numbers/PositiveNumberSchema.js";
 import { URLStringSchema } from "../strings/URLStringSchema.js";
 import { NonEmptyStringSchema } from "../strings/NonEmptyStringSchema.js";
 import preprocessEmptyToUndefined from "../../utility/schema/preprocessors/preprocessEmptyToUndefined.js";
-
-/**
- * Schema variant of {@link PositiveNumberSchema} that
- * converts empty string inputs (`""`) to `undefined`
- * before validation.
- *
- * Useful for form submissions where numeric fields may
- * be empty but should not trigger validation errors.
- */
-const CleanedPositiveNumberSchema = preprocessEmptyToUndefined(PositiveNumberSchema);
-
-/**
- * Schema variant of {@link NonNegativeNumberSchema} that
- * converts empty string inputs (`""`) to `undefined`
- * before validation.
- *
- * Ensures empty fields in form data are safely ignored
- * instead of causing parsing failures.
- */
-const CleanedNonNegativeNumberSchema = preprocessEmptyToUndefined(NonNegativeNumberSchema);
 
 /**
  * Zod schema representing a Cloudinary image object.
@@ -57,13 +36,13 @@ export const CloudinaryImageObjectSchema = z.object({
     secure_url: URLStringSchema,
 
     /** Version number of the image, must be positive. */
-    version: CleanedPositiveNumberSchema,
+    version: preprocessEmptyToUndefined(PositiveNumberSchema),
 
     /** Width of the image in pixels, must be non-negative. */
-    width: CleanedNonNegativeNumberSchema,
+    width: preprocessEmptyToUndefined(PositiveNumberSchema),
 
     /** Height of the image in pixels, must be non-negative. */
-    height: CleanedNonNegativeNumberSchema,
+    height: preprocessEmptyToUndefined(PositiveNumberSchema),
 
     /** File format of the image (e.g., "jpg", "png"). */
     format: NonEmptyStringSchema,
@@ -72,7 +51,7 @@ export const CloudinaryImageObjectSchema = z.object({
     resource_type: NonEmptyStringSchema,
 
     /** File size in bytes, must be non-negative. */
-    bytes: CleanedNonNegativeNumberSchema,
+    bytes: preprocessEmptyToUndefined(PositiveNumberSchema),
 
     /** Upload type of the image, typically "upload". */
     type: NonEmptyStringSchema,

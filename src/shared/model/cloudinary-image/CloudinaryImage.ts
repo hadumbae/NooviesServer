@@ -1,9 +1,9 @@
 import {Schema} from "mongoose";
-import type ICloudinaryImage from "./ICloudinaryImage.js";
 
 import {URLStringSchema} from "../../schema/strings/URLStringSchema.js";
+import type {CloudinaryImageObject} from "../../schema/cloudinary/CloudinaryImageObjectSchema.js";
 
-export const CloudinaryImageSchema = new Schema<ICloudinaryImage>({
+export const CloudinaryImageSchema = new Schema<CloudinaryImageObject>({
     public_id: {
         type: String,
         minlength: [1, "Empty strings are not allowed."],

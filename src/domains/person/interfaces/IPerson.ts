@@ -1,6 +1,6 @@
 import {Types} from "mongoose";
-import type ICloudinaryImage from "../../../shared/model/cloudinary-image/ICloudinaryImage.js";
 import type {ISO3166Alpha2CountryCode} from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
+import type {CloudinaryImageObject} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
 
 /**
  * Represents a person with basic identifying information,
@@ -37,6 +37,6 @@ export interface IPerson {
      * Optional profile image of the person.
      * Can be `null` if the person does not have a profile image.
      */
-    profileImage?: ICloudinaryImage | null;
+    profileImage?: CloudinaryImageObject | null;
 }
 
