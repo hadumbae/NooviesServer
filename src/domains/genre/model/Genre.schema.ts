@@ -1,34 +1,16 @@
-import { Schema } from "mongoose";
-import type IGenre from "./Genre.interface.js";
+import {Schema} from "mongoose";
+import type {GenreSchemaFields} from "./Genre.types.js";
+import {CloudinaryImageSchema} from "../../../shared/model/cloudinary-image/CloudinaryImage.js";
 
 /**
- * Mongoose schema for {@link IGenre}.
+ * Genre mongoose schema.
  *
- * Defines the structure, validation rules, and database constraints
- * for genre documents.
- *
- * ## Fields
- * - `name` (string, required, unique) – The name of the genre (e.g., "Comedy", "Drama").
- *   Must be unique across all genres, between 1 and 150 characters.
- * - `description` (string, required) – A textual description of the genre.
- *   Maximum length of 1000 characters.
- *
- * ## Indexes
- * - Unique index on `name` to prevent duplicate genre names.
- *
- * ## Timestamps
- * - Automatically adds `createdAt` and `updatedAt` fields.
+ * @remarks
+ * - Enforces uniqueness and validation for genre fields
+ * - Includes timestamps and slug indexing
  */
-const GenreSchema = new Schema<IGenre>({
-    /**
-     * The name of the genre.
-     *
-     * - Required.
-     * - Must be unique.
-     * - Minimum length: 1 character.
-     * - Maximum length: 150 characters.
-     * - Example: "Action", "Comedy".
-     */
+const GenreSchema = new Schema<GenreSchemaFields>({
+    /** Unique display name of the genre. */
     name: {
         type: String,
         required: [true, "Name is required."],
@@ -37,18 +19,27 @@ const GenreSchema = new Schema<IGenre>({
         maxlength: [150, "Must be 150 characters or less."],
     },
 
-    /**
-     * Description of the genre.
-     *
-     * - Required.
-     * - Maximum length: 1000 characters.
-     * - Example: "A genre characterized by suspense and excitement."
-     */
+    /** Descriptive text for the genre. */
     description: {
         type: String,
         required: [true, "Description is required."],
         maxlength: [1000, "Description must be 1000 characters or less."],
     },
-}, { timestamps: true });
+
+    /** Associated Cloudinary image. */
+    image: {
+        type: CloudinaryImageSchema,
+        default: null,
+    },
+
+    /** URL-friendly identifier. */
+    slug: {
+        type: String,
+        required: [true, "Slug is required."],
+    },
+}, {timestamps: true});
+
+/** Index for fast slug lookups. */
+GenreSchema.index({slug: 1});
 
 export default GenreSchema;

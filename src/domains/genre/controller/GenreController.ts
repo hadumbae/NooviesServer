@@ -1,5 +1,4 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type IGenre from "../model/Genre.interface.js";
 import type { Request } from "express";
 import type GenreQueryOptionService from "../service/GenreQueryOptionService.js";
 import type { GenreQueryMatchFilters } from "../schema/query/GenreQueryOption.types.js";
@@ -8,16 +7,17 @@ import type {
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {GenreSchemaFields} from "../model/Genre.types.js";
 
 /**
  * Interface for the Genre controller, extending the base CRUD controller interface.
  */
-export interface IGenreController extends BaseControllerCRUDMethods {}
+export interface IGenreController extends BaseControllerCRUDMethods<GenreSchemaFields, GenreQueryMatchFilters> {}
 
 /**
  * Constructor interface for {@link GenreController}.
  */
-export interface IGenreControllerConstructor extends IBaseCRUDControllerConstructor<IGenre> {
+export interface IGenreControllerConstructor extends IBaseCRUDControllerConstructor<GenreSchemaFields> {
     /**
      * Service responsible for generating query filters and sorts from request parameters.
      */
@@ -26,12 +26,12 @@ export interface IGenreControllerConstructor extends IBaseCRUDControllerConstruc
 
 /**
  * Controller responsible for handling CRUD operations and query filtering
- * for {@link IGenre} documents.
+ * for {@link GenreSchemaFields} documents.
  *
  * Extends the generic {@link BaseCRUDController} with genre-specific query
  * filtering and sorting logic using {@link GenreQueryOptionService}.
  */
-export default class GenreController extends BaseCRUDController<IGenre> implements IGenreController {
+export default class GenreController extends BaseCRUDController<GenreSchemaFields> implements IGenreController {
     /** Service used to fetch query parameters and generate filters/sorts. */
     optionService: GenreQueryOptionService;
 
@@ -53,7 +53,7 @@ export default class GenreController extends BaseCRUDController<IGenre> implemen
      * @param req - Express request object containing query parameters.
      * @returns Query options suitable for Mongoose queries, including filters and sorts.
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<IGenre, GenreQueryMatchFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<GenreSchemaFields, GenreQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }

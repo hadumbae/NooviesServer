@@ -1,10 +1,12 @@
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import type IGenre from "../model/Genre.interface.js";
 import type { ZodIssue } from "zod";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
+import type {GenreSchemaFields} from "../model/Genre.types.js";
+import DuplicateIndexError from "../../../shared/errors/DuplicateIndexError.js";
+import Genre from "../model/Genre.model.js";
 
 /**
- * Repository for managing {@link IGenre} documents.
+ * Repository for managing {@link GenreSchemaFields} documents.
  *
  * Extends the generic {@link BaseRepository} to provide
  * model-specific error handling and validation for genres.
@@ -15,7 +17,7 @@ import ZodParseError from "../../../shared/errors/ZodParseError.js";
  * ## Unique Constraints
  * - `name` must be unique across all genres.
  */
-export default class GenreRepository extends BaseRepository<IGenre> {
+export default class GenreRepository extends BaseRepository<GenreSchemaFields> {
 
     /**
      * Throws a structured `ZodParseError` when a unique index constraint is violated.
@@ -42,7 +44,7 @@ export default class GenreRepository extends BaseRepository<IGenre> {
      * }
      * ```
      */
-    protected throwDuplicateError(indexString: string) {
+    protected throwDuplicateError(indexString: string): never {
         console.debug("Genre Repository Duplicate Index: ", indexString);
 
         if (indexString === "name_1") {
@@ -59,5 +61,11 @@ export default class GenreRepository extends BaseRepository<IGenre> {
                 message: "Duplicate genre detected. Each genre name must be unique."
             });
         }
+
+        throw new DuplicateIndexError({
+            message: `Duplicate Error: ${indexString}`,
+            index: indexString,
+            model: Genre.name,
+        });
     }
 }

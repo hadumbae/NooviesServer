@@ -1,4 +1,4 @@
-import GenreModel from "../model/Genre.model.js";
+import Genre from "../model/Genre.model.js";
 import GenreController from "../controller/GenreController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
@@ -38,7 +38,7 @@ export default class GenreServiceProvider {
      * - `controllers`: An object containing the instantiated controller, e.g., `controller`.
      */
     static register() {
-        const model = GenreModel;
+        const model = Genre;
 
         const queryUtils = QueryUtils;
         const aggregateService = new AggregateQueryService({model});
