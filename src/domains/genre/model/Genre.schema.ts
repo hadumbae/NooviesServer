@@ -35,11 +35,9 @@ const GenreSchema = new Schema<GenreSchemaFields>({
     /** URL-friendly identifier. */
     slug: {
         type: String,
+        unique: [true, "Slug must be unique."],
         required: [true, "Slug is required."],
     },
 }, {timestamps: true});
-
-/** Index for fast slug lookups. */
-GenreSchema.index({slug: 1});
 
 export default GenreSchema;
