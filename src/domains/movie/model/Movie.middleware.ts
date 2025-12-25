@@ -1,76 +1,116 @@
 import {MovieSchema} from "./Movie.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import type IMovie from "./Movie.interface.js";
 import Showing from "../../showing/model/Showing.model.js";
 import User from "@models/User.js";
+import type {MovieSchemaFields} from "./Movie.types.js";
+import generateSlug from "../../../shared/utility/generateSlug.js";
 
 /**
- * Pre 'find', 'findOne', and 'findOneAndUpdate' middleware for Movie queries.
+ * Pre-validation middleware for Movie documents.
  *
- * @remarks
- * This hook is triggered before executing a query that retrieves movie documents.
- * If the query is executed with `lean({ virtuals: true })`, it automatically
- * populates the `showingCount` virtual field so that the resulting documents
- * include the number of associated showings.
+ * Automatically regenerates the movie slug when the title is modified
+ * during document creation or validation.
  *
- * @param this - The query object being executed (`find`, `findOne`, or `findOneAndUpdate`).
- * @param next - Callback to proceed with query execution.
+ * @param this - The hydrated Movie document being validated
+ * @param next - Callback to continue validation
  */
 MovieSchema.pre(
-    ["find", "findOne", "findOneAndUpdate"],
-    {query: true},
-    async function (this: Query<any, IMovie>, next: () => void): Promise<void> {
-        const hasVirtuals = typeof this._mongooseOptions.lean === "object" && this._mongooseOptions.lean.virtuals === true;
-
-        if (hasVirtuals) {
-            this.populate([
-                {path: "showingCount"}
-            ]);
+    "validate",
+    {document: true, query: false},
+    function (this: HydratedDocument<MovieSchemaFields>, next: () => void): void {
+        if (this.isModified("title")) {
+            this.slug = generateSlug(this.title);
         }
+
+        next();
     }
 );
 
 /**
- * Pre 'deleteOne' middleware for Movie documents.
+ * Pre-update middleware for `findOneAndUpdate`.
  *
- * @remarks
- * This hook is triggered when a single movie document is deleted via `document.deleteOne()`.
- * It performs cleanup by removing all associated Showings.
+ * Ensures the slug is regenerated when the movie title is updated
+ * via a query-based update operation.
  *
- * @param this - The current hydrated movie document being deleted.
+ * @param this - The update query being executed
+ * @param next - Callback to continue query execution
+ */
+MovieSchema.pre(
+    "findOneAndUpdate",
+    {query: true},
+    function (this: Query<any, MovieSchemaFields>, next: () => void): void {
+        const update = this.getUpdate() as MovieSchemaFields;
+
+        if (update.title) {
+            update.slug = generateSlug(update.title);
+        }
+
+        next();
+    }
+);
+
+/**
+ * Pre-query middleware for movie retrieval operations.
+ *
+ * Automatically populates the `showingCount` virtual when queries are executed
+ * with `lean({ virtuals: true })`, ensuring derived data is included in lean
+ * query results.
+ *
+ * @param this - The query being executed (`find`, `findOne`, or `findOneAndUpdate`)
+ * @param next - Callback to continue query execution
+ */
+MovieSchema.pre(
+    ["find", "findOne", "findOneAndUpdate"],
+    {query: true},
+    async function (this: Query<unknown, MovieSchemaFields>, next: () => void): Promise<void> {
+        const hasVirtuals =
+            typeof this._mongooseOptions.lean === "object" &&
+            this._mongooseOptions.lean.virtuals === true;
+
+        if (hasVirtuals) {
+            this.populate([{path: "showingCount"}]);
+        }
+
+        next();
+    }
+);
+
+/**
+ * Pre-deletion middleware for Movie documents.
+ *
+ * Triggered when deleting a movie via `document.deleteOne()`.
+ * Cleans up all showings associated with the deleted movie.
+ *
+ * @param this - The hydrated Movie document being deleted
  */
 MovieSchema.pre(
     "deleteOne",
     {document: true, query: false},
-    async function (this: HydratedDocument<IMovie>) {
+    async function (this: HydratedDocument<MovieSchemaFields>): Promise<void> {
         const {_id} = this;
         (this as any)._wasUpdated = true;
 
-        // Remove all showings associated with this movie
         await Showing.deleteMany({movie: _id});
     }
 );
 
 /**
- * Pre 'deleteOne' and 'deleteMany' middleware for Movie queries.
+ * Pre-deletion middleware for Movie query operations.
  *
- * @remarks
- * This hook is triggered when a movie is deleted via a query
- * (`Movie.deleteOne(filter)` or `Movie.deleteMany(filter)`).
- * It ensures data integrity by:
- *   1. Removing the movie from users' favourites.
- *   2. Deleting all associated showings.
+ * Triggered when deleting movies via `Movie.deleteOne()` or `Movie.deleteMany()`.
+ * Ensures referential integrity by:
+ * - Removing the movie from users’ favourites
+ * - Deleting all associated showings
  *
- * @param this - The query object used to perform the deletion.
+ * @param this - The deletion query being executed
  */
 MovieSchema.pre(
     ["deleteOne", "deleteMany"],
     {document: false, query: true},
-    async function (this: Query<any, IMovie>) {
+    async function (this: Query<unknown, MovieSchemaFields>): Promise<void> {
         const {_id} = this.getFilter();
         if (!_id) return;
 
-        // Remove movie from user favourites and delete related showings
         await Promise.all([
             User.updateMany({favourites: _id}, {$pull: {favourites: _id}}),
             Showing.deleteMany({movie: _id}),

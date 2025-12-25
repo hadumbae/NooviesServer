@@ -1,6 +1,6 @@
 import cloudinary from "@config/cloudinary.js";
 import ZodParseError from "../../errors/ZodParseError.js";
-import type {CloudinaryUtils} from "./CloudinaryUtils.types.js";
+import type {CloudinaryUtilsMethods} from "./CloudinaryUtils.types.js";
 import {
     type CloudinaryImageObject,
     CloudinaryImageObjectSchema
@@ -9,7 +9,7 @@ import {
 /**
  * Cloudinary utility implementation for uploading and deleting images.
  */
-const CloudinaryUtils: CloudinaryUtils = {
+const CloudinaryUtils: CloudinaryUtilsMethods = {
     async upload(image: Express.Multer.File): Promise<CloudinaryImageObject> {
         // Convert buffer to base64
         const imageBuffer = image.buffer;

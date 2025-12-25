@@ -2,9 +2,9 @@ import createHttpError from "http-errors";
 import CloudinaryUtils from "../../../shared/utility/cloudinary/CloudinaryUtils.js";
 import MovieModel from "../model/Movie.model.js";
 import {type Document, Types} from "mongoose";
-import type IMovie from "../model/Movie.interface.js";
 import type {IMovieImageService} from "../interface/service/IMovieImageService.js";
 import type {DeletePosterImageParams, UploadPosterImageParams} from "../type/services/MovieImageServiceTypes.js";
+import type {MovieSchemaFields} from "../model/Movie.types.js";
 
 /**
  * Service for handling movie poster images.
@@ -20,7 +20,7 @@ export default class MovieImageService implements IMovieImageService {
      * @returns The movie document
      * @throws 404 HTTP error if the movie is not found
      */
-    async fetchMovie(movieID: Types.ObjectId): Promise<IMovie & Document> {
+    async fetchMovie(movieID: Types.ObjectId): Promise<MovieSchemaFields & Document> {
         const movie = await MovieModel.findById(movieID);
         if (!movie) throw createHttpError(404, "Not found.");
         return movie;
@@ -36,7 +36,7 @@ export default class MovieImageService implements IMovieImageService {
      * @param params.image - The new poster image file (Express.Multer.File)
      * @returns The updated movie document
      */
-    async updateMoviePosterImage(params: UploadPosterImageParams): Promise<IMovie> {
+    async updateMoviePosterImage(params: UploadPosterImageParams): Promise<MovieSchemaFields> {
         const { movieID, image } = params;
         const movie = await this.fetchMovie(movieID);
 
@@ -59,7 +59,7 @@ export default class MovieImageService implements IMovieImageService {
      * @param params.movieID - The ID of the movie
      * @returns The updated movie document
      */
-    async deleteMoviePosterImage(params: DeletePosterImageParams): Promise<IMovie> {
+    async deleteMoviePosterImage(params: DeletePosterImageParams): Promise<MovieSchemaFields> {
         const { movieID } = params;
         const movie = await this.fetchMovie(movieID);
 

@@ -3,7 +3,7 @@ import type {CloudinaryImageObject} from "../../schema/cloudinary/CloudinaryImag
 /**
  * Interface defining the Cloudinary utility methods.
  */
-export interface CloudinaryUtils {
+export interface CloudinaryUtilsMethods {
     /**
      * Uploads an image file to Cloudinary.
      *

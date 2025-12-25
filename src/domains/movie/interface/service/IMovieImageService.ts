@@ -1,6 +1,6 @@
 import {type Document, Types} from "mongoose";
-import type IMovie from "../../model/Movie.interface.js";
 import type {DeletePosterImageParams, UploadPosterImageParams} from "../../type/services/MovieImageServiceTypes.js";
+import type {MovieSchemaFields} from "../../model/Movie.types.js";
 
 /**
  * Interface defining the contract for a movie image service.
@@ -20,7 +20,7 @@ export interface IMovieImageService {
      * console.log(movie.title);
      * ```
      */
-    fetchMovie(_id: Types.ObjectId): Promise<IMovie & Document>;
+    fetchMovie(_id: Types.ObjectId): Promise<MovieSchemaFields & Document>;
 
     /**
      * Updates a movie's poster image.
@@ -41,7 +41,7 @@ export interface IMovieImageService {
      * console.log(updatedMovie.posterImage.url);
      * ```
      */
-    updateMoviePosterImage(params: UploadPosterImageParams): Promise<IMovie>;
+    updateMoviePosterImage(params: UploadPosterImageParams): Promise<MovieSchemaFields>;
 
     /**
      * Deletes a movie's poster image.
@@ -58,5 +58,5 @@ export interface IMovieImageService {
      * console.log(updatedMovie.posterImage); // null
      * ```
      */
-    deleteMoviePosterImage(params: DeletePosterImageParams): Promise<IMovie>;
+    deleteMoviePosterImage(params: DeletePosterImageParams): Promise<MovieSchemaFields>;
 }

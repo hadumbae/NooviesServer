@@ -7,12 +7,12 @@
 //  - Fetch Showings
 
 import MovieModel from "../../model/Movie.model.js";
-import type IMovie from "../../model/Movie.interface.js";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
 import User from "@models/User.js";
 import Showing from "../../../showing/model/Showing.model.js";
 import type {ShowingSchemaFields} from "../../../showing/model/Showing.types.js";
+import type {MovieSchemaFields} from "../../model/Movie.types.js";
 
 interface UserMovieParams {
     userID: Types.ObjectId | string;
@@ -20,15 +20,15 @@ interface UserMovieParams {
 }
 
 interface IMovieFavouriteService {
-    addMovieToFavourite(params: UserMovieParams): Promise<IMovie>;
+    addMovieToFavourite(params: UserMovieParams): Promise<MovieSchemaFields>;
 
-    removeMovieFromFavourite(params: UserMovieParams): Promise<IMovie>;
+    removeMovieFromFavourite(params: UserMovieParams): Promise<MovieSchemaFields>;
 
-    fetchMovieWithDetails(params: UserMovieParams): Promise<{ showings: ShowingSchemaFields[], movie: IMovie }>;
+    fetchMovieWithDetails(params: UserMovieParams): Promise<{ showings: ShowingSchemaFields[], movie: MovieSchemaFields }>;
 }
 
 export default class MovieFavouriteService implements IMovieFavouriteService {
-    async addMovieToFavourite({userID, movieID}: UserMovieParams): Promise<IMovie> {
+    async addMovieToFavourite({userID, movieID}: UserMovieParams): Promise<MovieSchemaFields> {
         const movie = await MovieModel.findById(movieID).lean();
         if (!movie) throw createHttpError(404, "Movie not found!");
 
@@ -43,7 +43,7 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
         return movie;
     }
 
-    async removeMovieFromFavourite({userID, movieID}: UserMovieParams): Promise<IMovie> {
+    async removeMovieFromFavourite({userID, movieID}: UserMovieParams): Promise<MovieSchemaFields> {
         const movie = await MovieModel.findById(movieID).lean();
         if (!movie) throw createHttpError(404, "Movie not found!");
 
@@ -60,7 +60,7 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
         return movie;
     }
 
-    async fetchMovieWithDetails({userID, movieID}: UserMovieParams): Promise<{ showings: ShowingSchemaFields[], movie: IMovie }> {
+    async fetchMovieWithDetails({userID, movieID}: UserMovieParams): Promise<{ showings: ShowingSchemaFields[], movie: MovieSchemaFields }> {
         const [user, movie] = await Promise.all([
             User.findById(userID).select("_id favourites").lean(),
             MovieModel.findById(movieID).populate(["genres"]).lean(),
@@ -69,8 +69,8 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
         if (!user) throw createHttpError(404, "User not found!");
         if (!movie) throw createHttpError(404, "Movie not found!");
 
-        const favSet = new Set(user.favourites.map((m) => m._id.toString()));
-        const movieWithFlag = {...movie, isFavourite: favSet.has(movie._id.toString())};
+        // const favSet = new Set(user.favourites.map((m) => m._id.toString()));
+        // const movieWithFlag = {...movie, isFavourite: favSet.has(movie._id.toString())};
 
         const showings = await Showing
             .find({movie: movie._id, isActive: true})
@@ -79,6 +79,6 @@ export default class MovieFavouriteService implements IMovieFavouriteService {
             .populate({path: "seating", populate: {path: "seat"}})
             .lean();
 
-        return {showings, movie: movieWithFlag};
+        return {showings, movie};
     }
 }

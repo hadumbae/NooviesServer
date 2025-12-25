@@ -3,18 +3,18 @@ import {type FilterQuery, type SortOrder} from "mongoose";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import {MovieQueryOptionsSchema} from "../schema/query/MovieQueryOption.schema.js";
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
-import type IMovie from "../model/Movie.interface.js";
 import type {MovieQueryMatchFilters, MovieQueryOptions} from "../schema/query/MovieQueryOption.types.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {MovieSchemaFields} from "../model/Movie.types.js";
 
 /**
  * Service for parsing, validating, and converting query parameters
- * into Mongoose-compatible filters and sorts for {@link IMovie} documents.
+ * into Mongoose-compatible filters and sorts for {@link MovieSchemaFields} documents.
  *
  * Implements {@link IQueryOptionService} to provide a consistent interface
  * for fetching query parameters and generating query options.
  */
-export default class MovieQueryOptionService implements IQueryOptionService<IMovie, MovieQueryOptions, MovieQueryMatchFilters> {
+export default class MovieQueryOptionService implements IQueryOptionService<MovieSchemaFields, MovieQueryOptions, MovieQueryMatchFilters> {
 
     /**
      * Parses and validates query parameters from an Express request.
@@ -67,13 +67,13 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
      * Only includes fields with non-null sort orders.
      *
      * @param options - Movie query options containing sort fields
-     * @returns Partial record mapping {@link IMovie} fields to {@link SortOrder}
+     * @returns Partial record mapping {@link MovieSchemaFields} fields to {@link SortOrder}
      *
      * @example
      * const sorts = service.generateMatchSorts({sortByTitle: 1, sortByReleaseDate: -1});
      * // sorts: { title: 1, releaseDate: -1 }
      */
-    generateMatchSorts(options: MovieQueryOptions): Partial<Record<keyof IMovie, SortOrder>> {
+    generateMatchSorts(options: MovieQueryOptions): Partial<Record<keyof MovieSchemaFields, SortOrder>> {
         const {
             sortByReleaseDate,
             sortByTitle,
@@ -105,7 +105,7 @@ export default class MovieQueryOptionService implements IQueryOptionService<IMov
      * const queryOptions = service.generateQueryOptions({title: "Matrix", sortByReleaseDate: 1});
      * // queryOptions: { match: { filters: { title: /Matrix/i }, sorts: { releaseDate: 1 } } }
      */
-    generateQueryOptions(options: MovieQueryOptions): QueryOptionTypes<IMovie, MovieQueryMatchFilters> {
+    generateQueryOptions(options: MovieQueryOptions): QueryOptionTypes<MovieSchemaFields, MovieQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
 

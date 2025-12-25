@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import type IMovie from "../../movie/model/Movie.interface.js";
+import type IMovie from "../../movie/model/Movie.types.js";
 import type {IPerson} from "../../person/interfaces/IPerson.js";
 import type IRoleType from "../../roleType/model/RoleType.interface.js";
 

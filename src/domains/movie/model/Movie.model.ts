@@ -1,9 +1,9 @@
 import {Model, model,} from "mongoose";
-import type IMovie from "./Movie.interface.js";
 import {MovieSchema} from "./Movie.schema.js";
 
 import "./Movie.virtuals.js";
 import "./Movie.middleware.js";
+import type {MovieSchemaFields} from "./Movie.types.js";
 
 /**
  * Mongoose model for movies.
@@ -20,6 +20,6 @@ import "./Movie.middleware.js";
  * const movies = await MovieModel.find({ isAvailable: true });
  * ```
  */
-const MovieModel: Model<IMovie> = model<IMovie>("Movie", MovieSchema);
+const MovieModel: Model<MovieSchemaFields> = model<MovieSchemaFields>("Movie", MovieSchema);
 
 export default MovieModel;

@@ -15,7 +15,7 @@
 
 import { Types } from "mongoose";
 import type { ScreenSchemaFields } from "../../screen/model/Screen.types.js";
-import type IMovie from "../../movie/model/Movie.interface.js";
+import type IMovie from "../../movie/model/Movie.types.js";
 import type { ShowingStatusCode } from "../schema/ShowingStatusEnumSchema.js";
 import type { TheatreSchemaFields } from "../../theatre/model/Theatre.types.js";
 import type { ISO6391LanguageCode } from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";

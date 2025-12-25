@@ -1,6 +1,6 @@
 import type {FilterQuery, SortOrder} from "mongoose";
-import type IMovie from "../../model/Movie.interface.js";
 import type {MovieQueryMatchFilters} from "../../schema/query/MovieQueryOption.types.js";
+import type {MovieSchemaFields} from "../../model/Movie.types.js";
 
 /**
  * Parameters for fetching paginated movies that include recent active showings.
@@ -26,11 +26,11 @@ export interface FetchPaginatedMoviesWithRecentShowingsParams {
     /**
      * Optional sort definition for movies.
      *
-     * Keys correspond to properties of {@link IMovie}, values are Mongoose sort orders (`1` for ascending, `-1` for descending).
+     * Keys correspond to properties of {@link MovieSchemaFields}, values are Mongoose sort orders (`1` for ascending, `-1` for descending).
      *
      * Example: `{ releaseDate: -1 }`
      */
-    sort?: Partial<Record<keyof IMovie, SortOrder>>;
+    sort?: Partial<Record<keyof MovieSchemaFields, SortOrder>>;
 }
 
 /**
@@ -40,7 +40,7 @@ export interface FetchPaginatedMoviesWithRecentShowingsReturns {
     /**
      * The list of movies matching the query and pagination.
      */
-    items: IMovie[];
+    items: MovieSchemaFields[];
 
     /**
      * The total number of movies that match the filter (ignores pagination).

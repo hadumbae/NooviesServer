@@ -1,5 +1,4 @@
 import MovieModel from "../model/Movie.model.js";
-import type IMovie from "../model/Movie.interface.js";
 
 import MovieController from "../controller/MovieController.js";
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
@@ -11,6 +10,7 @@ import MovieFavouriteService from "../service/user/MovieFavouriteService.js";
 import MovieFavouriteController from "../controller/MovieFavouriteController.js";
 import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
+import type {MovieSchemaFields} from "../model/Movie.types.js";
 
 /**
  * @class MovieServiceProvider
@@ -50,7 +50,7 @@ export default class MovieServiceProvider {
         ];
 
         // Repository for Movie with CRUD operations and population options
-        const repository = new BaseRepository<IMovie>({ model, populateRefs });
+        const repository = new BaseRepository<MovieSchemaFields>({ model, populateRefs });
 
         // Core business service for Movie
         const service = new MovieService();

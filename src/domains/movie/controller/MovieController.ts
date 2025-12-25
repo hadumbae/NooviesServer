@@ -1,24 +1,24 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type { Request, Response } from "express";
-import type IMovie from "../model/Movie.interface.js";
 import MovieImageService from "../service/MovieImageService.js";
 import type IMovieService from "../service/movie/IMovieService.js";
 import type MovieService from "../service/movie/MovieService.js";
 import type MovieQueryOptionService from "../service/MovieQueryOptionService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
+import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {MovieQueryMatchFilters} from "../schema/query/MovieQueryOption.types.js";
+import type {MovieSchemaFields} from "../model/Movie.types.js";
 import type {
     BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type {MovieQueryMatchFilters} from "../schema/query/MovieQueryOption.types.js";
 
 /**
  * Constructor parameters for {@link MovieController}.
  *
  * Extends the base CRUD controller constructor with movie-specific services.
  */
-export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<IMovie> {
+export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<MovieSchemaFields> {
     /** Service for CRUD operations on movies. */
     service: IMovieService;
 
@@ -36,7 +36,7 @@ export interface IMovieControllerConstructor extends IBaseCRUDControllerConstruc
  * - Updating/deleting poster images
  * - Fetching paginated movies with recent showings
  */
-export interface IMovieController extends BaseControllerCRUDMethods<IMovie, MovieQueryMatchFilters> {
+export interface IMovieController extends BaseControllerCRUDMethods<MovieSchemaFields, MovieQueryMatchFilters> {
     /**
      * Updates the poster image of a movie.
      *
@@ -77,7 +77,7 @@ export interface IMovieController extends BaseControllerCRUDMethods<IMovie, Movi
  * // Fetch paginated movies:
  * // GET /movies?page=1&perPage=10&title=Matrix&sortByReleaseDate=-1
  */
-export default class MovieController extends BaseCRUDController<IMovie> implements IMovieController {
+export default class MovieController extends BaseCRUDController<MovieSchemaFields> implements IMovieController {
     private service: MovieService;
     private optionService: MovieQueryOptionService;
     private imageService: MovieImageService;
@@ -103,7 +103,7 @@ export default class MovieController extends BaseCRUDController<IMovie> implemen
      * @param req - Express request object containing query parameters
      * @returns Structured {@link QueryOptionTypes} with filters and sorts
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<IMovie, MovieQueryMatchFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<MovieSchemaFields, MovieQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }
