@@ -1,9 +1,10 @@
 import {MovieSchema} from "./Movie.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import Showing from "../../showing/model/Showing.model.js";
-import User from "@models/User.js";
 import type {MovieSchemaFields} from "./Movie.types.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
+import getUpdateData from "../../../shared/utility/mongoose/getUpdateData.js";
+import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
 
 /**
  * Pre-validation middleware for Movie documents.
@@ -39,7 +40,7 @@ MovieSchema.pre(
     "findOneAndUpdate",
     {query: true},
     function (this: Query<any, MovieSchemaFields>, next: () => void): void {
-        const update = this.getUpdate() as MovieSchemaFields;
+        const update = getUpdateData(this.getUpdate());
 
         if (update.title) {
             update.slug = generateSlug(update.title);
@@ -90,7 +91,10 @@ MovieSchema.pre(
         const {_id} = this;
         (this as any)._wasUpdated = true;
 
-        await Showing.deleteMany({movie: _id});
+        await Promise.all([
+            Showing.deleteMany({movie: _id}),
+            MovieCredit.deleteMany({movie: _id}),
+        ]);
     }
 );
 
@@ -112,8 +116,8 @@ MovieSchema.pre(
         if (!_id) return;
 
         await Promise.all([
-            User.updateMany({favourites: _id}, {$pull: {favourites: _id}}),
             Showing.deleteMany({movie: _id}),
+            MovieCredit.deleteMany({movie: _id}),
         ]);
     }
 );

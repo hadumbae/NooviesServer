@@ -6,6 +6,7 @@ import {
 import {GenreInputSchema} from "../schema/GenreInputSchema.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
+import type {GenreSchemaFields} from "../model/Genre.types.js";
 
 /**
  * Extract the Genre model and controller from the service provider.
@@ -16,7 +17,7 @@ const { model, controllers: {controller} } = GenreServiceProvider.register();
  * Middleware to unset any unnecessary or undefined model fields
  * before saving to the database.
  */
-const unsetMiddleware = unsetModelFormFields({model});
+const unsetMiddleware = unsetModelFormFields<GenreSchemaFields>({model, excludeKeys: ["image"]});
 
 /**
  * Defines the route-specific middleware for the Genre routes.

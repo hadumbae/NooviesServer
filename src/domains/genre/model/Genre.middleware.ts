@@ -3,6 +3,7 @@ import type {HydratedDocument, Query} from "mongoose";
 import MovieModel from "../../movie/model/Movie.model.js";
 import type {GenreSchemaFields} from "./Genre.types.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
+import getUpdateData from "../../../shared/utility/mongoose/getUpdateData.js";
 
 /**
  * Automatically regenerates the slug when the genre name changes.
@@ -29,7 +30,7 @@ GenreSchema.pre(
     "findOneAndUpdate",
     {query: true},
     function (this: Query<any, GenreSchemaFields>, next: () => void) {
-        const update = this.getUpdate() as GenreSchemaFields;
+        const update = getUpdateData(this.getUpdate());
 
         if (update.name) {
             update.slug = generateSlug(update.name);
