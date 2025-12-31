@@ -1,83 +1,110 @@
-import {z} from "zod";
-import {URLParamObjectIDSchema} from "../../../../shared/schema/url/URLParamObjectIDSchema.js";
-import {ISO6391LanguageCodeSchema} from "../../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
-import generateURLParamArraySchema from "../../../../shared/utility/schema/url-params/generateURLParamArraySchema.js";
-import {URLParamBooleanSchema} from "../../../../shared/schema/url/URLParamBooleanSchema.js";
-import {ShowingStatusEnumSchema} from "../ShowingStatusEnumSchema.js";
-import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
-import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
-import {ISO3166Alpha2CountryCodeSchema} from "../../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
-import {URLParamPositiveNumberSchema} from "../../../../shared/schema/url/URLParamPositiveNumberSchema.js";
-
 /**
  * @file ShowingQuerySchemas.ts
  *
- * Zod schemas for validating and normalizing URL query parameters
- * used when querying Showings.
+ * @summary
+ * URL query parameter schemas for fetching Showings.
  *
- * Schemas are split by responsibility:
- * - Match filters (field-level constraints)
- * - Sort options
- * - Reference-based text filters
+ * @description
+ * Zod schemas used to validate, coerce, and normalize URL query
+ * parameters when querying Showings endpoints.
+ *
+ * Schemas are grouped by responsibility:
+ * - Match filters (direct Showing fields)
+ * - Sort options (Mongo-style ordering)
+ * - Reference-based filters (populated relations)
  */
 
-// --- Match Filters ---
+import { z } from "zod";
+import { URLParamObjectIDSchema } from "../../../../shared/schema/url/URLParamObjectIDSchema.js";
+import { URLParamBooleanSchema } from "../../../../shared/schema/url/URLParamBooleanSchema.js";
+import { ShowingStatusEnumSchema } from "../ShowingStatusEnumSchema.js";
+import { URLParamMongooseSortOrderSchema } from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
+import { URLParamStringSchema } from "../../../../shared/schema/url/URLParamStringSchema.js";
+import { ISO3166Alpha2CountryCodeSchema } from "../../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
+import { URLParamPositiveNumberSchema } from "../../../../shared/schema/url/URLParamPositiveNumberSchema.js";
+
+// --- MATCH SCHEMAS ---
 
 /**
  * Match-level filters applied directly to Showing fields.
+ *
+ * Values are coerced from URL parameters into strongly typed
+ * query constraints.
  */
 export const ShowingQueryMatchFilterSchema = z.object({
+    /** Movie identifier */
     movie: URLParamObjectIDSchema,
+
+    /** Theatre identifier */
     theatre: URLParamObjectIDSchema,
+
+    /** Screen identifier */
     screen: URLParamObjectIDSchema,
-    language: ISO6391LanguageCodeSchema.optional(),
-    subtitleLanguages: generateURLParamArraySchema(ISO6391LanguageCodeSchema),
+
+    /** Special event flag */
     isSpecialEvent: URLParamBooleanSchema,
+
+    /** Minimum ticket price */
     ticketPrice: URLParamPositiveNumberSchema,
+
+    /** Active / inactive flag */
     isActive: URLParamBooleanSchema,
+
+    /** Showing lifecycle status */
     status: ShowingStatusEnumSchema.optional(),
 });
-
-// --- Sort Options ---
 
 /**
  * Sort options for Showing queries.
  *
- * Values map directly to Mongoose sort order semantics.
+ * Uses MongoDB sort semantics:
+ * - `1` ascending
+ * - `-1` descending
  */
 export const ShowingQueryMatchSortSchema = z.object({
     sortByStartTime: URLParamMongooseSortOrderSchema,
     sortByEndTime: URLParamMongooseSortOrderSchema,
-    sortByTicketPrice: URLParamMongooseSortOrderSchema,
-    sortByIsSpecialEvent: URLParamMongooseSortOrderSchema,
-    sortByIsActive: URLParamMongooseSortOrderSchema,
-    sortByStatus: URLParamMongooseSortOrderSchema,
 });
 
-// --- Reference Filters ---
+// --- REFERENCE SCHEMAS ---
 
 /**
- * Text-based filters applied to referenced documents.
+ * Filters applied to referenced documents.
  *
- * These filters typically require lookup or population stages.
+ * These fields are resolved via lookups or populated relations
+ * rather than direct Showing fields.
  */
 export const ShowingQueryReferenceFilterSchema = z.object({
+    /** Movie title (partial or full match) */
     movieTitle: URLParamStringSchema,
-    screenName: URLParamStringSchema,
+
+    /** Movie slug */
+    movieSlug: URLParamStringSchema,
+
+    /** Theatre name */
     theatreName: URLParamStringSchema,
+
+    /** Theatre state / province */
     theatreState: URLParamStringSchema,
+
+    /** Theatre city */
     theatreCity: URLParamStringSchema,
+
+    /** Theatre country (ISO 3166-1 alpha-2) */
     theatreCountry: ISO3166Alpha2CountryCodeSchema.optional(),
 });
 
-// --- Combined Schema ---
+// --- COMBINED SCHEMA ---
 
 /**
- * Complete query option schema for Showing endpoints.
+ * Unified query schema for Showing endpoints.
  *
- * Combines match filters, sort options, and reference filters
- * into a single validation schema.
+ * Combines:
+ * - Direct match filters
+ * - Reference-based filters
+ * - Sort options
  */
-export const ShowingQueryOptionSchema = ShowingQueryMatchFilterSchema
-    .merge(ShowingQueryMatchSortSchema)
-    .merge(ShowingQueryReferenceFilterSchema);
+export const ShowingQueryOptionSchema =
+    ShowingQueryMatchFilterSchema
+        .merge(ShowingQueryMatchSortSchema)
+        .merge(ShowingQueryReferenceFilterSchema);

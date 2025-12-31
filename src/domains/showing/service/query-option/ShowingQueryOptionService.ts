@@ -1,11 +1,39 @@
+/**
+ * @file ShowingQueryOptionService.ts
+ * @summary
+ * Query option service for the Showing domain.
+ *
+ * @description
+ * Implements {@link IReferenceQueryOptionService} for the `Showing` model.
+ * This service is responsible for translating validated URL query
+ * parameters into Mongoose-compatible query objects and aggregation
+ * pipeline stages.
+ *
+ * Responsibilities:
+ * - Validate and parse raw query parameters using Zod
+ * - Generate native `$match` filters and `$sort` clauses
+ * - Generate reference-based filter pipelines using `$lookup`
+ * - Assemble a unified query options object for repositories/services
+ * - Provide population pipelines for resolving referenced documents
+ *
+ * This class acts as the boundary between HTTP query input and
+ * database query construction.
+ */
+
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import type {Request} from "express";
-import type {ShowingQueryMatchFilters, ShowingQueryOptions} from "../../schema/query/ShowingQueryOption.types.js";
+import type {
+    ShowingQueryMatchFilters,
+    ShowingQueryOptions
+} from "../../schema/query/ShowingQueryOption.types.js";
 import {ShowingQueryOptionSchema} from "../../schema/query/ShowingQueryOption.schema.js";
 import ZodParseError from "../../../../shared/errors/ZodParseError.js";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
-import type {QueryOptionTypes, SortQuery} from "../../../../shared/types/query-options/QueryOptionService.types.js";
+import type {
+    QueryOptionTypes,
+    SortQuery
+} from "../../../../shared/types/query-options/QueryOptionService.types.js";
 import type {
     PopulationPipelineStages,
     ReferenceFilterPipelineStages,
@@ -17,28 +45,24 @@ import generateReferenceFilterPipelineStages
 import type {ShowingSchemaFields} from "../../model/Showing.types.js";
 
 /**
- * @file ShowingQueryOptionService.ts
- * @summary Service for parsing, validating, and transforming URL query parameters
- * into Mongoose aggregation pipelines and query objects for Showings.
- *
- * @description
- * Implements {@link IReferenceQueryOptionService} for the `Showing` model.
- * Provides methods to:
- * - Parse query parameters from Express requests with Zod validation
- * - Generate match filters and sorts for native fields
- * - Generate reference-based filter pipelines using `$lookup` stages
- * - Generate reference sort pipelines (currently empty)
- * - Produce fully combined query option objects
- * - Generate population pipelines for joining referenced documents
+ * Service for building query options and aggregation pipelines
+ * for Showing list/search endpoints.
  */
-export default class ShowingQueryOptionService implements IReferenceQueryOptionService<ShowingSchemaFields, ShowingQueryOptions, ShowingQueryMatchFilters> {
+export default class ShowingQueryOptionService
+    implements IReferenceQueryOptionService<
+        ShowingSchemaFields,
+        ShowingQueryOptions,
+        ShowingQueryMatchFilters
+    > {
 
     /**
      * Parses and validates query parameters from an Express request.
      *
-     * @param req - Express request object containing `req.query`.
-     * @returns Validated `ShowingQueryOptions`.
-     * @throws {ZodParseError} if query parameters fail validation.
+     * @param req - Express request containing raw `req.query` values.
+     * @returns A validated {@link ShowingQueryOptions} object.
+     *
+     * @throws {ZodParseError}
+     * Thrown when query parameters fail schema validation.
      */
     fetchQueryParams(req: Request): ShowingQueryOptions {
         const {data, success, error} = ShowingQueryOptionSchema.safeParse(req.query);
@@ -47,7 +71,7 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
             throw new ZodParseError({
                 errors: error?.errors,
                 raw: req.query,
-                message: "Invalid Showing Query."
+                message: "Invalid Showing Query.",
             });
         }
 
@@ -57,21 +81,21 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
     /**
      * Generates match-level filters for native Showing fields.
      *
+     * @remarks
+     * Only non-nullish attributes are included, ensuring clean
+     * and minimal MongoDB `$match` conditions.
+     *
      * @param options - Validated query options.
-     * @returns A `FilterQuery` object for Mongoose queries.
+     * @returns A Mongoose {@link FilterQuery} for Showing documents.
      */
     generateMatchFilters(options: ShowingQueryOptions): FilterQuery<ShowingQueryMatchFilters> {
-        const checkedSL = options.subtitleLanguages?.length
-            && {$all: options.subtitleLanguages};
-
         return filterNullishAttributes({
             movie: options.movie,
             theatre: options.theatre,
             screen: options.screen,
-            language: options.language,
-            subtitleLanguages: checkedSL,
             isSpecialEvent: options.isSpecialEvent,
             isActive: options.isActive,
+            ticketPrice: options.ticketPrice,
             status: options.status,
         });
     }
@@ -79,31 +103,36 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
     /**
      * Generates sorting options for native Showing fields.
      *
+     * @remarks
+     * Sort keys are mapped directly to schema fields and filtered
+     * to exclude undefined values.
+     *
      * @param options - Validated query options.
-     * @returns A `SortQuery` object for Mongoose queries.
+     * @returns A {@link SortQuery} compatible with Mongoose.
      */
     generateMatchSorts(options: ShowingQueryOptions): SortQuery<ShowingSchemaFields> {
         return filterNullishAttributes({
             startTime: options.sortByStartTime,
             endTime: options.sortByEndTime,
-            ticketPrice: options.sortByTicketPrice,
-            isSpecialEvent: options.sortByIsSpecialEvent,
-            isActive: options.sortByIsActive,
-            status: options.sortByStatus,
         });
     }
 
     /**
-     * Generates reference-based filter stages using `$lookup`.
+     * Generates reference-based filter pipeline stages.
+     *
+     * @remarks
+     * Uses `$lookup` stages with embedded `$match` conditions to
+     * filter by referenced document attributes (e.g. movie or theatre
+     * metadata).
      *
      * @param options - Validated query options.
-     * @returns Reference filter pipeline stages suitable for Mongoose aggregation.
+     * @returns Reference filter pipeline stages for aggregation.
      */
     generateReferenceFilters(options: ShowingQueryOptions): ReferenceFilterPipelineStages {
         const {
-            theatreName,
-            screenName,
             movieTitle,
+            movieSlug,
+            theatreName,
             theatreState,
             theatreCity,
             theatreCountry,
@@ -117,6 +146,7 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
                 as: "showingMovie",
                 filters: filterNullishAttributes({
                     title: movieTitle,
+                    slug: movieSlug,
                 }),
             },
             {
@@ -128,16 +158,7 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
                     name: theatreName,
                     "location.state": theatreState,
                     "location.city": theatreCity,
-                    "location.country": theatreCountry
-                }),
-            },
-            {
-                from: "screens",
-                localField: "screen",
-                foreignField: "name",
-                as: "showingScreen",
-                filters: filterNullishAttributes({
-                    screen: screenName,
+                    "location.country": theatreCountry,
                 }),
             },
         ];
@@ -146,41 +167,56 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
     }
 
     /**
-     * Generates reference sort stages.
+     * Generates reference-based sort pipeline stages.
      *
-     * @param params - Validated query options.
-     * @returns Reference sort pipeline stages (currently empty).
+     * @remarks
+     * Currently no reference-level sorting is implemented.
+     * This method exists to satisfy the service contract and
+     * to allow future extension.
+     *
+     * @param options - Validated query options.
+     * @returns An empty reference sort pipeline stage array.
      */
-    generateReferenceSorts(params: ShowingQueryOptions): ReferenceSortPipelineStages {
+    generateReferenceSorts(options: ShowingQueryOptions): ReferenceSortPipelineStages {
         return [];
     }
 
     /**
-     * Combines native and reference filters/sorts into a single query options object.
+     * Builds the full query option object.
+     *
+     * @remarks
+     * Combines native match filters/sorts with reference-based
+     * filter and sort pipelines into a single structured object
+     * suitable for repositories or aggregation execution.
      *
      * @param options - Validated query options.
-     * @returns Fully combined query options suitable for repository or aggregation use.
+     * @returns Fully composed query option structure.
      */
     generateQueryOptions(options: ShowingQueryOptions): QueryOptionTypes<ShowingSchemaFields, ShowingQueryMatchFilters> {
-        const matchFilters = this.generateMatchFilters(options);
-        const matchSorts = this.generateMatchSorts(options);
-        const referenceFilters = this.generateReferenceFilters(options);
-        const referenceSorts = this.generateReferenceSorts(options);
-
         return {
-            match: {filters: matchFilters, sorts: matchSorts},
-            reference: {filters: referenceFilters, sorts: referenceSorts},
+            match: {
+                filters: this.generateMatchFilters(options),
+                sorts: this.generateMatchSorts(options),
+            },
+            reference: {
+                filters: this.generateReferenceFilters(options),
+                sorts: this.generateReferenceSorts(options),
+            },
         };
     }
 
     /**
-     * Generates population pipeline stages for joining referenced documents.
+     * Generates population pipeline stages for Showings.
      *
-     * @returns `PopulationPipelineStages` suitable for Mongoose aggregation pipelines.
+     * @remarks
+     * These stages resolve referenced documents and normalize
+     * the output shape for consumers.
+     *
+     * @returns Aggregation pipeline stages for population.
      */
     generatePopulationPipelines(): PopulationPipelineStages {
         return [
-            // --- Lookup ---
+            // --- Lookups ---
             {$lookup: {from: "theatres", localField: "theatre", foreignField: "_id", as: "theatre"}},
             {$lookup: {from: "screens", localField: "screen", foreignField: "_id", as: "screen"}},
             {$lookup: {from: "movies", localField: "movie", foreignField: "_id", as: "movie"}},
@@ -190,7 +226,7 @@ export default class ShowingQueryOptionService implements IReferenceQueryOptionS
             {$unwind: "$screen"},
             {$unwind: "$movie"},
 
-            // --- Genres ---
+            // --- Movie Genres ---
             {$lookup: {from: "genres", localField: "movie.genres", foreignField: "_id", as: "movie.genres"}},
         ];
     }
