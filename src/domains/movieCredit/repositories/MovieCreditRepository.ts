@@ -55,7 +55,7 @@ export default class MovieCreditRepository extends BaseRepository<IMovieCredit> 
      * }
      * ```
      */
-    protected throwDuplicateError(indexString: string) {
+    protected throwDuplicateError(indexString: string): never {
         console.debug("Movie Credit Repository Duplicate Index: ", indexString);
 
         if (indexString === "movie_1_billingOrder_1") {
@@ -127,5 +127,10 @@ export default class MovieCreditRepository extends BaseRepository<IMovieCredit> 
                 message: "Duplicate crew entry detected. A person cannot be credited with the same role and display role more than once in a movie."
             });
         }
+
+        throw new ZodParseError({
+            errors: [],
+            message: "Duplicate data found. Please try again."
+        });
     }
 }

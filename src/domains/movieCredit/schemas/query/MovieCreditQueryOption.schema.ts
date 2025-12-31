@@ -1,3 +1,23 @@
+/**
+ * @file MovieCreditQuery.schema.ts
+ * @summary
+ * Zod schemas for movie credit query validation.
+ *
+ * @description
+ * Defines composable Zod schemas for validating and parsing URL query
+ * parameters used to filter and sort movie credit list endpoints.
+ *
+ * The schemas are structured in clear layers to mirror aggregation
+ * pipeline construction:
+ * - **Match filters**: Direct fields on the MovieCredit document
+ * - **Reference filters**: Fields resolved via lookups or population
+ * - **Sort options**: MongoDB-compatible sort directives
+ *
+ * These schemas are designed for use at the API boundary, enabling
+ * safe query parsing, predictable aggregation building, and reliable
+ * type inference.
+ */
+
 import {z} from "zod";
 import {URLParamObjectIDSchema} from "../../../../shared/schema/url/URLParamObjectIDSchema.js";
 import {URLParamStringSchema} from "../../../../shared/schema/url/URLParamStringSchema.js";
@@ -6,125 +26,81 @@ import {URLParamBooleanSchema} from "../../../../shared/schema/url/URLParamBoole
 import {RoleTypeDepartmentEnumSchema} from "../../../roleType/schemas/RoleTypeDepartment.enum.js";
 import {URLParamMongooseSortOrderSchema} from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
 
+// --- MATCH ---
+
 /**
- * Filters for matching {@link MovieCredit} documents in queries.
- * Typically used for root-level filtering by IDs or field values.
+ * Match-level query filters for MovieCredit documents.
  *
  * @remarks
- * - CAST-specific fields: `characterName`, `billingOrder`, `uncredited`, `voiceOnly`, `cameo`, `motionCapture`, `archiveFootage`.
- * - CREW-specific fields: `department`, `displayRoleName`.
+ * These filters map directly to fields on the MovieCredit model and are
+ * typically translated into MongoDB `$match` stages.
  */
 export const MovieCreditQueryMatchFiltersSchema = z.object({
-    /** Filter by MovieCredit ID */
     _id: URLParamObjectIDSchema,
-
-    /** Filter by associated movie ID */
     movie: URLParamObjectIDSchema,
-
-    /** Filter by associated person ID */
     person: URLParamObjectIDSchema,
-
-    /** Filter by role type ID */
     roleType: URLParamObjectIDSchema,
-
-    /** Filter by department ("CAST" or "CREW"), optional */
     department: RoleTypeDepartmentEnumSchema.optional(),
-
-    /** Filter by how the role is displayed, optional */
     displayRoleName: URLParamObjectIDSchema,
-
-    /** Filter by credited name if different from person's name, optional */
     creditedAs: URLParamObjectIDSchema,
-
-    /** Filter by primary role flag */
     isPrimary: URLParamStringSchema,
-
-    /** Filter by character name (CAST only) */
     characterName: URLParamStringSchema,
-
-    /** Filter by billing order (CAST only) */
     billingOrder: URLParamNumberSchema,
-
-    /** Filter by uncredited flag (CAST only) */
     uncredited: URLParamBooleanSchema,
-
-    /** Filter by voice-only role (CAST only) */
     voiceOnly: URLParamBooleanSchema,
-
-    /** Filter by cameo role (CAST only) */
     cameo: URLParamBooleanSchema,
-
-    /** Filter by motion capture role (CAST only) */
     motionCapture: URLParamBooleanSchema,
-
-    /** Filter by archive footage role (CAST only) */
     archiveFootage: URLParamBooleanSchema,
 });
 
 /**
- * Filters for populating related fields in {@link MovieCredit} queries.
- * Used to filter within referenced collections such as `person`, `movie`, or `roleType`.
+ * Sort options for MovieCredit queries.
  *
  * @remarks
- * - Applied during `$lookup` or `.populate()` operations.
+ * Each property corresponds to a sortable field and accepts a MongoDB
+ * sort order (`1` for ascending, `-1` for descending).
+ *
+ * These values are typically mapped directly to `$sort` stages.
+ */
+export const MovieCreditQueryMatchSortsSchema = z.object({
+    sortByCreditedAs: URLParamMongooseSortOrderSchema,
+    sortByCharacterName: URLParamMongooseSortOrderSchema,
+    sortByBillingOrder: URLParamMongooseSortOrderSchema,
+});
+
+// --- REFERENCE ---
+
+/**
+ * Reference-level query filters for MovieCredit queries.
+ *
+ * @remarks
+ * These filters apply to fields resolved via referenced documents
+ * (e.g. movie slug, role name) and are usually evaluated after
+ * `$lookup` or population stages.
  */
 export const MovieCreditQueryReferenceFiltersSchema = z.object({
-    /** Filter by person's name */
-    name: URLParamStringSchema,
-
-    /** Filter by movie title */
-    title: URLParamStringSchema,
-
-    /** Filter by role name */
+    movieSlug: URLParamStringSchema,
     roleName: URLParamStringSchema,
 });
 
+// --- COMBINED ---
+
 /**
- * Combined filter schema including both root-level match filters
- * and reference/populate filters.
+ * Combined filter schema for MovieCredit queries.
+ *
+ * @remarks
+ * Merges match-level and reference-level filters into a single schema
+ * for convenience when constructing aggregation pipelines.
  */
 export const MovieCreditQueryFiltersSchema =
     MovieCreditQueryMatchFiltersSchema.merge(MovieCreditQueryReferenceFiltersSchema);
 
 /**
- * Sorting options for {@link MovieCredit} queries.
- * Accepts MongoDB sort order: `1` for ascending, `-1` for descending.
+ * Full query options schema for MovieCredit list/search endpoints.
  *
  * @remarks
- * - CAST-only: `sortByBillingOrder`
- * - Applies to both root and referenced documents as needed.
- */
-export const MovieCreditQueryMatchSortsSchema = z.object({
-    /** Sort results by person */
-    sortByPerson: URLParamMongooseSortOrderSchema,
-
-    /** Sort results by movie */
-    sortByMovie: URLParamMongooseSortOrderSchema,
-
-    /** Sort results by department ("CAST" or "CREW") */
-    sortByDepartment: URLParamMongooseSortOrderSchema,
-
-    /** Sort results by billing order (CAST only) */
-    sortByBillingOrder: URLParamMongooseSortOrderSchema,
-});
-
-/**
- * Combined query options schema including filters and sorting rules.
- *
- * @remarks
- * - Merges `MovieCreditQueryFiltersSchema` and `MovieCreditQueryMatchSortsSchema`.
- * - Use this schema to validate query parameters for search endpoints.
- *
- * @example
- * // Example query parameters
- * const query = {
- *   person: "64f0d4c9abc1234567890abc",
- *   title: "Inception",
- *   sortByMovie: -1,
- *   sortByBillingOrder: 1
- * };
- *
- * MovieCreditQueryOptionsSchema.parse(query);
+ * Combines filters and sorting parameters into a single schema suitable
+ * for validating raw URL query strings.
  */
 export const MovieCreditQueryOptionsSchema =
     MovieCreditQueryFiltersSchema.merge(MovieCreditQueryMatchSortsSchema);

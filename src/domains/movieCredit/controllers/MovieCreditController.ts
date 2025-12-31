@@ -1,7 +1,7 @@
 import type {Request, Response} from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type {IMovieCredit} from "../models/MovieCredit.interface.js";
-import type MovieCreditQueryOptionService from "../services/MovieCreditQueryOptionService.js";
+import type MovieCreditQueryOptionService from "../services/query-option-service/MovieCreditQueryOptionService.js";
 import type MovieCreditService from "../services/movie-credit-service/MovieCreditService.js";
 import type {
     BaseControllerCRUDMethods,
