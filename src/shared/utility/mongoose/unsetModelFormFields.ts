@@ -9,6 +9,7 @@ import type { Request, Response, NextFunction } from "express";
 type ModelFormParams<TModel = any> = {
     /** The Mongoose model to inspect for schema fields. */
     model: Model<TModel>;
+    excludeKeys?: (keyof TModel)[];
 };
 
 /**
@@ -39,11 +40,11 @@ type ModelFormParams<TModel = any> = {
  * ```
  */
 export default function unsetModelFormFields<TModel = any>(params: ModelFormParams<TModel>) {
-    const { model } = params;
+    const { model, excludeKeys = [] } = params;
 
     const modelKeys = Object
         .keys(model.schema.paths)
-        .filter(k => !["_id", "__v", "createdAt", "updatedAt"].includes(k));
+        .filter(k => !["_id", "__v", "createdAt", "updatedAt", "slug", ...excludeKeys].includes(k));
 
     return (req: Request, res: Response, next: NextFunction) => {
         if (req.validatedBody) {
