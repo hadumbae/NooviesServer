@@ -5,9 +5,10 @@
  * Mongoose middleware for the Screen model.
  *
  * @description
- * Registers query and document middleware to:
- * - Auto-populate virtuals when using lean queries with virtuals enabled
- * - Cascade cleanup of related theatre, seat, and showing data on deletion
+ * Responsibilities include:
+ * - Automatic slug generation
+ * - Conditional population of virtual fields on lean queries
+ * - Cascading cleanup of dependent entities on deletion
  */
 
 import { ScreenSchema } from "./Screen.schema.js";
@@ -17,14 +18,57 @@ import type { ScreenSchemaFields } from "./Screen.types.js";
 import Theatre from "../../theatre/model/Theatre.model.js";
 import Seat from "../../seat/model/Seat.model.js";
 import Showing from "../../showing/model/Showing.model.js";
+import generateSlug from "../../../shared/utility/generateSlug.js";
+import getUpdateData from "../../../shared/utility/mongoose/getUpdateData.js";
 
 /**
- * @summary
+ * Document-level validation hook.
+ *
+ * @description
+ * Regenerates the screen slug whenever the screen name changes.
+ */
+ScreenSchema.pre(
+    "validate",
+    { document: true, query: false },
+    function (this: HydratedDocument<ScreenSchemaFields>, next: () => void): void {
+        if (this.isModified("name")) {
+            this.slug = generateSlug(this.name);
+        }
+
+        next();
+    },
+);
+
+/**
+ * Query-level update hook.
+ *
+ * @description
+ * Keeps the slug in sync when the screen name is updated
+ * via query-based operations.
+ */
+ScreenSchema.pre(
+    "findOneAndUpdate",
+    { query: true },
+    function (this: Query<any, ScreenSchemaFields>, next: () => void): void {
+        const update = getUpdateData(this.getUpdate());
+
+        if (update.name) {
+            update.slug = generateSlug(update.name);
+        }
+
+        next();
+    },
+);
+
+/**
  * Query middleware for auto-populating screen virtuals.
  *
  * @description
- * When using `.lean({ virtuals: true })`, automatically populates
- * computed virtual fields such as seat count and future showings.
+ * Automatically populates computed virtual fields only when:
+ * - `lean()` is enabled
+ * - `lean({ virtuals: true })` is explicitly requested
+ *
+ * Prevents unnecessary population overhead for standard queries.
  */
 ScreenSchema.pre(
     ["find", "findOne", "findOneAndUpdate"],
@@ -51,19 +95,16 @@ ScreenSchema.pre(
 );
 
 /**
- * @summary
- * Document-level cleanup after single screen deletion.
+ * Document-level delete hook.
  *
  * @description
- * Removes references to the deleted screen and cascades deletion
- * to dependent seat and showing documents.
+ * Cascades deletion to all dependent entities when a single
+ * screen document is deleted.
  */
 ScreenSchema.post(
     "deleteOne",
     { document: true, query: false },
     async function (this: HydratedDocument<ScreenSchemaFields>) {
-        (this as any)._wasUpdated = true;
-
         await Promise.all([
             Theatre.updateMany(
                 { screens: this._id },
@@ -76,25 +117,26 @@ ScreenSchema.post(
 );
 
 /**
- * @summary
- * Query-level cleanup after bulk screen deletion.
+ * Query-level delete hook.
  *
  * @description
- * Ensures referential integrity when screens are deleted via
- * query-based operations.
+ * Ensures referential integrity when screens are deleted
+ * via query-based operations.
  */
 ScreenSchema.post(
     ["deleteOne", "deleteMany"],
     { document: false, query: true },
     async function (this: Query<any, ScreenSchemaFields>) {
         const { _id } = this.getFilter();
-        (this as any)._wasUpdated = true;
+        if (!_id) return;
 
-        await Theatre.updateMany(
-            { screens: _id },
-            { $pull: { screens: _id } },
-        );
-        await Seat.deleteMany({ screen: _id });
-        await Showing.deleteMany({ screen: _id });
+        await Promise.all([
+            Theatre.updateMany(
+                { screens: _id },
+                { $pull: { screens: _id } },
+            ),
+            Seat.deleteMany({ screen: _id }),
+            Showing.deleteMany({ screen: _id }),
+        ]);
     },
 );

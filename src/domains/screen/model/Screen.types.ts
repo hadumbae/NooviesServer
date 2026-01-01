@@ -1,37 +1,54 @@
-import {Types} from "mongoose";
-import type {ScreenTypeEnumType} from "../schema/enum/ScreenTypeEnum.js";
-import type {TheatreSchemaFields} from "../../theatre/model/Theatre.types.js";
+import { Types } from "mongoose";
+import type { ScreenTypeEnumType } from "../schema/enum/ScreenTypeEnum.js";
+import type { TheatreSchemaFields } from "../../theatre/model/Theatre.types.js";
 
 /**
- * Interface representing a cinema screen within a theatre.
+ * @summary
+ * Schema fields for a cinema screen within a theatre.
+ *
+ * @description
+ * Represents an individual screening room, including its capacity,
+ * screen technology type, owning theatre, and URL-safe identifier.
  */
 export interface ScreenSchemaFields {
     /**
-     * Unique identifier for the screen (MongoDB ObjectId).
+     * Unique MongoDB identifier for the screen.
      */
     readonly _id: Types.ObjectId;
 
     /**
-     * Human-readable name of the screen.
+     * Human-readable display name of the screen.
      *
-     * Example: "Screen 1", "IMAX Hall"
+     * @example "Screen 1"
+     * @example "IMAX Hall"
      */
     name: string;
 
     /**
-     * Seating capacity of the screen. Must be a non-negative integer.
+     * Total seating capacity of the screen.
+     *
+     * Must be a non-negative integer.
      */
     capacity: number;
 
     /**
-     * Type of screen (e.g., standard, IMAX, 3D), defined by an enum.
+     * Screen technology or format.
+     *
+     * @example "STANDARD"
+     * @example "IMAX"
+     * @example "THREE_D"
      */
     screenType: ScreenTypeEnumType;
 
     /**
-     * Reference to the theatre this screen belongs to.
-     * Can be either the theatre's ObjectId or a full TheatreSchemaFields object if populated.
+     * Theatre this screen belongs to.
+     *
+     * May be an ObjectId or a populated {@link TheatreSchemaFields} document.
      */
     theatre: Types.ObjectId | TheatreSchemaFields;
-}
 
+    /**
+     * URL-safe unique identifier for routing and lookups.
+     */
+    slug: string;
+}
