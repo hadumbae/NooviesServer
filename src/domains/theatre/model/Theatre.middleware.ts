@@ -1,35 +1,76 @@
-import {TheatreSchema} from "./Theatre.schema.js";
-import type {Query} from "mongoose";
-import Screen from "../../screen/model/Screen.model.js";
-import Seat from "../../seat/model/Seat.model.js";
-import Showing from "../../showing/model/Showing.model.js";
-import type {TheatreSchemaFields} from "./Theatre.types.js";
-
 /**
  * @file Theatre.middleware.ts
  *
- * Mongoose middleware for the Theatre schema.
+ * @summary
+ * Mongoose middleware for the Theatre model.
  *
- * Responsibilities:
- * - Conditional population of virtual fields on lean queries
- * - Cascading cleanup of related domain entities on deletion
+ * @description
+ * Handles:
+ * - Automatic slug generation
+ * - Conditional virtual population for lean queries
+ * - Cascading deletion of all dependent domain entities
  */
 
-// --- Find middleware ---
+import { TheatreSchema } from "./Theatre.schema.js";
+import type { HydratedDocument, Query } from "mongoose";
+import Screen from "../../screen/model/Screen.model.js";
+import Seat from "../../seat/model/Seat.model.js";
+import Showing from "../../showing/model/Showing.model.js";
+import type { TheatreSchemaFields } from "./Theatre.types.js";
+import generateSlug from "../../../shared/utility/generateSlug.js";
+import getUpdateData from "../../../shared/utility/mongoose/getUpdateData.js";
 
 /**
- * Pre-find query hook.
+ * Document-level validation hook.
  *
- * Automatically populates virtual count fields only when:
+ * @description
+ * Automatically regenerates the theatre slug when the name changes.
+ */
+TheatreSchema.pre(
+    "validate",
+    { document: true, query: false },
+    function (this: HydratedDocument<TheatreSchemaFields>, next: () => void): void {
+        if (this.isModified("name")) {
+            this.slug = generateSlug(this.name);
+        }
+
+        next();
+    },
+);
+
+/**
+ * Query-level update hook.
+ *
+ * @description
+ * Keeps the slug in sync when updating theatre names
+ * via query-based operations.
+ */
+TheatreSchema.pre(
+    "findOneAndUpdate",
+    { query: true },
+    function (this: Query<any, TheatreSchemaFields>, next: () => void): void {
+        const update = getUpdateData(this.getUpdate());
+
+        if (update.name) {
+            update.slug = generateSlug(update.name);
+        }
+
+        next();
+    },
+);
+
+/**
+ * Query middleware for conditional virtual population.
+ *
+ * @description
+ * Populates aggregate virtual fields only when:
  * - `lean()` is enabled
  * - `lean({ virtuals: true })` is explicitly requested
- *
- * Prevents unnecessary population work for non-lean queries.
  */
 TheatreSchema.pre(
     ["find", "findOne", "findOneAndUpdate"],
-    {query: true, document: false},
-    function FindQueryPre(this: Query<any, TheatreSchemaFields>, next: () => void): void {
+    { query: true, document: false },
+    function (this: Query<any, TheatreSchemaFields>, next: () => void): void {
         const hasVirtuals =
             typeof this._mongooseOptions.lean === "object" &&
             this._mongooseOptions.lean.virtuals === true;
@@ -38,11 +79,11 @@ TheatreSchema.pre(
             const currentDate = new Date();
 
             this.populate([
-                {path: "screenCount"},
-                {path: "seatCount"},
+                { path: "screenCount" },
+                { path: "seatCount" },
                 {
                     path: "futureShowingCount",
-                    match: {startTime: {$gte: currentDate}},
+                    match: { startTime: { $gte: currentDate } },
                 },
             ]);
         }
@@ -51,49 +92,43 @@ TheatreSchema.pre(
     },
 );
 
-// --- Delete middleware ---
-
 /**
- * Post-delete document hook.
+ * Document-level delete hook.
  *
- * Performs cascading deletion of all entities owned by the theatre:
- * - Screens
- * - Seats
- * - Showings
- *
- * Triggered when deleting via a document instance.
+ * @description
+ * Cascades deletion to all dependent entities when a theatre
+ * document is deleted.
  */
 TheatreSchema.post(
     "deleteOne",
-    {query: false, document: true},
-    async function DeleteDocumentPost(this: TheatreSchemaFields) {
+    { query: false, document: true },
+    async function (this: TheatreSchemaFields) {
         await Promise.all([
-            Screen.deleteMany({theatre: this._id}),
-            Seat.deleteMany({theatre: this._id}),
-            Showing.deleteMany({theatre: this._id}),
+            Screen.deleteMany({ theatre: this._id }),
+            Seat.deleteMany({ theatre: this._id }),
+            Showing.deleteMany({ theatre: this._id }),
         ]);
     },
 );
 
 /**
- * Post-delete query hook.
+ * Query-level delete hook.
  *
- * Mirrors document deletion cleanup when deleting via query methods
- * such as `deleteOne()` or `deleteMany()`.
- *
- * Safely exits if no `_id` filter is present.
+ * @description
+ * Mirrors document deletion cleanup for query-based delete operations.
+ * Safely exits when no `_id` filter is present.
  */
 TheatreSchema.post(
     ["deleteOne", "deleteMany"],
-    {query: true, document: false},
-    async function DeleteQueryPost(this: Query<any, TheatreSchemaFields>) {
-        const {_id} = this.getFilter();
+    { query: true, document: false },
+    async function (this: Query<any, TheatreSchemaFields>) {
+        const { _id } = this.getFilter();
         if (!_id) return;
 
         await Promise.all([
-            Screen.deleteMany({theatre: _id}),
-            Seat.deleteMany({theatre: _id}),
-            Showing.deleteMany({theatre: _id}),
+            Screen.deleteMany({ theatre: _id }),
+            Seat.deleteMany({ theatre: _id }),
+            Showing.deleteMany({ theatre: _id }),
         ]);
     },
 );
