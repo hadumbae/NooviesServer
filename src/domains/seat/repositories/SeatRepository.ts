@@ -1,5 +1,5 @@
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
-import type ISeat from "../model/Seat.interface.js";
+import type {SeatSchemaFields} from "../model/Seat.types.js";
 import createSeatDuplicateError from "../utility/createSeatDuplicateError.js";
 
 /**
@@ -39,7 +39,7 @@ import createSeatDuplicateError from "../utility/createSeatDuplicateError.js";
  * }
  * ```
  */
-export default class SeatRepository extends BaseRepository<ISeat> {
+export default class SeatRepository extends BaseRepository<SeatSchemaFields> {
     /**
      * Throws a seat-specific duplicate error when a unique constraint
      * violation is detected for a seat index.
@@ -48,7 +48,7 @@ export default class SeatRepository extends BaseRepository<ISeat> {
      *                      that caused the duplicate conflict.
      * @throws {Error} Custom seat duplicate error from `createSeatDuplicateError`.
      */
-    protected throwDuplicateError(indexString: string) {
+    protected throwDuplicateError(indexString: string): never {
         throw createSeatDuplicateError(indexString);
     }
 }

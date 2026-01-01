@@ -1,5 +1,5 @@
 import {Types} from "mongoose";
-import type ISeat from "../../../seat/model/Seat.interface.js";
+import type {SeatSchemaFields} from "../../../seat/model/Seat.types.js";
 
 export type FetchSeatsByRowParams = {
     screenID: Types.ObjectId;
@@ -9,7 +9,7 @@ export type FetchSeatsByRowParams = {
 export type SeatsByRow = {
     row: string;
     numberOfSeats: number;
-    seats: ISeat[];
+    seats: SeatSchemaFields[];
 };
 
 export interface IScreenSeatService {

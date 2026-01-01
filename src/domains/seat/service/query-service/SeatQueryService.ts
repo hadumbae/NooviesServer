@@ -1,11 +1,11 @@
 import type {ISeatQueryService} from "./SeatQueryService.types.js";
-import type ISeat from "../../model/Seat.interface.js";
+import type SeatSchemaFields from "../../model/Seat.types.js";
 import type {SeatsByRowSubmitData} from "../../schema/seats/SeatInput.types.js";
 import Seat from "../../model/Seat.model.js";
 import createSeatDuplicateError from "../../utility/createSeatDuplicateError.js";
 
 export default class SeatQueryService implements ISeatQueryService {
-    async createByRow(data: SeatsByRowSubmitData): Promise<ISeat[]> {
+    async createByRow(data: SeatsByRowSubmitData): Promise<SeatSchemaFields[]> {
         const {row, numberOfSeats, ...baseParams} = data;
 
         const queries = [];

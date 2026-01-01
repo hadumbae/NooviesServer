@@ -1,6 +1,6 @@
 import { SeatMapSchema } from "./SeatMap.schema.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
-import type ISeat from "../../seat/model/Seat.interface.js";
+import type {SeatSchemaFields} from "../../seat/model/Seat.types.js";
 
 /**
  * @summary
@@ -36,7 +36,7 @@ SeatMapSchema.virtual("finalPrice").get(function () {
  */
 SeatMapSchema.virtual("x").get(function () {
     if (this.seat && typeof this.seat === "object") {
-        return (this.seat as ISeat).x;
+        return (this.seat as SeatSchemaFields).x;
     }
 
     return undefined;
@@ -51,7 +51,7 @@ SeatMapSchema.virtual("x").get(function () {
  */
 SeatMapSchema.virtual("y").get(function () {
     if (this.seat && typeof this.seat === "object") {
-        return (this.seat as ISeat).y;
+        return (this.seat as SeatSchemaFields).y;
     }
 
     return undefined;
@@ -66,7 +66,7 @@ SeatMapSchema.virtual("y").get(function () {
  */
 SeatMapSchema.virtual("row").get(function () {
     if (this.seat && typeof this.seat === "object") {
-        return (this.seat as ISeat).row;
+        return (this.seat as SeatSchemaFields).row;
     }
 
     return undefined;

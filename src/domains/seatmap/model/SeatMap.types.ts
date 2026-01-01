@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import type { SeatMapStatus } from "../schema/enum/SeatMapStatusEnumSchema.js";
-import type ISeat from "../../seat/model/Seat.interface.js";
+import type SeatSchemaFields from "../../seat/model/Seat.types.js";
 import type {ShowingSchemaFields} from "../../showing/model/Showing.types.js";
 
 /**
@@ -22,7 +22,7 @@ export interface SeatMapInputData {
      * Reference to the associated seat.
      * Accepts either a populated `ISeat` document or its ObjectId.
      */
-    seat: Types.ObjectId | ISeat;
+    seat: Types.ObjectId | SeatSchemaFields;
 
     /**
      * Base price assigned to the seat for this showing.

@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type ISeat from "../model/Seat.interface.js";
+import type {SeatSchemaFields} from "../model/Seat.types.js";
 import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
 import type SeatQueryService from "../service/query-service/SeatQueryService.js";
 import type {
@@ -18,7 +18,7 @@ import type { SeatQueryMatchFilters } from "../schema/query/SeatQueryOption.type
  * - {@link SeatQueryService} for handling custom seat queries and batch operations
  * - {@link SeatQueryOptionService} for parsing and validating seat query parameters
  */
-export interface ISeatControllerConstructor extends IBaseCRUDControllerConstructor<ISeat> {
+export interface ISeatControllerConstructor extends IBaseCRUDControllerConstructor<SeatSchemaFields> {
     /** Service for custom seat queries and batch operations. */
     queryService: SeatQueryService;
 
@@ -34,7 +34,7 @@ export interface ISeatControllerConstructor extends IBaseCRUDControllerConstruct
 export interface ISeatController extends BaseControllerCRUDMethods {}
 
 /**
- * Controller responsible for managing {@link ISeat} documents.
+ * Controller responsible for managing {@link SeatSchemaFields} documents.
  *
  * Extends {@link BaseCRUDController} to provide standard CRUD functionality,
  * and adds seat-specific features:
@@ -46,7 +46,7 @@ export interface ISeatController extends BaseControllerCRUDMethods {}
  * // POST /seats/row
  * // Request body conforms to {@link SeatsByRowSubmitData}
  */
-export default class SeatController extends BaseCRUDController<ISeat> implements ISeatController {
+export default class SeatController extends BaseCRUDController<SeatSchemaFields> implements ISeatController {
     /** Service for executing custom seat queries and batch operations. */
     protected queryService: SeatQueryService;
 
@@ -74,7 +74,7 @@ export default class SeatController extends BaseCRUDController<ISeat> implements
      * @param req - Express request
      * @returns Parsed query options compatible with Mongoose queries
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<ISeat, SeatQueryMatchFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<SeatSchemaFields, SeatQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }

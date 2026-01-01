@@ -27,7 +27,7 @@ import type {
     SeatQueryMatchFilters,
     SeatQueryOptions,
 } from "../schema/query/SeatQueryOption.types.js";
-import type ISeat from "../model/Seat.interface.js";
+import type {SeatSchemaFields} from "../model/Seat.types.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {
     PopulationPipelineStages,
@@ -43,7 +43,7 @@ import type IReferenceQueryOptionService from "../../../shared/types/query-optio
  * @implements IReferenceQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters>
  */
 export default class SeatQueryOptionService
-    implements IReferenceQueryOptionService<ISeat, SeatQueryOptions, SeatQueryMatchFilters> {
+    implements IReferenceQueryOptionService<SeatSchemaFields, SeatQueryOptions, SeatQueryMatchFilters> {
 
     /**
      * Parses and validates query parameters from an Express request.
@@ -96,7 +96,7 @@ export default class SeatQueryOptionService
      * @param params - Validated `SeatQueryOptions`
      * @returns Partial record mapping Seat fields to `SortOrder`
      */
-    generateMatchSorts(params: SeatQueryOptions): Partial<Record<keyof ISeat, SortOrder>> {
+    generateMatchSorts(params: SeatQueryOptions): Partial<Record<keyof SeatSchemaFields, SortOrder>> {
         const {
             sortByRow,
             sortBySeatNumber,
@@ -184,7 +184,7 @@ export default class SeatQueryOptionService
      * @param options - Validated `SeatQueryOptions`
      * @returns `QueryOptionTypes<ISeat, SeatQueryMatchFilters>` containing match filters, sorts, and reference pipelines
      */
-    generateQueryOptions(options: SeatQueryOptions): QueryOptionTypes<ISeat, SeatQueryMatchFilters> {
+    generateQueryOptions(options: SeatQueryOptions): QueryOptionTypes<SeatSchemaFields, SeatQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
         const referenceFilters = this.generateReferenceFilters(options);

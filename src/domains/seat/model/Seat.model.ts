@@ -1,11 +1,13 @@
 import {model, Model} from "mongoose";
-import type ISeat from "./Seat.interface.js";
+import type {SeatSchemaFields} from "./Seat.types.js";
 import {SeatSchema} from "./Seat.schema.js";
+
+import "./Seat.middleware.js";
 
 /**
  * Mongoose model representing a seat within a theatre.
  *
- * The `Seat` model is built from {@link SeatSchema} and typed with {@link ISeat}.
+ * The `Seat` model is built from {@link SeatSchema} and typed with {@link SeatSchemaFields}.
  * It provides an interface to interact with seat documents in MongoDB,
  * including creation, querying, updates, and deletions.
  *
@@ -36,6 +38,6 @@ import {SeatSchema} from "./Seat.schema.js";
  * });
  * ```
  */
-const Seat: Model<ISeat> = model<ISeat>("Seat", SeatSchema);
+const Seat: Model<SeatSchemaFields> = model<SeatSchemaFields>("Seat", SeatSchema);
 
 export default Seat;
