@@ -1,4 +1,21 @@
+/**
+ * @file ShowingInput.schema.ts
+ *
+ * Zod schema for creating and updating Showings.
+ *
+ * Validates and normalizes incoming payloads before persistence by enforcing:
+ * - Valid and logically ordered date/time values
+ * - Positive pricing
+ * - Required ObjectId references
+ * - Boolean flags with sensible defaults
+ * - Valid lifecycle status values
+ *
+ * Includes a cross-field refinement to ensure the computed end datetime
+ * occurs after the computed start datetime when provided.
+ */
+
 import { z } from "zod";
+import { DateTime } from "luxon";
 import { ObjectIdStringSchema } from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
 import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import { BooleanValueSchema } from "../../../shared/schema/booleans/BooleanValueSchema.js";
@@ -6,92 +23,61 @@ import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNum
 import { ShowingStatusEnumSchema } from "./ShowingStatusEnumSchema.js";
 import { SimpleDateStringSchema } from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
 import { TimeStringSchema } from "../../../shared/schema/date-time/TimeStringSchema.js";
-import { DateTime } from "luxon";
+import { SlugStringSchema } from "../../../shared/schema/strings/SlugStringSchema.js";
 
 /**
- * @fileoverview
- * Validation schema for creating or updating showings.
- *
- * Ensures all input data is consistent with domain rules before persistence:
- * - Dates and times are valid and logically ordered.
- * - Pricing is positive.
- * - Required strings, booleans, and ObjectIds are enforced.
- * - Status and flags like `isSpecialEvent` and `isActive` are validated.
- *
- * Uses shared schemas to standardize validation across the application:
- * - **Date & Time:** `DateStringSchema`, `TimeStringSchema`
- * - **ObjectId Validation:** `ObjectIdStringSchema`
- * - **Required Fields:** `RequiredStringSchema`, `RequiredBoolean`
- * - **Numeric Values:** `PositiveNumberSchema`
- */
-
-/**
- * Zod schema for showing creation or update input.
+ * Input schema for Showing creation and update operations.
  *
  * @remarks
- * - Performs a super refinement to ensure that `endAtDate` + `endAtTime` (if provided) is after `startAtDate` + `startAtTime`.
- * - Returns detailed issues on validation failure.
- *
- * @example
- * ```ts
- * const input = {
- *   startAtDate: "2025-12-01",
- *   startAtTime: "18:00:00",
- *   endAtDate: "2025-12-01",
- *   endAtTime: "20:00:00",
- *   ticketPrice: 12.5,
- *   language: "en",
- *   subtitleLanguages: ["fr", "es"],
- *   movie: "67238c245d6e7e92e5c3219a",
- *   theatre: "67238c245d6e7e92e5c321ab",
- *   screen: "67238c245d6e7e92e5c321cd",
- *   status: "SCHEDULED",
- * };
- *
- * const result = ShowingInputSchema.safeParse(input);
- * if (!result.success) console.error(result.error);
- * ```
+ * - `endAtDate` and `endAtTime` are optional, but when both are provided
+ *   they must resolve to a datetime later than `startAtDate` + `startAtTime`.
+ * - Boolean flags default to domain-safe values.
  */
 export const ShowingInputSchema = z
     .object({
-        /** Start date of the showing in ISO format (YYYY-MM-DD). */
+        /** Start date (YYYY-MM-DD). */
         startAtDate: SimpleDateStringSchema,
 
-        /** Start time of the showing in HH:mm:ss format. */
+        /** Start time (HH:mm:ss). */
         startAtTime: TimeStringSchema,
 
-        /** Optional end date of the showing in ISO format. */
+        /** Optional end date (YYYY-MM-DD). */
         endAtDate: SimpleDateStringSchema.optional(),
 
-        /** Optional end time of the showing in HH:mm:ss format. */
+        /** Optional end time (HH:mm:ss). */
         endAtTime: TimeStringSchema.optional(),
 
-        /** Ticket price for the showing; must be greater than zero. */
+        /** Ticket price; must be greater than zero. */
         ticketPrice: PositiveNumberSchema,
 
-        /** Language code (ISO-639-1) for the showing. */
+        /** Primary spoken language (ISO-639-1). */
         language: NonEmptyStringSchema,
 
-        /** Subtitle languages; must contain at least one valid ISO-639-1 code. */
-        subtitleLanguages: z.array(NonEmptyStringSchema).nonempty({ message: "Must not be empty." }),
+        /** Subtitle languages (non-empty ISO-639-1 list). */
+        subtitleLanguages: z
+            .array(NonEmptyStringSchema)
+            .nonempty({ message: "Must not be empty." }),
 
-        /** Indicates if the showing is a special event. Defaults to `false`. */
+        /** Special event flag. */
         isSpecialEvent: BooleanValueSchema.optional().default(false),
 
-        /** Indicates if the showing is active and available for booking. Defaults to `true`. */
+        /** Active / bookable flag. */
         isActive: BooleanValueSchema.optional().default(true),
 
-        /** ObjectId referencing the movie. */
+        /** Referenced Movie ObjectId. */
         movie: ObjectIdStringSchema,
 
-        /** ObjectId referencing the theatre. */
+        /** Referenced Theatre ObjectId. */
         theatre: ObjectIdStringSchema,
 
-        /** ObjectId referencing the screen. */
+        /** Referenced Screen ObjectId. */
         screen: ObjectIdStringSchema,
 
-        /** Current status of the showing. */
+        /** Showing lifecycle status. */
         status: ShowingStatusEnumSchema,
+
+        /** Optional slug (ignored or normalized server-side). */
+        slug: SlugStringSchema,
     })
     .superRefine((values, ctx) => {
         const { startAtDate, startAtTime, endAtDate, endAtTime } = values;
@@ -101,14 +87,24 @@ export const ShowingInputSchema = z
             const end = DateTime.fromISO(`${endAtDate}T${endAtTime}`);
 
             if (end < start) {
-                const errorMessage = "Ending time cannot be earlier than starting time.";
-                ctx.addIssue({ code: "custom", path: ["endAtDate"], message: errorMessage });
-                ctx.addIssue({ code: "custom", path: ["endAtTime"], message: errorMessage });
+                const message = "Ending time cannot be earlier than starting time.";
+
+                ctx.addIssue({
+                    code: "custom",
+                    path: ["endAtDate"],
+                    message,
+                });
+
+                ctx.addIssue({
+                    code: "custom",
+                    path: ["endAtTime"],
+                    message,
+                });
             }
         }
     });
 
 /**
- * TypeScript type inferred from `ShowingInputSchema`.
+ * Inferred input type for Showing create/update operations.
  */
 export type ShowingInput = z.infer<typeof ShowingInputSchema>;

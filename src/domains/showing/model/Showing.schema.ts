@@ -1,163 +1,126 @@
+/**
+ * @file Showing.schema.ts
+ *
+ * Mongoose schema for the `Showing` model.
+ *
+ * A Showing represents a scheduled movie screening, including timing,
+ * language configuration, pricing, lifecycle status, and references
+ * to related entities (Movie, Theatre, Screen).
+ */
+
 import { Schema, type SchemaDefinitionProperty } from "mongoose";
 import ShowingStatusConstant from "../constants/ShowingStatusConstant.js";
 import ISO6391CodeConstant from "../../../shared/constants/language/ISO6391CodeConstant.js";
-import type {ShowingSchemaFields} from "./Showing.types.js";
+import type { ShowingSchemaFields } from "./Showing.types.js";
+import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
 
 /**
- * @fileoverview
- * Defines the Mongoose schema for the `Showing` model.
+ * ISO-639-1 language field definition.
  *
- * @description
- * A `Showing` represents a scheduled movie screening within a theatre,
- * including its timing, language options, pricing, and related entities
- * such as the movie, theatre, and screen.
- *
- * The schema enforces data integrity through validation rules
- * and value constraints for fields like language codes, pricing,
- * and start/end times.
- */
-
-/**
- * Schema definition for a language field.
- *
- * @remarks
- * Used for both `language` and `subtitleLanguages` properties.
- * Validates that the value conforms to a valid ISO-639-1 code.
+ * Used by both `language` and `subtitleLanguages`.
  */
 const LanguageDefinition: SchemaDefinitionProperty = {
     type: String,
-    enum: { values: ISO6391CodeConstant, message: "Invalid ISO-6391 Code." },
+    enum: { values: ISO6391CodeConstant, message: "Invalid ISO-639-1 code." },
     required: [true, "Required."],
 };
 
 /**
- * The `ShowingSchema` defines the structure and validation
- * of the `Showing` collection in MongoDB.
+ * Showing collection schema.
  */
 export const ShowingSchema = new Schema<ShowingSchemaFields>(
     {
-        /**
-         * Reference to the movie being shown.
-         * Must correspond to a valid `Movie` document.
-         */
+        /** Referenced Movie document. */
         movie: {
             type: Schema.Types.ObjectId,
             ref: "Movie",
             required: true,
         },
 
-        /**
-         * Reference to the theatre where the showing takes place.
-         * Must correspond to a valid `Theatre` document.
-         */
+        /** Referenced Theatre document. */
         theatre: {
             type: Schema.Types.ObjectId,
             ref: "Theatre",
             required: true,
         },
 
-        /**
-         * Reference to the screen on which the movie is shown.
-         * Must correspond to a valid `Screen` document.
-         */
+        /** Referenced Screen document. */
         screen: {
             type: Schema.Types.ObjectId,
             ref: "Screen",
             required: true,
         },
 
-        /**
-         * The scheduled start time of the showing.
-         * Required and must be a valid date.
-         */
+        /** Scheduled start time. */
         startTime: {
             type: Date,
             required: [true, "Start Time is required."],
         },
 
         /**
-         * The scheduled end time of the showing.
+         * Scheduled end time.
          *
-         * @remarks
-         * - Can be `null` if not predetermined.
-         * - Must be later than the start time if provided.
+         * Must be later than `startTime` when provided.
          */
         endTime: {
             type: Date,
             default: null,
             validate: {
-                validator: function (value: Date | null | undefined) {
+                validator(value: Date | null | undefined) {
                     return !value || value > this.startTime;
                 },
-                message: "The End Time must be later than the Start Time.",
+                message: "End Time must be later than Start Time.",
             },
         },
 
-        /**
-         * The price of a ticket for this showing.
-         * Must be a positive number greater than 0.
-         */
+        /** Ticket price for the showing. */
         ticketPrice: {
             type: Number,
             min: [0.01, "Ticket Price must be greater than 0."],
             required: true,
         },
 
-        /**
-         * The primary language in which the movie is shown.
-         * Must be a valid ISO-639-1 code.
-         */
+        /** Primary spoken language. */
         language: LanguageDefinition,
 
-        /**
-         * A list of subtitle languages available for the showing.
-         * Must be a non-empty array of valid ISO-639-1 codes.
-         */
+        /** Available subtitle languages. */
         subtitleLanguages: {
             type: [LanguageDefinition],
             validate: {
-                validator: function (langs) {
+                validator(langs) {
                     return Array.isArray(langs) && langs.length > 0;
                 },
-                message: "Must be an array of ISO-6391 codes.",
+                message: "Must be a non-empty array of ISO-639-1 codes.",
             },
-            required: [true, "Subtitle array is required."],
+            required: [true, "Subtitle languages are required."],
         },
 
-        /**
-         * Indicates whether the showing is a special event,
-         * such as a premiere or limited-time screening.
-         */
+        /** Special event indicator (e.g. premiere). */
         isSpecialEvent: {
             type: Boolean,
             default: false,
             required: true,
         },
 
-        /**
-         * Indicates whether the showing is currently active and
-         * available for ticket booking.
-         */
+        /** Whether the showing is active and bookable. */
         isActive: {
             type: Boolean,
             default: true,
             required: true,
         },
 
-        /**
-         * The current status of the showing.
-         * Must be one of the predefined `ShowingStatusConstant` values.
-         */
+        /** Lifecycle status of the showing. */
         status: {
             type: String,
-            enum: { values: ShowingStatusConstant, message: "Invalid Showing Status." },
+            enum: { values: ShowingStatusConstant, message: "Invalid Showing status." },
             required: [true, "Status is required."],
         },
+
+        /** Slug field (normalized / write-protected). */
+        slug: SlugSchemaTypeOptions,
     },
     {
-        /**
-         * Automatically manages `createdAt` and `updatedAt` timestamps.
-         */
+        /** Automatically managed timestamps. */
         timestamps: {
             createdAt: "createdAt",
             updatedAt: "updatedAt",

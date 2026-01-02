@@ -16,7 +16,6 @@
  */
 
 import Showing from "../model/Showing.model.js";
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import ShowingController from "../controller/ShowingController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
@@ -25,6 +24,7 @@ import SeatMapService from "../../seatmap/service/seat-map-service/SeatMapServic
 import ShowingLifestyleService from "../service/lifestyle-service/ShowingLifestyleService.js";
 import {ShowingSchema} from "../model/Showing.schema.js";
 import ShowingQueryOptionService from "../service/query-option/ShowingQueryOptionService.js";
+import ShowingRepository from "../repositories/ShowingRepository.js";
 
 /**
  * @summary Service provider for the Showing module.
@@ -96,7 +96,7 @@ export default class ShowingServiceProvider {
             {path: "screen"},
         ];
 
-        const repository = new BaseRepository({model, populateRefs});
+        const repository = new ShowingRepository({populateRefs});
 
         // --- Query Utilities ---
         const queryUtils = QueryUtils;

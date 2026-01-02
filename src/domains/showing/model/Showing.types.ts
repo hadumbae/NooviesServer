@@ -62,4 +62,6 @@ export interface ShowingSchemaFields {
 
     /** Current lifecycle status of the showing. */
     status: ShowingStatusCode;
+
+    slug: string;
 }
