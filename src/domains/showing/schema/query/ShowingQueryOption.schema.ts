@@ -1,16 +1,14 @@
 /**
- * @file ShowingQuerySchemas.ts
+ * @file ShowingQueryOption.schema.ts
  *
- * @summary
  * URL query parameter schemas for fetching Showings.
  *
- * @description
- * Zod schemas used to validate, coerce, and normalize URL query
- * parameters when querying Showings endpoints.
+ * Defines Zod schemas used to validate and coerce URL query
+ * parameters for Showings endpoints.
  *
- * Schemas are grouped by responsibility:
+ * Schema groups:
  * - Match filters (direct Showing fields)
- * - Sort options (Mongo-style ordering)
+ * - Sort options (MongoDB ordering)
  * - Reference-based filters (populated relations)
  */
 
@@ -26,28 +24,25 @@ import { URLParamPositiveNumberSchema } from "../../../../shared/schema/url/URLP
 // --- MATCH SCHEMAS ---
 
 /**
- * Match-level filters applied directly to Showing fields.
- *
- * Values are coerced from URL parameters into strongly typed
- * query constraints.
+ * Match filters applied directly to Showing document fields.
  */
 export const ShowingQueryMatchFilterSchema = z.object({
-    /** Movie identifier */
+    /** Movie ObjectId */
     movie: URLParamObjectIDSchema,
 
-    /** Theatre identifier */
+    /** Theatre ObjectId */
     theatre: URLParamObjectIDSchema,
 
-    /** Screen identifier */
+    /** Screen ObjectId */
     screen: URLParamObjectIDSchema,
-
-    /** Special event flag */
-    isSpecialEvent: URLParamBooleanSchema,
 
     /** Minimum ticket price */
     ticketPrice: URLParamPositiveNumberSchema,
 
-    /** Active / inactive flag */
+    /** Special event flag */
+    isSpecialEvent: URLParamBooleanSchema,
+
+    /** Active status flag */
     isActive: URLParamBooleanSchema,
 
     /** Showing lifecycle status */
@@ -57,32 +52,34 @@ export const ShowingQueryMatchFilterSchema = z.object({
 /**
  * Sort options for Showing queries.
  *
- * Uses MongoDB sort semantics:
+ * MongoDB semantics:
  * - `1` ascending
  * - `-1` descending
  */
 export const ShowingQueryMatchSortSchema = z.object({
+    /** Sort by start time */
     sortByStartTime: URLParamMongooseSortOrderSchema,
+
+    /** Sort by end time */
     sortByEndTime: URLParamMongooseSortOrderSchema,
 });
 
 // --- REFERENCE SCHEMAS ---
 
 /**
- * Filters applied to referenced documents.
+ * Filters resolved via referenced documents.
  *
- * These fields are resolved via lookups or populated relations
- * rather than direct Showing fields.
+ * These fields are not stored directly on the Showing document.
  */
 export const ShowingQueryReferenceFilterSchema = z.object({
-    /** Movie title (partial or full match) */
-    movieTitle: URLParamStringSchema,
-
     /** Movie slug */
     movieSlug: URLParamStringSchema,
 
-    /** Theatre name */
-    theatreName: URLParamStringSchema,
+    /** Theatre slug */
+    theatreSlug: URLParamStringSchema,
+
+    /** Screen slug */
+    screenSlug: URLParamStringSchema,
 
     /** Theatre state / province */
     theatreState: URLParamStringSchema,
@@ -98,11 +95,6 @@ export const ShowingQueryReferenceFilterSchema = z.object({
 
 /**
  * Unified query schema for Showing endpoints.
- *
- * Combines:
- * - Direct match filters
- * - Reference-based filters
- * - Sort options
  */
 export const ShowingQueryOptionSchema =
     ShowingQueryMatchFilterSchema

@@ -1,23 +1,17 @@
 /**
  * @file ShowingQueryOptionService.ts
- * @summary
+ *
  * Query option service for the Showing domain.
  *
- * @description
- * Implements {@link IReferenceQueryOptionService} for the `Showing` model.
- * This service is responsible for translating validated URL query
- * parameters into Mongoose-compatible query objects and aggregation
- * pipeline stages.
+ * Translates validated URL query parameters into Mongoose-compatible
+ * query filters, sort objects, and aggregation pipeline stages.
  *
  * Responsibilities:
- * - Validate and parse raw query parameters using Zod
- * - Generate native `$match` filters and `$sort` clauses
- * - Generate reference-based filter pipelines using `$lookup`
- * - Assemble a unified query options object for repositories/services
- * - Provide population pipelines for resolving referenced documents
- *
- * This class acts as the boundary between HTTP query input and
- * database query construction.
+ * - Parse and validate query params
+ * - Build native `$match` filters and `$sort` clauses
+ * - Build reference-based `$lookup` filter pipelines
+ * - Assemble a unified query option structure
+ * - Provide population pipelines
  */
 
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
@@ -45,8 +39,8 @@ import generateReferenceFilterPipelineStages
 import type {ShowingSchemaFields} from "../../model/Showing.types.js";
 
 /**
- * Service for building query options and aggregation pipelines
- * for Showing list/search endpoints.
+ * Builds query options and aggregation pipelines for
+ * Showing list and search endpoints.
  */
 export default class ShowingQueryOptionService
     implements IReferenceQueryOptionService<
@@ -58,11 +52,11 @@ export default class ShowingQueryOptionService
     /**
      * Parses and validates query parameters from an Express request.
      *
-     * @param req - Express request containing raw `req.query` values.
-     * @returns A validated {@link ShowingQueryOptions} object.
+     * @param req - Express request containing raw query params
+     * @returns Validated Showing query options
      *
      * @throws {ZodParseError}
-     * Thrown when query parameters fail schema validation.
+     * Thrown when validation fails
      */
     fetchQueryParams(req: Request): ShowingQueryOptions {
         const {data, success, error} = ShowingQueryOptionSchema.safeParse(req.query);
@@ -79,14 +73,10 @@ export default class ShowingQueryOptionService
     }
 
     /**
-     * Generates match-level filters for native Showing fields.
+     * Generates match filters for native Showing fields.
      *
-     * @remarks
-     * Only non-nullish attributes are included, ensuring clean
-     * and minimal MongoDB `$match` conditions.
-     *
-     * @param options - Validated query options.
-     * @returns A Mongoose {@link FilterQuery} for Showing documents.
+     * @param options - Validated query options
+     * @returns MongoDB `$match` filter object
      */
     generateMatchFilters(options: ShowingQueryOptions): FilterQuery<ShowingQueryMatchFilters> {
         return filterNullishAttributes({
@@ -101,14 +91,10 @@ export default class ShowingQueryOptionService
     }
 
     /**
-     * Generates sorting options for native Showing fields.
+     * Generates sort options for native Showing fields.
      *
-     * @remarks
-     * Sort keys are mapped directly to schema fields and filtered
-     * to exclude undefined values.
-     *
-     * @param options - Validated query options.
-     * @returns A {@link SortQuery} compatible with Mongoose.
+     * @param options - Validated query options
+     * @returns Mongoose-compatible sort object
      */
     generateMatchSorts(options: ShowingQueryOptions): SortQuery<ShowingSchemaFields> {
         return filterNullishAttributes({
@@ -120,19 +106,14 @@ export default class ShowingQueryOptionService
     /**
      * Generates reference-based filter pipeline stages.
      *
-     * @remarks
-     * Uses `$lookup` stages with embedded `$match` conditions to
-     * filter by referenced document attributes (e.g. movie or theatre
-     * metadata).
-     *
-     * @param options - Validated query options.
-     * @returns Reference filter pipeline stages for aggregation.
+     * @param options - Validated query options
+     * @returns Aggregation pipeline stages for reference filtering
      */
     generateReferenceFilters(options: ShowingQueryOptions): ReferenceFilterPipelineStages {
         const {
-            movieTitle,
             movieSlug,
-            theatreName,
+            screenSlug,
+            theatreSlug,
             theatreState,
             theatreCity,
             theatreCountry,
@@ -142,23 +123,31 @@ export default class ShowingQueryOptionService
             {
                 from: "movies",
                 localField: "movie",
-                foreignField: "title",
+                foreignField: "_id",
                 as: "showingMovie",
                 filters: filterNullishAttributes({
-                    title: movieTitle,
                     slug: movieSlug,
                 }),
             },
             {
                 from: "theatres",
                 localField: "theatre",
-                foreignField: "name",
+                foreignField: "_id",
                 as: "showingTheatre",
                 filters: filterNullishAttributes({
-                    name: theatreName,
+                    slug: theatreSlug,
                     "location.state": theatreState,
                     "location.city": theatreCity,
                     "location.country": theatreCountry,
+                }),
+            },
+            {
+                from: "screens",
+                localField: "screen",
+                foreignField: "_id",
+                as: "showingScreen",
+                filters: filterNullishAttributes({
+                    slug: screenSlug,
                 }),
             },
         ];
@@ -170,27 +159,17 @@ export default class ShowingQueryOptionService
      * Generates reference-based sort pipeline stages.
      *
      * @remarks
-     * Currently no reference-level sorting is implemented.
-     * This method exists to satisfy the service contract and
-     * to allow future extension.
-     *
-     * @param options - Validated query options.
-     * @returns An empty reference sort pipeline stage array.
+     * No reference-level sorting is currently supported.
      */
     generateReferenceSorts(options: ShowingQueryOptions): ReferenceSortPipelineStages {
         return [];
     }
 
     /**
-     * Builds the full query option object.
+     * Builds the complete query option structure.
      *
-     * @remarks
-     * Combines native match filters/sorts with reference-based
-     * filter and sort pipelines into a single structured object
-     * suitable for repositories or aggregation execution.
-     *
-     * @param options - Validated query options.
-     * @returns Fully composed query option structure.
+     * @param options - Validated query options
+     * @returns Composed query options
      */
     generateQueryOptions(options: ShowingQueryOptions): QueryOptionTypes<ShowingSchemaFields, ShowingQueryMatchFilters> {
         return {
@@ -208,25 +187,21 @@ export default class ShowingQueryOptionService
     /**
      * Generates population pipeline stages for Showings.
      *
-     * @remarks
-     * These stages resolve referenced documents and normalize
-     * the output shape for consumers.
-     *
-     * @returns Aggregation pipeline stages for population.
+     * @returns Aggregation pipeline stages for population
      */
     generatePopulationPipelines(): PopulationPipelineStages {
         return [
-            // --- Lookups ---
+            // Lookups
             {$lookup: {from: "theatres", localField: "theatre", foreignField: "_id", as: "theatre"}},
             {$lookup: {from: "screens", localField: "screen", foreignField: "_id", as: "screen"}},
             {$lookup: {from: "movies", localField: "movie", foreignField: "_id", as: "movie"}},
 
-            // --- Unwind ---
+            // Unwind
             {$unwind: "$theatre"},
             {$unwind: "$screen"},
             {$unwind: "$movie"},
 
-            // --- Movie Genres ---
+            // Movie genres
             {$lookup: {from: "genres", localField: "movie.genres", foreignField: "_id", as: "movie.genres"}},
         ];
     }
