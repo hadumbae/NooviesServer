@@ -1,25 +1,26 @@
 /**
  * @file ShowingServiceProvider.ts
- * @summary Centralized service provider for the Showing module.
+ *
+ * Centralized service provider for the Showing module.
  *
  * @description
- * Wires together all Showing-related components, including:
- * - The Mongoose `Showing` model.
- * - Repository and data-access utilities.
- * - CRUD, query, and aggregation services.
- * - Lifecycle middleware (e.g. seat-map creation and cleanup).
- * - The HTTP controller exposing Showing endpoints.
+ * Acts as a lightweight dependency container responsible for wiring
+ * together all Showing-related infrastructure:
  *
- * This provider functions as a lightweight dependency container,
- * ensuring all Showing components are constructed and registered
- * in a consistent, predictable order.
+ * - Mongoose model and schema lifecycle hooks
+ * - Repository and data-access utilities
+ * - Query and aggregation services
+ * - Domain lifecycle services (e.g. seat-map management)
+ * - HTTP controller exposing Showing endpoints
+ *
+ * This provider contains no business logic and exists solely to
+ * construct and register dependencies in a predictable order.
  */
 
 import Showing from "../model/Showing.model.js";
 import ShowingController from "../controller/ShowingController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import ShowingCRUDService from "../service/ShowingCRUDService.js";
 import SeatMapService from "../../seatmap/service/seat-map-service/SeatMapService.js";
 import ShowingLifestyleService from "../service/lifestyle-service/ShowingLifestyleService.js";
 import {ShowingSchema} from "../model/Showing.schema.js";
@@ -27,57 +28,44 @@ import ShowingQueryOptionService from "../service/query-option/ShowingQueryOptio
 import ShowingRepository from "../repositories/ShowingRepository.js";
 
 /**
- * @summary Service provider for the Showing module.
+ * Service provider for the Showing domain.
  *
  * @remarks
- * This class centralizes construction and registration of all components
- * that depend on the `Showing` model. It exists purely as a bootstrapper
- * and contains no business logic of its own.
+ * Responsible for:
+ * - Registering schema lifecycle middleware
+ * - Constructing repositories and services
+ * - Wiring dependencies into the HTTP controller
  *
- * Responsibilities:
- * - Register Showing lifecycle middleware.
- * - Construct repositories and services.
- * - Wire dependencies into the HTTP controller.
+ * This class should be initialized once during application bootstrap.
  */
 export default class ShowingServiceProvider {
     /**
-     * Registers Showing lifecycle middleware and schema hooks.
+     * Registers Showing lifecycle middleware on the schema.
      *
      * @remarks
-     * This method attaches all lifecycle hooks to `ShowingSchema`,
-     * including seat-map creation on insert and cascading cleanup
-     * on deletion.
+     * Attaches hooks for side-effectful operations such as:
+     * - Seat-map creation on showing creation
+     * - Cascading cleanup on showing deletion
      *
-     * It is intentionally separated from {@link register} so that
-     * middleware can be initialized during model import.
-     *
-     * @returns Registered middleware dependencies.
+     * This method is intentionally separate from {@link register}
+     * so that hooks are applied at model import time.
      */
     static registerMiddleware() {
-        // --- Lifecycle Middleware ---
         const seatMapService = new SeatMapService();
-        const middlewareService = new ShowingLifestyleService({seatMapService});
+        const lifestyleService = new ShowingLifestyleService({seatMapService});
 
-        middlewareService.registerHooks(ShowingSchema);
+        lifestyleService.registerHooks(ShowingSchema);
 
         return {
             seatMapService,
-            middlewareService,
+            lifestyleService,
         };
     }
 
     /**
-     * Initializes and wires all Showing-related components.
+     * Constructs and wires all Showing-related components.
      *
-     * @returns An object containing:
-     * - **model** — The Mongoose `Showing` model.
-     * - **repository** — Configured `BaseRepository` instance.
-     * - **services**
-     *   - `crudService` — Create and update operations.
-     *   - `queryService` — Filtering and list utilities.
-     *   - `aggregateService` — Aggregation and analytics pipelines.
-     * - **controllers**
-     *   - `controller` — HTTP controller exposing Showing endpoints.
+     * @returns Initialized Showing module dependencies.
      *
      * @example
      * ```ts
@@ -86,10 +74,10 @@ export default class ShowingServiceProvider {
      * ```
      */
     static register() {
-        // --- Model ---
+        // --- MODEL ---
         const model = Showing;
 
-        // --- Repository ---
+        // --- REPOSITORY ---
         const populateRefs = [
             {path: "movie", populate: {path: "genres"}},
             {path: "theatre"},
@@ -98,20 +86,15 @@ export default class ShowingServiceProvider {
 
         const repository = new ShowingRepository({populateRefs});
 
-        // --- Query Utilities ---
-        const queryUtils = QueryUtils;
-
-        // --- Services ---
-        const crudService = new ShowingCRUDService({populateRefs});
+        // --- SERVICES ---
         const queryService = new ShowingQueryOptionService();
         const aggregateService = new AggregateQueryService({model, populateRefs});
 
-        // --- Controller ---
+        // --- CONTROLLER ---
         const controller = new ShowingController({
-            crudService,
             repository,
             queryService,
-            queryUtils,
+            queryUtils: QueryUtils,
             aggregateService,
         });
 
@@ -119,7 +102,6 @@ export default class ShowingServiceProvider {
             model,
             repository,
             services: {
-                crudService,
                 queryService,
                 aggregateService,
             },

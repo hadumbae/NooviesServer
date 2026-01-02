@@ -1,59 +1,116 @@
 /**
  * @file ShowingRepositoryCRUD.ts
  *
+ * @description
  * Repository contract for the Showing domain.
  *
- * Extends the generic {@link BaseRepositoryCRUD} interface with
- * Showing-specific persistence behavior.
- *
- * This interface defines additional responsibilities that cannot be
- * expressed generically at the base repository level, such as
- * domain-aware slug generation.
+ * Extends the shared {@link BaseRepositoryCRUD} interface with
+ * Showing-specific persistence and domain logic, including
+ * slug generation and date/time construction.
  */
 
 import type BaseRepositoryCRUD from "../../../shared/repository/BaseRepositoryCRUD.js";
-import type { ModelObject } from "../../../shared/types/ModelObject.js";
-import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
-import type { ShowingInput } from "../schema/ShowingInputSchema.js";
+import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import type {ShowingInput} from "../schema/ShowingInputSchema.js";
+import type {
+    BaseRepositoryCreateParams,
+    BaseRepositoryUpdateParams
+} from "../../../shared/repository/BaseRepository.types.js";
+import type {ShowingSchemaFields} from "../model/Showing.types.js";
+import {Types} from "mongoose";
+import type {SimpleDateString} from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
+import type {TimeString} from "../../../shared/schema/date-time/TimeStringSchema.js";
+import type {IANATimezone} from "../../../shared/schema/date-time/IANATimezoneSchema.js";
 
 /**
  * Constructor options for a Showing repository.
- *
- * @remarks
- * Allows configuring default population behavior for Showing queries,
- * typically including movie, theatre, and screen references.
  */
 export type ShowingRepositoryConstructor = {
-    /** Default populate paths applied to repository queries. */
+    /**
+     * Default populate paths applied to repository queries.
+     */
     readonly populateRefs?: PopulatePath[];
 };
 
 /**
  * CRUD repository interface for Showings.
  *
- * @typeParam TSchema - Persisted Showing document shape.
- *
  * @remarks
- * In addition to standard CRUD and pagination operations, this interface
- * exposes domain-specific behavior required by the Showing aggregate,
- * such as deterministic slug generation based on showing attributes.
+ * Adds domain-aware behavior that cannot be expressed generically
+ * at the base repository level.
  */
-export interface ShowingRepositoryCRUD<TSchema extends ModelObject>
-    extends BaseRepositoryCRUD<TSchema> {
+export interface ShowingRepositoryCRUD
+    extends BaseRepositoryCRUD<ShowingSchemaFields>
+{
+    /**
+     * Generates a deterministic slug for a showing based on its movie.
+     *
+     * @param movieID - Movie ObjectId as a string
+     * @returns Generated slug
+     */
+    generateShowingSlug(movieID: string): Promise<string>;
 
     /**
-     * Generate a unique slug for a Showing.
-     *
-     * @remarks
-     * Implementations are expected to:
-     * - Derive the slug from domain-relevant attributes (e.g. movie, theatre, time)
-     * - Ensure uniqueness within the Showing collection
-     * - Handle collisions deterministically
-     *
-     * This method does **not** persist the slug; it only generates it.
-     *
-     * @param data - Validated showing input data.
-     * @returns A unique, URL-safe slug string.
+     * Creates a new showing.
      */
-    generateShowingSlug(data: ShowingInput): Promise<string>;
+    create(
+        params: BaseRepositoryCreateParams<ShowingInput>
+    ): Promise<ShowingSchemaFields>;
+
+    /**
+     * Updates an existing showing.
+     */
+    update(
+        params: BaseRepositoryUpdateParams<ShowingSchemaFields, ShowingInput>
+    ): Promise<ShowingSchemaFields>;
+
+    /**
+     * Builds a JavaScript Date from date, time, and timezone components.
+     */
+    buildDate(params: BuildShowingDateParams): Date;
+
+    /**
+     * Computes start and end Date values for a showing.
+     */
+    getShowingDates(
+        params: GetShowingDateTimeParams
+    ): Promise<ShowingDateTimeReturns>;
 }
+
+/**
+ * Parameters for building a Date from discrete components.
+ */
+export type BuildShowingDateParams = {
+    /** ISO date string. */
+    date: SimpleDateString;
+    /** Time string (HH:mm:ss). */
+    time: TimeString;
+    /** IANA timezone identifier. */
+    timezone: IANATimezone;
+};
+
+/**
+ * Parameters for computing showing start and end times.
+ */
+export type GetShowingDateTimeParams = {
+    /** Theatre hosting the showing. */
+    theatreID: Types.ObjectId;
+    /** Start date. */
+    startAtDate: SimpleDateString;
+    /** Start time. */
+    startAtTime: TimeString;
+    /** Optional end date; defaults to start date. */
+    endAtDate?: SimpleDateString;
+    /** Optional end time. */
+    endAtTime?: TimeString;
+};
+
+/**
+ * Computed showing date/time values.
+ */
+export type ShowingDateTimeReturns = {
+    /** Start time as a JavaScript Date. */
+    startTime: Date;
+    /** End time as a JavaScript Date, or null if not defined. */
+    endTime: Date | null;
+};

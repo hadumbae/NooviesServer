@@ -2,16 +2,23 @@
  * @file ShowingRepository.ts
  *
  * @description
- * MongoDB repository implementation for `Showing` documents.
+ * MongoDB repository implementation for the Showing domain.
  *
- * Extends the shared `BaseRepository` with domain-specific behavior:
- * - Automatically generates and assigns a slug based on the linked movie title
- * - Validates movie references before persistence
- * - Implements `ShowingRepositoryCRUD`
+ * Extends the shared {@link BaseRepository} with Showing-specific
+ * persistence and domain logic:
+ *
+ * - Generates deterministic slugs based on the linked movie title
+ * - Resolves theatre timezone to construct UTC-safe date values
+ * - Derives start/end times from date, time, and location inputs
+ * - Implements {@link ShowingRepositoryCRUD}
  */
+
 import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import type {ShowingSchemaFields} from "../model/Showing.types.js";
 import type {
+    BuildShowingDateParams,
+    GetShowingDateTimeParams,
+    ShowingDateTimeReturns,
     ShowingRepositoryConstructor,
     ShowingRepositoryCRUD
 } from "./ShowingRepository.types.js";
@@ -25,20 +32,20 @@ import type {
 } from "../../../shared/repository/BaseRepository.types.js";
 import type {ShowingInput} from "../schema/ShowingInputSchema.js";
 import {Types} from "mongoose";
+import {DateTime} from "luxon";
+import Theatre from "../../theatre/model/Theatre.model.js";
 
 /**
- * Repository for managing `Showing` persistence and domain logic.
- *
- * @template ShowingSchemaFields
+ * Repository responsible for Showing persistence and domain behavior.
  */
 export default class ShowingRepository
-    extends BaseRepository<ShowingSchemaFields, ShowingInput>
-    implements ShowingRepositoryCRUD<ShowingSchemaFields>
+    extends BaseRepository<ShowingSchemaFields>
+    implements ShowingRepositoryCRUD
 {
     /**
-     * Creates a new `ShowingRepository`.
+     * Creates a new Showing repository instance.
      *
-     * @param populateRefs - Optional population configuration for related fields
+     * @param populateRefs - Default populate paths for queries
      */
     constructor({populateRefs}: ShowingRepositoryConstructor) {
         super({
@@ -48,17 +55,59 @@ export default class ShowingRepository
     }
 
     /**
-     * Generates a URL-safe slug for a showing based on its associated movie.
-     *
-     * @param data - Showing input containing a movie reference
-     * @returns Generated slug string
-     *
-     * @throws 422 If the movie reference is missing or invalid
-     * @throws 404 If the referenced movie does not exist
-     * @throws 500 If slug generation fails
+     * Builds a UTC Date from a local date, time, and timezone.
      */
-    async generateShowingSlug({movie: movieID}: ShowingInput): Promise<string> {
-        if (!movieID || !Types.ObjectId.isValid(movieID)) {
+    buildDate(params: BuildShowingDateParams): Date {
+        const {date, time, timezone} = params;
+
+        return DateTime
+            .fromISO(`${date}T${time}`, {zone: timezone})
+            .toUTC()
+            .toJSDate();
+    }
+
+    /**
+     * Computes start and end times for a showing using the theatre timezone.
+     *
+     * @throws 404 if the theatre cannot be resolved
+     */
+    async getShowingDates(
+        params: GetShowingDateTimeParams
+    ): Promise<ShowingDateTimeReturns> {
+        const {theatreID, startAtDate, startAtTime, endAtDate, endAtTime} = params;
+
+        const theatre = await Theatre
+            .findById(theatreID)
+            .select("location.timezone");
+
+        if (!theatre) {
+            throw createHttpError(404, "Theatre is not found.");
+        }
+
+        const {location: {timezone}} = theatre;
+
+        const startTime = this.buildDate({
+            date: startAtDate,
+            time: startAtTime,
+            timezone,
+        });
+
+        const endTime =
+            endAtDate && endAtTime
+                ? this.buildDate({date: endAtDate, time: endAtTime, timezone})
+                : null;
+
+        return {startTime, endTime};
+    }
+
+    /**
+     * Generates a slug for a showing based on its movie title.
+     *
+     * @throws 422 if the movie ID is invalid
+     * @throws 404 if the movie does not exist
+     */
+    async generateShowingSlug(movieID: string): Promise<string> {
+        if (!Types.ObjectId.isValid(movieID)) {
             throw createHttpError(422, "Invalid movie for showing.");
         }
 
@@ -79,38 +128,85 @@ export default class ShowingRepository
     }
 
     /**
-     * Creates a new showing and automatically assigns a generated slug.
+     * Creates a new showing.
      *
-     * @param params - Repository creation parameters
-     * @returns Persisted showing document
+     * Automatically:
+     * - Generates a slug
+     * - Resolves theatre timezone
+     * - Computes start and end times
      */
     async create(
         params: BaseRepositoryCreateParams<ShowingInput>
     ): Promise<ShowingSchemaFields> {
         const {data, ...rest} = params;
-        const slug = await this.generateShowingSlug(data as ShowingInput);
+
+        const {
+            startAtTime,
+            startAtDate,
+            endAtTime,
+            endAtDate,
+            movie,
+        } = data as ShowingInput;
+
+        const slug = await this.generateShowingSlug(movie);
+
+        const theatreID = new Types.ObjectId(data.theatre);
+        const {startTime, endTime} = await this.getShowingDates({
+            theatreID,
+            startAtDate,
+            startAtTime,
+            endAtDate,
+            endAtTime,
+        });
 
         return super.create({
             ...rest,
-            data: {...data, slug},
+            data: {
+                ...data,
+                startTime,
+                endTime,
+                slug,
+            },
         });
     }
 
     /**
-     * Updates an existing showing and regenerates its slug if necessary.
+     * Updates an existing showing.
      *
-     * @param params - Repository update parameters
-     * @returns Updated showing document
+     * Recomputes slug and date fields when relevant inputs change.
      */
     async update(
         params: BaseRepositoryUpdateParams<ShowingSchemaFields, ShowingInput>
     ): Promise<ShowingSchemaFields> {
         const {data, ...rest} = params;
-        const slug = await this.generateShowingSlug(data as ShowingInput);
+
+        const {
+            movie,
+            startAtTime,
+            startAtDate,
+            endAtTime,
+            endAtDate,
+        } = data as ShowingInput;
+
+        const slug = await this.generateShowingSlug(movie);
+
+        const theatreID = new Types.ObjectId(data.theatre);
+        const {startTime, endTime} = await this.getShowingDates({
+            theatreID,
+            startAtDate,
+            startAtTime,
+            endAtDate,
+            endAtTime,
+        });
 
         return super.update({
             ...rest,
-            data: {...data, slug},
+            data: {
+                ...data,
+                slug,
+                startTime,
+                endTime,
+            },
         });
     }
 }
