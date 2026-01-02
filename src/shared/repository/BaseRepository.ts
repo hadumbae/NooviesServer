@@ -1,19 +1,19 @@
 /**
  * @file BaseRepository.ts
  *
- * Generic base repository for Mongoose-backed data access.
+ * Generic base repository for Mongoose-backed persistence.
  *
- * Provides a standardized CRUD + pagination implementation with:
+ * Provides a standardized CRUD and pagination implementation with:
  * - Consistent error normalization
  * - Duplicate index detection
  * - Optional population and virtual handling
  *
- * Designed to be extended or used directly by concrete repositories.
+ * Intended to be extended or used directly by concrete repositories.
  */
 
-import {Error, type Model} from "mongoose";
+import { Error, type Model } from "mongoose";
 import createHttpError from "http-errors";
-import type {PopulatePath} from "../types/mongoose/PopulatePath.js";
+import type { PopulatePath } from "../types/mongoose/PopulatePath.js";
 import type BaseRepositoryCRUD from "./BaseRepositoryCRUD.js";
 import type {
     BaseRepositoryCountParams,
@@ -26,68 +26,69 @@ import type {
     BaseRepositoryUpdateParams
 } from "./BaseRepository.types.js";
 import DuplicateIndexError from "../errors/DuplicateIndexError.js";
-import type {ModelObject} from "../types/ModelObject.js";
+import type { ModelObject } from "../types/ModelObject.js";
 import populateQuery from "../utility/mongoose/populateQuery.js";
 
 /**
  * Constructor options for {@link BaseRepository}.
  *
- * @template TSchema - Document shape handled by the repository.
+ * @typeParam TSchema - Persisted document shape.
  */
 interface BaseRepositoryConstructor<TSchema extends ModelObject> {
-    /** Backing Mongoose model. */
+    /** Backing Mongoose model */
     readonly model: Model<TSchema>;
-    /** Default populate paths applied to queries. */
+    /** Default populate paths */
     readonly populateRefs?: PopulatePath[];
 }
 
 /**
  * Generic CRUD and pagination repository for Mongoose models.
  *
- * @template TSchema - Document shape handled by the repository.
+ * @typeParam TSchema - Persisted document shape.
+ * @typeParam TInput  - Input payload shape for create/update operations.
  */
-export default class BaseRepository<TSchema extends ModelObject>
-    implements BaseRepositoryCRUD<TSchema>
-{
+export default class BaseRepository<TSchema extends ModelObject, TInput = unknown>
+    implements BaseRepositoryCRUD<TSchema> {
+
     private readonly model: Model<TSchema>;
     private readonly populateRefs: PopulatePath[];
 
     /**
-     * Create a repository instance.
+     * Creates a repository instance.
      *
-     * @param model - Backing Mongoose model.
-     * @param populateRefs - Default populate paths.
+     * @param model - Backing Mongoose model
+     * @param populateRefs - Default populate paths
      */
-    constructor({model, populateRefs}: BaseRepositoryConstructor<TSchema>) {
+    constructor({ model, populateRefs }: BaseRepositoryConstructor<TSchema>) {
         this.model = model;
         this.populateRefs = populateRefs ?? [];
     }
 
     /**
-     * Count documents matching optional filters.
+     * Counts documents matching optional filters.
      *
-     * @param params - Filter parameters.
-     * @returns Number of matching documents.
+     * @param params - Filter parameters
+     * @returns Matching document count
      */
-    async count({filters}: BaseRepositoryCountParams<TSchema> = {}): Promise<number> {
+    async count({ filters }: BaseRepositoryCountParams<TSchema> = {}): Promise<number> {
         return this.model.countDocuments(filters ?? {});
     }
 
     /**
-     * Retrieve multiple documents.
+     * Retrieves multiple documents.
      *
-     * @param params - Filters and request options.
-     * @returns Matching documents.
+     * @param params - Filters and request options
+     * @returns Matching documents
      */
     async find(params: BaseRepositoryFindParams<TSchema> = {}): Promise<TSchema[]> {
         const {
             filters,
-            options: {populatePaths = this.populateRefs, populate, virtuals, limit} = {},
+            options: { populatePaths = this.populateRefs, populate, virtuals, limit } = {},
         } = params;
 
         const query = populateQuery({
             query: this.model.find(filters ?? {}),
-            options: {populate, virtuals, populatePaths},
+            options: { populate, virtuals, populatePaths },
         });
 
         if (typeof limit === "number") {
@@ -98,22 +99,22 @@ export default class BaseRepository<TSchema extends ModelObject>
     }
 
     /**
-     * Retrieve a document by ObjectId.
+     * Retrieves a document by ObjectId.
      *
-     * @param params - Identifier and request options.
-     * @returns The matching document.
-     * @throws 404 if not found.
+     * @param params - Identifier and request options
+     * @returns Matching document
+     * @throws 404 if not found
      */
     async findById(params: BaseRepositoryFindByIDParams): Promise<TSchema> {
         const {
             _id,
-            options: {populatePaths = this.populateRefs, populate, virtuals} = {}
+            options: { populatePaths = this.populateRefs, populate, virtuals } = {}
         } = params;
 
         try {
             const query = populateQuery({
                 query: this.model.findById(_id),
-                options: {populate, virtuals, populatePaths},
+                options: { populate, virtuals, populatePaths },
             });
 
             return query.orFail();
@@ -123,22 +124,22 @@ export default class BaseRepository<TSchema extends ModelObject>
     }
 
     /**
-     * Retrieve a document by slug.
+     * Retrieves a document by slug.
      *
-     * @param params - Slug identifier and request options.
-     * @returns The matching document.
-     * @throws 404 if not found.
+     * @param params - Slug identifier and request options
+     * @returns Matching document
+     * @throws 404 if not found
      */
     async findBySlug(params: BaseRepositoryFindBySlugParams): Promise<TSchema> {
         const {
             slug,
-            options: {populatePaths = this.populateRefs, populate, virtuals} = {},
+            options: { populatePaths = this.populateRefs, populate, virtuals } = {},
         } = params;
 
         try {
             const query = populateQuery({
-                query: this.model.findOne({slug}),
-                options: {populate, virtuals, populatePaths},
+                query: this.model.findOne({ slug }),
+                options: { populate, virtuals, populatePaths },
             });
 
             return query.orFail();
@@ -148,22 +149,22 @@ export default class BaseRepository<TSchema extends ModelObject>
     }
 
     /**
-     * Create and persist a document.
+     * Creates and persists a document.
      *
-     * @param params - Creation payload and options.
-     * @returns The created document.
+     * @param params - Creation payload and options
+     * @returns Created document
      */
-    async create(params: BaseRepositoryCreateParams<TSchema>): Promise<TSchema> {
+    async create(params: BaseRepositoryCreateParams<TInput>): Promise<TSchema> {
         const {
             data,
-            options: {populatePaths = this.populateRefs, populate, virtuals} = {},
+            options: { populatePaths = this.populateRefs, populate, virtuals } = {},
         } = params;
 
         try {
             const doc = await this.model.create(data);
             const query = populateQuery({
                 query: this.model.findById(doc._id),
-                options: {populate, virtuals, populatePaths},
+                options: { populate, virtuals, populatePaths },
             });
 
             return query.orFail();
@@ -173,26 +174,26 @@ export default class BaseRepository<TSchema extends ModelObject>
     }
 
     /**
-     * Update a document by ObjectId.
+     * Updates a document by ObjectId.
      *
-     * @param params - Identifier, update data, and options.
-     * @returns The updated document.
+     * @param params - Identifier, update data, and options
+     * @returns Updated document
      */
-    async update(params: BaseRepositoryUpdateParams<TSchema>): Promise<TSchema> {
+    async update(params: BaseRepositoryUpdateParams<TSchema, TInput>): Promise<TSchema> {
         const {
             _id,
             data,
             unset,
-            options: {populatePaths = this.populateRefs, populate, virtuals} = {},
+            options: { populatePaths = this.populateRefs, populate, virtuals } = {},
         } = params;
 
-        const updateObject: Record<string, unknown> = {$set: data};
+        const updateObject: Record<string, unknown> = { $set: data };
         if (unset) updateObject.$unset = unset;
 
         try {
             const query = populateQuery({
-                query: this.model.findByIdAndUpdate(_id, updateObject, {new: true}),
-                options: {populate, virtuals, populatePaths},
+                query: this.model.findByIdAndUpdate(_id, updateObject, { new: true }),
+                options: { populate, virtuals, populatePaths },
             });
 
             return query.orFail();
@@ -202,23 +203,23 @@ export default class BaseRepository<TSchema extends ModelObject>
     }
 
     /**
-     * Delete a document by ObjectId.
+     * Deletes a document by ObjectId.
      *
-     * @param params - Identifier of the document to delete.
-     * @throws 404 if not found.
+     * @param params - Document identifier
+     * @throws 404 if not found
      */
     async destroy({ _id }: BaseRepositoryDestroyParams): Promise<void> {
-        const doc = await this.model.findById({_id});
+        const doc = await this.model.findById({ _id });
         if (!doc) throw createHttpError(404, "Not found!");
 
         await doc.deleteOne();
     }
 
     /**
-     * Retrieve documents using pagination.
+     * Retrieves documents using pagination.
      *
-     * @param params - Pagination, filters, sorting, and options.
-     * @returns Documents for the requested page.
+     * @param params - Pagination, filters, sorting, and options
+     * @returns Documents for the requested page
      */
     async paginate(params: BaseRepositoryPaginationParams<TSchema>): Promise<TSchema[]> {
         const {
@@ -226,7 +227,7 @@ export default class BaseRepository<TSchema extends ModelObject>
             perPage,
             filters,
             sort,
-            options: {populatePaths = this.populateRefs, virtuals, populate} = {},
+            options: { populatePaths = this.populateRefs, virtuals, populate } = {},
         } = params;
 
         const query = this.model
@@ -237,14 +238,14 @@ export default class BaseRepository<TSchema extends ModelObject>
 
         return populateQuery({
             query,
-            options: {populate, virtuals, populatePaths},
+            options: { populate, virtuals, populatePaths },
         });
     }
 
     /**
-     * Throw a normalized duplicate index error.
+     * Throws a normalized duplicate index error.
      *
-     * @param indexString - Violated MongoDB index name.
+     * @param indexString - Violated MongoDB index name
      */
     protected throwDuplicateError(indexString: string): never {
         throw new DuplicateIndexError({
@@ -255,10 +256,10 @@ export default class BaseRepository<TSchema extends ModelObject>
     }
 
     /**
-     * Normalize fetch-related errors.
+     * Normalizes fetch-related errors.
      *
-     * @param error - Error thrown during retrieval.
-     * @throws 404 or rethrows the original error.
+     * @param error - Error thrown during retrieval
+     * @throws 404 or rethrows the original error
      */
     protected throwFetchError(error: unknown): never {
         if (error instanceof Error && error.name === "DocumentNotFoundError") {
@@ -269,9 +270,9 @@ export default class BaseRepository<TSchema extends ModelObject>
     }
 
     /**
-     * Normalize persistence-related errors.
+     * Normalizes persistence-related errors.
      *
-     * @param error - Error thrown during write operations.
+     * @param error - Error thrown during write operations
      */
     protected throwPersistError(error: unknown): never {
         if (typeof error === "object" && error !== null && "code" in error && error.code === 11000) {

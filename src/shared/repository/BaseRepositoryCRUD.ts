@@ -1,10 +1,11 @@
 /**
  * @file BaseRepositoryCRUD.ts
  *
- * Base CRUD and pagination contract for repository implementations.
+ * Base CRUD and pagination contract for repositories.
  *
- * Defines the minimal data-access interface consumed by services and controllers.
- * Intended to abstract Mongoose models or equivalent persistence layers.
+ * Defines the minimal persistence-agnostic interface consumed by
+ * services and controllers, abstracting the underlying data layer
+ * (e.g. Mongoose models).
  */
 
 import type {
@@ -17,14 +18,45 @@ import type {
     BaseRepositoryPaginationParams,
     BaseRepositoryUpdateParams,
 } from "./BaseRepository.types.js";
-import type {ModelObject} from "../types/ModelObject.js";
+import type { ModelObject } from "../types/ModelObject.js";
 
 /**
  * Repository CRUD and pagination interface.
  *
- * @typeParam TSchema - Document shape handled by the repository.
+ * @typeParam TSchema - Persisted document shape.
+ * @typeParam TInput  - Input shape for create and update operations.
  */
-export default interface BaseRepositoryCRUD<TSchema extends ModelObject> {
+export default interface BaseRepositoryCRUD<TSchema extends ModelObject, TInput = unknown> extends BaseRepositoryReadMethods<TSchema> {
+    /**
+     * Create and persist a new document.
+     *
+     * @param params - Creation payload and options.
+     * @returns The created document.
+     */
+    create(params: BaseRepositoryCreateParams<TInput>): Promise<TSchema>;
+
+    /**
+     * Update an existing document.
+     *
+     * @param params - Identifier, update data, and options.
+     * @returns The updated document.
+     */
+    update(params: BaseRepositoryUpdateParams<TSchema, TInput>): Promise<TSchema>;
+
+    /**
+     * Delete a document.
+     *
+     * @param params - Document identifier.
+     */
+    destroy(params: BaseRepositoryDestroyParams): Promise<void>;
+}
+
+/**
+ * Read-only repository operations.
+ *
+ * @typeParam TSchema - Persisted document shape.
+ */
+interface BaseRepositoryReadMethods<TSchema extends ModelObject> {
     /**
      * Count documents matching optional filters.
      *
@@ -36,7 +68,7 @@ export default interface BaseRepositoryCRUD<TSchema extends ModelObject> {
     /**
      * Retrieve multiple documents.
      *
-     * @param params - Query filters and request options.
+     * @param params - Query filters and options.
      * @returns Matching documents.
      */
     find(params?: BaseRepositoryFindParams<TSchema>): Promise<TSchema[]>;
@@ -44,7 +76,7 @@ export default interface BaseRepositoryCRUD<TSchema extends ModelObject> {
     /**
      * Retrieve a document by ObjectId.
      *
-     * @param params - Document identifier and options.
+     * @param params - Identifier and options.
      * @returns The matching document.
      */
     findById(params: BaseRepositoryFindByIDParams): Promise<TSchema>;
@@ -56,29 +88,6 @@ export default interface BaseRepositoryCRUD<TSchema extends ModelObject> {
      * @returns The matching document.
      */
     findBySlug(params: BaseRepositoryFindBySlugParams): Promise<TSchema>;
-
-    /**
-     * Create a new document.
-     *
-     * @param params - Creation payload and options.
-     * @returns The created document.
-     */
-    create(params: BaseRepositoryCreateParams<TSchema>): Promise<TSchema>;
-
-    /**
-     * Update an existing document.
-     *
-     * @param params - Identifier, update data, unset fields, and options.
-     * @returns The updated document.
-     */
-    update(params: BaseRepositoryUpdateParams<TSchema>): Promise<TSchema>;
-
-    /**
-     * Delete a document.
-     *
-     * @param params - Document identifier.
-     */
-    destroy(params: BaseRepositoryDestroyParams): Promise<void>;
 
     /**
      * Retrieve documents using pagination.
