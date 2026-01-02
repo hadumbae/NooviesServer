@@ -1,9 +1,21 @@
+/**
+ * @file 20260102-add-slug-to-theatres.migration.ts
+ * @summary Backfills missing `slug` values for Theatre documents.
+ *
+ * @description
+ * Connects to MongoDB, iterates through all Theatre records using a cursor,
+ * generates slugs for documents missing them, persists the updates, and
+ * ensures all Theatre indexes are created before disconnecting.
+ *
+ * Intended for one-off maintenance or migration usage.
+ */
+
 import 'dotenv/config';
 
+import mongoose from "mongoose";
 import connect from "@config/database.js";
 import Theatre from "../domains/theatre/model/Theatre.model.js";
 import generateSlug from "../shared/utility/generateSlug.js";
-import * as process from "node:process";
 
 connect().then(async () => {
     const cursor = Theatre.find().cursor();
@@ -17,9 +29,8 @@ connect().then(async () => {
 
     await Theatre.createIndexes();
     console.log("Done updating theatres.");
-
-    process.exit(0);
 }).catch((err) => {
     console.log(err);
-    process.exit(1);
+}).finally(async () => {
+    await mongoose.disconnect();
 });

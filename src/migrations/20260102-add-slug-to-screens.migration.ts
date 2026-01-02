@@ -1,9 +1,21 @@
+/**
+ * @file 20260102-add-slug-to-screens.migration.ts
+ * @summary Backfills missing `slug` values for Screen documents.
+ *
+ * @description
+ * Connects to MongoDB, iterates through all Screen records using a cursor,
+ * generates slugs for documents missing them, persists the updates, and
+ * ensures relevant indexes exist before disconnecting.
+ *
+ * Intended as a one-off maintenance or migration script.
+ */
+
 import 'dotenv/config';
 
+import mongoose from "mongoose";
 import connect from "@config/database.js";
 import Screen from "../domains/screen/model/Screen.model.js";
 import generateSlug from "../shared/utility/generateSlug.js";
-import process from "node:process";
 
 connect().then(async () => {
     const cursor = Screen.find().cursor();
@@ -17,9 +29,8 @@ connect().then(async () => {
 
     await Screen.createIndexes();
     console.log("Done updating seats.");
-
-    process.exit(0);
 }).catch((err) => {
     console.error(err);
-    process.exit(1);
+}).finally(async () => {
+    await mongoose.disconnect();
 });
