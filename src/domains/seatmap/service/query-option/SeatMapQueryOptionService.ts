@@ -1,45 +1,59 @@
-import type { Request } from "express";
-import type { SeatMapMatchFilters, SeatMapQueryOptions } from "../../schema/query-option/SeatMapQueryOption.types.js";
+/**
+ * @file SeatMapQueryOptionService.ts
+ *
+ * @summary
+ * Query option service for the SeatMap domain.
+ *
+ * @description
+ * Translates validated URL query parameters into Mongoose-compatible
+ * match filters, sort objects, and aggregation pipeline stages.
+ */
+
+import type {Request} from "express";
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
-import { SeatMapQueryOptionSchema } from "../../schema/query-option/SeatMapQueryOption.schema.js";
+import {
+    type SeatMapQueryOptions,
+    SeatMapQueryOptionSchema
+} from "../../schema/query-option/SeatMapQueryOption.schema.js";
 import ZodParseError from "../../../../shared/errors/ZodParseError.js";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
-import type { FilterQuery, SortOrder } from "mongoose";
-import type { QueryOptionTypes, SortQuery } from "../../../../shared/types/query-options/QueryOptionService.types.js";
+import type {FilterQuery} from "mongoose";
+import type {QueryOptionTypes, SortQuery} from "../../../../shared/types/query-options/QueryOptionService.types.js";
 import type {
     PopulationPipelineStages,
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages
 } from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
-import generateLookupMatchStage from "../../../../shared/utility/mongoose/generateLookupMatchStage.js";
-import buildAggregationSort from "../../../../shared/utility/mongoose/buildAggregationSort.js";
 import type {SeatMapSchemaFields} from "../../model/SeatMap.types.js";
+import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/LookupMatchStage.types.js";
+import generateReferenceFilterPipelineStages
+    from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
+import type {SeatMapMatchFilters} from "../../schema/query-option/SeatMapMatchParam.schema.js";
 
 /**
- * Service for parsing, validating, and generating Mongoose query options
- * for the `SeatMap` model, including both direct document fields
- * and referenced fields for population and aggregation.
- *
- * Implements `IReferenceQueryOptionService` for standardized reference
- * filtering and population pipelines.
+ * Query option service for SeatMap list and search endpoints.
  */
 export default class SeatMapQueryOptionService
-    implements IReferenceQueryOptionService<SeatMapSchemaFields, SeatMapQueryOptions, SeatMapMatchFilters> {
+    implements IReferenceQueryOptionService<
+        SeatMapSchemaFields,
+        SeatMapQueryOptions,
+        SeatMapMatchFilters
+    > {
 
     /**
-     * Parses and validates query parameters from an Express request.
-     * Filters out any nullish values.
+     * Parses and validates SeatMap query parameters.
      *
-     * @param req - Express request object containing query parameters.
-     * @returns Validated and cleaned SeatMap query options.
-     * @throws {ZodParseError} if query parameters fail schema validation.
+     * @param req - Express request
+     * @returns Validated query options
+     *
+     * @throws {ZodParseError}
      */
     fetchQueryParams(req: Request): SeatMapQueryOptions {
-        const { success, data, error } = SeatMapQueryOptionSchema.safeParse(req.query);
+        const {success, data, error} = SeatMapQueryOptionSchema.safeParse(req.query);
 
         if (!success) {
             throw new ZodParseError({
-                message: "Failed to parse 'SeatMap' query options.",
+                message: "Failed to parse SeatMap query options.",
                 errors: error.errors,
             });
         }
@@ -48,117 +62,70 @@ export default class SeatMapQueryOptionService
     }
 
     /**
-     * Generates MongoDB match filters for direct SeatMap document fields.
-     *
-     * @param options - Validated SeatMap query options.
-     * @returns FilterQuery containing only non-nullish direct field filters.
+     * Builds `$match` filters for native SeatMap fields.
      */
     generateMatchFilters(options: SeatMapQueryOptions): FilterQuery<SeatMapMatchFilters> {
-        const { showing, seat, price, status } = options;
-
-        return filterNullishAttributes({ showing, seat, price, status });
+        const {showing, seat, price, status} = options;
+        return filterNullishAttributes({showing, seat, price, status});
     }
 
     /**
-     * Generates MongoDB sort options for direct SeatMap document fields.
-     *
-     * @param options - Validated SeatMap query options.
-     * @returns SortQuery containing only non-nullish direct field sorts.
+     * Builds `$sort` options for native SeatMap fields.
      */
     generateMatchSorts(options: SeatMapQueryOptions): SortQuery<SeatMapSchemaFields> {
-        const { sortByPrice, sortByStatus } = options;
-
-        return filterNullishAttributes({ price: sortByPrice, status: sortByStatus });
+        const {sortByPrice, sortByStatus} = options;
+        return filterNullishAttributes({price: sortByPrice, status: sortByStatus});
     }
 
     /**
-     * Generates aggregation pipelines for filtering based on referenced fields
-     * (e.g., Movie, Showing, Seat).
-     *
-     * @param params - SeatMap query options.
-     * @returns Aggregation stages for reference-based filtering.
+     * Builds reference-based filter pipeline stages.
      */
-    generateReferenceFilters(params: SeatMapQueryOptions): ReferenceFilterPipelineStages {
-        const { movie, showingStatus, seatRow, seatNumber, seatType } = params;
+    generateReferenceFilters(options: SeatMapQueryOptions): ReferenceFilterPipelineStages {
+        const {movie, showingSlug, showingStatus, seatRow, seatNumber, seatType} = options;
 
-        const pipelines: ReferenceFilterPipelineStages = [];
-        const matchStage: Record<string, any> = {};
-
-        if (movie || showingStatus) {
-            const filters = filterNullishAttributes({ movie, status: showingStatus });
-
-            pipelines.push(generateLookupMatchStage({
+        const stages: LookupMatchStageOptions[] = [
+            {
                 from: "showings",
                 as: "refShowing",
                 localField: "showing",
                 foreignField: "_id",
-                project: { movie: 1, status: 1 },
-                filters,
-            }));
-
-            matchStage.refShowing = { $ne: [] };
-        }
-
-        if (seatRow || seatNumber || seatType) {
-            const filters = filterNullishAttributes({ row: seatRow, seatNumber, seatType });
-
-            pipelines.push(generateLookupMatchStage({
+                project: {movie: 1, slug: 1, status: 1},
+                filters: filterNullishAttributes({
+                    movie,
+                    slug: showingSlug,
+                    status: showingStatus,
+                }),
+            },
+            {
                 from: "seats",
                 as: "refSeat",
-                localField: "showing",
+                localField: "seat",
                 foreignField: "_id",
-                project: { row: 1, seatNumber: 1, seatType: 1 },
-                filters,
-            }));
+                project: {row: 1, seatNumber: 1, seatType: 1},
+                filters: filterNullishAttributes({
+                    row: seatRow,
+                    seatNumber,
+                    seatType,
+                }),
+            },
+        ];
 
-            matchStage.refSeat = { $ne: [] };
-        }
-
-        if (Object.keys(matchStage).length > 0) {
-            pipelines.push({ $match: matchStage });
-            pipelines.push({ $unset: ["refShowing", "refSeat"] });
-        }
-
-        return pipelines;
+        return generateReferenceFilterPipelineStages({stages});
     }
 
     /**
-     * Generates aggregation pipelines for sorting based on referenced fields.
-     *
-     * @param params - SeatMap query options.
-     * @returns Aggregation stages for reference-based sorting.
+     * Builds reference-based sort pipeline stages.
      */
-    generateReferenceSorts(params: SeatMapQueryOptions): ReferenceSortPipelineStages {
-        const { sortBySeatRow: row, sortBySeatNumber: seatNumber } = params;
-
-        const pipelines: ReferenceSortPipelineStages = [];
-
-        if (row || seatNumber) {
-            pipelines.push({ $lookup: { from: "seats", localField: "seat", foreignField: "_id", as: "refSeat" } });
-            pipelines.push({ $unwind: { path: "refSeat" } });
-        }
-
-        const sortStage: Record<string, SortOrder> = filterNullishAttributes({
-            "refSeat.row": row,
-            "refSeat.seatNumber": seatNumber,
-        });
-
-        if (Object.keys(sortStage).length > 0) {
-            pipelines.push({ $sort: buildAggregationSort(sortStage) });
-            pipelines.push({ $unset: ["refSeat"] });
-        }
-
-        return pipelines;
+    generateReferenceSorts(options: SeatMapQueryOptions): ReferenceSortPipelineStages {
+        return [];
     }
 
     /**
-     * Generates full query options for SeatMap queries, including direct match
-     * filters, match sorts, reference filters, and reference sorts.
-     *
-     * @param options - Validated SeatMap query options.
-     * @returns Complete query option object suitable for aggregation or find queries.
+     * Builds the composed query option structure.
      */
-    generateQueryOptions(options: SeatMapQueryOptions): QueryOptionTypes<SeatMapSchemaFields, SeatMapMatchFilters> {
+    generateQueryOptions(
+        options: SeatMapQueryOptions
+    ): QueryOptionTypes<SeatMapSchemaFields, SeatMapMatchFilters> {
         return {
             match: {
                 filters: this.generateMatchFilters(options),
@@ -172,16 +139,14 @@ export default class SeatMapQueryOptionService
     }
 
     /**
-     * Generates Mongoose population pipelines for SeatMap references.
-     *
-     * @returns Aggregation stages to populate `seat` and `showing` fields.
+     * Builds population pipeline stages for SeatMap documents.
      */
     generatePopulationPipelines(): PopulationPipelineStages {
         return [
-            { $lookup: { from: "seats", localField: "seat", foreignField: "_id", as: "seat" } },
-            { $lookup: { from: "showings", localField: "showing", foreignField: "_id", as: "showing" } },
-            { $unwind: { path: "seat", preserveNullAndEmptyArrays: true } },
-            { $unwind: { path: "showing", preserveNullAndEmptyArrays: true } },
+            {$lookup: {from: "seats", localField: "seat", foreignField: "_id", as: "seat"}},
+            {$lookup: {from: "showings", localField: "showing", foreignField: "_id", as: "showing"}},
+            {$unwind: {path: "seat", preserveNullAndEmptyArrays: true}},
+            {$unwind: {path: "showing", preserveNullAndEmptyArrays: true}},
         ];
     }
 }
