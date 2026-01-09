@@ -9,7 +9,8 @@ import type {
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { SeatsByRowSubmitData } from "../schema/seats/SeatInput.types.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type { SeatQueryMatchFilters } from "../schema/query/SeatQueryOption.types.js";
+
+import type {SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
 
 /**
  * Constructor parameters for {@link SeatController}.

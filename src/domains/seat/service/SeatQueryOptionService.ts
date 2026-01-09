@@ -20,13 +20,8 @@
  */
 
 import type { Request } from "express";
-import type { FilterQuery, PipelineStage, SortOrder } from "mongoose";
-import { SeatQueryMatchFiltersSchema } from "../schema/query/SeatQueryOption.schema.js";
+import type { FilterQuery, SortOrder } from "mongoose";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
-import type {
-    SeatQueryMatchFilters,
-    SeatQueryOptions,
-} from "../schema/query/SeatQueryOption.types.js";
 import type {SeatSchemaFields} from "../model/Seat.types.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {
@@ -34,8 +29,12 @@ import type {
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages,
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
-import generateLookupMatchStage from "../../../shared/utility/mongoose/generateLookupMatchStage.js";
 import type IReferenceQueryOptionService from "../../../shared/types/query-options/IReferenceQueryOptionService.js";
+import {type SeatQueryMatchFilters, SeatQueryMatchFiltersSchema} from "../schema/query/SeatMatchParams.js";
+import type {LookupMatchStageOptions} from "../../../shared/types/mongoose/LookupMatchStage.types.js";
+import generateReferenceFilterPipelineStages
+    from "../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
+import type {SeatQueryOptions} from "../schema/query/SeatQueryOptions.js";
 
 /**
  * Service class for managing query options for Seat documents, including reference pipelines.
@@ -129,29 +128,40 @@ export default class SeatQueryOptionService
      * @returns Mongoose aggregation pipeline stages (`ReferenceFilterPipelineStages`)
      */
     generateReferenceFilters(params: SeatQueryOptions): ReferenceFilterPipelineStages {
-        const { showing } = params;
-        const pipelineStages: ReferenceFilterPipelineStages = [];
-        const matchStages: Record<string, any> = {};
+        const { showing, showingSlug, theatreSlug, screenSlug } = params;
 
-        if (showing) {
-            const lookup: PipelineStage.Lookup = generateLookupMatchStage({
+        const stages: LookupMatchStageOptions[] = [
+            {
                 from: "showings",
                 localField: "screen",
                 foreignField: "screen",
                 as: "showing",
-                filters: { _id: showing },
-            });
+                filters: filterNullishAttributes({
+                   _id: showing,
+                   slug: showingSlug,
+                }),
+            },
+            {
+                from: "screens",
+                localField: "screen",
+                foreignField: "_id",
+                as: "screen",
+                filters: filterNullishAttributes({
+                    slug: screenSlug,
+                }),
+            },
+            {
+                from: "theatres",
+                localField: "theatre",
+                foreignField: "_id",
+                as: "theatre",
+                filters: filterNullishAttributes({
+                    slug: theatreSlug,
+                }),
+            },
+        ];
 
-            pipelineStages.push(lookup);
-            matchStages.showing = { $ne: [] };
-        }
-
-        if (Object.keys(matchStages).length > 0) {
-            pipelineStages.push({ $match: matchStages });
-            pipelineStages.push({ $unset: ["showing"] });
-        }
-
-        return pipelineStages;
+        return generateReferenceFilterPipelineStages({stages});
     }
 
     /**
