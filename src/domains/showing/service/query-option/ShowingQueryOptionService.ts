@@ -16,11 +16,7 @@
 
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import type {Request} from "express";
-import type {
-    ShowingQueryMatchFilters,
-    ShowingQueryOptions
-} from "../../schema/query/ShowingQueryOption.types.js";
-import {ShowingQueryOptionSchema} from "../../schema/query/ShowingQueryOption.schema.js";
+import {type ShowingQueryOptions, ShowingQueryOptionSchema} from "../../schema/query/ShowingQueryOptions.js";
 import ZodParseError from "../../../../shared/errors/ZodParseError.js";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
@@ -37,17 +33,14 @@ import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/Lo
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {ShowingSchemaFields} from "../../model/Showing.types.js";
+import type {ShowingQueryMatchFilters} from "../../schema/query/ShowingMatchParams.js";
 
 /**
  * Builds query options and aggregation pipelines for
  * Showing list and search endpoints.
  */
 export default class ShowingQueryOptionService
-    implements IReferenceQueryOptionService<
-        ShowingSchemaFields,
-        ShowingQueryOptions,
-        ShowingQueryMatchFilters
-    > {
+    implements IReferenceQueryOptionService<ShowingSchemaFields, ShowingQueryOptions, ShowingQueryMatchFilters> {
 
     /**
      * Parses and validates query parameters from an Express request.

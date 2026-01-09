@@ -1,7 +1,7 @@
 import type SeatMapService from "../../../seatmap/service/seat-map-service/SeatMapService.js";
 import {type HydratedDocument, type Query, Schema} from "mongoose";
-import type ShowingSchemaFields from "../../model/Showing.types.js";
 import SeatMap from "../../../seatmap/model/SeatMap.model.js";
+import type {ShowingSchemaFields} from "../../model/Showing.types.js";
 
 /**
  * @summary Constructor dependencies for `ShowingLifestyleService`.
