@@ -3,7 +3,9 @@ import GenreController from "../controller/GenreController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import GenreQueryOptionService from "../service/GenreQueryOptionService.js";
-import GenreRepository from "../repositories/GenreRepository.js";
+import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
+import {GenrePersistenceManager} from "../repositories/managers/GenrePersistenceManager.js";
 
 /**
  * Service provider for the Genre module.
@@ -39,11 +41,12 @@ export default class GenreServiceProvider {
      */
     static register() {
         const model = Genre;
-
         const queryUtils = QueryUtils;
-        const aggregateService = new AggregateQueryService({model});
 
-        const repository = new GenreRepository({model});
+        const writer = new CRUDWriter({model, persistenceManager: new GenrePersistenceManager()});
+        const repository = new BaseRepository({model, writer});
+
+        const aggregateService = new AggregateQueryService({model});
         const optionService = new GenreQueryOptionService();
 
         const controller = new GenreController({
