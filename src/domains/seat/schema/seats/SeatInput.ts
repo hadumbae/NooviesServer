@@ -119,18 +119,3 @@ export const SeatInputSchema = z.discriminatedUnion("layoutType", [
     SeatInputStairSchema,
     SeatInputSeatingSchema,
 ]);
-
-/**
- * 📋 Input schema for submitting multiple seats in a given row.
- * Useful when adding seats en masse (e.g., "10 seats in row C").
- */
-export const SeatsByRowInputSchema = SeatInputBaseSchema.extend({
-    /** Row label for the batch of seats (up to 10 characters). */
-    row: NonEmptyStringSchema.max(10, "Must be 10 characters or less."),
-
-    /** Optional Y-coordinate for the row, for layout rendering. */
-    y: PositiveNumberSchema.optional(),
-
-    /** Number of seats to create in the specified row (must be ≥ 1). */
-    numberOfSeats: PositiveNumberSchema,
-});

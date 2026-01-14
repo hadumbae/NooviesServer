@@ -1,11 +1,10 @@
 import SeatController from "../controller/SeatController.js";
-
 import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import SeatQueryService from "../service/query-service/SeatQueryService.js";
 import Seat from "../model/Seat.model.js";
-import SeatRepository from "../repositories/SeatRepository.js";
+import {SeatPersistenceManager} from "../repositories/managers/SeatPersistenceManager.js";
+import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 
 /**
  * Service provider for the `Seat` domain.
@@ -40,11 +39,10 @@ export default class SeatServiceProvider {
         /** Shared query utilities for building dynamic queries. */
         const queryUtils = QueryUtils;
 
-        /** Generic repository providing CRUD access to seats. */
-        const repository = new SeatRepository({model, populateRefs});
+        const persistenceManager = new SeatPersistenceManager();
 
-        /** Domain-specific service for advanced seat queries. */
-        const queryService = new SeatQueryService();
+        /** Generic repository providing CRUD access to seats. */
+        const repository = new BaseRepository({model, populateRefs, persistenceManager});
 
         /** Service for building and handling query options (e.g., filters, sorting). */
         const optionService = new SeatQueryOptionService();
@@ -56,7 +54,6 @@ export default class SeatServiceProvider {
         const controller = new SeatController({
             repository,
             queryUtils,
-            queryService,
             optionService,
             aggregateService,
         });
@@ -65,7 +62,6 @@ export default class SeatServiceProvider {
             model,
             repository,
             services: {
-                queryService,
                 optionService,
                 aggregateService,
             },

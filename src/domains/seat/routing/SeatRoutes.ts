@@ -5,10 +5,7 @@ import {
     type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
 import type {ISeatController} from "../controller/SeatController.js";
-import ZodAsyncValidator from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
-import isAuth from "../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
-import {SeatInputSchema, SeatsByRowInputSchema} from "../schema/seats/SeatInput.schema.js";
+import {SeatInputSchema} from "../schema/seats/SeatInput.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
@@ -56,24 +53,5 @@ const baseConfig: BaseRouteConfig<ISeatController> = {
  * ```
  */
 const routes = createBaseRoutes<ISeatController>(baseConfig);
-
-/**
- * POST `/create/by-row`
- *
- * Creates multiple seats in bulk based on row information.
- *
- * Middleware:
- * - {@link isAuth} – Ensures the request is authenticated.
- * - {@link ZodAsyncValidator} – Validates request body against {@link SeatsByRowInputSchema}.
- * - {@link asyncHandler} – Wraps the controller to properly handle async errors.
- *
- * Handler:
- * - {@link ISeatController.createSeatsByRow}
- */
-routes.post(
-    "/create/by-row",
-    [isAuth, ZodAsyncValidator(SeatsByRowInputSchema)],
-    asyncHandler(controller.createSeatsByRow.bind(controller))
-);
 
 export default routes;
