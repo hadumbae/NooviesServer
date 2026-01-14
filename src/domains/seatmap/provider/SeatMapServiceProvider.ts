@@ -1,54 +1,76 @@
+/**
+ * @file SeatMapServiceProvider.ts
+ *
+ * Registers and composes all SeatMap domain components.
+ */
+
 import SeatMap from "../model/SeatMap.model.js";
 import SeatMapController from "../controller/SeatMapController.js";
 import SeatMapService from "../service/seat-map-service/SeatMapService.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import SeatMapRepository from "../repositories/SeatMapRepository.js";
 import SeatMapPopulateRefs from "../constants/SeatMapPopulateRefs.js";
+import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
+import {SeatMapPersistenceManager} from "../repositories/managers/SeatMapPersistenceManager.js";
 
 /**
- * Service provider for SeatMap-related operations.
+ * Service provider for SeatMap.
  *
- * Responsible for:
- * - Instantiating the SeatMap model repository.
- * - Providing the SeatMap controller.
- * - Providing services for business logic, query handling, and aggregation.
- *
- * @remarks
- * Centralizes registration of all SeatMap components. Can be used to extract controllers,
- * services, and repositories for route configuration or dependency injection.
+ * Wires persistence, query services, business logic,
+ * and HTTP controllers for the SeatMap domain.
  */
 export default class SeatMapServiceProvider {
     /**
-     * Registers all SeatMap-related components and returns them in a structured object.
+     * Registers SeatMap dependencies.
      *
-     * @returns An object containing:
-     * - `model`: The SeatMap Mongoose model.
-     * - `repository`: Base repository for CRUD operations with populated references.
-     * - `services`: Collection of service instances:
-     *   - `service`: Core SeatMap business logic.
-     *   - `queryService`: Handles advanced query operations.
-     *   - `aggregateService`: Handles aggregation pipelines.
-     * - `controllers`: Collection of controllers:
-     *   - `controller`: The main SeatMap controller.
+     * @returns Registered SeatMap components
      */
     static register() {
+        /** SeatMap mongoose model */
         const model = SeatMap;
 
-        /**
-         * References to populate on queries for the SeatMap resource.
-         */
+        /** Mongoose population configuration */
         const populateRefs = SeatMapPopulateRefs;
 
+        /** Shared query utilities */
         const queryUtils = QueryUtils;
-        const repository = new SeatMapRepository({populateRefs});
 
+        /** Write layer with persistence error handling */
+        const writer = new CRUDWriter({
+            model,
+            populateRefs,
+            persistenceManager: new SeatMapPersistenceManager(),
+        });
+
+        /** Repository exposing CRUD and query operations */
+        const repository = new BaseRepository({
+            model,
+            populateRefs,
+            writer,
+        });
+
+        /** Domain business logic */
         const service = new SeatMapService();
-        const queryService = new SeatMapQueryOptionService();
-        const aggregateService = new AggregateQueryService({model, populateRefs});
 
-        const controller = new SeatMapController({repository, service, queryService, queryUtils, aggregateService});
+        /** Query option parser */
+        const queryService = new SeatMapQueryOptionService();
+
+        /** Aggregate query handler */
+        const aggregateService = new AggregateQueryService({
+            model,
+            populateRefs,
+        });
+
+        /** HTTP controller */
+        const controller = new SeatMapController({
+            repository,
+            service,
+            queryService,
+            queryUtils,
+            aggregateService,
+        });
 
         return {
             model,
@@ -59,7 +81,7 @@ export default class SeatMapServiceProvider {
                 aggregateService,
             },
             controllers: {
-                controller
+                controller,
             },
         };
     }
