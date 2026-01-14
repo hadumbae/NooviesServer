@@ -1,128 +1,25 @@
-import { type FilterQuery, type SortOrder, Types } from "mongoose";
-import type { RequestOptions } from "../types/request-options/RequestOptions.js";
-import type { ModelObject } from "../types/ModelObject.js";
+import type {CRUDReader} from "./operations/CRUDReader.js";
+import type {CRUDWriter} from "./operations/CRUDWriter.js";
+import type {CRUDDeleter} from "./operations/CRUDDeleter.js";
+import type {ModelObject} from "../types/ModelObject.js";
+import type {CRUDBaseConstructor} from "./base/CRUDBase.types.js";
 
 /**
- * @file BaseRepository.types.ts
+ * Constructor parameters for {@link BaseRepository}.
  *
- * Base repository parameter types.
+ * Allows optional injection of CRUD operation implementations.
  *
- * Shared parameter shapes for repository CRUD and pagination
- * operations, independent of the underlying persistence layer.
+ * @template TSchema - Persisted document shape
+ * @template TInput  - Input payload shape
  */
-
-// --------------
-// --- CREATE ---
-// --------------
-
-/**
- * Parameters for creating a document.
- *
- * @typeParam TInput - Input payload shape.
- */
-export type BaseRepositoryCreateParams<TInput = unknown> = {
-    /** Creation payload */
-    data: Partial<TInput>;
-    /** Request-level options */
-    options?: RequestOptions;
-};
-
-// ------------
-// --- READ ---
-// ------------
-
-/**
- * Parameters for counting documents.
- *
- * @typeParam TSchema - Persisted document shape.
- */
-export type BaseRepositoryCountParams<TSchema = ModelObject> = {
-    /** Query filters */
-    filters?: FilterQuery<TSchema>;
-};
-
-/**
- * Parameters for retrieving multiple documents.
- *
- * @typeParam TSchema - Persisted document shape.
- */
-export type BaseRepositoryFindParams<TSchema = ModelObject> = {
-    /** Query filters */
-    filters?: FilterQuery<TSchema>;
-    /** Request-level options */
-    options?: RequestOptions;
-};
-
-/**
- * Parameters for retrieving a document by ObjectId.
- */
-export type BaseRepositoryFindByIDParams = {
-    /** Target document ObjectId */
-    _id: Types.ObjectId;
-    /** Request-level options */
-    options?: RequestOptions;
-};
-
-/**
- * Parameters for retrieving a document by slug.
- */
-export type BaseRepositoryFindBySlugParams = {
-    /** Unique slug identifier */
-    slug: string;
-    /** Request-level options */
-    options?: RequestOptions;
-};
-
-/**
- * Parameters for paginated queries.
- *
- * @typeParam TSchema - Persisted document shape.
- */
-export type BaseRepositoryPaginationParams<TSchema = ModelObject> = {
-    /** 1-based page index */
-    page: number;
-    /** Documents per page */
-    perPage: number;
-    /** Sort definition */
-    sort?: string | [string, SortOrder][] | Record<string, SortOrder>;
-    /** Query filters */
-    filters?: FilterQuery<TSchema>;
-    /** Request-level options */
-    options?: RequestOptions;
-};
-
-// --------------
-// --- UPDATE ---
-// --------------
-
-/**
- * Parameters for updating a document.
- *
- * @typeParam TSchema - Persisted document shape.
- * @typeParam TInput  - Input payload shape.
- */
-export type BaseRepositoryUpdateParams<
-    TSchema = ModelObject,
+export type BaseRepositoryConstructor<
+    TSchema extends ModelObject,
     TInput = unknown
-> = {
-    /** Target document ObjectId */
-    _id: Types.ObjectId;
-    /** Updated fields */
-    data: Partial<TInput>;
-    /** Fields to explicitly unset */
-    unset?: Partial<TSchema>;
-    /** Request-level options */
-    options?: RequestOptions;
-};
-
-// --------------
-// --- DELETE ---
-// --------------
-
-/**
- * Parameters for deleting a document.
- */
-export type BaseRepositoryDestroyParams = {
-    /** Target document ObjectId */
-    _id: Types.ObjectId;
+> = CRUDBaseConstructor<TSchema> & {
+    /** Optional reader override */
+    reader?: CRUDReader<TSchema>;
+    /** Optional writer override */
+    writer?: CRUDWriter<TSchema, TInput>;
+    /** Optional deleter override */
+    deleter?: CRUDDeleter<TSchema>;
 };
