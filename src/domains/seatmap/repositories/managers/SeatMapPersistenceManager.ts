@@ -7,8 +7,8 @@
 import {PersistenceManager} from "../../../../shared/repository/managers/PersistenceManager.js";
 import type {PersistenceManagerMethods} from "../../../../shared/repository/managers/PersistenceManager.types.js";
 import type {ZodIssue} from "zod";
-import ZodParseError from "../../../../shared/errors/ZodParseError.js";
 import SeatMapModel from "../../model/SeatMap.model.js";
+import {ZodDuplicateIndexError} from "../../../../shared/errors/zod/ZodDuplicateIndexError.js";
 
 /**
  * Persistence manager for SeatMap.
@@ -29,7 +29,7 @@ export class SeatMapPersistenceManager
      * user-facing Zod validation errors.
      *
      * @param indexString MongoDB index identifier
-     * @throws ZodParseError
+     * @throws ZodDuplicateIndexError
      */
     checkDuplicateIndexString(indexString: string): void {
         if (indexString === "showing_1_seat_1") {
@@ -46,10 +46,11 @@ export class SeatMapPersistenceManager
                 },
             ];
 
-            throw new ZodParseError({
+            throw new ZodDuplicateIndexError({
+                index: indexString,
+                model: this.modelName,
                 errors,
-                message:
-                    "Duplicate seat mapping detected. Each seat can be assigned only once per showing.",
+                message: "Duplicate seat mapping detected. Each seat can be assigned only once per showing.",
             });
         }
     }

@@ -2,8 +2,7 @@ import {PersistenceManager} from "../../../../shared/repository/managers/Persist
 import type {PersistenceManagerMethods} from "../../../../shared/repository/managers/PersistenceManager.types.js";
 import MovieCreditModel from "../../models/MovieCredit.model.js";
 import type {ZodIssue} from "zod";
-import ZodParseError from "../../../../shared/errors/ZodParseError.js";
-import DuplicateIndexError from "../../../../shared/errors/DuplicateIndexError.js";
+import {ZodDuplicateIndexError} from "../../../../shared/errors/zod/ZodDuplicateIndexError.js";
 
 /**
  * @file MovieCreditPersistenceManager.ts
@@ -31,12 +30,11 @@ export class MovieCreditPersistenceManager
     /**
      * Normalizes MongoDB duplicate index errors.
      *
-     * Maps known compound index violations to {@link ZodParseError}
+     * Maps known compound index violations to {@link ZodDuplicateIndexError}
      * instances with field-level validation messages.
      *
      * @param error - Raw persistence-layer error
-     * @throws {ZodParseError} For known MovieCredit uniqueness violations
-     * @throws {DuplicateIndexError} For unknown duplicate indexes
+     * @throws {ZodDuplicateIndexError} For uniqueness violations
      */
     checkDuplicateIndexError(error: unknown) {
         if (typeof error === "object" && error !== null && "code" in error && error.code === 11000) {
@@ -57,10 +55,11 @@ export class MovieCreditPersistenceManager
                     },
                 ];
 
-                throw new ZodParseError({
+                throw new ZodDuplicateIndexError({
+                    model: this.modelName,
+                    index: indexName,
                     errors,
-                    message:
-                        "Duplicate billing order detected. Each cast member in a movie must have a unique billing order.",
+                    message: "Duplicate billing order detected. Each cast member in a movie must have a unique billing order.",
                 });
 
             } else if (indexName === "movie_1_person_1_roleType_1_characterName_1") {
@@ -83,10 +82,11 @@ export class MovieCreditPersistenceManager
                     },
                 ];
 
-                throw new ZodParseError({
+                throw new ZodDuplicateIndexError({
+                    model: this.modelName,
+                    index: indexName,
                     errors,
-                    message:
-                        "Duplicate cast entry detected. A person cannot be credited with the same role and character more than once in a movie.",
+                    message: "Duplicate cast entry detected. A person cannot be credited with the same role and character more than once in a movie.",
                 });
 
             } else if (indexName === "movie_1_person_1_roleType_1_displayRoleName_1") {
@@ -109,17 +109,19 @@ export class MovieCreditPersistenceManager
                     },
                 ];
 
-                throw new ZodParseError({
+                throw new ZodDuplicateIndexError({
+                    model: this.modelName,
+                    index: indexName,
                     errors,
-                    message:
-                        "Duplicate crew entry detected. A person cannot be credited with the same role and display role more than once in a movie.",
+                    message: "Duplicate crew entry detected. A person cannot be credited with the same role and display role more than once in a movie.",
                 });
             }
 
-            throw new DuplicateIndexError({
-                message: `Duplicate index violation: ${indexName}`,
-                index: indexName,
+            throw new ZodDuplicateIndexError({
                 model: this.modelName,
+                index: indexName,
+                errors: [],
+                message: `Duplicate index violation: ${indexName}`,
             });
         }
     }

@@ -7,8 +7,7 @@
 import {PersistenceManager} from "../../../../shared/repository/managers/PersistenceManager.js";
 import SeatModel from "../../model/Seat.model.js";
 import type {ZodIssue} from "zod";
-import ZodParseError from "../../../../shared/errors/ZodParseError.js";
-import DuplicateIndexError from "../../../../shared/errors/DuplicateIndexError.js";
+import {ZodDuplicateIndexError} from "../../../../shared/errors/zod/ZodDuplicateIndexError.js";
 
 /**
  * Handles database-level constraint violations
@@ -34,7 +33,9 @@ export class SeatPersistenceManager extends PersistenceManager {
                     {path: ["seatNumber"], code: "custom", message: "Seat number already taken in this row."},
                 ];
 
-                return new ZodParseError({
+                return new ZodDuplicateIndexError({
+                    index: indexName,
+                    model: this.modelName,
                     errors,
                     message: "Duplicate seat: row + seat number must be unique.",
                 });
@@ -48,16 +49,19 @@ export class SeatPersistenceManager extends PersistenceManager {
                     {path: ["y"], code: "custom", message: "Y coordinate already used."},
                 ];
 
-                return new ZodParseError({
+                return new ZodDuplicateIndexError({
+                    index: indexName,
+                    model: this.modelName,
                     errors,
                     message: "Duplicate seat: coordinates (x, y) must be unique.",
                 });
             }
 
-            throw new DuplicateIndexError({
-                message: `Duplicate Error: ${indexName}`,
+            throw new ZodDuplicateIndexError({
                 index: indexName,
                 model: this.modelName,
+                errors: [],
+                message: `Duplicate Error: ${indexName}`,
             });
         }
     }

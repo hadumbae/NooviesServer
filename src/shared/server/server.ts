@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express, { type Express } from 'express';
-import errorHandler from "../utility/handlers/errorHandler.js";
+import handleGlobalErrors from "../utility/handlers/handleGlobalErrors.js";
 import registerParsers from "./registerParsers.js";
 import registerRoutes from "./registerRoutes.js";
 import registerCORS from "./registerCORS.js";
@@ -14,7 +14,7 @@ import registerGraphQL from "./registerGraphQL.js";
  * 2. **Parsers** (JSON, cookies) via {@link registerParsers}.
  * 3. **GraphQL endpoints** via {@link registerGraphQL}.
  * 4. **REST API routes** via {@link registerRoutes}.
- * 5. **Global error handling** via {@link errorHandler}.
+ * 5. **Global error handling** via {@link handleGlobalErrors}.
  *
  * After configuration, the Express app is exported for use in
  * server startup scripts or testing.
@@ -38,6 +38,6 @@ registerGraphQL(app);
 registerRoutes(app);
 
 // Global error handler should be registered last
-app.use(errorHandler);
+app.use(handleGlobalErrors);
 
 export default app;

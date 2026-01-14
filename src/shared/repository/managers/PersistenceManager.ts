@@ -5,10 +5,10 @@
  * operations against Mongoose-backed data stores.
  */
 
-import DuplicateIndexError from "../../errors/DuplicateIndexError.js";
 import {Error} from "mongoose";
 import createHttpError from "http-errors";
 import type {PersistenceManagerConstructor, PersistenceManagerMethods} from "./PersistenceManager.types.js";
+import {ZodDuplicateIndexError} from "../../errors/zod/ZodDuplicateIndexError.js";
 
 /**
  * **PersistenceManager**
@@ -36,10 +36,11 @@ class PersistenceManager implements PersistenceManagerMethods {
 
             this.checkDuplicateIndexString(indexString);
 
-            throw new DuplicateIndexError({
+            throw new ZodDuplicateIndexError({
                 message: `Duplicate Error: ${indexString}`,
                 index: indexString,
                 model: this.modelName,
+                errors: [],
             });
         }
     }
