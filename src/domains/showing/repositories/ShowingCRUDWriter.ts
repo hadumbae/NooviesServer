@@ -1,53 +1,46 @@
 /**
- * @file ShowingRepository.ts
+ * @file ShowingCRUDWriter.ts
  *
- * @description
- * MongoDB repository implementation for the Showing domain.
+ * Domain-aware CRUD writer for Showings.
  *
- * Extends the shared {@link BaseRepository} with Showing-specific
- * persistence and domain logic:
- *
- * - Generates deterministic slugs based on the linked movie title
- * - Resolves theatre timezone to construct UTC-safe date values
- * - Derives start/end times from date, time, and location inputs
- * - Implements {@link ShowingRepositoryCRUD}
+ * Extends the base CRUDWriter with Showing-specific behavior:
+ * - Timezone-aware date construction
+ * - Movie-based slug generation
+ * - Automatic start/end time computation
  */
 
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
+import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
 import type {ShowingSchemaFields} from "../model/Showing.types.js";
+import type {ShowingInput} from "../schema/ShowingInputSchema.js";
+import type {
+    CRUDCreateParams,
+    CRUDUpdateParams,
+} from "../../../shared/repository/operations/CRUDWriter.types.js";
 import type {
     BuildShowingDateParams,
     GetShowingDateTimeParams,
     ShowingDateTimeReturns,
-    ShowingRepositoryConstructor,
-    ShowingRepositoryCRUD
-} from "./ShowingRepository.types.js";
-import Showing from "../model/Showing.model.js";
-import createHttpError from "http-errors";
-import MovieModel from "../../movie/model/Movie.model.js";
-import generateSlug from "../../../shared/utility/generateSlug.js";
-import type {
-    BaseRepositoryCreateParams,
-    BaseRepositoryUpdateParams
-} from "../../../shared/repository/BaseRepository.types.js";
-import type {ShowingInput} from "../schema/ShowingInputSchema.js";
-import {Types} from "mongoose";
+    ShowingCRUDWriterConstructor, ShowingWriteMethods,
+} from "./ShowingCRUDWriter.types.js";
 import {DateTime} from "luxon";
 import Theatre from "../../theatre/model/Theatre.model.js";
+import createHttpError from "http-errors";
+import {Types} from "mongoose";
+import MovieModel from "../../movie/model/Movie.model.js";
+import generateSlug from "../../../shared/utility/generateSlug.js";
+import Showing from "../model/Showing.model.js";
 
 /**
- * Repository responsible for Showing persistence and domain behavior.
+ * CRUD writer for the Showing domain.
+ *
+ * Handles derived fields and cross-entity validation that cannot
+ * be performed at the schema or repository level.
  */
-export default class ShowingRepository
-    extends BaseRepository<ShowingSchemaFields>
-    implements ShowingRepositoryCRUD
+export class ShowingCRUDWriter
+    extends CRUDWriter<ShowingSchemaFields>
+    implements ShowingWriteMethods
 {
-    /**
-     * Creates a new Showing repository instance.
-     *
-     * @param populateRefs - Default populate paths for queries
-     */
-    constructor({populateRefs}: ShowingRepositoryConstructor) {
+    constructor({populateRefs}: ShowingCRUDWriterConstructor = {}) {
         super({
             model: Showing,
             populateRefs: populateRefs ?? [],
@@ -55,7 +48,7 @@ export default class ShowingRepository
     }
 
     /**
-     * Builds a UTC Date from a local date, time, and timezone.
+     * Builds a UTC Date from local date, time, and timezone.
      */
     buildDate(params: BuildShowingDateParams): Date {
         const {date, time, timezone} = params;
@@ -67,12 +60,12 @@ export default class ShowingRepository
     }
 
     /**
-     * Computes start and end times for a showing using the theatre timezone.
+     * Computes showing start and end times using the theatre timezone.
      *
      * @throws 404 if the theatre cannot be resolved
      */
     async getShowingDates(
-        params: GetShowingDateTimeParams
+        params: GetShowingDateTimeParams,
     ): Promise<ShowingDateTimeReturns> {
         const {theatreID, startAtDate, startAtTime, endAtDate, endAtTime} = params;
 
@@ -101,7 +94,7 @@ export default class ShowingRepository
     }
 
     /**
-     * Generates a slug for a showing based on its movie title.
+     * Generates a deterministic slug for a showing based on its movie.
      *
      * @throws 422 if the movie ID is invalid
      * @throws 404 if the movie does not exist
@@ -130,13 +123,13 @@ export default class ShowingRepository
     /**
      * Creates a new showing.
      *
-     * Automatically:
-     * - Generates a slug
-     * - Resolves theatre timezone
-     * - Computes start and end times
+     * Automatically resolves:
+     * - Movie-based slug
+     * - Theatre timezone
+     * - Start and end timestamps
      */
     async create(
-        params: BaseRepositoryCreateParams<ShowingInput>
+        params: CRUDCreateParams<ShowingInput>,
     ): Promise<ShowingSchemaFields> {
         const {data, ...rest} = params;
 
@@ -173,10 +166,10 @@ export default class ShowingRepository
     /**
      * Updates an existing showing.
      *
-     * Recomputes slug and date fields when relevant inputs change.
+     * Recomputes slug and date fields when dependent inputs change.
      */
     async update(
-        params: BaseRepositoryUpdateParams<ShowingSchemaFields, ShowingInput>
+        params: CRUDUpdateParams<ShowingSchemaFields, ShowingInput>,
     ): Promise<ShowingSchemaFields> {
         const {data, ...rest} = params;
 
