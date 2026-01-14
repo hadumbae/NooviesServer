@@ -1,7 +1,6 @@
 import MovieModel from "../model/Movie.model.js";
 
 import MovieController from "../controller/MovieController.js";
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
 import MovieImageService from "../service/MovieImageService.js";
 
 import MovieService from "../service/movie/MovieService.js";
@@ -11,6 +10,7 @@ import MovieFavouriteController from "../controller/MovieFavouriteController.js"
 import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import type {MovieSchemaFields} from "../model/Movie.types.js";
+import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 
 /**
  * @class MovieServiceProvider

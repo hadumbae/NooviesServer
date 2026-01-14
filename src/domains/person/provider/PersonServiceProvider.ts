@@ -1,5 +1,5 @@
 import PersonModel from "../model/Person.model.js";
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
+import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";

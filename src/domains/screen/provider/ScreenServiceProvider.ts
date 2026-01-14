@@ -1,6 +1,6 @@
 import Screen from "../model/Screen.model.js";
 
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
+import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import ScreenController from "../controller/ScreenController.js";
 
 import ScreenQueryOptionService from "../service/ScreenQueryOptionService.js";
