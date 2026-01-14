@@ -1,3 +1,10 @@
+/**
+ * @file SeatInput.ts
+ *
+ * Zod schemas for validating Seat creation and updates.
+ */
+
+
 import {z} from 'zod';
 import {SeatTypeEnum} from "../enum/SeatTypeEnum.js";
 import {NonEmptyStringSchema} from "../../../../shared/schema/strings/NonEmptyStringSchema.js";

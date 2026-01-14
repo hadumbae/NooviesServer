@@ -1,97 +1,63 @@
-import type { Request, Response } from "express";
+/**
+ * @file SeatController.ts
+ *
+ * HTTP controller for Seat resources.
+ *
+ * Extends the base CRUD controller with Seat-specific
+ * query option handling.
+ */
+
+import type {Request} from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type {SeatSchemaFields} from "../model/Seat.types.js";
 import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
-import type SeatQueryService from "../service/query-service/SeatQueryService.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    IBaseCRUDControllerConstructor,
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type { SeatsByRowSubmitData } from "../schema/seats/SeatInput.types.js";
-import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
-
+import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
 
 /**
  * Constructor parameters for {@link SeatController}.
- *
- * Extends {@link IBaseCRUDControllerConstructor} and adds seat-specific services:
- * - {@link SeatQueryService} for handling custom seat queries and batch operations
- * - {@link SeatQueryOptionService} for parsing and validating seat query parameters
  */
-export interface ISeatControllerConstructor extends IBaseCRUDControllerConstructor<SeatSchemaFields> {
-    /** Service for custom seat queries and batch operations. */
-    queryService: SeatQueryService;
-
-    /** Service for parsing and validating seat query options. */
+export interface ISeatControllerConstructor
+    extends IBaseCRUDControllerConstructor<SeatSchemaFields>
+{
+    /** Seat-specific query option service. */
     optionService: SeatQueryOptionService;
 }
 
 /**
- * Public interface for {@link SeatController}.
- *
- * Extends {@link BaseControllerCRUDMethods} and can be extended to add additional seat-specific endpoints.
+ * Public interface for SeatController.
  */
 export interface ISeatController extends BaseControllerCRUDMethods {}
 
 /**
- * Controller responsible for managing {@link SeatSchemaFields} documents.
+ * Controller responsible for Seat CRUD operations.
  *
- * Extends {@link BaseCRUDController} to provide standard CRUD functionality,
- * and adds seat-specific features:
- * - Parsing query options via {@link SeatQueryOptionService}
- * - Batch seat creation for rows via {@link SeatQueryService}
- *
- * @example
- * // Create seats for a row:
- * // POST /seats/row
- * // Request body conforms to {@link SeatsByRowSubmitData}
+ * Adds Seat-specific query parsing on top of
+ * the shared BaseCRUDController behavior.
  */
-export default class SeatController extends BaseCRUDController<SeatSchemaFields> implements ISeatController {
-    /** Service for executing custom seat queries and batch operations. */
-    protected queryService: SeatQueryService;
-
-    /** Service for parsing and generating query options for seats. */
+export default class SeatController
+    extends BaseCRUDController<SeatSchemaFields>
+    implements ISeatController
+{
     protected optionService: SeatQueryOptionService;
 
-    /**
-     * Creates a new {@link SeatController} instance.
-     *
-     * @param params - Constructor parameters including base CRUD options and seat-specific services
-     */
     constructor(params: ISeatControllerConstructor) {
-        const { optionService, queryService, ...superParams } = params;
+        const {optionService, ...superParams} = params;
         super(superParams);
-
         this.optionService = optionService;
-        this.queryService = queryService;
     }
 
     /**
-     * Fetches query options for seats from the request.
-     *
-     * Uses {@link SeatQueryOptionService} to parse filters, sorts, and additional options.
-     *
-     * @param req - Express request
-     * @returns Parsed query options compatible with Mongoose queries
+     * Resolves query options for seat listings.
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<SeatSchemaFields, SeatQueryMatchFilters> {
+    fetchQueryOptions(
+        req: Request,
+    ): QueryOptionTypes<SeatSchemaFields, SeatQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
-    }
-
-    /**
-     * Creates multiple seats for a specified row in a theatre screen.
-     *
-     * Expects a validated request body following {@link SeatsByRowSubmitData}.
-     *
-     * @param req - Express request containing `validatedBody` with seat creation data
-     * @param res - Express response
-     * @returns JSON response containing the created seat documents
-     */
-    async createSeatsByRow(req: Request, res: Response): Promise<Response> {
-        const data = req.validatedBody as SeatsByRowSubmitData;
-        const seats = await this.queryService.createByRow(data);
-        return res.status(200).json(seats);
     }
 }
