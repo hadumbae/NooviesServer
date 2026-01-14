@@ -1,47 +1,50 @@
+/**
+ * @file RoleTypeServiceProvider.ts
+ *
+ * Registers and wires all RoleType-related components:
+ * model, repository, services, and controller.
+ */
+
 import RoleTypeController from "../controllers/RoleTypeController.js";
 import RoleTypeModel from "../model/RoleType.model.js";
 import RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import RoleTypeRepository from "../repositories/RoleTypeRepository.js";
+import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {RoleTypePersistenceManager} from "../repositories/managers/RoleTypePersistenceManager.js";
+import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
 
 /**
- * @class RoleTypeServiceProvider
- * @description
- * Service provider responsible for registering and initializing
- * the components related to RoleType: model, repository, services, and controller.
+ * Service provider for RoleType domain.
+ *
+ * Responsible for composing persistence, query services,
+ * and HTTP controller bindings.
  */
 export default class RoleTypeServiceProvider {
     /**
-     * Registers the RoleType components and returns an object containing
-     * the model, services, and controllers.
+     * Registers RoleType dependencies.
      *
-     * @static
-     * @returns {Object} An object with the following structure:
-     * {
-     *   model: typeof RoleTypeModel,
-     *   repository: BaseRepository,
-     *   services: {
-     *     optionService: RoleTypeQueryOptionService
-     *   },
-     *   controllers: {
-     *     controller: RoleTypeController
-     *   }
-     * }
+     * @returns Registered RoleType components
      */
     static register() {
-        // Model representing RoleType
+        /** RoleType mongoose model */
         const model = RoleTypeModel;
 
-        // Repository for RoleType with basic CRUD operations
-        const repository = new RoleTypeRepository({ model });
+        /** Write operations with persistence error handling */
+        const writer = new CRUDWriter({
+            model,
+            persistenceManager: new RoleTypePersistenceManager(),
+        });
 
-        // Service to handle query options for RoleType
+        /** Repository exposing CRUD + query capabilities */
+        const repository = new BaseRepository({model, writer});
+
+        /** Query option parser for filtering, sorting, pagination */
         const optionService = new RoleTypeQueryOptionService();
 
-        // Service to handle aggregate queries for RoleType
-        const aggregateService = new AggregateQueryService({ model });
+        /** Aggregate query handler */
+        const aggregateService = new AggregateQueryService({model});
 
-        // Controller to handle RoleType-related HTTP requests
+        /** HTTP controller */
         const controller = new RoleTypeController({
             repository,
             optionService,
@@ -52,10 +55,10 @@ export default class RoleTypeServiceProvider {
             model,
             repository,
             services: {
-                optionService
+                optionService,
             },
             controllers: {
-                controller
+                controller,
             },
         };
     }
