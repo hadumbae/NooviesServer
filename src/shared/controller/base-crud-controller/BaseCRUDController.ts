@@ -13,7 +13,7 @@
  */
 
 import { type Request, type Response } from "express";
-import type BaseRepository from "../../repository/BaseRepository.js";
+import type {BaseRepository} from "../../repository/BaseRepository.js";
 import BaseController from "../BaseController.js";
 import isValidObjectId from "../../utility/mongoose/isValidObjectId.js";
 import type { PopulationPipelineStages } from "../../types/mongoose/AggregatePipelineStages.js";

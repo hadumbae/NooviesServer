@@ -14,7 +14,7 @@
 import type {Request, Response} from "express";
 import type {PopulationPipelineStages} from "../../types/mongoose/AggregatePipelineStages.js";
 import type {IBaseControllerConstructor} from "../BaseController.js";
-import type BaseRepository from "../../repository/BaseRepository.js";
+import type {BaseRepository} from "../../repository/BaseRepository.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
 import type {ModelObject} from "../../types/ModelObject.js";
