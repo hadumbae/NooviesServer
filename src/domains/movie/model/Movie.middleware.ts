@@ -3,7 +3,6 @@ import type {HydratedDocument, Query} from "mongoose";
 import Showing from "../../showing/model/Showing.model.js";
 import type {MovieSchemaFields} from "./Movie.types.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
-import getUpdateData from "../../../shared/utility/mongoose/getUpdateData.js";
 import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
 
 /**
@@ -21,29 +20,6 @@ MovieSchema.pre(
     function (this: HydratedDocument<MovieSchemaFields>, next: () => void): void {
         if (this.isModified("title")) {
             this.slug = generateSlug(this.title);
-        }
-
-        next();
-    }
-);
-
-/**
- * Pre-update middleware for `findOneAndUpdate`.
- *
- * Ensures the slug is regenerated when the movie title is updated
- * via a query-based update operation.
- *
- * @param this - The update query being executed
- * @param next - Callback to continue query execution
- */
-MovieSchema.pre(
-    "findOneAndUpdate",
-    {query: true},
-    function (this: Query<any, MovieSchemaFields>, next: () => void): void {
-        const update = getUpdateData(this.getUpdate());
-
-        if (update.title) {
-            update.slug = generateSlug(update.title);
         }
 
         next();

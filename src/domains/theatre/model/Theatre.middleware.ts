@@ -18,7 +18,6 @@ import Seat from "../../seat/model/Seat.model.js";
 import Showing from "../../showing/model/Showing.model.js";
 import type { TheatreSchemaFields } from "./Theatre.types.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
-import getUpdateData from "../../../shared/utility/mongoose/getUpdateData.js";
 
 /**
  * Document-level validation hook.
@@ -32,27 +31,6 @@ TheatreSchema.pre(
     function (this: HydratedDocument<TheatreSchemaFields>, next: () => void): void {
         if (this.isModified("name")) {
             this.slug = generateSlug(this.name);
-        }
-
-        next();
-    },
-);
-
-/**
- * Query-level update hook.
- *
- * @description
- * Keeps the slug in sync when updating theatre names
- * via query-based operations.
- */
-TheatreSchema.pre(
-    "findOneAndUpdate",
-    { query: true },
-    function (this: Query<any, TheatreSchemaFields>, next: () => void): void {
-        const update = getUpdateData(this.getUpdate());
-
-        if (update.name) {
-            update.slug = generateSlug(update.name);
         }
 
         next();

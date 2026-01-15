@@ -19,7 +19,6 @@ import Theatre from "../../theatre/model/Theatre.model.js";
 import Seat from "../../seat/model/Seat.model.js";
 import Showing from "../../showing/model/Showing.model.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
-import getUpdateData from "../../../shared/utility/mongoose/getUpdateData.js";
 
 /**
  * Document-level validation hook.
@@ -33,27 +32,6 @@ ScreenSchema.pre(
     function (this: HydratedDocument<ScreenSchemaFields>, next: () => void): void {
         if (this.isModified("name")) {
             this.slug = generateSlug(this.name);
-        }
-
-        next();
-    },
-);
-
-/**
- * Query-level update hook.
- *
- * @description
- * Keeps the slug in sync when the screen name is updated
- * via query-based operations.
- */
-ScreenSchema.pre(
-    "findOneAndUpdate",
-    { query: true },
-    function (this: Query<any, ScreenSchemaFields>, next: () => void): void {
-        const update = getUpdateData(this.getUpdate());
-
-        if (update.name) {
-            update.slug = generateSlug(update.name);
         }
 
         next();
