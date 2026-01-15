@@ -3,7 +3,7 @@ import type UserSchemaFields from "@models/UserSchemaFields.js";
 
 import UserController from "../controller/UserController.js";
 
-import BaseRepository from "../../../shared/repository/BaseRepository.js";
+import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import UserService from "../service/user-service/UserService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
