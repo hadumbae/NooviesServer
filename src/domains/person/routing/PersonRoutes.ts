@@ -22,7 +22,7 @@ const { model, controllers: { controller } } = PersonServiceProvider.register();
  * Middleware to remove or unset specific model form fields
  * before creating or updating a Person entity.
  */
-const unsetMiddleware = unsetModelFormFields({ model });
+const unsetMiddleware = unsetModelFormFields({ model, excludeKeys: ["profileImage"] });
 
 /**
  * Middleware configuration for the base CRUD routes of Person.
