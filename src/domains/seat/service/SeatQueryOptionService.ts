@@ -187,8 +187,8 @@ export default class SeatQueryOptionService
         return [
             { $lookup: { from: "screens", localField: "screen", foreignField: "_id", as: "screen" } },
             { $lookup: { from: "theatres", localField: "theatre", foreignField: "_id", as: "theatre" } },
-            { $unwind: { path: "screen", preserveNullAndEmptyArrays: true } },
-            { $unwind: { path: "theatre", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$screen", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$theatre", preserveNullAndEmptyArrays: true } },
         ];
     }
 

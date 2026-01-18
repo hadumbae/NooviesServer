@@ -17,13 +17,13 @@ import type {
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
+import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 
 /**
  * Constructor parameters for {@link SeatController}.
  */
 export interface ISeatControllerConstructor
-    extends IBaseCRUDControllerConstructor<SeatSchemaFields>
-{
+    extends IBaseCRUDControllerConstructor<SeatSchemaFields> {
     /** Seat-specific query option service. */
     optionService: SeatQueryOptionService;
 }
@@ -31,7 +31,8 @@ export interface ISeatControllerConstructor
 /**
  * Public interface for SeatController.
  */
-export interface ISeatController extends BaseControllerCRUDMethods {}
+export interface ISeatController extends BaseControllerCRUDMethods {
+}
 
 /**
  * Controller responsible for Seat CRUD operations.
@@ -41,8 +42,7 @@ export interface ISeatController extends BaseControllerCRUDMethods {}
  */
 export default class SeatController
     extends BaseCRUDController<SeatSchemaFields>
-    implements ISeatController
-{
+    implements ISeatController {
     protected optionService: SeatQueryOptionService;
 
     constructor(params: ISeatControllerConstructor) {
@@ -59,5 +59,9 @@ export default class SeatController
     ): QueryOptionTypes<SeatSchemaFields, SeatQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
+    }
+
+    fetchPopulatePipelines(): PopulationPipelineStages {
+        return this.optionService.generatePopulationPipelines();
     }
 }
