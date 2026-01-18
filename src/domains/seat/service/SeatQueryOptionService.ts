@@ -30,11 +30,11 @@ import type {
     ReferenceSortPipelineStages,
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 import type IReferenceQueryOptionService from "../../../shared/types/query-options/IReferenceQueryOptionService.js";
-import {type SeatQueryMatchFilters, SeatQueryMatchFiltersSchema} from "../schema/query/SeatMatchParams.js";
+import {type SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
 import type {LookupMatchStageOptions} from "../../../shared/types/mongoose/LookupMatchStage.types.js";
 import generateReferenceFilterPipelineStages
     from "../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
-import type {SeatQueryOptions} from "../schema/query/SeatQueryOptions.js";
+import {type SeatQueryOptions, SeatQueryOptionsSchema} from "../schema/query/SeatQueryOptions.js";
 
 /**
  * Service class for managing query options for Seat documents, including reference pipelines.
@@ -51,7 +51,7 @@ export default class SeatQueryOptionService
      * @returns Validated and filtered `SeatQueryOptions`
      */
     fetchQueryParams(req: Request): SeatQueryOptions {
-        const conditions = SeatQueryMatchFiltersSchema.parse(req.query);
+        const conditions = SeatQueryOptionsSchema.parse(req.query);
         return filterNullishAttributes(conditions) as SeatQueryOptions;
     }
 
@@ -130,12 +130,14 @@ export default class SeatQueryOptionService
     generateReferenceFilters(params: SeatQueryOptions): ReferenceFilterPipelineStages {
         const { showing, showingSlug, theatreSlug, screenSlug } = params;
 
+        console.log("Screen Slug: ", params);
+
         const stages: LookupMatchStageOptions[] = [
             {
                 from: "showings",
                 localField: "screen",
                 foreignField: "screen",
-                as: "showing",
+                as: "seatShowing",
                 filters: filterNullishAttributes({
                    _id: showing,
                    slug: showingSlug,
@@ -145,7 +147,7 @@ export default class SeatQueryOptionService
                 from: "screens",
                 localField: "screen",
                 foreignField: "_id",
-                as: "screen",
+                as: "seatScreen",
                 filters: filterNullishAttributes({
                     slug: screenSlug,
                 }),
@@ -154,12 +156,14 @@ export default class SeatQueryOptionService
                 from: "theatres",
                 localField: "theatre",
                 foreignField: "_id",
-                as: "theatre",
+                as: "seatTheatre",
                 filters: filterNullishAttributes({
                     slug: theatreSlug,
                 }),
             },
         ];
+
+        console.log("Stages: ", stages);
 
         return generateReferenceFilterPipelineStages({stages});
     }
