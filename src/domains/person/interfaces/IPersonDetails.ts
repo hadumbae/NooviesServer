@@ -1,5 +1,5 @@
-import type {IPerson} from "./IPerson.js";
+import type {PersonSchemaFields} from "./PersonSchemaFields.js";
 
-export default interface IPersonDetails extends IPerson {
+export default interface IPersonDetails extends PersonSchemaFields {
 
 }

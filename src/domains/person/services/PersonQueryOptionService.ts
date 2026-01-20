@@ -4,7 +4,7 @@ import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import {type FilterQuery, type SortOrder} from "mongoose";
 import type {PersonQueryMatchFilters, PersonQueryOptions} from "../schema/query/PersonQueryOption.types.js";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
-import type {IPerson} from "../interfaces/IPerson.js";
+import type {PersonSchemaFields} from "../interfaces/PersonSchemaFields.js";
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 
@@ -13,7 +13,7 @@ import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOp
  * Mongoose-compatible query filters and sorting options for Person documents.
  */
 export default class PersonQueryOptionService
-    implements IQueryOptionService<IPerson, PersonQueryOptions, PersonQueryMatchFilters> {
+    implements IQueryOptionService<PersonSchemaFields, PersonQueryOptions, PersonQueryMatchFilters> {
 
     /**
      * Parses query parameters from an Express request and validates them
@@ -60,7 +60,7 @@ export default class PersonQueryOptionService
      * @param queries - Parsed Person query options.
      * @returns A partial record mapping Person fields to Mongoose sort orders.
      */
-    generateMatchSorts(queries: PersonQueryOptions): Partial<Record<keyof IPerson, SortOrder>> {
+    generateMatchSorts(queries: PersonQueryOptions): Partial<Record<keyof PersonSchemaFields, SortOrder>> {
         const {sortByName, sortByNationality, sortByDOB} = queries;
         const sorts = {name: sortByName, dob: sortByDOB, nationality: sortByNationality};
         return filterNullishAttributes(sorts);
@@ -73,7 +73,7 @@ export default class PersonQueryOptionService
      * @param options - Parsed Person query options.
      * @returns An object containing `filters` and `sorts` for querying Person documents.
      */
-    generateQueryOptions(options: PersonQueryOptions): QueryOptionTypes<IPerson, PersonQueryMatchFilters> {
+    generateQueryOptions(options: PersonQueryOptions): QueryOptionTypes<PersonSchemaFields, PersonQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
 

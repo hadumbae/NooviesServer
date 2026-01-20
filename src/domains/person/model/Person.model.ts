@@ -1,5 +1,5 @@
 import { model, type Model } from "mongoose";
-import type { IPerson } from "../interfaces/IPerson.js";
+import type { PersonSchemaFields } from "../interfaces/PersonSchemaFields.js";
 import { PersonSchema } from "./Person.schema.js";
 
 import "./Person.virtuals.js";
@@ -11,7 +11,6 @@ import "./Person.middleware.js";
  * @remarks
  * - Uses {@link PersonSchema} for schema definition.
  * - Automatically includes virtuals and middleware from
- *   {@link Person.virtuals.js} and {@link Person.middleware.js}.
  * - Provides full CRUD operations and query helpers for `IPerson` documents.
  *
  * @example
@@ -34,6 +33,6 @@ import "./Person.middleware.js";
  * console.log(foundPerson.movieCount);
  * ```
  */
-const PersonModel: Model<IPerson> = model<IPerson>("Person", PersonSchema);
+const PersonModel: Model<PersonSchemaFields> = model<PersonSchemaFields>("Person", PersonSchema);
 
 export default PersonModel;

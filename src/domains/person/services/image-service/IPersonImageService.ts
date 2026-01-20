@@ -1,5 +1,5 @@
 import {type Document, Types} from "mongoose";
-import type {IPerson} from "../../interfaces/IPerson.js";
+import type {PersonSchemaFields} from "../../interfaces/PersonSchemaFields.js";
 import type {
     RemovePersonProfileImageParams,
     UploadPersonProfileImageParams
@@ -18,7 +18,7 @@ export interface IPersonImageService {
      * @param _id - The ObjectId of the person to retrieve.
      * @returns A promise resolving to the matching person document.
      */
-    fetchPerson(_id: Types.ObjectId): Promise<IPerson & Document>;
+    fetchPerson(_id: Types.ObjectId): Promise<PersonSchemaFields & Document>;
 
     /**
      * Uploads or replaces a person's profile image.
@@ -27,7 +27,7 @@ export interface IPersonImageService {
      * @param params - The parameters including the person ID and image file.
      * @returns A promise resolving to the updated person document.
      */
-    updateProfileImage(params: UploadPersonProfileImageParams): Promise<IPerson & Document>;
+    updateProfileImage(params: UploadPersonProfileImageParams): Promise<PersonSchemaFields & Document>;
 
     /**
      * Deletes a person's existing profile image, if one exists.
@@ -35,5 +35,5 @@ export interface IPersonImageService {
      * @param params - The parameters including the person ID.
      * @returns A promise resolving to the updated person document with no image.
      */
-    deleteProfileImage(params: RemovePersonProfileImageParams): Promise<IPerson & Document>;
+    deleteProfileImage(params: RemovePersonProfileImageParams): Promise<PersonSchemaFields & Document>;
 }

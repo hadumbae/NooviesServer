@@ -1,5 +1,5 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type { IPerson } from "../interfaces/IPerson.js";
+import type { PersonSchemaFields } from "../interfaces/PersonSchemaFields.js";
 import type PersonQueryOptionService from "../services/PersonQueryOptionService.js";
 import type { Request, Response } from "express";
 import type PersonImageService from "../services/image-service/PersonImageService.js";
@@ -18,7 +18,7 @@ import type { QueryOptionTypes } from "../../../shared/types/query-options/Query
  * - {@link PersonQueryOptionService} for query parsing/filter generation
  * - {@link PersonImageService} for profile image management
  */
-interface IPersonControllerConstructor extends IBaseCRUDControllerConstructor<IPerson> {
+interface IPersonControllerConstructor extends IBaseCRUDControllerConstructor<PersonSchemaFields> {
     /** Service for parsing query parameters and generating filters/sorts. */
     optionService: PersonQueryOptionService;
 
@@ -52,7 +52,7 @@ export interface IPersonController extends BaseControllerCRUDMethods {
 }
 
 /**
- * Controller responsible for handling {@link IPerson} CRUD operations
+ * Controller responsible for handling {@link PersonSchemaFields} CRUD operations
  * and profile image management.
  *
  * Extends {@link BaseCRUDController} to provide standard CRUD functionality,
@@ -67,7 +67,7 @@ export interface IPersonController extends BaseControllerCRUDMethods {
  * // Delete profile image:
  * // DELETE /people/:id/profile-image
  */
-export default class PersonController extends BaseCRUDController<IPerson> implements IPersonController {
+export default class PersonController extends BaseCRUDController<PersonSchemaFields> implements IPersonController {
     /** Service for parsing query parameters and generating filters/sorts. */
     protected optionService: PersonQueryOptionService;
 
@@ -93,7 +93,7 @@ export default class PersonController extends BaseCRUDController<IPerson> implem
      * @param req - Express request containing query parameters
      * @returns Query options suitable for Mongoose queries
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<IPerson, PersonQueryMatchFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<PersonSchemaFields, PersonQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }

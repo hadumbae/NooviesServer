@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
-import type IMovie from "../../movie/model/Movie.types.js";
-import type {IPerson} from "../../person/interfaces/IPerson.js";
+import type {MovieSchemaFields} from "../../movie/model/Movie.types.js";
+import type {PersonSchemaFields} from "../../person/interfaces/PersonSchemaFields.js";
 import type IRoleType from "../../roleType/model/RoleType.interface.js";
 
 /**
@@ -11,10 +11,10 @@ export interface IMovieCredit {
     readonly _id: Types.ObjectId;
 
     /** Reference to the movie (ObjectId or populated IMovie) */
-    movie: Types.ObjectId | IMovie;
+    movie: Types.ObjectId | MovieSchemaFields;
 
     /** Reference to the person (ObjectId or populated IPerson) */
-    person: Types.ObjectId | IPerson;
+    person: Types.ObjectId | PersonSchemaFields;
 
     // --- RoleType ---
 

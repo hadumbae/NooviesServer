@@ -2,7 +2,7 @@ import createHttpError from "http-errors";
 import {type Document, Types} from "mongoose";
 
 import PersonModel from "../../model/Person.model.js";
-import type {IPerson} from "../../interfaces/IPerson.js";
+import type {PersonSchemaFields} from "../../interfaces/PersonSchemaFields.js";
 
 import type {IPersonImageService} from "./IPersonImageService.js";
 import type {RemovePersonProfileImageParams, UploadPersonProfileImageParams} from "./PersonImageTypes.js";
@@ -20,7 +20,7 @@ export default class PersonImageService implements IPersonImageService {
      * @throws {HttpError} 404 if the person does not exist.
      * @returns The person document.
      */
-    async fetchPerson(_id: Types.ObjectId): Promise<IPerson & Document> {
+    async fetchPerson(_id: Types.ObjectId): Promise<PersonSchemaFields & Document> {
         const person = await PersonModel.findById(_id);
         if (!person) throw createHttpError(404, `Person with ID (${_id}) not found.`);
         return person;
@@ -33,7 +33,7 @@ export default class PersonImageService implements IPersonImageService {
      * @param image - The image file to upload.
      * @returns The updated person document including the new profile image.
      */
-    async updateProfileImage({personId, image}: UploadPersonProfileImageParams): Promise<IPerson & Document> {
+    async updateProfileImage({personId, image}: UploadPersonProfileImageParams): Promise<PersonSchemaFields & Document> {
         const person = await this.fetchPerson(personId);
 
         if (person.profileImage) {
@@ -52,7 +52,7 @@ export default class PersonImageService implements IPersonImageService {
      * @param personId - The ID of the person.
      * @returns The updated person document with `profileImage` set to null.
      */
-    async deleteProfileImage({personId}: RemovePersonProfileImageParams): Promise<IPerson & Document> {
+    async deleteProfileImage({personId}: RemovePersonProfileImageParams): Promise<PersonSchemaFields & Document> {
         const person = await this.fetchPerson(personId);
 
         if (person.profileImage) {

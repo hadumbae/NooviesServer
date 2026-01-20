@@ -1,28 +1,55 @@
+/**
+ * @file Person.schema.middleware.ts
+ *
+ * Mongoose middleware for the Person schema.
+ * Handles slug generation, virtual population,
+ * and cascading deletes.
+ */
+
 import {PersonSchema} from "./Person.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import type {IPerson} from "../interfaces/IPerson.js";
+import type {PersonSchemaFields} from "../interfaces/PersonSchemaFields.js";
 import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
+import generateSlug from "../../../shared/utility/generateSlug.js";
 
 /**
- * Pre-query middleware to automatically populate virtuals when using lean queries.
+ * Pre-validation middleware.
  *
- * @remarks
- * Applies to `find`, `findOne`, and `findOneAndUpdate` queries.
- * Checks if the query has `{ lean: { virtuals: true } }` and populates:
+ * Regenerates the slug when the person's name changes.
+ */
+PersonSchema.pre(
+    "validate",
+    {document: true},
+    async function (
+        this: HydratedDocument<PersonSchemaFields>,
+        next: () => void,
+    ): Promise<void> {
+        if (this.isModified("name")) {
+            this.slug = generateSlug(this.name);
+        }
+
+        next();
+    },
+);
+
+/**
+ * Pre-query middleware for lean queries with virtuals.
+ *
+ * Automatically populates:
  * - `movieCount`
  * - `creditCount`
  *
- * @param this - The Mongoose Query object.
- * @param next - Callback to continue the middleware chain.
- *
- * @example
- * // Person.find().lean({ virtuals: true }) will automatically populate counts
+ * @remarks
+ * Applies to `find`, `findOne`, and `findOneAndUpdate`
+ * when `{ lean: { virtuals: true } }` is enabled.
  */
 PersonSchema.pre(
     ["find", "findOne", "findOneAndUpdate"],
     {query: true},
-    async function (this: Query<any, IPerson>) {
-        const hasVirtuals = typeof this._mongooseOptions.lean === "object" && this._mongooseOptions.lean.virtuals === true;
+    async function (this: Query<any, PersonSchemaFields>) {
+        const hasVirtuals =
+            typeof this._mongooseOptions.lean === "object" &&
+            this._mongooseOptions.lean.virtuals === true;
 
         if (hasVirtuals) {
             this.populate([
@@ -30,52 +57,42 @@ PersonSchema.pre(
                 {path: "creditCount"},
             ]);
         }
-    }
+    },
 );
 
 /**
  * Pre-document deletion middleware.
  *
- * @remarks
- * Automatically deletes all `MovieCredit` documents associated with
- * the person being deleted.
- *
- * @param this - The hydrated `IPerson` document being deleted.
- *
- * @example
- * // person.deleteOne() will remove all related MovieCredit documents
+ * Cascades deletion to all MovieCredit documents
+ * associated with the person.
  */
 PersonSchema.pre(
     "deleteOne",
     {query: false, document: true},
-    async function (this: HydratedDocument<IPerson>) {
+    async function (this: HydratedDocument<PersonSchemaFields>) {
         const {_id} = this;
         if (!_id) return;
 
         await MovieCredit.deleteMany({person: _id});
-    }
+    },
 );
 
 /**
  * Pre-query deletion middleware.
  *
+ * Cascades deletion to MovieCredit documents
+ * matching the deletion filter.
+ *
  * @remarks
  * Applies to `deleteOne` and `deleteMany` queries.
- * Automatically deletes all `MovieCredit` documents related to the filtered person or movie.
- *
- * @param this - The Mongoose Query object.
- *
- * @example
- * // Person.deleteMany({ _id: someId }) will remove related MovieCredit documents
  */
 PersonSchema.pre(
     ["deleteOne", "deleteMany"],
     {query: true, document: false},
-    async function (this: Query<any, IPerson>
-    ) {
+    async function (this: Query<any, PersonSchemaFields>) {
         const {_id} = this.getFilter();
         if (!_id) return;
 
         await MovieCredit.deleteMany({movie: _id});
-    }
+    },
 );
