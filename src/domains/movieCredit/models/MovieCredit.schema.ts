@@ -1,72 +1,70 @@
+/**
+ * @file MovieCredit.schema.ts
+ *
+ * Mongoose schema defining movie credits for cast and crew.
+ */
+
 import {Schema} from "mongoose";
 import type {IMovieCredit} from "./MovieCredit.interface.js";
 import RoleTypeDepartmentConstant from "../../roleType/constants/RoleTypeDepartmentConstant.js";
+import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
 
 /**
  * Shared schema definition for CAST-only boolean fields.
  *
- * ## Behavior
- * - Default:
- *   - For `CAST` credits → defaults to `false`.
- *   - For `CREW` credits → must be `undefined`.
- * - Validation:
- *   - Allowed only when `department === "CAST"`.
- *   - Automatically rejects values for `CREW` credits.
+ * @remarks
+ * - CAST → defaults to `false`
+ * - CREW → must be `undefined`
+ * - Validation strictly enforces department rules
  */
 const CastOnlyBoolean = {
     type: Boolean,
     default: function () {
-        return (this as any).department === "CREW" ? undefined : false;
+        return (this as any).department === "CREW"
+            ? undefined
+            : false;
     },
     validate: {
         message: "Allowed for `CAST` credits only.",
         validator: function (value: boolean | undefined) {
-            return (this as any).department === "CAST" || value === undefined;
+            return (this as any).department === "CAST"
+                || value === undefined;
         },
     },
 };
 
 /**
- * Mongoose schema for a Movie Credit.
+ * Schema representing a person’s contribution to a movie.
  *
- * A `MovieCredit` represents how a **person** contributed to a **movie**,
- * either as **CAST** (an actor/performer) or **CREW** (a crew member).
+ * A MovieCredit links:
+ * - a **Movie**
+ * - a **Person**
+ * - a **RoleType**
  *
- * ## Key Rules
- * - `department` determines whether a record is CAST or CREW.
- * - Certain fields (e.g. `characterName`, `billingOrder`, boolean flags) are **CAST-only**.
- * - Other fields (e.g. `displayRoleName`) are **CREW-only**.
- * - Validation enforces that CAST-only fields are undefined for CREW and vice versa.
- *
- * ## Indexes & Uniqueness
- * - CAST credits enforce unique `billingOrder` per movie.
- * - CAST credits enforce uniqueness across `(movie, person, roleType, characterName)`.
- * - CREW credits enforce uniqueness across `(movie, person, roleType, displayRoleName)`.
+ * with strict CAST / CREW behavioral rules.
  */
 export const MovieCreditSchema = new Schema<IMovieCredit>({
-    /**
-     * Reference to the **Movie** this credit belongs to.
-     */
+    /** Target movie for the credit */
     movie: {
         type: Schema.Types.ObjectId,
         ref: "Movie",
         required: [true, "Required."],
     },
 
-    /**
-     * Reference to the **Person** receiving this credit.
-     */
+    /** Person receiving the credit */
     person: {
         type: Schema.Types.ObjectId,
         ref: "Person",
         required: [true, "Required."],
     },
 
+    /** URL-safe identifier derived from person name */
+    slug: SlugSchemaTypeOptions,
+
     /**
-     * Department of the credit.
+     * Credit department.
      *
-     * - Must be either `"CAST"` or `"CREW"`.
-     * - Drives which fields are required or restricted.
+     * Controls field availability and validation.
      */
     department: {
         type: String,
@@ -74,24 +72,14 @@ export const MovieCreditSchema = new Schema<IMovieCredit>({
         enum: RoleTypeDepartmentConstant,
     },
 
-    /**
-     * Reference to the **RoleType** describing this credit.
-     *
-     * Examples:
-     * - CAST: "Actor"
-     * - CREW: "Director", "Cinematographer"
-     */
+    /** Role type associated with this credit */
     roleType: {
         type: Schema.Types.ObjectId,
         ref: "RoleType",
         required: [true, "Required."],
     },
 
-    /**
-     * Display label for the role (CREW only).
-     * - e.g. `"Director of Photography"`.
-     * - Optional, trimmed, 1–150 chars.
-     */
+    /** Custom role label (CREW only) */
     displayRoleName: {
         type: String,
         trim: true,
@@ -99,10 +87,7 @@ export const MovieCreditSchema = new Schema<IMovieCredit>({
         maxlength: [150, "Must be 150 characters or less."],
     },
 
-    /**
-     * Free-text notes about the credit.
-     * - Optional, trimmed, 1–1000 chars.
-     */
+    /** Optional free-text notes */
     notes: {
         type: String,
         trim: true,
@@ -110,11 +95,7 @@ export const MovieCreditSchema = new Schema<IMovieCredit>({
         maxlength: [1000, "Must be 1000 characters or less."],
     },
 
-    /**
-     * Custom name shown in the credits (overrides Person’s name).
-     * - e.g. `"J.D. Smith"` instead of `"John Smith"`.
-     * - Optional, trimmed, 1–150 chars.
-     */
+    /** Override name shown in credits */
     creditedAs: {
         type: String,
         trim: true,
@@ -122,75 +103,72 @@ export const MovieCreditSchema = new Schema<IMovieCredit>({
         maxlength: [150, "Must be 150 characters or less."],
     },
 
-    // --- CAST-specific fields ---
+    // --- CAST ONLY ---
 
     /**
-     * Character name (CAST only).
+     * Character name.
      *
-     * Validation rules:
-     * - Required for CAST credits.
-     * - Must be undefined for CREW credits.
+     * Required for CAST.
+     * Forbidden for CREW.
      */
     characterName: {
         type: String,
         minlength: [1, "Must not be an empty string."],
         maxlength: [150, "Must be 150 characters or less."],
         validate: {
-            message: function ({value}: { value: string | undefined }) {
-                const doc = (this as any);
-                if (doc.department === "CREW" && value !== undefined) return "Must be undefined for `CREW` credits.";
-                if (doc.department === "CAST" && value === undefined) return "Required for `CAST` credits.";
-                return "Invalid values. Check `department` and other values.";
+            message: function ({value}: { value?: string }) {
+                const doc = this as any;
+                if (doc.department === "CREW" && value !== undefined)
+                    return "Must be undefined for `CREW` credits.";
+                if (doc.department === "CAST" && value === undefined)
+                    return "Required for `CAST` credits.";
+                return "Invalid value.";
             },
-            validator: function (value: string | undefined) {
-                if (this.department === "CREW" && value === undefined) return true;
+            validator: function (value?: string) {
+                if (this.department === "CREW") return value === undefined;
                 return this.department === "CAST" && value !== undefined;
             },
-        }
+        },
     },
 
     /**
-     * Billing order (CAST only).
-     *
-     * Determines display order in cast list.
-     * - Must be ≥ 1.
-     * - Required for CAST, must be undefined for CREW.
-     * - Unique per movie (see indexes).
+     * Billing order for CAST roles.
      */
     billingOrder: {
         type: Number,
         min: [1, "Must be 1 or more."],
         validate: {
-            validator: function (value: number | undefined) {
+            validator: function (value?: number) {
                 if (this.department === "CREW") return value === undefined;
                 return this.department === "CAST";
             },
-            message: function ({value}: { value: number | undefined }) {
-                const doc = (this as any);
-                if (doc.department === "CREW" && value !== undefined) return "Must be undefined for `CREW` credits.";
-                if (doc.department !== "CAST") return "Invalid values. Check `department` and other values.";
-            }
+            message: function ({value}: { value?: number }) {
+                const doc = this as any;
+                if (doc.department === "CREW" && value !== undefined)
+                    return "Must be undefined for `CREW` credits.";
+                return "Invalid value.";
+            },
         },
     },
 
-    // --- CAST-only boolean flags ---
+    // ─── CAST-only boolean flags ─────────────────────────────────────────
 
-    /** Indicates an **uncredited** performance (CAST only). */
+    /** Uncredited performance */
     uncredited: CastOnlyBoolean,
 
-    /** Marks this as the **primary role** for the person (CAST only). */
+    /** Primary role indicator */
     isPrimary: CastOnlyBoolean,
 
-    /** Role is **voice-only** (CAST only). */
+    /** Voice-only role */
     voiceOnly: CastOnlyBoolean,
 
-    /** Indicates a **cameo appearance** (CAST only). */
+    /** Cameo appearance */
     cameo: CastOnlyBoolean,
 
-    /** Role uses **motion capture** technology (CAST only). */
+    /** Motion-capture role */
     motionCapture: CastOnlyBoolean,
 
-    /** Role is from **archive footage** (CAST only). */
+    /** Archive footage appearance */
     archiveFootage: CastOnlyBoolean,
 }, {timestamps: true});
 
@@ -198,22 +176,22 @@ export const MovieCreditSchema = new Schema<IMovieCredit>({
  * Indexes
  */
 
-/** Index for filtering credits by movie and department (CAST/CREW). */
+/** Filter by movie and department */
 MovieCreditSchema.index({movie: 1, department: 1});
 
-/** Ensures unique `billingOrder` per movie (CAST only). */
+/** Unique billing order per movie (CAST only) */
 MovieCreditSchema.index(
     {movie: 1, billingOrder: 1},
     {unique: true, partialFilterExpression: {department: "CAST"}},
 );
 
-/** Ensures unique CAST credit per `(movie, person, roleType, characterName)`. */
+/** Unique CAST credit identity */
 MovieCreditSchema.index(
     {movie: 1, person: 1, roleType: 1, characterName: 1},
     {unique: true, partialFilterExpression: {department: "CAST"}},
 );
 
-/** Ensures unique CREW credit per `(movie, person, roleType, displayRoleName)`. */
+/** Unique CREW credit identity */
 MovieCreditSchema.index(
     {movie: 1, person: 1, roleType: 1, displayRoleName: 1},
     {unique: true, partialFilterExpression: {department: "CREW"}},

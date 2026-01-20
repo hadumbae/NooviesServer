@@ -1,63 +1,70 @@
-import { Types } from "mongoose";
+/**
+ * @file MovieCredit.interface.ts
+ *
+ * TypeScript interface for MovieCredit documents.
+ */
+
+import {Types} from "mongoose";
 import type {MovieSchemaFields} from "../../movie/model/Movie.types.js";
 import type {PersonSchemaFields} from "../../person/interfaces/PersonSchemaFields.js";
 import type IRoleType from "../../roleType/model/RoleType.interface.js";
 
 /**
- * Represents a credit for a person in a movie, either as CAST or CREW.
+ * Represents a single credit for a person in a movie.
+ *
+ * Enforces CAST / CREW separation at the type level.
  */
 export interface IMovieCredit {
     /** MongoDB ObjectId (readonly) */
     readonly _id: Types.ObjectId;
 
-    /** Reference to the movie (ObjectId or populated IMovie) */
+    /** URL-friendly identifier */
+    slug: string;
+
+    /** Movie reference */
     movie: Types.ObjectId | MovieSchemaFields;
 
-    /** Reference to the person (ObjectId or populated IPerson) */
+    /** Person reference */
     person: Types.ObjectId | PersonSchemaFields;
 
-    // --- RoleType ---
-
-    /** Department of the credit: "CAST" or "CREW" */
+    /** Credit department */
     department: "CAST" | "CREW";
 
-    /** Reference to the role type (e.g., Actor, Director, Producer) */
+    /** Role type definition */
     roleType: IRoleType;
 
-    /** Optional override for how the role name should be displayed */
+    /** Optional display label for CREW roles */
     displayRoleName?: string;
 
-    /** Optional notes about this credit */
+    /** Optional notes */
     notes?: string;
 
-    /** Optional name used in movie credits if different from person's name */
+    /** Optional credited name override */
     creditedAs?: string;
 
-    // --- Cast-specific fields ---
+    // --- CAST ONLY ---
 
-    /** Name of the character played (CAST only) */
+    /** Character name */
     characterName?: string;
 
-    /** Billing order for CAST roles; must be undefined for CREW */
+    /** Billing order */
     billingOrder?: number;
 
-    // --- Boolean flags (CAST only) ---
-
-    /** Marks this as the primary role */
+    /** Primary role flag */
     isPrimary?: boolean;
 
-    /** Indicates an uncredited role */
+    /** Uncredited appearance */
     uncredited?: boolean;
 
-    /** Role is voice-only */
+    /** Voice-only role */
     voiceOnly?: boolean;
 
-    /** Indicates a cameo appearance */
+    /** Cameo appearance */
     cameo?: boolean;
 
-    /** Role uses motion capture */
+    /** Motion-capture role */
     motionCapture?: boolean;
 
-    /** Role is archive footage */
+    /** Archive footage role */
     archiveFootage?: boolean;
 }

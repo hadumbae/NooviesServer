@@ -2,6 +2,8 @@ import {model, type Model} from "mongoose";
 import type {IMovieCredit} from "./MovieCredit.interface.js";
 import {MovieCreditSchema} from "./MovieCredit.schema.js";
 
+import "./MovieCredit.middleware.js";
+
 /**
  * Mongoose model for MovieCredit documents.
  *
