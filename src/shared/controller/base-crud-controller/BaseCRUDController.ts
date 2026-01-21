@@ -18,13 +18,14 @@ import BaseController from "../BaseController.js";
 import isValidObjectId from "../../utility/mongoose/isValidObjectId.js";
 import type { PopulationPipelineStages } from "../../types/mongoose/AggregatePipelineStages.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
-import type { AggregateQueryParams } from "../../services/aggregate/AggregateQueryService.types.js";
 import type {
     BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor,
 } from "./BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../types/query-options/QueryOptionService.types.js";
 import type { ModelObject } from "../../types/ModelObject.js";
+
+import type {AggregateQueryParams} from "../../services/aggregate/AggregateQueryService.types.js";
 
 /**
  * Base CRUD controller with aggregation support.

@@ -1,71 +1,61 @@
-import type {
-    PopulationPipelineStages, ReferenceFilterPipelineStages,
-} from "../../types/mongoose/AggregatePipelineStages.js";
+/**
+ * @file AggregateQueryService.types.ts
+ *
+ * Shared type definitions for {@link AggregateQueryService}.
+ */
+
+import type {FilterQuery} from "mongoose";
 import type {QueryOptionParams} from "../../schema/query/QueryOptionParamsSchema.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
-import type {FilterQuery} from "mongoose";
+import type {
+    PopulationPipelineStages,
+    ReferenceFilterPipelineStages
+} from "../../types/mongoose/AggregatePipelineStages.js";
 
 /**
- * Represents the result shape of an aggregate query.
- *
- * @typeParam TResult - The document type returned by the aggregation.
- *
- * @remarks
- * - Can either be a raw array of results (`TResult[]`),
- *   or a paginated response object containing `totalItems` and `items`.
+ * Pagination configuration for aggregate-capable queries.
+ */
+export type AggregatePaginationOptions =
+    | { paginated: true, page: number, perPage: number }
+    | { paginated?: false, page?: never, perPage?: never };
+
+/**
+ * Result shape returned by query execution.
  */
 export type AggregateQueryResults<TResult = any> =
     TResult[] | { totalItems: number; items: TResult[] };
 
 /**
- * Parameters controlling pagination behavior for aggregate queries.
- *
- * @remarks
- * - When `paginated: true`, both `page` and `perPage` are required.
- * - When not paginated, these fields must be omitted.
+ * Parameters for aggregate-capable queries.
  */
-export type AggregatePaginationParams =
-    | { paginated: true; page: number; perPage: number }
-    | { paginated?: false; page?: never; perPage?: never };
+export type AggregateQueryParams<TSchema = Record<string, unknown>, TMatchFilters = any> =
+    Omit<QueryOptionParams, "paginated"> &
+    AggregatePaginationOptions & {
+    options: QueryOptionTypes<TSchema, TMatchFilters>;
+    populationPipelines?: PopulationPipelineStages;
+};
 
 /**
- * Input parameters for performing an aggregate query.
- *
- * @typeParam TSchema - The schema type for the main collection documents.
- * @typeParam TMatchFilters - The type representing filterable fields.
- *
- * @remarks
- * - Combines generic query options with optional pagination and population stages.
- * - `options` specifies match filters, sorts, and reference filters.
- * - `populationPipelines` allows enriching results with `$lookup` and `$unwind` stages.
+ * Parameters for non-paginated `.find()` queries.
  */
-export type AggregateQueryParams<
-    TSchema = Record<string, unknown>,
-    TMatchFilters = any,
-> =
-    QueryOptionParams &
-    AggregatePaginationParams &
-    {
-        /** Query and filter options (match filters, sorts, reference filters). */
-        options: QueryOptionTypes<TSchema, TMatchFilters>;
-
-        /** Optional pipeline stages for populating references (e.g., Person, Movie). */
-        populationPipelines?: PopulationPipelineStages;
-    };
+export type FindQueryParams<TSchema = Record<string, unknown>, TMatchFilters = any> =
+    Omit<QueryOptionParams, "paginated"> & {
+    options: QueryOptionTypes<TSchema, TMatchFilters>;
+};
 
 /**
- * Parameters for counting documents in an aggregate query.
- *
- * @typeParam TMatchFilters - The type representing filterable fields.
- *
- * @remarks
- * - `matchFilters` apply standard query filters.
- * - `referenceFilters` allow filtering on joined reference documents.
+ * Parameters for paginated `.find()` queries.
  */
-export type AggregateCountParams<TMatchFilters> = {
-    /** Match filters applied directly to the main collection. */
+export type PaginatedQueryParams<TSchema = Record<string, unknown>, TMatchFilters = any> =
+    FindQueryParams<TSchema, TMatchFilters> & {
+    page: number;
+    perPage: number;
+};
+
+/**
+ * Parameters used when counting documents via aggregation.
+ */
+export type CountQueryParams<TMatchFilters> = {
     matchFilters?: FilterQuery<TMatchFilters>;
-
-    /** Reference filters applied through `$lookup` stages. */
     referenceFilters?: ReferenceFilterPipelineStages;
 };
