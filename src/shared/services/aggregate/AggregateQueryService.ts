@@ -152,7 +152,7 @@ export default class AggregateQueryService<
     async aggregate<TResult = any>(
         params: AggregateQueryParams<TSchema, TMatchFilters>
     ): Promise<AggregateQueryResults<TResult>> {
-        const {options: {match, reference}, limit, populationPipelines, populate, paginated} = params;
+        const {options: {match, reference}, limit, populationPipelines, populate, paginated, virtuals} = params;
 
         const pipeline: PipelineStage[] = [];
 
@@ -175,13 +175,13 @@ export default class AggregateQueryService<
 
         return paginated
             ? {
-                items: (await this._model.aggregate(pipeline)) as TResult[],
+                items: (await this._model.aggregate(pipeline).option({virtuals})) as TResult[],
                 totalItems: await this.count({
                     matchFilters: match?.filters,
                     referenceFilters: reference?.filters,
                 }),
             }
-            : ((await this._model.aggregate(pipeline)) as TResult[]);
+            : ((await this._model.aggregate(pipeline).option({virtuals})) as TResult[]);
     }
 
     /**
