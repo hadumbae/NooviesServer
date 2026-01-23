@@ -2,6 +2,7 @@ import type SeatMapService from "../../../seatmap/service/seat-map-service/SeatM
 import { type Aggregate, type HydratedDocument, type Query, Schema } from "mongoose";
 import SeatMap from "../../../seatmap/model/SeatMap.model.js";
 import type { ShowingSchemaFields } from "../../model/Showing.types.js";
+import {ShowingSeatMapVirtualPipelines} from "../../queries/ShowingSeatMapVirtualPipelines.js";
 
 /**
  * Constructor dependencies for {@link ShowingLifestyleService}.
@@ -86,58 +87,7 @@ export default class ShowingLifestyleService {
 
         const pipeline = this.pipeline();
 
-        pipeline.push(
-            {
-                $lookup: {
-                    from: "SeatMaps",
-                    localField: "_id",
-                    foreignField: "showing",
-                    as: "_sms",
-                },
-            },
-            {
-                $addFields: {
-                    seatMapCount: { $size: "$_sms" },
-                    unavailableSeatsCount: {
-                        $size: {
-                            $filter: {
-                                input: "$_sms",
-                                as: "usc",
-                                cond: { $eq: ["$usc.status", "UNAVAILABLE"] },
-                            },
-                        },
-                    },
-                    availableSeatsCount: {
-                        $size: {
-                            $filter: {
-                                input: "$_sms",
-                                as: "asc",
-                                cond: { $eq: ["$asc.status", "AVAILABLE"] },
-                            },
-                        },
-                    },
-                    reservedSeatsCount: {
-                        $size: {
-                            $filter: {
-                                input: "$_sms",
-                                as: "rsc",
-                                cond: { $eq: ["$rsc.status", "RESERVED"] },
-                            },
-                        },
-                    },
-                    soldSeatsCount: {
-                        $size: {
-                            $filter: {
-                                input: "$_sms",
-                                as: "ssc",
-                                cond: { $eq: ["$ssc.status", "SOLD"] },
-                            },
-                        },
-                    },
-                },
-            },
-            { $project: { _sms: 0 } }
-        );
+        pipeline.push(...ShowingSeatMapVirtualPipelines);
     };
 
     /**

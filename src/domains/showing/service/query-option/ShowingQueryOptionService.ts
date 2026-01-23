@@ -34,6 +34,7 @@ import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {ShowingSchemaFields} from "../../model/Showing.types.js";
 import type {ShowingQueryMatchFilters} from "../../schema/query/ShowingMatchParams.js";
+import {ShowingPopulationPipelines} from "../../queries/ShowingPopulationPipelines.js";
 
 /**
  * Builds query options and aggregation pipelines for
@@ -183,19 +184,6 @@ export default class ShowingQueryOptionService
      * @returns Aggregation pipeline stages for population
      */
     generatePopulationPipelines(): PopulationPipelineStages {
-        return [
-            // Lookups
-            {$lookup: {from: "theatres", localField: "theatre", foreignField: "_id", as: "theatre"}},
-            {$lookup: {from: "screens", localField: "screen", foreignField: "_id", as: "screen"}},
-            {$lookup: {from: "movies", localField: "movie", foreignField: "_id", as: "movie"}},
-
-            // Unwind
-            {$unwind: "$theatre"},
-            {$unwind: "$screen"},
-            {$unwind: "$movie"},
-
-            // Movie genres
-            {$lookup: {from: "genres", localField: "movie.genres", foreignField: "_id", as: "movie.genres"}},
-        ];
+        return ShowingPopulationPipelines;
     }
 }
