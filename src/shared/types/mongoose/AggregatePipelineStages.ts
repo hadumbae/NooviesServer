@@ -1,12 +1,21 @@
-import type { PipelineStage } from "mongoose";
+import type {PipelineStage} from "mongoose";
 
 /**
- * Represents an array of MongoDB aggregation pipeline stages
- * specifically used for **populating references** in Mongoose queries.
+ * @file aggregation-pipeline.types.ts
  *
- * @remarks
- * - Only `$lookup` and `$unwind` stages are allowed.
- * - Typically used to populate related collections before further aggregation.
+ * Strongly-typed aggregation pipeline stage groups used for
+ * composing MongoDB/Mongoose queries.
+ *
+ * These aliases constrain which stages are allowed in specific
+ * aggregation contexts (population, filtering, sorting, virtuals).
+ */
+
+/**
+ * Pipeline stages used exclusively for **reference population**.
+ *
+ * Constraints:
+ * - Only `$lookup` and `$unwind` stages are permitted
+ * - Intended for populating related collections prior to filtering or sorting
  *
  * @example
  * ```ts
@@ -16,23 +25,25 @@ import type { PipelineStage } from "mongoose";
  *       from: "users",
  *       localField: "userId",
  *       foreignField: "_id",
- *       as: "user"
- *     }
+ *       as: "user",
+ *     },
  *   },
- *   { $unwind: "$user" }
+ *   { $unwind: "$user" },
  * ];
  * ```
  */
-export type PopulationPipelineStages = (PipelineStage.Lookup | PipelineStage.Unwind)[];
+export type PopulationPipelineStages = (
+    PipelineStage.Lookup |
+    PipelineStage.Unwind
+    )[];
 
 /**
- * Represents an array of MongoDB aggregation pipeline stages
- * used when applying **reference-level filters** in Mongoose queries.
+ * Pipeline stages used for **reference-level filtering**.
  *
- * @remarks
- * - Allows `$lookup`, `$match`, and `$unset` stages.
- * - `$match` is applied after `$lookup` to filter the populated documents.
- * - `$unset` can remove sensitive or unnecessary fields from the reference before returning results.
+ * Constraints:
+ * - `$lookup` must precede `$match`
+ * - `$match` operates on populated reference fields
+ * - `$unset` may remove sensitive or unnecessary reference fields
  *
  * @example
  * ```ts
@@ -40,7 +51,7 @@ export type PopulationPipelineStages = (PipelineStage.Lookup | PipelineStage.Unw
  *   { $lookup: { from: "users", localField: "userId", foreignField: "_id", as: "user" } },
  *   { $unwind: "$user" },
  *   { $match: { "user.active": true } },
- *   { $unset: "user.ssn" }
+ *   { $unset: "user.ssn" },
  * ];
  * ```
  */
@@ -51,13 +62,12 @@ export type ReferenceFilterPipelineStages = (
     )[];
 
 /**
- * Represents an array of MongoDB aggregation pipeline stages
- * used when applying **reference-level sorting** in Mongoose queries.
+ * Pipeline stages used for **reference-level sorting**.
  *
- * @remarks
- * - Allows `$lookup`, `$unwind`, `$sort`, and `$unset` stages.
- * - `$sort` can be applied to populated fields to order results.
- * - `$unset` can remove unneeded fields after sorting.
+ * Constraints:
+ * - Sorting is applied after reference population
+ * - `$sort` may target populated reference fields
+ * - `$unset` may remove unneeded fields post-sort
  *
  * @example
  * ```ts
@@ -65,7 +75,7 @@ export type ReferenceFilterPipelineStages = (
  *   { $lookup: { from: "users", localField: "userId", foreignField: "_id", as: "user" } },
  *   { $unwind: "$user" },
  *   { $sort: { "user.age": -1 } },
- *   { $unset: "user.password" }
+ *   { $unset: "user.password" },
  * ];
  * ```
  */
@@ -74,4 +84,18 @@ export type ReferenceSortPipelineStages = (
     PipelineStage.Unwind |
     PipelineStage.Sort |
     PipelineStage.Unset
+    )[];
+
+/**
+ * Pipeline stages used for **virtual field construction**.
+ *
+ * Typically used to:
+ * - Join related collections
+ * - Compute derived fields
+ * - Shape the final document output
+ */
+export type VirtualPipelineStages = (
+    PipelineStage.Lookup |
+    PipelineStage.AddFields |
+    PipelineStage.Project
     )[];
