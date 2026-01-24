@@ -1,10 +1,11 @@
 /**
  * @file TheatreBrowseRoutes.ts
  *
- * Public routing module for theatre browsing endpoints.
+ * Public routing module for theatre browse endpoints.
  *
- * Wires HTTP routes to the `TheatreBrowseController` via
- * `TheatreServiceProvider`, with async error handling applied.
+ * Wires HTTP routes to the {@link TheatreBrowseController}
+ * via {@link TheatreServiceProvider}, with centralized async
+ * error handling applied.
  */
 
 import {Router} from "express";
@@ -21,18 +22,19 @@ const {
 const router = Router();
 
 /**
- * GET /theatres-by-location/paginated
+ * GET /theatres-by-location/:target/paginated
  *
- * Returns paginated theatres that have scheduled showings,
- * filtered by optional location query parameters.
+ * Returns paginated theatres that contain scheduled showings.
+ *
+ * Filtering:
+ * - Location matching is performed using the `target` path parameter
+ *
+ * Pagination:
+ * - Page and size are controlled via query parameters
  */
 router.get(
-    "/theatres-by-location/paginated",
-    asyncHandler(
-        browseController.fetchPaginatedTheatresWithShowings.bind(
-            browseController,
-        ),
-    ),
+    "/theatres-by-location/:target/paginated",
+    asyncHandler(browseController.fetchPaginatedTheatresWithShowings.bind(browseController)),
 );
 
 export {

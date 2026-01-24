@@ -12,7 +12,6 @@
 import BaseController from "../../../../shared/controller/BaseController.js";
 import type {TheatreSearchService} from "../../services/search-service/TheatreSearchService.js";
 import type {Request, Response} from "express";
-import type TheatreQueryOptionService from "../../services/query/TheatreQueryOptionService.js";
 import type {
     TheatreBrowseControllerConstructor,
     TheatreBrowseMethods,
@@ -23,17 +22,14 @@ import type {
  */
 export class TheatreBrowseController
     extends BaseController
-    implements TheatreBrowseMethods
-{
-    protected optionService: TheatreQueryOptionService;
+    implements TheatreBrowseMethods {
     protected searchService: TheatreSearchService;
 
     constructor(params: TheatreBrowseControllerConstructor) {
-        const {searchService, optionService, queryUtils} = params;
+        const {searchService, queryUtils} = params;
 
         super({queryUtils});
         this.searchService = searchService;
-        this.optionService = optionService;
     }
 
     /**
@@ -54,20 +50,15 @@ export class TheatreBrowseController
     ): Promise<Response> {
         const {limit} = this.queryUtils.fetchOptionsFromQuery(req);
         const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
-        const {city, state, country, postalCode} =
-            this.optionService.fetchQueryParams(req);
+
+        const {target} = req.params;
 
         const data =
-            await this.searchService.fetchPaginatedTheatresWithShowings({
+            await this.searchService.fetchPaginatedTheatresByLocation({
+                target,
                 page,
                 perPage,
                 limit,
-                identifiers: {
-                    city,
-                    state,
-                    country,
-                    postalCode,
-                },
             });
 
         return res.status(200).json(data);

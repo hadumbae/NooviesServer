@@ -5,21 +5,20 @@
  *
  * Composes:
  * - Location-based theatre filtering
- * - Showing population and enrichment pipelines
+ * - Showing population and seat enrichment
  * - Faceted pagination with total counts
  * - Hard limits on theatre and showing result sizes
  */
 
 import type {
-    FetchShowingTheatreParams,
-    FetchShowingTheatreReturns,
+    FetchTheatreByLocationParams,
+    FetchTheatreByLocationReturns,
     TheatreSearchMethods,
 } from "./TheatreSearchService.types.js";
 import type {PipelineStage} from "mongoose";
 import Theatre from "../../model/Theatre.model.js";
 import {ShowingSeatMapVirtualPipelines} from "../../../showing/queries/ShowingSeatMapVirtualPipelines.js";
 import {ShowingPopulationPipelines} from "../../../showing/queries/ShowingPopulationPipelines.js";
-import {buildOptionalMatchOrStage} from "../../../../shared/utility/mongoose/buildOptionalMatchOrStage.js";
 
 /**
  * Executes aggregation-driven theatre search queries involving showings.
@@ -27,7 +26,8 @@ import {buildOptionalMatchOrStage} from "../../../../shared/utility/mongoose/bui
 export class TheatreSearchService implements TheatreSearchMethods {
 
     /**
-     * Returns paginated theatres that contain scheduled showings.
+     * Fetches paginated theatres that contain scheduled showings
+     * matching a location target.
      *
      * Showings:
      * - Restricted to `SCHEDULED` status
@@ -36,26 +36,18 @@ export class TheatreSearchService implements TheatreSearchMethods {
      * - Optionally capped per theatre
      *
      * Theatres:
-     * - Filtered by provided location identifiers
-     * - Excluded if no matching showings exist
+     * - Matched against location fields using a single target value
+     * - Excluded if no scheduled showings exist
      * - Sorted alphabetically
-     * - Paginated using a faceted aggregation
+     * - Paginated via a faceted aggregation
      *
-     * @param params Search filters and pagination options
+     * @param params Location filter, pagination, and showing limits
      * @returns Paginated theatre results with total item count
      */
-    async fetchPaginatedTheatresWithShowings(
-        {page = 1, perPage = 20, identifiers, limit: showingLimit}: FetchShowingTheatreParams,
-    ): Promise<FetchShowingTheatreReturns> {
-        const {city, state, country, postalCode} = identifiers;
+    async fetchPaginatedTheatresByLocation(
+        {target, page = 1, perPage = 20, limit: showingLimit}: FetchTheatreByLocationParams,
+    ): Promise<FetchTheatreByLocationReturns> {
         const limitedPerPage = Math.min(perPage, 20);
-
-        const matchStage = buildOptionalMatchOrStage({
-            "location.city": city,
-            "location.state": state,
-            "location.country": country,
-            "location.postalCode": postalCode,
-        });
 
         const showingPipelines: PipelineStage[] = [
             {$match: {status: "SCHEDULED"}},
@@ -69,7 +61,16 @@ export class TheatreSearchService implements TheatreSearchMethods {
         }
 
         const pipelines: PipelineStage[] = [
-            matchStage,
+            {
+                $match: {
+                    $or: [
+                        {"location.city": target},
+                        {"location.state": target},
+                        {"location.country": target},
+                        {"location.postalCode": target},
+                    ],
+                },
+            },
             {
                 $lookup: {
                     from: "showings",

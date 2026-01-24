@@ -6,6 +6,9 @@
 
 import type {TheatreSchemaFields} from "../../model/Theatre.types.js";
 import type {ShowingSchemaFields} from "../../../showing/model/Showing.types.js";
+import type {
+    LocationTarget
+} from "../../../../shared/schema/features/location-query-options/LocationQueryOptions.types.js";
 
 /**
  * Theatre entity augmented with populated showings.
@@ -20,7 +23,10 @@ export type ShowingTheatre = TheatreSchemaFields & {
 /**
  * Input parameters for fetching theatres with scheduled showings.
  */
-export type FetchShowingTheatreParams = {
+export type FetchTheatreByLocationParams = {
+    /** Location identifier used to match theatre fields */
+    target: LocationTarget;
+
     /** Page index (1-based) */
     page: number;
 
@@ -29,24 +35,12 @@ export type FetchShowingTheatreParams = {
 
     /** Optional cap on showings returned per theatre */
     limit?: number;
-
-    /**
-     * Location identifiers used to filter theatres.
-     *
-     * If omitted, theatres are not location-filtered.
-     */
-    identifiers: {
-        city?: string;
-        state?: string;
-        country?: string;
-        postalCode?: string;
-    };
 };
 
 /**
  * Paginated result shape for theatre search queries.
  */
-export type FetchShowingTheatreReturns = {
+export type FetchTheatreByLocationReturns = {
     /** Paginated theatre results */
     items: ShowingTheatre[];
 
@@ -62,10 +56,10 @@ export interface TheatreSearchMethods {
     /**
      * Fetches paginated theatres that contain scheduled showings.
      *
-     * @param params Search filters and pagination configuration
+     * @param params Location filters and pagination configuration
      * @returns Paginated theatre results with total count
      */
-    fetchPaginatedTheatresWithShowings(
-        params: FetchShowingTheatreParams,
-    ): Promise<FetchShowingTheatreReturns>;
+    fetchPaginatedTheatresByLocation(
+        params: FetchTheatreByLocationParams,
+    ): Promise<FetchTheatreByLocationReturns>;
 }
