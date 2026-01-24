@@ -1,4 +1,14 @@
-import type { Express } from "express";
+/**
+ * @file registerRoutes.ts
+ *
+ * Central route registry for the Express application.
+ *
+ * Defines and mounts all domain-specific routers under their
+ * respective base paths, including public browse endpoints,
+ * authentication, and admin APIs.
+ */
+
+import type {Express, Router} from "express";
 import AuthRoutes from "../../domains/authentication/routing/AuthRoutes.js";
 import PersonRoutes from "../../domains/person/routing/PersonRoutes.js";
 import MovieRoutes from "../../domains/movie/routing/MovieRoutes.js";
@@ -12,33 +22,57 @@ import SeatMapRoutes from "../../domains/seatmap/routing/SeatMapRoutes.js";
 import MovieFavouriteRoutes from "../../domains/movie/routing/MovieFavouriteRoutes.js";
 import MovieCreditRoutes from "../../domains/movieCredit/routing/MovieCreditRoutes.js";
 import RoleTypeRoutes from "../../domains/roleType/routing/RoleTypeRoutes.js";
+import {TheatreBrowseRoutes} from "../../domains/theatre/routing/TheatreBrowseRoutes.js";
+
+/**
+ * Internal route registration descriptor.
+ */
+type RouteRegistration = {
+    /** Base URL path for the router */
+    path: string;
+
+    /** Express router instance */
+    router: Router;
+};
+
+/**
+ * Ordered list of application route registrations.
+ *
+ * Order matters:
+ * - Public and authentication routes are registered first
+ * - Admin routes are grouped and namespaced under `/api/v1/admin`
+ */
+const registration: RouteRegistration[] = [
+    {path: "/api/v1/browse/theatres", router: TheatreBrowseRoutes},
+    {path: "/auth", router: AuthRoutes},
+    {path: "/api/v1/users", router: UserRoutes},
+
+    {path: "/api/v1/admin/persons", router: PersonRoutes},
+    {path: "/api/v1/admin/roletypes", router: RoleTypeRoutes},
+    {path: "/api/v1/admin/genres", router: GenreRoutes},
+
+    {path: "/api/v1/admin/seats", router: SeatRoutes},
+    {path: "/api/v1/admin/screens", router: ScreenRoutes},
+    {path: "/api/v1/admin/theatres", router: TheatreRoutes},
+
+    {path: "/api/v1/admin/movies", router: MovieRoutes},
+    {path: "/api/v1/admin/movies", router: MovieFavouriteRoutes},
+    {path: "/api/v1/admin/movie/credits", router: MovieCreditRoutes},
+
+    {path: "/api/v1/admin/showings", router: ShowingRoutes},
+    {path: "/api/v1/admin/seatmaps", router: SeatMapRoutes},
+];
 
 /**
  * Registers all application routes on the provided Express app.
  *
- * This function attaches domain-specific route handlers to their
- * corresponding paths, including authentication, users, movies,
- * seats, theatres, and other admin routes.
+ * Iterates over the internal route registry and mounts each router
+ * at its configured base path.
  *
- * @param app - The Express application instance to register the routes on.
+ * @param app Express application instance
  */
 export default function registerRoutes(app: Express) {
-    app.use("/auth", AuthRoutes);
-    app.use("/api/v1/users", UserRoutes);
-
-    app.use("/api/v1/admin/persons", PersonRoutes);
-
-    app.use("/api/v1/admin/movies", MovieRoutes);
-    app.use("/api/v1/admin/movies", MovieFavouriteRoutes);
-
-    app.use("/api/v1/admin/roletypes", RoleTypeRoutes);
-    app.use("/api/v1/admin/movie/credits", MovieCreditRoutes);
-
-    app.use("/api/v1/admin/genres", GenreRoutes);
-    app.use("/api/v1/admin/showings", ShowingRoutes);
-
-    app.use("/api/v1/admin/seats", SeatRoutes);
-    app.use("/api/v1/admin/screens", ScreenRoutes);
-    app.use("/api/v1/admin/theatres", TheatreRoutes);
-    app.use("/api/v1/admin/seatmaps", SeatMapRoutes);
-};
+    registration.forEach(({path, router}) => {
+        app.use(path, router);
+    });
+}
