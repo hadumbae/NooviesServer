@@ -4,10 +4,10 @@
  * Public contracts and data shapes for screen-based showing searches.
  */
 
-import type {DateTime} from "luxon";
 import {Types} from "mongoose";
 import type {ScreenSchemaFields} from "../../model/Screen.types.js";
 import type {ShowingSchemaFields} from "../../../showing/model/Showing.types.js";
+import type {SlugString} from "../../../../shared/schema/strings/SlugStringSchema.js";
 
 /**
  * Screen entity augmented with populated showings.
@@ -22,13 +22,10 @@ export type ScreenWithShowings = ScreenSchemaFields & {
  */
 export type ShowingsByScreensParams = {
     /** Target theatre identifier */
-    theatreID: Types.ObjectId;
+    theatreID: Types.ObjectId | SlugString;
 
     /** Local calendar date (YYYY-MM-DD) */
-    dateString: DateTime;
-
-    /** Maximum number of showings per screen */
-    showingLimit: number;
+    dateString: string;
 };
 
 /**

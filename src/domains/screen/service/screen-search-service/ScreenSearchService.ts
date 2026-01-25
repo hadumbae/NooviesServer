@@ -14,11 +14,12 @@ import type {
     ScreenWithShowings,
     ShowingsByScreensParams,
 } from "./ScreenSearchService.types.js";
-import type {PipelineStage} from "mongoose";
+import {type PipelineStage} from "mongoose";
 import Screen from "../../model/Screen.model.js";
 import Theatre from "../../../theatre/model/Theatre.model.js";
 import {ShowingPopulationPipelines} from "../../../showing/queries/ShowingPopulationPipelines.js";
 import {ShowingSeatMapVirtualPipelines} from "../../../showing/queries/ShowingSeatMapVirtualPipelines.js";
+import {getIdentifierFilter} from "../../../../shared/utility/getIdentifierFilter.js";
 
 /**
  * Service for screen-based showing search operations.
@@ -37,10 +38,10 @@ export class ScreenSearchService implements ScreenSearchMethods {
     async fetchShowingsByScreens(
         {theatreID, dateString}: ShowingsByScreensParams,
     ): Promise<ScreenWithShowings[]> {
-        const {
-            location: {timezone},
-        } = await Theatre
-            .findById(theatreID)
+        const idFilter = getIdentifierFilter(theatreID);
+
+        const {location: {timezone},} = await Theatre
+            .findOne(idFilter)
             .select("location")
             .orFail();
 
