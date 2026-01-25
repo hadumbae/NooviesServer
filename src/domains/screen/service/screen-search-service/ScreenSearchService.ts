@@ -40,7 +40,7 @@ export class ScreenSearchService implements ScreenSearchMethods {
     ): Promise<ScreenWithShowings[]> {
         const idFilter = getIdentifierFilter(theatreID);
 
-        const {location: {timezone},} = await Theatre
+        const {_id, location: {timezone},} = await Theatre
             .findOne(idFilter)
             .select("location")
             .orFail();
@@ -73,7 +73,7 @@ export class ScreenSearchService implements ScreenSearchMethods {
          * Root aggregation pipeline for screens.
          */
         const pipeline: PipelineStage[] = [
-            {$match: {theatre: theatreID}},
+            {$match: {theatre: _id}},
             {
                 $lookup: {
                     from: "showings",

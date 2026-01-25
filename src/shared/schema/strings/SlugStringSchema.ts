@@ -1,39 +1,38 @@
 /**
  * @file SlugStringSchema.ts
  *
- * Zod schema for **intentionally disabling slug input**.
+ * Zod schema for validating slug strings.
  *
- * This schema **accepts any value but always resolves to `undefined`**.
- * It is designed for cases where slugs must be:
- * - Generated server-side
- * - Immutable once created
- * - Explicitly ignored if supplied by a client
+ * Enforces:
+ * - A non-empty string value
+ * - A maximum length of 75 characters
  *
- * Common use cases:
- * - Create / update schemas where `slug` must not be user-controlled
- * - Schema composition where a slug field must exist structurally
- * - Safely overriding or discarding client-provided slugs
+ * This schema is intended for slugs that are:
+ * - Already normalized (e.g. kebab-case)
+ * - Persisted as stable identifiers
+ * - Generated or validated server-side
+ *
+ * It does **not** perform slugification or transformation.
  */
 
-import { z } from "zod";
+import {z} from "zod";
+import {NonEmptyStringSchema} from "./NonEmptyStringSchema.js";
 
 /**
- * Slug suppression schema.
+ * Slug string validation schema.
  *
- * - Accepts any input
- * - Allows omission
- * - Always transforms to `undefined`
+ * - Requires a non-empty string
+ * - Enforces a maximum length of 75 characters
  *
- * @returns `undefined` regardless of the provided value
+ * @example
+ * ```ts
+ * const slug: SlugString = "now-showing";
+ * ```
  */
-export const SlugStringSchema = z
-    .any()
-    .optional()
-    .transform((): string | undefined => undefined);
+export const SlugStringSchema =
+    NonEmptyStringSchema.max(75, "Slugs must be no more than 75 characters.");
 
 /**
- * Inferred type for a suppressed slug value.
- *
- * Always resolves to `undefined`.
+ * TypeScript type inferred from `SlugStringSchema`.
  */
 export type SlugString = z.infer<typeof SlugStringSchema>;
