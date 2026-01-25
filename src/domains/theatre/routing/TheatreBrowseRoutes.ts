@@ -33,7 +33,7 @@ const router = Router();
  * - Page and size are controlled via query parameters
  */
 router.get(
-    "/theatres-by-location/:target/paginated",
+    "/theatres-by-location/paginated",
     asyncHandler(browseController.fetchPaginatedTheatresWithShowings.bind(browseController)),
 );
 

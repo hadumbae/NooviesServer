@@ -25,7 +25,7 @@ export type ShowingTheatre = TheatreSchemaFields & {
  */
 export type FetchTheatreByLocationParams = {
     /** Location identifier used to match theatre fields */
-    target: LocationTarget;
+    target?: LocationTarget;
 
     /** Page index (1-based) */
     page: number;

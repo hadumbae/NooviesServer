@@ -49,6 +49,17 @@ export class TheatreSearchService implements TheatreSearchMethods {
     ): Promise<FetchTheatreByLocationReturns> {
         const limitedPerPage = Math.min(perPage, 20);
 
+        const matchStage: PipelineStage.Match[] = [{
+            $match: {
+                $or: [
+                    {"location.city": target},
+                    {"location.state": target},
+                    {"location.country": target},
+                    {"location.postalCode": target},
+                ],
+            },
+        }];
+
         const showingPipelines: PipelineStage[] = [
             {$match: {status: "SCHEDULED"}},
             {$sort: {startTime: -1}},
@@ -61,16 +72,7 @@ export class TheatreSearchService implements TheatreSearchMethods {
         }
 
         const pipelines: PipelineStage[] = [
-            {
-                $match: {
-                    $or: [
-                        {"location.city": target},
-                        {"location.state": target},
-                        {"location.country": target},
-                        {"location.postalCode": target},
-                    ],
-                },
-            },
+            ...(target ? matchStage : []),
             {
                 $lookup: {
                     from: "showings",

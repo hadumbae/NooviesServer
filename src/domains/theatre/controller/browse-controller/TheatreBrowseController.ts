@@ -16,6 +16,7 @@ import type {
     TheatreBrowseControllerConstructor,
     TheatreBrowseMethods,
 } from "./TheatreBrowseController.types.js";
+import {getLocationQueryOptions} from "../../../../shared/utility/features/query-options/getLocationQueryOptions.js";
 
 /**
  * Controller responsible for browsing theatres with scheduled showings.
@@ -50,8 +51,7 @@ export class TheatreBrowseController
     ): Promise<Response> {
         const {limit} = this.queryUtils.fetchOptionsFromQuery(req);
         const {page, perPage} = this.queryUtils.fetchPaginationFromQuery(req);
-
-        const {target} = req.params;
+        const {target} = getLocationQueryOptions(req);
 
         const data =
             await this.searchService.fetchPaginatedTheatresByLocation({
