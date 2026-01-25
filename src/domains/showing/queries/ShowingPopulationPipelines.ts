@@ -24,14 +24,16 @@ export const ShowingPopulationPipelines: PopulationPipelineStages = [
             localField: "movie",
             foreignField: "_id",
             as: "movie",
-        },
-    },
-    {
-        $lookup: {
-            from: "genres",
-            localField: "movie.genres",
-            foreignField: "_id",
-            as: "movie.genres",
+            pipeline: [
+                {
+                    $lookup: {
+                        from: "genres",
+                        localField: "genres",
+                        foreignField: "_id",
+                        as: "genres",
+                    }
+                }
+            ]
         },
     },
     {
