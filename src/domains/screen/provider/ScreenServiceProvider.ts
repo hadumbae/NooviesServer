@@ -8,37 +8,27 @@ import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import ScreenService from "../service/ScreenService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import ScreenSeatService from "../service/screen-seat-service/ScreenSeatService.js";
+import {ScreenSearchService} from "../service/screen-search-service/ScreenSearchService.js";
+import {ScreenBrowseController} from "../controller/screen-browse/ScreenBrowseController.js";
 
 /**
- * Service provider for the Screen module.
+ * @file ScreenServiceProvider.ts
  *
- * Responsible for instantiating and registering all components related to screens,
- * including:
- * - Mongoose model
- * - Repository
- * - Services for business logic, query handling, seat management, and aggregation
- * - Controller for handling HTTP requests
+ * Service provider responsible for wiring all Screen-related
+ * models, repositories, services, and controllers.
  *
- * @example
- * ```ts
- * const { model, repository, services, controllers } = ScreenServiceProvider.register();
- * const { controller } = controllers;
- * ```
+ * Acts as the composition root for the Screen module.
  */
 export default class ScreenServiceProvider {
     /**
-     * Registers and returns all Screen-related components.
+     * Registers and instantiates all Screen module dependencies.
      *
-     * @returns An object containing:
-     * - `model`: The Screen Mongoose model
-     * - `repository`: Base repository for CRUD operations
-     * - `services`: Collection of instantiated services:
-     *    - `service`: Core ScreenService
-     *    - `seatService`: Service for screen seat operations
-     *    - `optionService`: Service for parsing and validating query parameters
-     *    - `aggregateService`: Service for aggregation queries
-     * - `controllers`: Collection of instantiated controllers:
-     *    - `controller`: ScreenController instance
+     * @returns Screen module bindings.
+     *
+     * @example
+     * ```ts
+     * const { services, controllers } = ScreenServiceProvider.register();
+     * ```
      */
     static register() {
         const model = Screen;
@@ -50,6 +40,7 @@ export default class ScreenServiceProvider {
         const service = new ScreenService();
         const optionService = new ScreenQueryOptionService();
         const seatService = new ScreenSeatService();
+        const searchService = new ScreenSearchService();
         const aggregateService = new AggregateQueryService({ model, populateRefs });
 
         const controller = new ScreenController({
@@ -61,17 +52,31 @@ export default class ScreenServiceProvider {
             aggregateService,
         });
 
+        const browseController = new ScreenBrowseController({
+            searchService,
+            queryUtils,
+        });
+
         return {
+            /** Screen Mongoose model */
             model,
+
+            /** Base CRUD repository */
             repository,
+
+            /** Domain and query services */
             services: {
                 service,
                 seatService,
                 optionService,
                 aggregateService,
+                searchService,
             },
+
+            /** HTTP controllers */
             controllers: {
                 controller,
+                browseController,
             },
         };
     }

@@ -5,7 +5,7 @@
  * using Zod schemas.
  */
 
-import type {ZodTypeAny} from "zod";
+import {z, type ZodTypeAny} from "zod";
 import type {Request} from "express";
 import {BadRequestError} from "../../errors/BadRequestError.js";
 
@@ -37,7 +37,7 @@ export function validateRequestParameters<
     TSchema extends ZodTypeAny = ZodTypeAny
 >(
     {req, schema, errorMessage}: ValidationParams<TSchema>,
-) {
+): z.infer<TSchema> {
     const raw = {...req.params, ...req.query};
 
     const {data, error, success} = schema.safeParse(raw);
