@@ -34,9 +34,10 @@ const SeatMapPopulateRefs: PopulatePath[] = [
             {path: "screen"},
             {path: "theatre"},
             {path: "seatMapCount"},
+            {path: "unavailableSeatsCount"},
             {path: "availableSeatsCount"},
             {path: "reservedSeatsCount"},
-            {path: "unreservedSeatsCount"},
+            {path: "soldSeatsCount"},
         ],
     },
     {
