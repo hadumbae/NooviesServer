@@ -2,50 +2,49 @@ import type SeatMapService from "../../../seatmap/service/seat-map-service/SeatM
 import { type Aggregate, type HydratedDocument, type Query, Schema } from "mongoose";
 import SeatMap from "../../../seatmap/model/SeatMap.model.js";
 import type { ShowingSchemaFields } from "../../model/showing/Showing.types.js";
-import {ShowingSeatMapVirtualPipelines} from "../../queries/ShowingSeatMapVirtualPipelines.js";
+import { ShowingSeatMapVirtualPipelines } from "../../queries/ShowingSeatMapVirtualPipelines.js";
 
 /**
  * Constructor dependencies for {@link ShowingLifestyleService}.
  */
 type ShowingLifestyleServiceConstructor = {
-    /** Service responsible for creating seat maps for newly created showings. */
+    /** Service responsible for seat map creation and management. */
     seatMapService: SeatMapService;
 };
 
 /**
  * @file ShowingLifestyleService.ts
  *
- * Mongoose lifecycle hook manager for the `Showing` domain.
+ * Lifecycle hook manager for the `Showing` domain.
  *
  * @remarks
- * Centralizes all schema-level side effects and derived behavior for
- * `Showing` documents, keeping models declarative and services isolated.
+ * Centralizes all schema-level side effects for `Showing` documents,
+ * keeping models declarative and domain behavior isolated.
  *
  * Responsibilities:
- * - Create seat maps when a showing is first inserted
- * - Inject seat-count virtuals into aggregate pipelines
- * - Populate seat-related virtuals for lean queries
- * - Cascade-delete seat maps on showing removal
+ * - Create seat maps on initial insert
+ * - Inject seat-count virtuals into aggregation pipelines
+ * - Auto-populate seat-count virtuals for lean queries
+ * - Cascade-delete seat maps on removal
  */
 export default class ShowingLifestyleService {
     private seatMapService: SeatMapService;
 
     /**
-     * Creates a new {@link ShowingLifestyleService}.
+     * Creates a new lifecycle service instance.
      *
-     * @param params - Required lifecycle dependencies.
+     * @param params - Required service dependencies.
      */
     constructor(params: ShowingLifestyleServiceConstructor) {
-        const { seatMapService } = params;
-        this.seatMapService = seatMapService;
+        this.seatMapService = params.seatMapService;
     }
 
     /**
-     * Tracks whether the document was newly inserted.
+     * Captures whether the document is newly inserted.
      *
      * @remarks
-     * Persists the original `isNew` flag so post-save logic can
-     * differentiate inserts from updates.
+     * Persists the original `isNew` state so post-save logic
+     * can distinguish inserts from updates.
      */
     private handlePreSave = async function (
         this: HydratedDocument<ShowingSchemaFields>
@@ -57,8 +56,7 @@ export default class ShowingLifestyleService {
      * Creates a seat map after a successful insert.
      *
      * @remarks
-     * Executes only for newly created documents and delegates
-     * seat map creation to {@link SeatMapService}.
+     * Executes only for newly created documents.
      */
     private handlePostSave = async (
         doc: HydratedDocument<ShowingSchemaFields>
@@ -73,11 +71,11 @@ export default class ShowingLifestyleService {
     };
 
     /**
-     * Injects seat-count virtual fields into aggregate pipelines.
+     * Injects seat-count virtual fields into aggregation pipelines.
      *
      * @remarks
      * Activated only when `aggregate({ virtuals: true })` is used.
-     * Computes derived seat counts via `$lookup` and `$addFields`.
+     * Appends `$lookup` and `$addFields` stages to the pipeline.
      */
     private handlePreAggregate = async function (
         this: Aggregate<ShowingSchemaFields>
@@ -85,17 +83,15 @@ export default class ShowingLifestyleService {
         const { virtuals } = this.options as { virtuals: boolean };
         if (!virtuals) return;
 
-        const pipeline = this.pipeline();
-
-        pipeline.push(...ShowingSeatMapVirtualPipelines);
+        this.pipeline().push(...ShowingSeatMapVirtualPipelines);
     };
 
     /**
-     * Populates seat-related virtuals for lean queries.
+     * Populates seat-count virtuals for lean queries.
      *
      * @remarks
      * Automatically applies population when `lean({ virtuals: true })`
-     * is requested, ensuring derived seat counts are available.
+     * is requested on find queries.
      */
     private handlePreFindQuery = async function (
         this: Query<any, ShowingSchemaFields>
@@ -107,13 +103,14 @@ export default class ShowingLifestyleService {
                 { path: "seatMapCount" },
                 { path: "availableSeatsCount" },
                 { path: "reservedSeatsCount" },
-                { path: "unreservedSeatsCount" },
+                { path: "unavailableSeatsCount" },
+                { path: "soldSeatsCount" },
             ]);
         }
     };
 
     /**
-     * Cascades seat map deletion after a document-level removal.
+     * Cascades seat map deletion after document-level removal.
      */
     private handlePostDeleteDocument = async (
         doc: HydratedDocument<ShowingSchemaFields>
@@ -123,7 +120,7 @@ export default class ShowingLifestyleService {
     };
 
     /**
-     * Cascades seat map deletion after a query-based removal.
+     * Cascades seat map deletion after query-based removal.
      */
     private handlePostDeleteQuery = async function (
         this: Query<any, ShowingSchemaFields>
@@ -135,9 +132,9 @@ export default class ShowingLifestyleService {
     };
 
     /**
-     * Registers all lifecycle hooks on the provided schema.
+     * Registers all lifecycle hooks on the given schema.
      *
-     * @param schema - Mongoose schema to attach lifecycle behavior to.
+     * @param schema - Target Mongoose schema.
      */
     public registerHooks(schema: Schema) {
         // --- Insert lifecycle ---
