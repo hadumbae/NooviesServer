@@ -31,8 +31,6 @@ import {SimpleDateStringSchema}
     from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
 import {TimeStringSchema}
     from "../../../shared/schema/date-time/TimeStringSchema.js";
-import {SlugStringSchema}
-    from "../../../shared/schema/strings/SlugStringSchema.js";
 import {ShowingConfigInputSchema}
     from "./showing/showing-config/ShowingConfigInputSchema.js";
 
@@ -94,12 +92,11 @@ export const ShowingInputSchema = z
          * Nullable to allow explicit clearing.
          */
         config: ShowingConfigInputSchema.nullable().optional(),
-
-        /** Optional slug (normalized or ignored server-side). */
-        slug: SlugStringSchema,
     })
     .superRefine((values, ctx) => {
         const {startAtDate, startAtTime, endAtDate, endAtTime} = values;
+
+        console.log("Values: ", values);
 
         if (endAtDate && endAtTime) {
             const start = DateTime.fromISO(`${startAtDate}T${startAtTime}`);
