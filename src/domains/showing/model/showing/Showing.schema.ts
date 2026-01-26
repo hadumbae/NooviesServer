@@ -4,24 +4,28 @@
  * Mongoose schema for the `Showing` model.
  *
  * A Showing represents a scheduled movie screening, including timing,
- * language configuration, pricing, lifecycle status, and references
- * to related entities (Movie, Theatre, Screen).
+ * language configuration, pricing, lifecycle state, and references
+ * to related domain entities (Movie, Theatre, Screen).
  */
 
-import { Schema, type SchemaDefinitionProperty } from "mongoose";
+import {Schema, type SchemaDefinitionProperty} from "mongoose";
 import ShowingStatusConstant from "../../constants/ShowingStatusConstant.js";
-import ISO6391CodeConstant from "../../../../shared/constants/language/ISO6391CodeConstant.js";
-import type { ShowingSchemaFields } from "./Showing.types.js";
-import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOptions.js";
+import ISO6391CodeConstant
+    from "../../../../shared/constants/language/ISO6391CodeConstant.js";
+import type {ShowingSchemaFields} from "./Showing.types.js";
+import SlugSchemaTypeOptions
+    from "../../../../shared/model/SlugSchemaTypeOptions.js";
+import {ShowingConfigSchema}
+    from "../showing-config/ShowingConfig.schema.js";
 
 /**
  * ISO-639-1 language field definition.
  *
- * Used by both `language` and `subtitleLanguages`.
+ * Shared by both `language` and `subtitleLanguages`.
  */
 const LanguageDefinition: SchemaDefinitionProperty = {
     type: String,
-    enum: { values: ISO6391CodeConstant, message: "Invalid ISO-639-1 code." },
+    enum: {values: ISO6391CodeConstant, message: "Invalid ISO-639-1 code."},
     required: [true, "Required."],
 };
 
@@ -30,28 +34,28 @@ const LanguageDefinition: SchemaDefinitionProperty = {
  */
 export const ShowingSchema = new Schema<ShowingSchemaFields>(
     {
-        /** Referenced Movie document. */
+        /** Referenced movie document. */
         movie: {
             type: Schema.Types.ObjectId,
             ref: "Movie",
             required: true,
         },
 
-        /** Referenced Theatre document. */
+        /** Referenced theatre document. */
         theatre: {
             type: Schema.Types.ObjectId,
             ref: "Theatre",
             required: true,
         },
 
-        /** Referenced Screen document. */
+        /** Referenced screen document. */
         screen: {
             type: Schema.Types.ObjectId,
             ref: "Screen",
             required: true,
         },
 
-        /** Scheduled start time. */
+        /** Scheduled start time of the showing. */
         startTime: {
             type: Date,
             required: [true, "Start Time is required."],
@@ -80,10 +84,10 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             required: true,
         },
 
-        /** Primary spoken language. */
+        /** Primary spoken language (ISO-639-1). */
         language: LanguageDefinition,
 
-        /** Available subtitle languages. */
+        /** Available subtitle languages (ISO-639-1). */
         subtitleLanguages: {
             type: [LanguageDefinition],
             validate: {
@@ -95,7 +99,7 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             required: [true, "Subtitle languages are required."],
         },
 
-        /** Special event indicator (e.g. premiere). */
+        /** Marks special screenings (e.g. premieres, festivals). */
         isSpecialEvent: {
             type: Boolean,
             default: false,
@@ -112,11 +116,24 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
         /** Lifecycle status of the showing. */
         status: {
             type: String,
-            enum: { values: ShowingStatusConstant, message: "Invalid Showing status." },
+            enum: {
+                values: ShowingStatusConstant,
+                message: "Invalid Showing status.",
+            },
             required: [true, "Status is required."],
         },
 
-        /** Slug field (normalized / write-protected). */
+        /**
+         * Showing-level configuration flags.
+         *
+         * Optional subdocument controlling runtime behaviour.
+         */
+        config: {
+            type: ShowingConfigSchema,
+            default: null,
+        },
+
+        /** Normalized, write-protected slug. */
         slug: SlugSchemaTypeOptions,
     },
     {

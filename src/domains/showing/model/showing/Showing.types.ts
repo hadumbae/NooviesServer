@@ -1,30 +1,36 @@
 /**
  * @file Showing.types.ts
  *
- * @description
  * Schema field definitions for a live movie showing.
  *
- * This interface represents the **mutable, operational state** of a showing.
- * It references other domain entities (movie, theatre, screen) by ID or
- * populated document and reflects the current scheduling, pricing, language,
- * and lifecycle status.
+ * Represents the **mutable, operational state** of a showing.
+ * References other domain entities (movie, theatre, screen) by ID
+ * or populated document and reflects current scheduling, pricing,
+ * language, and lifecycle status.
  *
  * For historical or transactional records (e.g. reservations, tickets),
- * use `ShowingSnapshotSchemaFields` instead to prevent data drift.
+ * use snapshot-based schemas to avoid data drift.
  */
 
-import { Types } from "mongoose";
-import type { ScreenSchemaFields } from "../../../screen/model/Screen.types.js";
-import type { ShowingStatusCode } from "../../schema/ShowingStatusEnumSchema.js";
-import type { TheatreSchemaFields } from "../../../theatre/model/Theatre.types.js";
-import type { ISO6391LanguageCode } from "../../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
-import type {MovieSchemaFields} from "../../../movie/model/Movie.types.js";
+import {Types} from "mongoose";
+import type {ScreenSchemaFields}
+    from "../../../screen/model/Screen.types.js";
+import type {ShowingStatusCode}
+    from "../../schema/ShowingStatusEnumSchema.js";
+import type {TheatreSchemaFields}
+    from "../../../theatre/model/Theatre.types.js";
+import type {ISO6391LanguageCode}
+    from "../../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
+import type {MovieSchemaFields}
+    from "../../../movie/model/Movie.types.js";
+import type {ShowingConfigSchemaFields}
+    from "../showing-config/ShowingConfig.types.js";
 
 /**
  * Live showing schema fields.
  *
- * Designed for scheduling, administration, and runtime operations where
- * referenced entities may evolve over time.
+ * Designed for scheduling, administration, and runtime operations
+ * where referenced entities may evolve over time.
  */
 export interface ShowingSchemaFields {
     /** Unique identifier for the showing. */
@@ -39,7 +45,7 @@ export interface ShowingSchemaFields {
     /** Base ticket price for the showing. */
     ticketPrice: number;
 
-    /** Primary spoken language of the showing (ISO-639-1). */
+    /** Primary spoken language (ISO-639-1). */
     language: ISO6391LanguageCode;
 
     /** Available subtitle languages (ISO-639-1). */
@@ -48,7 +54,7 @@ export interface ShowingSchemaFields {
     /** Whether the showing is currently active and bookable. */
     isActive: boolean;
 
-    /** Marks special screenings (e.g. premieres, festivals, private events). */
+    /** Marks special screenings (e.g. premieres, festivals). */
     isSpecialEvent: boolean;
 
     /** Referenced movie (ID or populated document). */
@@ -63,5 +69,9 @@ export interface ShowingSchemaFields {
     /** Current lifecycle status of the showing. */
     status: ShowingStatusCode;
 
+    /** Optional showing-level configuration flags. */
+    config?: ShowingConfigSchemaFields | null;
+
+    /** Normalized slug identifier. */
     slug: string;
 }

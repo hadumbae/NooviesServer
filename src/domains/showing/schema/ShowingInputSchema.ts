@@ -1,36 +1,48 @@
 /**
  * @file ShowingInput.schema.ts
  *
- * Zod schema for creating and updating Showings.
+ * Zod input schema for creating and updating `Showing` entities.
  *
- * Validates and normalizes incoming payloads before persistence by enforcing:
+ * Validates and normalizes incoming payloads by enforcing:
  * - Valid and logically ordered date/time values
- * - Positive pricing
+ * - Positive ticket pricing
  * - Required ObjectId references
- * - Boolean flags with sensible defaults
+ * - Domain-safe boolean defaults
  * - Valid lifecycle status values
  *
- * Includes a cross-field refinement to ensure the computed end datetime
- * occurs after the computed start datetime when provided.
+ * Includes a cross-field refinement ensuring the computed
+ * end datetime occurs after the computed start datetime
+ * when both are provided.
  */
 
-import { z } from "zod";
-import { DateTime } from "luxon";
-import { ObjectIdStringSchema } from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
-import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
-import { BooleanValueSchema } from "../../../shared/schema/booleans/BooleanValueSchema.js";
-import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import { ShowingStatusEnumSchema } from "./ShowingStatusEnumSchema.js";
-import { SimpleDateStringSchema } from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
-import { TimeStringSchema } from "../../../shared/schema/date-time/TimeStringSchema.js";
-import { SlugStringSchema } from "../../../shared/schema/strings/SlugStringSchema.js";
+import {z} from "zod";
+import {DateTime} from "luxon";
+import {ObjectIdStringSchema}
+    from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
+import {NonEmptyStringSchema}
+    from "../../../shared/schema/strings/NonEmptyStringSchema.js";
+import {BooleanValueSchema}
+    from "../../../shared/schema/booleans/BooleanValueSchema.js";
+import {PositiveNumberSchema}
+    from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import {ShowingStatusEnumSchema}
+    from "./ShowingStatusEnumSchema.js";
+import {SimpleDateStringSchema}
+    from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
+import {TimeStringSchema}
+    from "../../../shared/schema/date-time/TimeStringSchema.js";
+import {SlugStringSchema}
+    from "../../../shared/schema/strings/SlugStringSchema.js";
+import {ShowingConfigInputSchema}
+    from "./showing/showing-config/ShowingConfigInputSchema.js";
 
 /**
- * Input schema for Showing creation and update operations.
+ * Input schema for showing creation and update operations.
  *
  * @remarks
  * - `endAtDate` and `endAtTime` are optional, but when both are provided
- *   they must resolve to a datetime later than `startAtDate` + `startAtTime`.
+ *   they must resolve to a datetime later than
+ *   `startAtDate` + `startAtTime`.
  * - Boolean flags default to domain-safe values.
  */
 export const ShowingInputSchema = z
@@ -56,12 +68,12 @@ export const ShowingInputSchema = z
         /** Subtitle languages (non-empty ISO-639-1 list). */
         subtitleLanguages: z
             .array(NonEmptyStringSchema)
-            .nonempty({ message: "Must not be empty." }),
+            .nonempty({message: "Must not be empty."}),
 
-        /** Special event flag. */
+        /** Marks special screenings (e.g. premieres, festivals). */
         isSpecialEvent: BooleanValueSchema.optional().default(false),
 
-        /** Active / bookable flag. */
+        /** Whether the showing is active and bookable. */
         isActive: BooleanValueSchema.optional().default(true),
 
         /** Referenced Movie ObjectId. */
@@ -76,11 +88,18 @@ export const ShowingInputSchema = z
         /** Showing lifecycle status. */
         status: ShowingStatusEnumSchema,
 
-        /** Optional slug (ignored or normalized server-side). */
+        /**
+         * Optional showing-level configuration overrides.
+         *
+         * Nullable to allow explicit clearing.
+         */
+        config: ShowingConfigInputSchema.nullable().optional(),
+
+        /** Optional slug (normalized or ignored server-side). */
         slug: SlugStringSchema,
     })
     .superRefine((values, ctx) => {
-        const { startAtDate, startAtTime, endAtDate, endAtTime } = values;
+        const {startAtDate, startAtTime, endAtDate, endAtTime} = values;
 
         if (endAtDate && endAtTime) {
             const start = DateTime.fromISO(`${startAtDate}T${startAtTime}`);
@@ -105,6 +124,6 @@ export const ShowingInputSchema = z
     });
 
 /**
- * Inferred input type for Showing create/update operations.
+ * Inferred input type for showing create/update operations.
  */
 export type ShowingInput = z.infer<typeof ShowingInputSchema>;
