@@ -4,42 +4,51 @@ import {
     createBaseRoutes,
     type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
-import type {ShowingControllerMethods} from "../controller/ShowingController.js";
-import {ShowingInputSchema} from "../schema/ShowingInputSchema.js";
+import type { ShowingControllerMethods } from "../controller/ShowingController.js";
+import { ShowingInputSchema } from "../schema/ShowingInputSchema.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
 /**
- * Extract the Showing controller and model from the Showing service provider
- * to configure routes and apply request validation.
+ * Registers the Showing service and extracts
+ * the model and CRUD controller.
  */
-const {model, controllers: {controller}} = ShowingServiceProvider.register();
+const {
+    model,
+    controllers: { controller },
+} = ShowingServiceProvider.register();
 
 /**
- * Middleware that removes unset/undefined fields before Showing documents
- * are persisted to the database.
- */
-const unsetMiddleware = unsetModelFormFields({model});
-
-/**
- * Middleware list specific to the `Showing` routes.
+ * Middleware that removes unset form fields
+ * before persistence.
  *
- * - **create**: Validates the request body against {@link ShowingInputSchema}
- *   and unsets unexpected form fields before creating a showing.
- * - **update**: Same validation and sanitization logic applied when updating.
+ * @remarks
+ * `startTime` and `endTime` are excluded to allow
+ * intentional partial updates.
+ */
+const unsetMiddleware = unsetModelFormFields({
+    model,
+    excludeKeys: ["startTime", "endTime"],
+});
+
+/**
+ * Route-specific middleware configuration
+ * for Showing CRUD endpoints.
  */
 const middlewareList: BaseRouteMiddleware<typeof controller> = {
     path: {
-        create: [validateZodSchemaAsync(ShowingInputSchema), unsetMiddleware],
-        update: [validateZodSchemaAsync(ShowingInputSchema), unsetMiddleware],
-    }
+        create: [
+            validateZodSchemaAsync(ShowingInputSchema),
+        ],
+        update: [
+            validateZodSchemaAsync(ShowingInputSchema),
+            unsetMiddleware,
+        ],
+    },
 };
 
 /**
- * Base configuration for `Showing` routes.
- *
- * @property crudController - The controller handling showing CRUD operations.
- * @property middlewareList - Middleware hooks applied to specific CRUD routes.
+ * Base route configuration for the Showing domain.
  */
 const baseConfig: BaseRouteConfig<ShowingControllerMethods> = {
     crudController: controller,
@@ -47,22 +56,15 @@ const baseConfig: BaseRouteConfig<ShowingControllerMethods> = {
 };
 
 /**
- * Express router for `Showing` domain.
+ * Express router for Showing CRUD operations.
  *
- * Provides automatically generated CRUD routes via {@link createBaseRoutes},
- * and defines additional domain-specific endpoints such as fetching seats
- * for a particular showing.
- *
- * ### Routes
- * - `POST /create` → Create a new showing (with validation + field sanitization)
- * - `PUT /update/:id` → Update a showing (with validation + field sanitization)
- * - `GET /get/:id` → Fetch a showing by ID
- * - `DELETE /delete/:id` → Delete a showing
+ * @remarks
+ * Routes are auto-generated via {@link createBaseRoutes}
+ * and include validation and sanitization middleware.
  *
  * @example
  * ```ts
- * import showingRoutes from "./routes/ShowingRoutes.js";
- * app.use("/showings", showingRoutes);
+ * app.use("/showings", routes);
  * ```
  */
 const routes = createBaseRoutes<ShowingControllerMethods>(baseConfig);
