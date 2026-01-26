@@ -21,7 +21,7 @@ import type {
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type ShowingQueryOptionService from "../service/query-option/ShowingQueryOptionService.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type { ShowingSchemaFields } from "../model/Showing.types.js";
+import type { ShowingSchemaFields } from "../model/showing/Showing.types.js";
 import type { ShowingQueryMatchFilters } from "../schema/query/ShowingMatchParams.js";
 import type { PopulationPipelineStages } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 

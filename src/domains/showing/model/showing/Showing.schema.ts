@@ -9,10 +9,10 @@
  */
 
 import { Schema, type SchemaDefinitionProperty } from "mongoose";
-import ShowingStatusConstant from "../constants/ShowingStatusConstant.js";
-import ISO6391CodeConstant from "../../../shared/constants/language/ISO6391CodeConstant.js";
+import ShowingStatusConstant from "../../constants/ShowingStatusConstant.js";
+import ISO6391CodeConstant from "../../../../shared/constants/language/ISO6391CodeConstant.js";
 import type { ShowingSchemaFields } from "./Showing.types.js";
-import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
+import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOptions.js";
 
 /**
  * ISO-639-1 language field definition.

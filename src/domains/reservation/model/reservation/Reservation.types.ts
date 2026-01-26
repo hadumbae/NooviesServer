@@ -11,7 +11,7 @@
  */
 
 import type { ReservedShowingSnapshotSchemaFields } from "../snapshots/showing-snapshot/ReservedShowingSnapshot.types.js";
-import type { ShowingSchemaFields } from "../../../showing/model/Showing.types.js";
+import type { ShowingSchemaFields } from "../../../showing/model/showing/Showing.types.js";
 import type { SeatMapSchemaFields } from "../../../seatmap/model/SeatMap.types.js";
 import type UserSchemaFields from "@models/UserSchemaFields.js";
 import { Types } from "mongoose";

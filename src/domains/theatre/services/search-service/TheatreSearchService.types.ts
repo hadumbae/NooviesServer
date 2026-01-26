@@ -5,7 +5,7 @@
  */
 
 import type {TheatreSchemaFields} from "../../model/Theatre.types.js";
-import type {ShowingSchemaFields} from "../../../showing/model/Showing.types.js";
+import type {ShowingSchemaFields} from "../../../showing/model/showing/Showing.types.js";
 import type {
     LocationTarget
 } from "../../../../shared/schema/features/location-query-options/LocationQueryOptions.types.js";

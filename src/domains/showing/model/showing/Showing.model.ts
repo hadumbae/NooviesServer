@@ -1,6 +1,6 @@
 import { Model, model } from "mongoose";
 import { ShowingSchema } from "./Showing.schema.js";
-import ShowingServiceProvider from "../provider/ShowingServiceProvider.js";
+import ShowingServiceProvider from "../../provider/ShowingServiceProvider.js";
 
 /**
  * @file Showing.model.ts

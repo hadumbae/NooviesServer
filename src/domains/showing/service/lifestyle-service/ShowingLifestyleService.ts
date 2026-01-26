@@ -1,7 +1,7 @@
 import type SeatMapService from "../../../seatmap/service/seat-map-service/SeatMapService.js";
 import { type Aggregate, type HydratedDocument, type Query, Schema } from "mongoose";
 import SeatMap from "../../../seatmap/model/SeatMap.model.js";
-import type { ShowingSchemaFields } from "../../model/Showing.types.js";
+import type { ShowingSchemaFields } from "../../model/showing/Showing.types.js";
 import {ShowingSeatMapVirtualPipelines} from "../../queries/ShowingSeatMapVirtualPipelines.js";
 
 /**

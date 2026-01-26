@@ -10,7 +10,7 @@
  */
 
 import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
-import type {ShowingSchemaFields} from "../model/Showing.types.js";
+import type {ShowingSchemaFields} from "../model/showing/Showing.types.js";
 import type {ShowingInput} from "../schema/ShowingInputSchema.js";
 import type {
     CRUDCreateParams,
@@ -28,7 +28,7 @@ import createHttpError from "http-errors";
 import {Types} from "mongoose";
 import MovieModel from "../../movie/model/Movie.model.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
-import Showing from "../model/Showing.model.js";
+import Showing from "../model/showing/Showing.model.js";
 
 /**
  * CRUD writer for the Showing domain.

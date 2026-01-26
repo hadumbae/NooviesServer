@@ -1,6 +1,6 @@
 import {MovieSchema} from "./Movie.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import Showing from "../../showing/model/Showing.model.js";
+import Showing from "../../showing/model/showing/Showing.model.js";
 import type {MovieSchemaFields} from "./Movie.types.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
 import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";

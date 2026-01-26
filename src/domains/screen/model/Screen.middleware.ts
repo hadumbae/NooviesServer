@@ -17,7 +17,7 @@ import type { ScreenSchemaFields } from "./Screen.types.js";
 
 import Theatre from "../../theatre/model/Theatre.model.js";
 import Seat from "../../seat/model/Seat.model.js";
-import Showing from "../../showing/model/Showing.model.js";
+import Showing from "../../showing/model/showing/Showing.model.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
 
 /**

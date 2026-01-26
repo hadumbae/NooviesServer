@@ -32,7 +32,7 @@ import type {
 import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/LookupMatchStage.types.js";
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
-import type {ShowingSchemaFields} from "../../model/Showing.types.js";
+import type {ShowingSchemaFields} from "../../model/showing/Showing.types.js";
 import type {ShowingQueryMatchFilters} from "../../schema/query/ShowingMatchParams.js";
 import {ShowingPopulationPipelines} from "../../queries/ShowingPopulationPipelines.js";
 
