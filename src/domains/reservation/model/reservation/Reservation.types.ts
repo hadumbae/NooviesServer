@@ -3,7 +3,7 @@
  *
  * Core schema field definitions for a reservation.
  *
- * Represents a reservation entity composed of:
+ * Describes a reservation entity composed of:
  * - an immutable snapshot of the reserved showing
  * - live references to the user, showing, and seating
  * - financial metadata
@@ -39,10 +39,13 @@ import type {ReservationType} from "../../schemas/enum/ReservationTypeEnumSchema
  * - `"EXPIRED"` → `dateExpired`
  *
  * Optional and nullable fields distinguish between:
- * - `undefined` → not yet set / not applicable
+ * - `undefined` → not yet set or not applicable
  * - `null` → explicitly cleared or intentionally absent
  */
 export interface ReservationSchemaFields {
+    /** Unique identifier of the reservation document. */
+    readonly _id: Types.ObjectId;
+
     /** Immutable snapshot of the reserved showing state. */
     snapshot: ReservedShowingSnapshotSchemaFields;
 
