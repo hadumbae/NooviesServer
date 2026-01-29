@@ -1,183 +1,66 @@
 /**
  * @file ReservationInputSchema.ts
  *
- * Zod schema for validating reservation create and update requests.
+ * Zod schema for validating reservation create and update requests
+ * at the API boundary.
  *
- * Defines the API-facing shape of a reservation, including:
- * - Ownership and showing references
- * - Seating selection and reservation type
- * - Pricing and currency metadata
- * - Lifecycle status and associated timestamps
+ * Extends the base ticket checkout input with:
+ * - Reservation lifecycle status
+ * - Status-dependent lifecycle timestamps
  * - Optional internal notes
  *
- * Includes cross-field validation to enforce:
+ * Performs cross-field validation to enforce:
  * - Required lifecycle dates based on {@link ReservationStatus}
  * - Seating constraints based on {@link ReservationTypeEnumSchema}
- * - Structural consistency prior to persistence
  *
- * Intended strictly for API boundary validation.
+ * @remarks
+ * This schema is intentionally limited to structural and
+ * consistency validation. Business rules such as lifecycle
+ * transitions, expiration timing, and state enforcement are
+ * handled at the model and service layers.
  */
 
-import { z } from "zod";
-import { ObjectIdSchema } from "../../../shared/schema/mongoose/ObjectIdSchema.js";
-import generateArraySchema from "../../../shared/utility/schema/generateArraySchema.js";
-import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import { ISO4217CurrencyCodeEnumSchema } from "../../../shared/schema/enums/ISO4217CurrencyCodeEnumSchema.js";
+import {z} from "zod";
 import {
     type ReservationStatus,
     ReservationStatusEnumSchema,
 } from "./enum/ReservationStatusEnumSchema.js";
-import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
-import { UTCDateOnlySchema } from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
-import { ReservationTypeEnumSchema } from "./enum/ReservationTypeEnumSchema.js";
+import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
+import {UTCDateOnlySchema} from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
+import {validateReservedSeating} from "../utilities/validation/validateReservedSeating.js";
+import {TicketCheckoutInputBaseSchema} from "./TicketCheckoutInputSchema.js";
 
 /**
- * Internal mapping of reservation status → required lifecycle date.
- *
- * Used exclusively for cross-field validation.
+ * Base reservation input schema including lifecycle metadata.
  */
-type DateMapValue = {
-    path: "datePaid" | "dateCancelled" | "dateRefunded" | "dateExpired";
-    message: string;
-};
+export const ReservationInputBaseSchema = TicketCheckoutInputBaseSchema.extend({
+    /**
+     * Expiration timestamp for unpaid reservations.
+     *
+     * @remarks
+     * Required for active reservations and validated
+     * further at the model layer.
+     */
+    expiresAt: UTCDateOnlySchema.optional(),
+
+    /** Current lifecycle status of the reservation. */
+    status: ReservationStatusEnumSchema,
+
+    /** Optional internal notes or operational context. */
+    notes: NonEmptyStringSchema
+        .max(3000, "Must be 3000 characters or less.")
+        .optional(),
+});
 
 /**
- * Status-specific required date definitions.
+ * Reservation input schema with cross-field validation applied.
  */
-const DATE_MAP: Partial<Record<ReservationStatus, DateMapValue>> = {
-    PAID: {
-        path: "datePaid",
-        message: "Date Paid required for paid reservations.",
-    },
-    CANCELLED: {
-        path: "dateCancelled",
-        message: "Date Cancelled required for cancelled reservations.",
-    },
-    REFUNDED: {
-        path: "dateRefunded",
-        message: "Date Refunded required for refunded reservations.",
-    },
-    EXPIRED: {
-        path: "dateExpired",
-        message: "Date Expired required for expired reservations.",
-    },
-};
+export const ReservationInputSchema = ReservationInputBaseSchema.superRefine((values, ctx) => {
+    const {type, selectedSeating} = values;
+    validateReservedSeating(type, selectedSeating, ctx);
+});
 
 /**
- * Reservation input validation schema.
- *
- * @remarks
- * This schema performs structural validation only.
- * Business rules such as expiration timing and lifecycle
- * transitions are enforced at the model layer.
- */
-export const ReservationInputSchema = z
-    .object({
-        /** User who owns the reservation. */
-        user: ObjectIdSchema,
-
-        /** Showing being reserved. */
-        showing: ObjectIdSchema,
-
-        /** Number of tickets included in the reservation. */
-        ticketCount: PositiveNumberSchema,
-
-        /**
-         * Selected seating identifiers.
-         *
-         * @remarks
-         * - Required and non-empty for reserved seating
-         * - Must be absent for general admission
-         */
-        selectedSeating: generateArraySchema(ObjectIdSchema)
-            .min(1, { message: "Must not be an empty array." })
-            .optional()
-            .nullable(),
-
-        /** Total price paid or payable for the reservation. */
-        pricePaid: PositiveNumberSchema,
-
-        /** Currency used for the reservation price (ISO 4217). */
-        currency: ISO4217CurrencyCodeEnumSchema,
-
-        /** Date the reservation was created. */
-        dateReserved: UTCDateOnlySchema,
-
-        /** Date the reservation was paid. */
-        datePaid: UTCDateOnlySchema.optional(),
-
-        /** Date the reservation was cancelled. */
-        dateCancelled: UTCDateOnlySchema.optional(),
-
-        /** Date the reservation was refunded. */
-        dateRefunded: UTCDateOnlySchema.optional(),
-
-        /** Date the reservation expired. */
-        dateExpired: UTCDateOnlySchema.optional(),
-
-        /**
-         * Expiration timestamp for unpaid reservations.
-         *
-         * @remarks
-         * Required for active reservations and validated
-         * further at the schema level.
-         */
-        expiresAt: UTCDateOnlySchema,
-
-        /** Current lifecycle status of the reservation. */
-        status: ReservationStatusEnumSchema,
-
-        /** Reservation mode (general admission vs reserved seating). */
-        type: ReservationTypeEnumSchema,
-
-        /**
-         * Optional internal notes or operational context.
-         */
-        notes: NonEmptyStringSchema
-            .max(3000, "Must be 3000 characters or less.")
-            .optional(),
-    })
-    .superRefine((values, ctx) => {
-        const { status, type, selectedSeating } = values;
-
-        // --- REQUIRED STATUS DATES ---
-
-        const { path: reqDate, message: reqMessage } = DATE_MAP[status] ?? {};
-
-        if (reqDate && !values[reqDate]) {
-            ctx.addIssue({
-                code: "invalid_date",
-                path: [reqDate],
-                message: reqMessage,
-            });
-        }
-
-        // --- GENERAL ADMISSION ---
-
-        if (type === "GENERAL_ADMISSION" && Array.isArray(selectedSeating)) {
-            ctx.addIssue({
-                code: "invalid_type",
-                path: ["selectedSeating"],
-                expected: "null",
-                received: typeof selectedSeating,
-                message: "Must be empty for general admission.",
-            });
-        }
-
-        // --- RESERVED SEATS ---
-
-        if (type === "RESERVED_SEATS" && !Array.isArray(selectedSeating)) {
-            ctx.addIssue({
-                code: "invalid_type",
-                path: ["selectedSeating"],
-                expected: "array",
-                received: typeof selectedSeating,
-                message: "Required for reserved seating.",
-            });
-        }
-    });
-
-/**
- * Type representing validated reservation input data.
+ * Type representing validated reservation input payload.
  */
 export type ReservationInputData = z.infer<typeof ReservationInputSchema>;
