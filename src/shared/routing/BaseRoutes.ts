@@ -1,7 +1,8 @@
-import express, {type RequestHandler, type Router} from "express";
+import express, { type RequestHandler, type Router } from "express";
 import asyncHandler from "../utility/handlers/asyncHandler.js";
 import isAuth from "../../domains/authentication/middleware/isAuth.js";
-import type {BaseControllerCRUDMethods} from "../controller/base-crud-controller/BaseControllerCRUDMethods.js";
+import type { BaseControllerCRUDMethods } from "../controller/base-crud-controller/BaseControllerCRUDMethods.js";
+import type { BaseRouteMethods, BaseRoutePathKeys } from "./BaseRoute.types.js";
 
 /**
  * Route definition bound to a CRUD controller method.
@@ -9,8 +10,10 @@ import type {BaseControllerCRUDMethods} from "../controller/base-crud-controller
  * @template TController - CRUD controller type.
  */
 type RoutePath<TController extends BaseControllerCRUDMethods> = {
+    /** Logical route identifier. */
+    key: BaseRoutePathKeys;
     /** HTTP method used for the route. */
-    method: "get" | "post" | "put" | "patch" | "delete";
+    method: BaseRouteMethods;
     /** Express route path. */
     path: string;
     /** Controller method name to bind. */
@@ -20,25 +23,27 @@ type RoutePath<TController extends BaseControllerCRUDMethods> = {
 /**
  * Middleware configuration for CRUD routes.
  *
- * Allows:
+ * Supports:
  * - Global middleware applied to all routes
- * - Route-specific middleware per controller method
+ * - Route-specific middleware bound to controller methods
  *
  * @template TController - CRUD controller type.
  */
 export type BaseRouteMiddleware<TController extends BaseControllerCRUDMethods> = {
-    /** Middleware applied to all routes. */
+    /** Middleware applied to every route. */
     all?: RequestHandler[];
     /** Middleware applied per controller method. */
     path?: Partial<Record<keyof TController, RequestHandler[]>>;
 };
 
 /**
- * Configuration for {@link createBaseRoutes}.
+ * Configuration object for {@link createBaseRoutes}.
  *
  * @template TController - CRUD controller type.
  */
-export interface BaseRouteConfig<TController extends BaseControllerCRUDMethods = BaseControllerCRUDMethods> {
+export interface BaseRouteConfig<
+    TController extends BaseControllerCRUDMethods = BaseControllerCRUDMethods
+> {
     /** Controller instance implementing CRUD methods. */
     crudController: TController;
     /** Optional middleware configuration. */
@@ -49,20 +54,29 @@ export interface BaseRouteConfig<TController extends BaseControllerCRUDMethods =
  * Create a standardized CRUD router for a controller.
  *
  * Automatically:
- * - Binds controller methods
+ * - Binds controller methods to routes
  * - Wraps handlers with async error handling
  * - Applies authentication and configured middleware
+ * - Allows selective route exclusion
  *
  * @template TController - CRUD controller type.
- * @param config - Route configuration.
- * @returns An Express router instance.
+ * @param config - Route configuration
+ * @param excludeKeys - Route keys to exclude from registration
+ * @returns Express router instance
  */
-export const createBaseRoutes = <TController extends BaseControllerCRUDMethods>(config: BaseRouteConfig<TController>): Router => {
-    const {crudController, middlewareList} = config;
-    const {all: allMiddleware, path: pathMiddleware} = middlewareList || {};
+export const createBaseRoutes = <
+    TController extends BaseControllerCRUDMethods
+>(
+    config: BaseRouteConfig<TController>,
+    excludeKeys: BaseRoutePathKeys[] = [],
+): Router => {
+    const { crudController, middlewareList } = config;
+    const { all: allMiddleware, path: pathMiddleware } = middlewareList || {};
 
     /**
-     * Bind a controller method and wrap it in an async handler.
+     * Bind a controller method and wrap it with async handling.
+     *
+     * @param fn - Controller method name
      */
     const bind = (fn: keyof TController) =>
         asyncHandler(
@@ -70,34 +84,31 @@ export const createBaseRoutes = <TController extends BaseControllerCRUDMethods>(
                 .bind(crudController),
         );
 
-    /**
-     * Prepend authentication middleware to the handler chain.
-     */
-    const secure = (handlers: RequestHandler[] = []): RequestHandler[] => [
-        isAuth,
-        ...handlers,
-    ];
-
     const router = express.Router();
 
     const routes: RoutePath<TController>[] = [
-        {method: "get", path: "/all", fn: "all"},
-        {method: "get", path: "/paginated", fn: "paginated"},
-        {method: "post", path: "/create", fn: "create"},
-        {method: "get", path: "/get/:_id", fn: "get"},
-        {method: "get", path: "/slug/:slug", fn: "getBySlug"},
-        {method: "patch", path: "/update/:_id", fn: "update"},
-        {method: "delete", path: "/delete/:_id", fn: "delete"},
-        {method: "get", path: "/query", fn: "query"},
+        { key: "all", method: "get", path: "/all", fn: "all" },
+        { key: "paginated", method: "get", path: "/paginated", fn: "paginated" },
+        { key: "create", method: "post", path: "/create", fn: "create" },
+        { key: "get", method: "get", path: "/get/:_id", fn: "get" },
+        { key: "slug", method: "get", path: "/slug/:slug", fn: "getBySlug" },
+        { key: "update", method: "patch", path: "/update/:_id", fn: "update" },
+        { key: "delete", method: "delete", path: "/delete/:_id", fn: "delete" },
+        { key: "query", method: "get", path: "/query", fn: "query" },
     ];
 
-    for (const {method, path, fn} of routes) {
+    for (const { key, method, path, fn } of routes) {
+        if (excludeKeys.includes(key)) {
+            continue;
+        }
+
         const middleware = [
+            isAuth,
             ...(allMiddleware ?? []),
             ...(pathMiddleware?.[fn] ?? []),
         ];
 
-        router[method](path, secure(middleware), bind(fn));
+        router[method](path, middleware, bind(fn));
     }
 
     return router;
