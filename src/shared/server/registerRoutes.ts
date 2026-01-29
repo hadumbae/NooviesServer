@@ -24,6 +24,7 @@ import MovieCreditRoutes from "../../domains/movieCredit/routing/MovieCreditRout
 import RoleTypeRoutes from "../../domains/roleType/routing/RoleTypeRoutes.js";
 import {TheatreBrowseRoutes} from "../../domains/theatre/routing/TheatreBrowseRoutes.js";
 import {ScreenBrowseRoutes} from "../../domains/screen/routing/ScreenBrowseRoutes.js";
+import {ReservationRoutes} from "../../domains/reservation/routes/ReservationRoutes.js";
 
 /**
  * Internal route registration descriptor.
@@ -44,8 +45,12 @@ type RouteRegistration = {
  * - Admin routes are grouped and namespaced under `/api/v1/admin`
  */
 const registration: RouteRegistration[] = [
+    // --- AUTH ROUTES ---
+
     {path: "/auth", router: AuthRoutes},
     {path: "/api/v1/users", router: UserRoutes},
+
+    // --- ADMIN ROUTES ---
 
     {path: "/api/v1/admin/persons", router: PersonRoutes},
     {path: "/api/v1/admin/roletypes", router: RoleTypeRoutes},
@@ -62,9 +67,12 @@ const registration: RouteRegistration[] = [
     {path: "/api/v1/admin/showings", router: ShowingRoutes},
     {path: "/api/v1/admin/seatmaps", router: SeatMapRoutes},
 
+    {path: "/api/v1/admin/reservations", router: ReservationRoutes},
+
+    // --- BROWSE Routes ---
+
     {path: "/api/v1/browse/theatres", router: TheatreBrowseRoutes},
     {path: "/api/v1/browse/screens", router: ScreenBrowseRoutes},
-
 ];
 
 /**
