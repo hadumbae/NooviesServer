@@ -37,10 +37,10 @@
 import {type Model, model} from "mongoose";
 import ReservationSchema from "./Reservation.schema.js";
 import type {ReservationSchemaFields} from "./Reservation.types.js";
-import {ReservationServiceProvider} from "../../providers/ReservationServiceProvider.js";
 import "./Reservation.indexes.js";
+import {registerReservationHooks} from "./Reservation.hooks.js";
 
-ReservationServiceProvider.registerMiddleware();
+registerReservationHooks();
 
 /** Mongoose model for the `Reservation` collection. */
 const Reservation: Model<ReservationSchemaFields> = model<ReservationSchemaFields>(
