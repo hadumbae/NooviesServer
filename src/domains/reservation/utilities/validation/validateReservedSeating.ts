@@ -15,11 +15,11 @@ import type { RefinementCtx } from "zod";
 import type { ReservationType } from "../../schemas/enum/ReservationTypeEnumSchema.js";
 
 export const validateReservedSeating = function (
-    type: ReservationType,
+    reservationType: ReservationType,
     selectedSeating: Types.ObjectId[] | undefined | null,
     ctx: RefinementCtx,
 ): void {
-    if (type === "GENERAL_ADMISSION" && Array.isArray(selectedSeating)) {
+    if (reservationType === "GENERAL_ADMISSION" && Array.isArray(selectedSeating)) {
         ctx.addIssue({
             code: "invalid_type",
             path: ["selectedSeating"],
@@ -29,7 +29,7 @@ export const validateReservedSeating = function (
         });
     }
 
-    if (type === "RESERVED_SEATS" && !Array.isArray(selectedSeating)) {
+    if (reservationType === "RESERVED_SEATS" && !Array.isArray(selectedSeating)) {
         ctx.addIssue({
             code: "invalid_type",
             path: ["selectedSeating"],

@@ -56,8 +56,8 @@ export const ReservationInputBaseSchema = TicketCheckoutInputBaseSchema.extend({
  * Reservation input schema with cross-field validation applied.
  */
 export const ReservationInputSchema = ReservationInputBaseSchema.superRefine((values, ctx) => {
-    const {type, selectedSeating} = values;
-    validateReservedSeating(type, selectedSeating, ctx);
+    const {reservationType, selectedSeating} = values;
+    validateReservedSeating(reservationType, selectedSeating, ctx);
 });
 
 /**

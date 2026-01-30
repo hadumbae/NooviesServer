@@ -42,7 +42,7 @@ export const TicketCheckoutInputBaseSchema = z.object({
     currency: ISO4217CurrencyCodeEnumSchema,
 
     /** Reservation mode (general admission vs reserved seating). */
-    type: ReservationTypeEnumSchema,
+    reservationType: ReservationTypeEnumSchema,
 
     /**
      * Selected seating identifiers.
@@ -62,8 +62,8 @@ export const TicketCheckoutInputBaseSchema = z.object({
  */
 export const TicketCheckoutInputSchema =
     TicketCheckoutInputBaseSchema.superRefine((values, ctx) => {
-        const { type, selectedSeating } = values;
-        validateReservedSeating(type, selectedSeating, ctx);
+        const { reservationType, selectedSeating } = values;
+        validateReservedSeating(reservationType, selectedSeating, ctx);
     });
 
 /**
