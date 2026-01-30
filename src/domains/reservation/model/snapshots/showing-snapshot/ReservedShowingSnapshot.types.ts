@@ -1,13 +1,17 @@
 /**
  * @file ReservedShowingSnapshot.types.ts
  *
- * @description
  * Immutable snapshot field definitions for a reserved movie showing.
  *
- * Captures the full, finalized state of a showing at reservation time,
- * including embedded snapshots of the theatre, screen, movie, and the
- * exact seats selected. Used to guarantee historical integrity for
- * reservations, tickets, and financial records.
+ * Captures the fully resolved state of a showing at the moment a
+ * reservation is created, including embedded snapshots of:
+ * - Theatre
+ * - Screen
+ * - Movie
+ * - Selected seats (if applicable)
+ *
+ * Used to guarantee historical integrity for reservations, tickets,
+ * and financial records, even if upstream entities change later.
  */
 
 import type { ISO6391LanguageCode } from "../../../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
@@ -15,10 +19,15 @@ import type { ScreenSnapshotSchemaFields } from "../../../../screen/model/screen
 import type { TheatreSchemaFields } from "../../../../theatre/model/Theatre.types.js";
 import type { MovieSnapshotSchemaFields } from "../../../../movie/model/movie-snapshot/MovieSnapshot.types.js";
 import type { ReservedSeatSnapshotSchemaFields } from "../seat-map-snapshot/ReservedSeatSnapshot.types.js";
+import type { ReservationType } from "../../../schemas/enum/ReservationTypeEnumSchema.js";
 
 /**
- * Immutable snapshot of a reserved showing, capturing theatre, screen, movie,
- * and seat details at reservation time to ensure historical integrity.
+ * Immutable snapshot of a reserved showing.
+ *
+ * @remarks
+ * Represents a point-in-time record of the showing as it existed
+ * at reservation time. All fields are intended to remain unchanged
+ * for the lifetime of the reservation.
  */
 export interface ReservedShowingSnapshotSchemaFields {
     /** Theatre snapshot at the time of reservation. */
@@ -30,24 +39,45 @@ export interface ReservedShowingSnapshotSchemaFields {
     /** Movie snapshot at the time of reservation. */
     movie: MovieSnapshotSchemaFields;
 
-    /** Seats selected and priced at reservation time. */
-    selectedSeats: ReservedSeatSnapshotSchemaFields[];
+    /** Number of tickets included in the reservation. */
+    ticketCount: number;
+
+    /**
+     * Selected seat snapshots at reservation time.
+     *
+     * @remarks
+     * Present only for reserved seating reservations.
+     */
+    selectedSeats?: ReservedSeatSnapshotSchemaFields[] | null;
 
     /** Scheduled start time of the showing. */
     startTime: Date;
 
-    /** Optional end time; must be later than startTime if present. */
+    /**
+     * Optional scheduled end time.
+     *
+     * @remarks
+     * If present, must be later than {@link startTime}.
+     */
     endTime?: Date | null;
 
-    /** Primary spoken language of the showing (ISO-639-1). */
+    /** Primary spoken language of the showing (ISO 639-1). */
     language: ISO6391LanguageCode;
 
-    /** Subtitle languages available for the showing (ISO-639-1). */
+    /** Subtitle languages available for the showing (ISO 639-1). */
     subtitleLanguages: ISO6391LanguageCode[];
 
-    /** Optional flag for special event screenings. */
+    /** Indicates whether the showing is a special event screening. */
     isSpecialEvent?: boolean;
 
-    /** Total price paid for the reservation. */
+    /** Total price paid for the reservation at booking time. */
     pricePaid: number;
+
+    /**
+     * Reservation type applied at booking time.
+     *
+     * @remarks
+     * Controls whether {@link selectedSeats} is required or forbidden.
+     */
+    reservationType: ReservationType;
 }
