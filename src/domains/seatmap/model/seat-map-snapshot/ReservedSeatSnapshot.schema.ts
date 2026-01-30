@@ -15,7 +15,7 @@
 
 import { Schema } from "mongoose";
 import type { ReservedSeatSnapshotSchemaFields } from "./ReservedSeatSnapshot.types.js";
-import SeatTypeConstant from "../../../../seat/constant/SeatTypeConstant.js";
+import SeatTypeConstant from "../../../seat/constant/SeatTypeConstant.js";
 
 /**
  * Reserved seat snapshot schema.
