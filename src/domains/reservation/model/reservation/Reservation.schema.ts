@@ -107,7 +107,7 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
         type: Date,
         required: [true, "Expiry date is required for all reservations."],
     },
-    type: {
+    reservationType: {
         type: String,
         enum: {
             values: ReservationTypeConstant,

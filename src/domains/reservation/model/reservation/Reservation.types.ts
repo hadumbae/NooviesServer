@@ -105,7 +105,7 @@ export interface ReservationSchemaFields {
     expiresAt: Date;
 
     /** Reservation mode (e.g. general admission vs reserved seating). */
-    type: ReservationType;
+    reservationType: ReservationType;
 
     /**
      * Optional notes associated with the reservation.

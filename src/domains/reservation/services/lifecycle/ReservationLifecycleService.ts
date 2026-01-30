@@ -55,7 +55,7 @@ export class ReservationLifecycleService {
         }
 
         // --- RESERVED SEATING ---
-        if (this.type === "RESERVED_SEATS") {
+        if (this.reservationType === "RESERVED_SEATS") {
             if (!Array.isArray(this.selectedSeating)) {
                 this.invalidate("selectedSeating", "Required for reserved seating.");
             } else if (this.selectedSeating.length === 0) {
@@ -64,7 +64,7 @@ export class ReservationLifecycleService {
         }
 
         // --- GENERAL ADMISSION ---
-        if (this.type === "GENERAL_ADMISSION" && Array.isArray(this.selectedSeating)) {
+        if (this.reservationType === "GENERAL_ADMISSION" && Array.isArray(this.selectedSeating)) {
             this.invalidate("selectedSeating", "Must not be present for general admission.");
         }
 
