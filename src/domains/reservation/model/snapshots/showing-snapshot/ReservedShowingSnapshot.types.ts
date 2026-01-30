@@ -18,7 +18,7 @@ import type { ISO6391LanguageCode } from "../../../../../shared/schema/enums/ISO
 import type { ScreenSnapshotSchemaFields } from "../../../../screen/model/screen-snapshot/ScreenSnapshot.types.js";
 import type { TheatreSchemaFields } from "../../../../theatre/model/Theatre.types.js";
 import type { MovieSnapshotSchemaFields } from "../../../../movie/model/movie-snapshot/MovieSnapshot.types.js";
-import type { ReservedSeatSnapshotSchemaFields } from "../seat-map-snapshot/ReservedSeatSnapshot.types.js";
+import type { ReservedSeatSnapshotSchemaFields } from "../../../../seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.types.js";
 import type { ReservationType } from "../../../schemas/enum/ReservationTypeEnumSchema.js";
 
 /**

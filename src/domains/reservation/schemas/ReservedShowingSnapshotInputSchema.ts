@@ -15,7 +15,7 @@ import { MovieSnapshotInputSchema } from "../../movie/schema/MovieSnapshotInputS
 import { TheatreSnapshotInputSchema } from "../../theatre/schema/TheatreSnapshotInputSchema.js";
 import { ScreenSnapshotInputSchema } from "../../screen/schema/ScreenSnapshotInputSchema.js";
 import generateArraySchema from "../../../shared/utility/schema/generateArraySchema.js";
-import { ReservedSeatSnapshotInputSchema } from "./ReservedSeatSnapshotInputSchema.js";
+import { ReservedSeatSnapshotInputSchema } from "../../seatmap/schema/ReservedSeatSnapshotInputSchema.js";
 import { ValidDateInstanceSchema } from "../../../shared/schema/date-time/ValidDateInstanceSchema.js";
 import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";

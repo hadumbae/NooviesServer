@@ -28,7 +28,7 @@ import ISO6391CodeConstant from "../../../../../shared/constants/language/ISO639
 import { MovieSnapshotSchema } from "../../../../movie/model/movie-snapshot/MovieSnapshot.schema.js";
 import { TheatreSnapshotSchema } from "../../../../theatre/model/theatre-snapshot/TheatreSnapshot.schema.js";
 import { ScreenSnapshotSchema } from "../../../../screen/model/screen-snapshot/ScreenSnapshot.schema.js";
-import { ReservedSeatSnapshotSchema } from "../seat-map-snapshot/ReservedSeatSnapshot.schema.js";
+import { ReservedSeatSnapshotSchema } from "../../../../seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.schema.js";
 import { ReservationTypeConstant } from "../../../constants/ReservationTypeConstant.js";
 
 /**
