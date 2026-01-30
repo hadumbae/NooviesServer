@@ -23,11 +23,11 @@
  */
 import { z } from "zod";
 import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
-import { URLStringSchema } from "../../../shared/schema/strings/URLStringSchema.js";
 import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import { ISO3166Alpha2CountryCodeSchema } from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
-import { UTCDateOnlySchema } from "../../../shared/schema/date-time/UTCDateOnlySchema.js";
 import generateArraySchema from "../../../shared/utility/schema/generateArraySchema.js";
+import {DateInstanceSchema} from "../../../shared/schema/date-time/DateInstanceSchema.js";
+import {CloudinaryImageObjectSchema} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
 
 /** Zod schema for movie snapshot input validation. */
 export const MovieSnapshotInputSchema = z.object({
@@ -46,10 +46,10 @@ export const MovieSnapshotInputSchema = z.object({
         .nullable(),
 
     /** URL to the movie poster (optional, nullable). */
-    posterURL: URLStringSchema.optional().nullable(),
+    posterURL: CloudinaryImageObjectSchema.optional().nullable(),
 
     /** Movie release date in UTC (optional, nullable). */
-    releaseDate: UTCDateOnlySchema.optional().nullable(),
+    releaseDate: DateInstanceSchema.optional().nullable(),
 
     /** List of genres (each max 150 characters). */
     genres: generateArraySchema(
