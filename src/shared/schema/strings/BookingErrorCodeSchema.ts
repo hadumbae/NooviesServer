@@ -16,6 +16,7 @@ import {z} from "zod";
 export const BOOKING_ERROR_CODES = [
     "ERR_SCREEN_FULL",
     "ERR_SHOWING_CANCELLED",
+    "ERR_SEAT_RESERVED",
 ] as const;
 
 /**
