@@ -1,64 +1,61 @@
 /**
  * @file TicketCheckoutInputSchema.ts
  *
- * Base Zod schema for validating ticket checkout input
- * prior to reservation lifecycle processing.
+ * Zod schema for validating reservation create and update requests
+ * at the API boundary.
  *
- * Defines the minimal input required to initiate a reservation:
- * - Showing reference
- * - Ticket quantity
- * - Seating selection (if applicable)
- * - Pricing and currency metadata
- * - Reservation type
+ * Extends the base checkout submission schema with:
+ * - Reservation ownership
+ * - Lifecycle status
+ * - Status-dependent lifecycle timestamps
+ * - Optional internal notes
+ *
+ * Performs cross-field validation to enforce:
+ * - Seating constraints based on reservation type
  *
  * @remarks
- * This schema is intentionally lifecycle-agnostic.
- * Reservation status, expiration, and lifecycle timestamps
- * are added and validated by higher-level schemas.
+ * This schema is limited to structural and consistency validation.
+ * Business rules such as lifecycle transitions, expiration timing,
+ * and state enforcement are handled at the service and model layers.
  */
 
 import { z } from "zod";
-import { ObjectIdSchema } from "../../../shared/schema/mongoose/ObjectIdSchema.js";
-import generateArraySchema from "../../../shared/utility/schema/generateArraySchema.js";
-import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import { ISO4217CurrencyCodeEnumSchema } from "../../../shared/schema/enums/ISO4217CurrencyCodeEnumSchema.js";
-import { ReservationTypeEnumSchema } from "./enum/ReservationTypeEnumSchema.js";
+import {
+    ReservationStatusEnumSchema,
+} from "./enum/ReservationStatusEnumSchema.js";
+import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import { validateReservedSeating } from "../utilities/validation/validateReservedSeating.js";
+import { TicketCheckoutSubmitBaseSchema } from "./TicketCheckoutSubmitSchema.js";
+import { DateInstanceSchema } from "../../../shared/schema/date-time/DateInstanceSchema.js";
+import { ObjectIdSchema } from "../../../shared/schema/mongoose/ObjectIdSchema.js";
 
 /**
- * Base checkout input schema.
+ * Base reservation input schema including lifecycle metadata.
  */
-export const TicketCheckoutInputBaseSchema = z.object({
-    /** Showing being reserved. */
-    showing: ObjectIdSchema,
+export const TicketCheckoutInputBaseSchema =
+    TicketCheckoutSubmitBaseSchema.extend({
+        /** User owning the reservation. */
+        user: ObjectIdSchema,
 
-    /** Number of tickets included in the checkout. */
-    ticketCount: PositiveNumberSchema,
+        /** Reservation expiration timestamp. */
+        expiresAt: DateInstanceSchema,
 
-    /** Total price paid or payable. */
-    pricePaid: PositiveNumberSchema,
+        /** Timestamp when the reservation was created. */
+        dateReserved: DateInstanceSchema,
 
-    /** Currency used for pricing (ISO 4217). */
-    currency: ISO4217CurrencyCodeEnumSchema,
+        /** Current reservation lifecycle status. */
+        status: ReservationStatusEnumSchema,
 
-    /** Reservation mode (general admission vs reserved seating). */
-    reservationType: ReservationTypeEnumSchema,
-
-    /**
-     * Selected seating identifiers.
-     *
-     * @remarks
-     * Required for reserved seating and forbidden
-     * for general admission.
-     */
-    selectedSeating: generateArraySchema(ObjectIdSchema)
-        .min(1, { message: "Must not be an empty array." })
-        .optional()
-        .nullable(),
-});
+        /** Optional internal notes associated with the reservation. */
+        notes: NonEmptyStringSchema
+            .max(3000, "Must be 3000 characters or less.")
+            .optional(),
+    });
 
 /**
- * Checkout input schema with seating validation applied.
+ * Reservation input schema with cross-field validation applied.
+ *
+ * Enforces seating rules based on reservation type.
  */
 export const TicketCheckoutInputSchema =
     TicketCheckoutInputBaseSchema.superRefine((values, ctx) => {
@@ -67,6 +64,7 @@ export const TicketCheckoutInputSchema =
     });
 
 /**
- * Type representing validated checkout input payload.
+ * Type representing validated reservation input payload.
  */
-export type TicketCheckoutInputData = z.infer<typeof TicketCheckoutInputSchema>;
+export type TicketCheckoutInputData =
+    z.infer<typeof TicketCheckoutInputSchema>;

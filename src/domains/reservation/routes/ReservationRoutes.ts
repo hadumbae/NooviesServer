@@ -14,22 +14,20 @@
  * - Excludes unsupported routes from exposure
  */
 
-import { ReservationServiceProvider } from "../providers/ReservationServiceProvider.js";
+import {ReservationServiceProvider} from "../providers/ReservationServiceProvider.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
 } from "../../../shared/routing/BaseRoutes.js";
-import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
-import { ReservationInputSchema } from "../schemas/ReservationInputSchema.js";
-import type { ShowingControllerMethods } from "../../showing/controller/ShowingController.js";
+import type {ShowingControllerMethods} from "../../showing/controller/ShowingController.js";
 
 /**
  * Register Reservation domain services and controllers.
  */
 const {
     model,
-    controllers: { controller },
+    controllers: {controller},
 } = ReservationServiceProvider.register();
 
 /**
@@ -49,14 +47,7 @@ const unsetMiddleware = unsetModelFormFields({
  * @remarks
  * - `update`: validates input and strips disallowed fields
  */
-const middlewareList: BaseRouteMiddleware<typeof controller> = {
-    path: {
-        update: [
-            validateZodSchemaAsync(ReservationInputSchema),
-            unsetMiddleware,
-        ],
-    },
-};
+const middlewareList: BaseRouteMiddleware<typeof controller> = {};
 
 /**
  * Reservation CRUD routes.
