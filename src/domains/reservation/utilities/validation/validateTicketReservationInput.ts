@@ -1,7 +1,7 @@
 import {
     type TicketCheckoutInputData,
     TicketCheckoutInputSchema,
-} from "../../schemas/TicketCheckoutInputSchema.js";
+} from "../../schemas/ticket-checkout/TicketCheckout.input.schema.js";
 import ZodParseError from "../../../../shared/errors/ZodParseError.js";
 
 /**
