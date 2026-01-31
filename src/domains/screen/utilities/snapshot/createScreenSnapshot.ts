@@ -13,7 +13,7 @@
  * will throw domain errors if the source data is missing or invalid.
  */
 
-import { Error, Types } from "mongoose";
+import { Types } from "mongoose";
 import type { ScreenSnapshotSchemaFields } from "../../model/screen-snapshot/ScreenSnapshot.types.js";
 import Screen from "../../model/Screen.model.js";
 import { DocumentNotFoundError } from "../../../../shared/errors/DocumentNotFoundError.js";
@@ -36,7 +36,7 @@ import { InconsistentDataError } from "../../../../shared/errors/InconsistentDat
 export async function createScreenSnapshot(
     screenID: Types.ObjectId
 ): Promise<ScreenSnapshotSchemaFields> {
-    const screen = await Screen.findById(screenID);
+    const screen = await Screen.findById(screenID).lean();
 
     if (!screen) {
         throw new DocumentNotFoundError({
@@ -59,5 +59,5 @@ export async function createScreenSnapshot(
         });
     }
 
-    return new ScreenSnapshot(data);
+    return data;
 }

@@ -5,6 +5,7 @@ import type {SeatMapSchemaFields} from "../../model/SeatMap.types.js";
 import type {SeatSchemaFields} from "../../../seat/model/Seat.types.js";
 import {ReservedSeatSnapshotInputArraySchema} from "../../schema/ReservedSeatSnapshotInputSchema.js";
 import {InconsistentDataError} from "../../../../shared/errors/InconsistentDataError.js";
+import {ReservedSeatSnapshot} from "../../model/seat-map-snapshot/ReservedSeatSnapshot.model.js";
 
 /**
  * Seat map document populated with its associated seat definition.
@@ -63,12 +64,11 @@ export async function createReservedSeatSnapshot(
         };
     });
 
-    const {data, success, error} =
-        ReservedSeatSnapshotInputArraySchema.safeParse(snapshots);
+    const {data, success, error} = ReservedSeatSnapshotInputArraySchema.safeParse(snapshots);
 
     if (!success) {
         throw new InconsistentDataError({
-            modelName: SeatMap.name,
+            modelName: ReservedSeatSnapshot.name,
             errors: error?.errors,
             message: "Failed to validate seat map data.",
         });

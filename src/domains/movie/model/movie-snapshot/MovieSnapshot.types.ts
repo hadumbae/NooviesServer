@@ -1,39 +1,42 @@
 /**
- * @file MovieSnapshotSchemaFields.ts
+ * @file MovieSnapshot.types.ts
  *
- * @summary
- * Defines the snapshot structure of a movie for storage in other entities.
+ * Immutable field definitions for a movie snapshot.
+ *
+ * Used to embed a movie’s resolved state into other documents such as
+ * showings and reservations.
  */
 
 import type { ISO3166Alpha2CountryCode } from "../../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 
 /**
- * Fields representing a movie snapshot.
+ * Immutable snapshot of a movie at a specific point in time.
  *
- * Used for storing a movie’s state at a given point in time (e.g., in showings, reservations).
+ * @remarks
+ * Values must remain unchanged for the lifetime of the parent document.
  */
 export interface MovieSnapshotSchemaFields {
-    /** Movie title in the current locale */
+    /** Localized display title of the movie. */
     title: string;
 
-    /** Original title of the movie */
+    /** Original release title. */
     originalTitle: string;
 
-    /** Optional tagline or slogan for the movie */
-    tagline?: string;
+    /** Optional marketing tagline. */
+    tagline?: string | null;
 
-    /** Optional URL to the movie poster image */
-    posterURL?: string;
+    /** Optional poster image URL. */
+    posterURL?: string | null;
 
-    /** Array of genre strings (e.g., ["Action", "Comedy"]) */
+    /** List of associated genres. */
     genres: string[];
 
-    /** Country code (ISO 3166-1 alpha-2) representing the production country */
+    /** Production country (ISO 3166-1 alpha-2). */
     country: ISO3166Alpha2CountryCode;
 
-    /** Optional release date of the movie */
+    /** Original release date, if known. */
     releaseDate?: Date | null;
 
-    /** Runtime of the movie in minutes */
+    /** Runtime in minutes. */
     runtime: number;
 }

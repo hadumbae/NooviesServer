@@ -1,13 +1,10 @@
 /**
  * @file ReservedShowingSnapshotInputSchema.ts
  *
- * @description
- * Zod schema for validating input when creating a reserved showing snapshot.
+ * Zod schema for validating input used to create a reserved showing snapshot.
  *
- * Captures the finalized state of a showing at reservation time, including
- * embedded snapshots of the movie, theatre, screen, selected seats, language,
- * subtitles, special event flag, and price paid. Ensures historical and
- * financial integrity for reservations and related records.
+ * Captures the finalized, authoritative state of a showing at reservation time,
+ * including embedded snapshots and financial details.
  */
 
 import { z } from "zod";
@@ -17,11 +14,14 @@ import { ScreenSnapshotInputSchema } from "../../screen/schema/ScreenSnapshotInp
 import generateArraySchema from "../../../shared/utility/schema/generateArraySchema.js";
 import { ReservedSeatSnapshotInputSchema } from "../../seatmap/schema/ReservedSeatSnapshotInputSchema.js";
 import { ValidDateInstanceSchema } from "../../../shared/schema/date-time/ValidDateInstanceSchema.js";
-import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
 import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import { BooleanValueSchema } from "../../../shared/schema/booleans/BooleanValueSchema.js";
+import { ReservationTypeEnumSchema } from "./enum/ReservationTypeEnumSchema.js";
+import { ISO6391LanguageCodeSchema } from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
 
-/** Reserved showing snapshot input schema. */
+/**
+ * Input validation schema for reserved showing snapshot creation.
+ */
 export const ReservedShowingSnapshotInputSchema = z.object({
     /** Embedded movie snapshot input. */
     movie: MovieSnapshotInputSchema,
@@ -32,27 +32,36 @@ export const ReservedShowingSnapshotInputSchema = z.object({
     /** Embedded screen snapshot input. */
     screen: ScreenSnapshotInputSchema,
 
-    /** Array of selected seat snapshots at reservation time. */
+    /** Selected seat snapshots at reservation time. */
     selectedSeats: generateArraySchema(ReservedSeatSnapshotInputSchema),
 
     /** Scheduled start time of the showing. */
     startTime: ValidDateInstanceSchema,
 
-    /** Optional end time of the showing; must be later than startTime if present. */
+    /** Optional scheduled end time. */
     endTime: ValidDateInstanceSchema.optional(),
 
-    /** Primary spoken language of the showing (ISO-639-1). */
-    language: NonEmptyStringSchema,
+    /** Primary spoken language (ISO 639-1). */
+    language: ISO6391LanguageCodeSchema,
 
-    /** Subtitle languages available for the showing (ISO-639-1). Must not be empty. */
-    subtitleLanguages: z.array(NonEmptyStringSchema).nonempty({ message: "Must not be empty." }),
+    /** Available subtitle languages (ISO 639-1). */
+    subtitleLanguages: z
+        .array(ISO6391LanguageCodeSchema)
+        .nonempty({ message: "Must not be empty." }),
 
-    /** Optional flag indicating whether the showing is a special event. */
+    /** Indicates whether the showing is a special event. */
     isSpecialEvent: BooleanValueSchema.optional(),
 
-    /** Total price paid for the reserved showing. */
+    /** Total price paid for the reservation. */
     pricePaid: PositiveNumberSchema,
+
+    /** Number of tickets included in the reservation. */
+    ticketCount: PositiveNumberSchema,
+
+    /** Reservation type applied at booking time. */
+    reservationType: ReservationTypeEnumSchema,
 });
 
-/** Type representing the input data for creating a reserved showing snapshot. */
-export type ReservedShowingSnapshotInputData = z.infer<typeof ReservedShowingSnapshotInputSchema>;
+/** Type representing validated reserved showing snapshot input data. */
+export type ReservedShowingSnapshotInputData =
+    z.infer<typeof ReservedShowingSnapshotInputSchema>;

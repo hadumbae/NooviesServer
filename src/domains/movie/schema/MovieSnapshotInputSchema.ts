@@ -1,67 +1,59 @@
 /**
  * @file MovieSnapshotInputSchema.ts
  *
- * @description
- * Zod schema for validating input when creating or updating a movie snapshot.
+ * Zod schema for validating input used to create a movie snapshot.
  *
- * Ensures that essential movie metadata is captured and validated, including:
- * - Title and original title
- * - Tagline
- * - Poster URL
- * - Release date
- * - Genres
- * - Runtime
- * - Production country
- *
- * Field lengths, formats, and optionality are strictly enforced to maintain
- * consistency and prevent invalid data from being persisted.
- *
- * Intended usage:
- * - Validating API requests for movie creation or update
- * - Form input validation in admin interfaces
- * - Embedding validated movie data into showing or reservation snapshots
+ * This schema ensures that all required movie metadata is present and
+ * structurally valid before being embedded into immutable snapshots
+ * such as showings or reservations.
  */
-import { z } from "zod";
-import { NonEmptyStringSchema } from "../../../shared/schema/strings/NonEmptyStringSchema.js";
-import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import { ISO3166Alpha2CountryCodeSchema } from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
+
+import {z} from "zod";
+import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
+import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
+import {ISO3166Alpha2CountryCodeSchema} from "../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 import generateArraySchema from "../../../shared/utility/schema/generateArraySchema.js";
 import {DateInstanceSchema} from "../../../shared/schema/date-time/DateInstanceSchema.js";
-import {CloudinaryImageObjectSchema} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
+import {URLStringSchema} from "../../../shared/schema/strings/URLStringSchema.js";
 
-/** Zod schema for movie snapshot input validation. */
+/**
+ * Input validation schema for movie snapshot creation.
+ *
+ * @remarks
+ * Intended for internal use when constructing immutable snapshot data.
+ */
 export const MovieSnapshotInputSchema = z.object({
-    /** Movie title (max 250 characters). */
+    /** Localized display title. */
     title: NonEmptyStringSchema.max(250, "Must be 250 characters or less."),
 
-    /** Original movie title (optional, max 250 characters). */
+    /** Original release title. */
     originalTitle: NonEmptyStringSchema
-        .max(250, "Must be 250 characters or less.")
-        .optional(),
+        .max(250, "Must be 250 characters or less."),
 
-    /** Tagline or short description (optional, max 100 characters, nullable). */
+    /** Optional marketing tagline. */
     tagline: NonEmptyStringSchema
         .max(100, "Must be 100 characters or less.")
         .optional()
         .nullable(),
 
-    /** URL to the movie poster (optional, nullable). */
-    posterURL: CloudinaryImageObjectSchema.optional().nullable(),
+    /** Optional poster image URL. */
+    posterURL: URLStringSchema.optional().nullable(),
 
-    /** Movie release date in UTC (optional, nullable). */
+    /** Optional original release date. */
     releaseDate: DateInstanceSchema.optional().nullable(),
 
-    /** List of genres (each max 150 characters). */
+    /** List of associated genres. */
     genres: generateArraySchema(
         NonEmptyStringSchema.max(150, "Must be 150 characters or less.")
     ),
 
-    /** Runtime in minutes (positive number, max 500). */
+    /** Runtime in minutes. */
     runtime: PositiveNumberSchema.lte(500, "Must be 500 or less."),
 
-    /** Production country (ISO 3166-1 alpha-2 code). */
+    /** Production country (ISO 3166-1 alpha-2). */
     country: ISO3166Alpha2CountryCodeSchema,
 });
 
-/** TypeScript type inferred from `MovieSnapshotInputSchema`. */
-export type MovieSnapshotInputData = z.infer<typeof MovieSnapshotInputSchema>;
+/** Type representing validated movie snapshot input data. */
+export type MovieSnapshotInputData =
+    z.infer<typeof MovieSnapshotInputSchema>;

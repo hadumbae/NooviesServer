@@ -17,14 +17,14 @@
  */
 
 import MovieModel from "../../model/Movie.model.js";
-import type { MovieSnapshotSchemaFields } from "../../model/movie-snapshot/MovieSnapshot.types.js";
-import { Types } from "mongoose";
-import { DocumentNotFoundError } from "../../../../shared/errors/DocumentNotFoundError.js";
-import { MovieSnapshotInputSchema } from "../../schema/MovieSnapshotInputSchema.js";
-import { InconsistentDataError } from "../../../../shared/errors/InconsistentDataError.js";
-import { MovieSnapshot } from "../../model/movie-snapshot/MovieSnapshot.model.js";
-import type { GenreSchemaFields } from "../../../genre/model/Genre.types.js";
-import type { MovieSchemaFields } from "../../model/Movie.types.js";
+import type {MovieSnapshotSchemaFields} from "../../model/movie-snapshot/MovieSnapshot.types.js";
+import {Types} from "mongoose";
+import {DocumentNotFoundError} from "../../../../shared/errors/DocumentNotFoundError.js";
+import {MovieSnapshotInputSchema} from "../../schema/MovieSnapshotInputSchema.js";
+import {InconsistentDataError} from "../../../../shared/errors/InconsistentDataError.js";
+import {MovieSnapshot} from "../../model/movie-snapshot/MovieSnapshot.model.js";
+import type {GenreSchemaFields} from "../../../genre/model/Genre.types.js";
+import type {MovieSchemaFields} from "../../model/Movie.types.js";
 
 /**
  * Internal helper type representing a movie document
@@ -58,7 +58,7 @@ interface MovieWithGenres extends MovieSchemaFields {
 export async function createMovieSnapshot(
     movieID: Types.ObjectId
 ): Promise<MovieSnapshotSchemaFields> {
-    const movie = await MovieModel.findById(movieID).populate(["genres"]);
+    const movie = await MovieModel.findById(movieID).populate(["genres"]).lean();
 
     if (!movie) {
         throw new DocumentNotFoundError({
@@ -68,12 +68,11 @@ export async function createMovieSnapshot(
         });
     }
 
-    const { posterImage, genres } = movie as MovieWithGenres;
-
-    const { data, success, error } = MovieSnapshotInputSchema.safeParse({
+    const {posterImage, genres} = movie as MovieWithGenres;
+    const {data, success, error} = MovieSnapshotInputSchema.safeParse({
         ...movie,
         posterURL: posterImage?.secure_url,
-        genres: genres.map(({ name }) => name),
+        genres: genres.map(({name}) => name),
     });
 
     if (!success) {
@@ -84,5 +83,5 @@ export async function createMovieSnapshot(
         });
     }
 
-    return new MovieSnapshot(data);
+    return data;
 }
