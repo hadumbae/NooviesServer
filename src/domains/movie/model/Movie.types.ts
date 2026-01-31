@@ -7,15 +7,15 @@ import type { GenreSchemaFields } from "../../genre/model/Genre.types.js";
 /**
  * Movie document schema fields.
  *
- * @remarks
- * Represents a persisted movie entity in the catalog. This interface
- * defines the authoritative data model used by the application layer,
- * including identification, localization, release metadata, media
- * assets, and genre relationships.
+ * Represents a persisted movie entity in the catalog.
+ * Defines the authoritative application-level data model,
+ * including identification, localization, release metadata,
+ * media assets, and genre relationships.
  *
- * Fields defined here may be transformed into immutable snapshot
- * representations when embedded into reservations, tickets, or
- * historical records.
+ * @remarks
+ * Fields defined here may be transformed into immutable
+ * snapshot representations when embedded into reservations,
+ * tickets, analytics records, or other historical contexts.
  */
 export interface MovieSchemaFields {
     /** MongoDB document identifier. */
@@ -24,7 +24,7 @@ export interface MovieSchemaFields {
     /** Primary display title used for listings and marketing. */
     title: string;
 
-    /** Original-language title, if different from {@link title}. */
+    /** Original-language title, if different from the primary title. */
     originalTitle?: string;
 
     /** Optional marketing or promotional tagline. */
@@ -90,4 +90,11 @@ export interface MovieSchemaFields {
 
     /** URL-friendly unique identifier. */
     slug: string;
+}
+
+/**
+ * Movie representation with fully populated genres.
+ */
+export interface MovieWithGenres extends MovieSchemaFields {
+    genres: GenreSchemaFields[];
 }
