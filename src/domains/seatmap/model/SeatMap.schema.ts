@@ -1,42 +1,57 @@
 /**
- * @file SeatMapSchema.ts
- * @summary
- * Mongoose schema defining the mapping between a seat and a showing.
+ * @file SeatMap.schema.ts
  *
- * Acts as a join-table between `Showing` and `Seat`, enforcing unique
- * `(showing, seat)` pairs while tracking price data and availability state.
+ * Mongoose schema defining the relationship between a `Showing` and a `Seat`.
+ *
+ * Acts as a join entity enforcing unique `(showing, seat)` pairs while
+ * tracking pricing configuration, availability state, and reservation linkage.
+ *
+ * This schema represents the **live, mutable state** of a seat within the
+ * context of a specific showing.
+ *
+ * @remarks
+ * For historical or transactional use (e.g. reservations, tickets),
+ * immutable snapshot data should be used to prevent drift.
  *
  * @example
- * import SeatMapModel from "@/models/SeatMap";
- *
  * const seats = await SeatMapModel.find({
  *   showing: showingId,
  *   status: "AVAILABLE",
  * });
  */
 
-import {Schema} from "mongoose";
+import { Schema } from "mongoose";
 import SeatMapStatusConstant from "../constants/SeatMapStatusConstant.js";
-import type {SeatMapSchemaFields} from "./SeatMap.types.js";
+import type { SeatMapSchemaFields } from "./SeatMap.types.js";
 
 /**
- * @summary
- * Schema describing the relationship between a `Showing` and a `Seat`,
- * including pricing fields and seat availability.
+ * Schema describing a seat’s configuration and availability
+ * for a specific showing.
  */
 export const SeatMapSchema = new Schema<SeatMapSchemaFields>({
-    /** Reference to the showing (`Showing`). */
+    /** Referenced showing (`Showing`). */
     showing: {
         type: Schema.Types.ObjectId,
         ref: "Showing",
         required: [true, "Showing is required."],
     },
 
-    /** Reference to the seat (`Seat`). */
+    /** Referenced seat (`Seat`). */
     seat: {
         type: Schema.Types.ObjectId,
         ref: "Seat",
         required: [true, "Seat is required."],
+    },
+
+    /**
+     * Associated reservation.
+     *
+     * @remarks
+     * Required when the seat is reserved or sold.
+     */
+    reservation: {
+        type: Schema.Types.ObjectId,
+        ref: "Reservation",
     },
 
     /** Base price for the seat during the showing. */
@@ -49,7 +64,12 @@ export const SeatMapSchema = new Schema<SeatMapSchemaFields>({
         },
     },
 
-    /** Multiplier applied to the base price. Must be > 0. */
+    /**
+     * Multiplier applied to the base price.
+     *
+     * @remarks
+     * Must be greater than zero.
+     */
     priceMultiplier: {
         type: Number,
         required: [true, "Price Multiplier is required."],
@@ -59,18 +79,25 @@ export const SeatMapSchema = new Schema<SeatMapSchemaFields>({
         },
     },
 
-    /** Optional explicit price override, must be > 0 if provided. */
+    /**
+     * Optional explicit price override.
+     *
+     * @remarks
+     * When provided, this value replaces computed pricing.
+     */
     overridePrice: {
         type: Number,
         validate: {
             message: "Override Price must be more than 0.",
             validator: (val: any) =>
-                val === null || val === undefined || (typeof val === "number" && val > 0),
+                val === null ||
+                val === undefined ||
+                (typeof val === "number" && val > 0),
         },
     },
 
     /**
-     * Status of the seat during the showing.
+     * Availability state of the seat for the showing.
      *
      * @default "AVAILABLE"
      * @see SeatMapStatusConstant
@@ -86,11 +113,11 @@ export const SeatMapSchema = new Schema<SeatMapSchemaFields>({
     },
 });
 
-/** Enforce uniqueness of `(showing, seat)` pairs. */
+/** Enforces uniqueness of `(showing, seat)` pairs. */
 SeatMapSchema.index(
-    {showing: 1, seat: 1},
-    {unique: true, partialFilterExpression: {seat: {$exists: true}}},
+    { showing: 1, seat: 1 },
+    { unique: true, partialFilterExpression: { seat: { $exists: true } } }
 );
 
-/** Index optimized for availability queries. */
-SeatMapSchema.index({showing: 1, status: 1});
+/** Index optimized for seat availability queries per showing. */
+SeatMapSchema.index({ showing: 1, status: 1 });

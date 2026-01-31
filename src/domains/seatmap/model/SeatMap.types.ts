@@ -1,61 +1,67 @@
-import {Types} from "mongoose";
-import type {SeatMapStatus} from "../schema/enum/SeatMapStatusEnumSchema.js";
-import type {SeatSchemaFields} from "../../seat/model/Seat.types.js";
-import type {ShowingSchemaFields} from "../../showing/model/showing/Showing.types.js";
+import { Types } from "mongoose";
+import type { SeatMapStatus } from "../schema/enum/SeatMapStatusEnumSchema.js";
+import type { SeatSchemaFields } from "../../seat/model/Seat.types.js";
+import type { ShowingSchemaFields } from "../../showing/model/showing/Showing.types.js";
 
 /**
- * @interface SeatMapInputData
- * @description
- * Input payload used to create or update a seat-map entry for a showing.
+ * Input payload for creating or updating a seat-map entry.
  *
- * Represents the relationship between a specific seat and a specific showing,
- * including pricing and availability metadata.
+ * Represents the association between a specific seat and
+ * a specific showing, including pricing configuration and
+ * availability state.
  */
 export interface SeatMapInputData {
     /**
-     * Reference to the associated showing.
-     * Accepts either a populated `IShowing` document or its ObjectId.
+     * Associated showing.
+     *
+     * Accepts either an ObjectId or a populated showing document.
      */
     showing: Types.ObjectId | ShowingSchemaFields;
 
     /**
-     * Reference to the associated seat.
-     * Accepts either a populated `ISeat` document or its ObjectId.
+     * Associated seat.
+     *
+     * Accepts either an ObjectId or a populated seat document.
      */
     seat: Types.ObjectId | SeatSchemaFields;
 
-    /**
-     * Base price assigned to the seat for this showing.
-     */
+    /** Base price assigned to the seat for this showing. */
     basePrice: number;
 
-    /**
-     * Multiplier applied to the base price when calculating final pricing.
-     */
+    /** Multiplier applied when calculating final pricing. */
     priceMultiplier: number;
 
     /**
      * Optional fixed price override.
-     * When provided, this value replaces any computed pricing logic.
+     *
+     * @remarks
+     * When provided, replaces all computed pricing logic.
      */
     overridePrice?: number;
 
-    /**
-     * Current availability or booking state of the seat.
-     */
+    /** Current availability state of the seat. */
     status: SeatMapStatus;
 }
 
 /**
- * @interface SeatMapSchemaFields
- * @description
  * Persisted MongoDB representation of a seat-map entry.
  *
  * Extends {@link SeatMapInputData} with database-managed fields.
  */
 export interface SeatMapSchemaFields extends SeatMapInputData {
-    /**
-     * MongoDB-generated unique identifier.
-     */
+    /** MongoDB-generated unique identifier. */
     readonly _id: Types.ObjectId;
+
+    /** Associated reservation when the seat is booked. */
+    reservation: Types.ObjectId;
+}
+
+/**
+ * Seat-map representation with the seat fully populated.
+ *
+ * Intended for read-heavy workflows where seat metadata
+ * is required and showing context is already known.
+ */
+export interface SeatMapWithSeat extends SeatMapSchemaFields {
+    seat: SeatSchemaFields;
 }

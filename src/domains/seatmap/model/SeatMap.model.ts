@@ -25,7 +25,9 @@ import {Model, model} from "mongoose";
 import {SeatMapSchema} from "./SeatMap.schema.js";
 import type {SeatMapSchemaFields} from "./SeatMap.types.js";
 
-import "./SeatMap.virtuals.js"
+import "./SeatMap.virtuals.js";
+import "./SeatMap.hooks.js";
+
 /**
  * Mongoose model for seat mappings (`SeatMapSchemaFields`).
  *

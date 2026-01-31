@@ -13,6 +13,7 @@ const SeatMapStatusConstant = [
     "UNAVAILABLE",
     "AVAILABLE",
     "RESERVED",
+    "PENDING",
     "SOLD",
 ] as const;
 
