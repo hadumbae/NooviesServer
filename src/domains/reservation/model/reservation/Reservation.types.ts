@@ -1,22 +1,19 @@
 /**
  * @file Reservation.types.ts
  *
- * Core schema field definitions for a reservation.
+ * Core field definitions for a reservation.
  *
- * Describes a reservation entity composed of:
+ * A reservation represents a transactional record composed of:
  * - an immutable snapshot of the reserved showing
- * - live references to the user, showing, and seating
- * - financial metadata
+ * - live references to user, showing, and seating
+ * - authoritative financial data
  * - lifecycle state and timestamps
  *
  * Designed to support reservation, payment, cancellation,
- * expiration, and refund workflows.
+ * expiration, and refund workflows while preserving historical integrity.
  */
 
 import type {ReservedShowingSnapshotSchemaFields} from "../snapshots/showing-snapshot/ReservedShowingSnapshot.types.js";
-import type {ShowingSchemaFields} from "../../../showing/model/showing/Showing.types.js";
-import type {SeatMapSchemaFields} from "../../../seatmap/model/SeatMap.types.js";
-import type UserSchemaFields from "@models/UserSchemaFields.js";
 import {Types} from "mongoose";
 import type {ISO4217CurrencyCode} from "../../../../shared/schema/enums/ISO4217CurrencyCodeEnumSchema.js";
 import type {ReservationStatus} from "../../schemas/enum/ReservationStatusEnumSchema.js";
@@ -27,64 +24,88 @@ import type {ReservationType} from "../../schemas/enum/ReservationTypeEnumSchema
  * Reservation schema fields.
  *
  * @remarks
- * Uses a snapshot-based model to preserve historical,
- * financial, and seating integrity even if referenced
- * entities change.
+ * This model uses a snapshot-first design to guarantee that pricing,
+ * scheduling, language, and seating data remain historically accurate
+ * even if referenced entities are later modified or deleted.
  *
- * Lifecycle-dependent requirements based on {@link ReservationStatus}:
+ * Lifecycle-dependent invariants based on {@link ReservationStatus}:
  * - `"RESERVED"` → `dateReserved`, `expiresAt` (future-dated)
  * - `"PAID"` → `datePaid`
  * - `"CANCELLED"` → `dateCancelled`
  * - `"REFUNDED"` → `dateRefunded`
  * - `"EXPIRED"` → `dateExpired`
  *
- * Optional and nullable fields distinguish between:
- * - `undefined` → not yet set or not applicable
+ * Optional vs nullable fields:
+ * - `undefined` → not yet applicable or not assigned
  * - `null` → explicitly cleared or intentionally absent
  */
 export interface ReservationSchemaFields {
     /** Unique identifier of the reservation document. */
     readonly _id: Types.ObjectId;
 
-    /** Immutable snapshot of the reserved showing state. */
+    /**
+     * Immutable snapshot of the showing at reservation time.
+     *
+     * @remarks
+     * This snapshot is authoritative for historical, pricing,
+     * and scheduling data and must never be mutated.
+     */
     snapshot: ReservedShowingSnapshotSchemaFields;
 
-    /** Reserving user (ID or populated document). */
-    user: Types.ObjectId | UserSchemaFields;
+    /**
+     * Reserving user reference.
+     *
+     * @remarks
+     * Stored as an ObjectId; may be populated at runtime.
+     */
+    user: Types.ObjectId;
 
-    /** Referenced showing (ID or populated document). */
-    showing: Types.ObjectId | ShowingSchemaFields;
+    /**
+     * Live reference to the source showing.
+     *
+     * @remarks
+     * Maintained for navigation and reporting only.
+     */
+    showing: Types.ObjectId;
 
     /**
      * Total number of tickets included in the reservation.
      *
      * @remarks
-     * Must be a positive integer.
+     * Must be a positive integer and consistent with
+     * {@link reservationType} and {@link selectedSeating}.
      */
     ticketCount: number;
 
     /**
-     * Selected seating references (IDs or populated documents).
+     * Selected seating references.
      *
      * @remarks
      * - Required and non-empty for reserved seating reservations
-     * - Must be absent for general admission reservations
+     * - Must be omitted or null for general admission reservations
+     * - Serves as a live reference; authoritative seat data lives in {@link snapshot}
      */
-    selectedSeating?: (Types.ObjectId | SeatMapSchemaFields)[] | null;
+    selectedSeating?: Types.ObjectId[] | null;
 
-    /** Total price paid for the reservation. */
+    /**
+     * Total price paid for the reservation.
+     *
+     * @remarks
+     * Authoritative financial value; must not be recalculated
+     * from ticket or seat pricing after payment.
+     */
     pricePaid: PositiveNumber;
 
-    /** Currency in which the reservation was paid (ISO 4217). */
+    /** Currency used for payment (ISO 4217). */
     currency: ISO4217CurrencyCode;
 
     /** Current lifecycle status of the reservation. */
     status: ReservationStatus;
 
-    /** Timestamp when the reservation was created. */
+    /** Timestamp when the reservation was initially created. */
     dateReserved: Date;
 
-    /** Timestamp when the reservation was paid. */
+    /** Timestamp when payment was completed. */
     datePaid?: Date | null;
 
     /** Timestamp when the reservation was cancelled. */
@@ -93,25 +114,32 @@ export interface ReservationSchemaFields {
     /** Timestamp when the reservation was refunded. */
     dateRefunded?: Date | null;
 
-    /** Timestamp when the reservation expired. */
+    /** Timestamp when the reservation expired without payment. */
     dateExpired?: Date | null;
 
     /**
      * Expiration timestamp for unpaid reservations.
      *
      * @remarks
-     * Must be future-dated when status is `"RESERVED"`.
+     * Must be future-dated while status is `"RESERVED"`.
+     * Controlled by system logic rather than user input.
      */
     expiresAt: Date;
 
-    /** Reservation mode (e.g. general admission vs reserved seating). */
+    /**
+     * Reservation mode applied at booking time.
+     *
+     * @remarks
+     * Determines whether seat selection is required.
+     */
     reservationType: ReservationType;
 
     /**
-     * Optional notes associated with the reservation.
+     * Optional internal notes.
      *
      * @remarks
-     * Intended for internal annotations or operational context.
+     * Intended for administrative or operational context.
+     * Not shown to end users by default.
      */
     notes?: string | null;
 }
