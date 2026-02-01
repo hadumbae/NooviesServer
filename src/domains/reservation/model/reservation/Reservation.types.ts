@@ -3,14 +3,15 @@
  *
  * Core field definitions for a reservation.
  *
- * A reservation represents a transactional record composed of:
+ * A reservation is a transactional aggregate composed of:
  * - an immutable snapshot of the reserved showing
  * - live references to user, showing, and seating
  * - authoritative financial data
  * - lifecycle state and timestamps
  *
  * Designed to support reservation, payment, cancellation,
- * expiration, and refund workflows while preserving historical integrity.
+ * expiration, and refund workflows while preserving
+ * historical accuracy.
  */
 
 import type {ReservedShowingSnapshotSchemaFields} from "../snapshots/showing-snapshot/ReservedShowingSnapshot.types.js";
@@ -24,19 +25,20 @@ import type {ReservationType} from "../../schemas/enum/ReservationTypeEnumSchema
  * Reservation schema fields.
  *
  * @remarks
- * This model uses a snapshot-first design to guarantee that pricing,
- * scheduling, language, and seating data remain historically accurate
- * even if referenced entities are later modified or deleted.
+ * This model follows a snapshot-first design to guarantee that
+ * pricing, scheduling, language, and seating data remain
+ * historically correct even if referenced entities change
+ * or are removed.
  *
- * Lifecycle-dependent invariants based on {@link ReservationStatus}:
+ * Lifecycle-dependent invariants by {@link ReservationStatus}:
  * - `"RESERVED"` → `dateReserved`, `expiresAt` (future-dated)
  * - `"PAID"` → `datePaid`
  * - `"CANCELLED"` → `dateCancelled`
  * - `"REFUNDED"` → `dateRefunded`
  * - `"EXPIRED"` → `dateExpired`
  *
- * Optional vs nullable fields:
- * - `undefined` → not yet applicable or not assigned
+ * Optional vs nullable semantics:
+ * - `undefined` → not yet applicable
  * - `null` → explicitly cleared or intentionally absent
  */
 export interface ReservationSchemaFields {
@@ -47,13 +49,14 @@ export interface ReservationSchemaFields {
      * Immutable snapshot of the showing at reservation time.
      *
      * @remarks
-     * This snapshot is authoritative for historical, pricing,
-     * and scheduling data and must never be mutated.
+     * This snapshot is the authoritative source for
+     * pricing, scheduling, and seating context and
+     * must never be mutated after creation.
      */
     snapshot: ReservedShowingSnapshotSchemaFields;
 
     /**
-     * Reserving user reference.
+     * User who initiated the reservation.
      *
      * @remarks
      * Stored as an ObjectId; may be populated at runtime.
@@ -64,12 +67,13 @@ export interface ReservationSchemaFields {
      * Live reference to the source showing.
      *
      * @remarks
-     * Maintained for navigation and reporting only.
+     * Retained for navigation, reporting, and analytics.
+     * Historical data must always be read from {@link snapshot}.
      */
     showing: Types.ObjectId;
 
     /**
-     * Total number of tickets included in the reservation.
+     * Total number of tickets in the reservation.
      *
      * @remarks
      * Must be a positive integer and consistent with
@@ -81,17 +85,18 @@ export interface ReservationSchemaFields {
      * Selected seating references.
      *
      * @remarks
-     * - Required and non-empty for reserved seating reservations
-     * - Must be omitted or null for general admission reservations
-     * - Serves as a live reference; authoritative seat data lives in {@link snapshot}
+     * - Required for `"RESERVED_SEATS"` reservations
+     * - Must be omitted or `null` for `"GENERAL_ADMISSION"`
+     * - Acts as a live reference only; authoritative seat
+     *   state is captured in {@link snapshot}
      */
     selectedSeating?: Types.ObjectId[] | null;
 
     /**
-     * Total price paid for the reservation.
+     * Total amount paid for the reservation.
      *
      * @remarks
-     * Authoritative financial value; must not be recalculated
+     * This value is authoritative and must not be derived
      * from ticket or seat pricing after payment.
      */
     pricePaid: PositiveNumber;
@@ -102,10 +107,10 @@ export interface ReservationSchemaFields {
     /** Current lifecycle status of the reservation. */
     status: ReservationStatus;
 
-    /** Timestamp when the reservation was initially created. */
+    /** Timestamp when the reservation was created. */
     dateReserved: Date;
 
-    /** Timestamp when payment was completed. */
+    /** Timestamp when payment was successfully completed. */
     datePaid?: Date | null;
 
     /** Timestamp when the reservation was cancelled. */
@@ -121,8 +126,8 @@ export interface ReservationSchemaFields {
      * Expiration timestamp for unpaid reservations.
      *
      * @remarks
-     * Must be future-dated while status is `"RESERVED"`.
-     * Controlled by system logic rather than user input.
+     * - Must be future-dated while status is `"RESERVED"`
+     * - Controlled exclusively by system logic
      */
     expiresAt: Date;
 
@@ -130,7 +135,8 @@ export interface ReservationSchemaFields {
      * Reservation mode applied at booking time.
      *
      * @remarks
-     * Determines whether seat selection is required.
+     * Determines whether explicit seat selection
+     * is required.
      */
     reservationType: ReservationType;
 
@@ -138,8 +144,24 @@ export interface ReservationSchemaFields {
      * Optional internal notes.
      *
      * @remarks
-     * Intended for administrative or operational context.
-     * Not shown to end users by default.
+     * Intended for administrative or operational use.
+     * Not exposed to end users by default.
      */
     notes?: string | null;
 }
+
+/**
+ * Narrowed reservation document with enforced
+ * seating invariants by {@link ReservationType}.
+ *
+ * @remarks
+ * Ensures that:
+ * - General admission reservations never include seating
+ * - Reserved seating reservations always include seating
+ */
+export type ReservationDoc =
+    Omit<ReservationSchemaFields, "reservationType" | "selectedSeating"> &
+    (
+        | { reservationType: "GENERAL_ADMISSION"; selectedSeating?: null }
+        | { reservationType: "RESERVED_SEATS"; selectedSeating: Types.ObjectId[] }
+        );
