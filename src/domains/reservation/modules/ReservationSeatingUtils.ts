@@ -18,7 +18,8 @@ import SeatMap from "../../seatmap/model/SeatMap.model.js";
 import {BookingError} from "../../../shared/errors/reservations/BookingError.js";
 import type {CheckSeatsForTicketParams} from "./ReservationSeatingUtils.types.js";
 import Seat from "../../seat/model/Seat.model.js";
-import {countPaidReservationsByShowing} from "./ReservationFetchUtils.js";
+
+import {countPaidReservationsByShowing} from "../utilities/countPaidReservationsByShowing.js";
 
 /**
  * Atomically locks seat-map entries for a reserved-seating reservation
