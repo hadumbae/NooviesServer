@@ -14,4 +14,5 @@ export default [
     "CANCELLED",
     "REFUNDED",
     "EXPIRED",
+    "INVALID",
 ] as const;

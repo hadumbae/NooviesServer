@@ -15,10 +15,11 @@
 
 import ReservationSchema from "./Reservation.schema.js";
 import type {HydratedDocument} from "mongoose";
-import type {ReservationSchemaFields} from "./Reservation.types.js";
+import type {ReservationSchemaFields, ReservationDoc} from "./Reservation.types.js";
 import {DateTime} from "luxon";
 import {createReservedShowingSnapshot} from "../../utilities/snapshots/createReservedShowingSnapshot.js";
 import type {ReservationStatus} from "../../schemas/enum/ReservationStatusEnumSchema.js";
+import {reserveSeatsByReservation} from "../../modules/ReservationSeatingUtils.js";
 
 /**
  * Mapping of reservation status to its required lifecycle timestamp field.
@@ -99,12 +100,11 @@ function validateByType(doc: HydratedDocument<ReservationSchemaFields>) {
  * - Showing snapshots are created only once, at reservation creation
  */
 ReservationSchema.pre(
-    "save",
+    "validate",
     async function (this: HydratedDocument<ReservationSchemaFields>, next: () => void) {
         validateDates(this);
         validateByType(this);
 
-        // --- SNAPSHOT CREATION ---
         if (this.isNew) {
             this.snapshot = await createReservedShowingSnapshot({
                 reservationType: this.reservationType,
@@ -118,3 +118,10 @@ ReservationSchema.pre(
         next();
     },
 );
+
+ReservationSchema.post("save", async function (this: HydratedDocument<ReservationDoc>) {
+        if (this.isNew) {
+            await reserveSeatsByReservation(this);
+        }
+    }
+)
