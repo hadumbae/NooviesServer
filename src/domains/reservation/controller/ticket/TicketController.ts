@@ -10,7 +10,7 @@
 import type {Request, Response} from "express";
 import type {ControllerAsyncFunc} from "../../../../shared/types/ControllerTypes.js";
 import {reserveTickets} from "../../modules/TicketReservationUtils.js";
-import type {TicketCheckoutSubmitData} from "../../schemas/ticket-checkout/TicketCheckout.submit.schema.js";
+import type {ReserveTicketSubmitData} from "../../schemas/reserve-ticket/ReserveTicket.submit.schema.js";
 
 /**
  * Creates a reservation for the authenticated client.
@@ -33,7 +33,7 @@ export const makeReservationForClient: ControllerAsyncFunc = async (
         return res.status(403).json({message: "Unauthorized."});
     }
 
-    const data = req.validatedBody as TicketCheckoutSubmitData;
+    const data = req.validatedBody as ReserveTicketSubmitData;
     const reservation = await reserveTickets({userID, data});
 
     return res

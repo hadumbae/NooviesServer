@@ -1,7 +1,7 @@
 import {
-    type TicketCheckoutInputData,
-    TicketCheckoutInputSchema,
-} from "../../schemas/ticket-checkout/TicketCheckout.input.schema.js";
+    type ReserveTicketInputData,
+    ReserveTicketInputSchema,
+} from "../../schemas/reserve-ticket/ReserveTicket.input.schema.js";
 import ZodParseError from "../../../../shared/errors/ZodParseError.js";
 
 /**
@@ -17,8 +17,8 @@ import ZodParseError from "../../../../shared/errors/ZodParseError.js";
  * @returns Parsed and type-safe checkout input data
  * @throws ZodParseError When schema validation fails
  */
-export function validateTicketReservationInput(data: TicketCheckoutInputData): TicketCheckoutInputData {
-    const {data: parsedData, success, error} = TicketCheckoutInputSchema.safeParse(data);
+export function validateTicketReservationInput(data: ReserveTicketInputData): ReserveTicketInputData {
+    const {data: parsedData, success, error} = ReserveTicketInputSchema.safeParse(data);
 
     if (!success) {
         throw new ZodParseError({

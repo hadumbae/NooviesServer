@@ -12,7 +12,7 @@ import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import {makeReservationForClient} from "../controller/ticket/TicketController.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
-import {TicketCheckoutSubmitSchema} from "../schemas/ticket-checkout/TicketCheckout.submit.schema.js";
+import {ReserveTicketSubmitSchema} from "../schemas/reserve-ticket/ReserveTicket.submit.schema.js";
 
 const router = Router();
 
@@ -28,7 +28,7 @@ const router = Router();
  */
 router.get(
     "/reserve",
-    [isAuth, validateZodSchema(TicketCheckoutSubmitSchema)],
+    [isAuth, validateZodSchema(ReserveTicketSubmitSchema)],
     asyncHandler(makeReservationForClient),
 );
 

@@ -5,8 +5,8 @@
  */
 
 import {Types} from "mongoose";
-import type {TicketCheckoutSubmitData} from "../schemas/ticket-checkout/TicketCheckout.submit.schema.js";
-import type {TicketCheckoutInputData} from "../schemas/ticket-checkout/TicketCheckout.input.schema.js";
+import type {ReserveTicketSubmitData} from "../schemas/reserve-ticket/ReserveTicket.submit.schema.js";
+import type {ReserveTicketInputData} from "../schemas/reserve-ticket/ReserveTicket.input.schema.js";
 
 /**
  * Parameters required to initiate a checkout reservation.
@@ -19,17 +19,17 @@ export type ReserveTicketsParams = {
     userID: Types.ObjectId;
 
     /** Validated checkout submission payload. */
-    data: TicketCheckoutSubmitData;
+    data: ReserveTicketSubmitData;
 };
 
 /**
  * Checkout input narrowed to general admission reservations.
  */
 export type ReserveGeneralTicketData =
-    Extract<TicketCheckoutInputData, {reservationType: "GENERAL_ADMISSION"}>;
+    Extract<ReserveTicketInputData, {reservationType: "GENERAL_ADMISSION"}>;
 
 /**
  * Checkout input narrowed to reserved seating reservations.
  */
 export type ReserveSeatTicketData =
-    Extract<TicketCheckoutInputData, {reservationType: "RESERVED_SEATS"}>;
+    Extract<ReserveTicketInputData, {reservationType: "RESERVED_SEATS"}>;

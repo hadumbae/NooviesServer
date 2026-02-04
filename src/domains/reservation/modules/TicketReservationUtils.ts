@@ -24,7 +24,7 @@
 import type {ReservationSchemaFields} from "../model/reservation/Reservation.types.js";
 import {calculateDateNow, calculateFutureDate} from "../../../shared/utility/date/LuxonDateUtils.js";
 import {fetchPopulatedShowing} from "../../showing/utilities/fetchPopulatedShowing.js";
-import type {TicketCheckoutInputData} from "../schemas/ticket-checkout/TicketCheckout.input.schema.js";
+import type {ReserveTicketInputData} from "../schemas/reserve-ticket/ReserveTicket.input.schema.js";
 import {validateTicketReservationInput} from "../utilities/validation/validateTicketReservationInput.js";
 import Reservation from "../model/reservation/Reservation.model.js";
 import {BookingError} from "../../../shared/errors/reservations/BookingError.js";
@@ -47,7 +47,7 @@ import {TicketReservationPopulateRefs} from "../constants/TicketReservationPopul
  * @returns The saved reservation document
  */
 const saveReservation = async (
-    data: TicketCheckoutInputData
+    data: ReserveTicketInputData
 ): Promise<ReservationSchemaFields> => {
     const inputData = validateTicketReservationInput(data);
 
@@ -129,12 +129,13 @@ const ReserveHandlers = {
 export async function reserveTickets(
     {userID, data}: ReserveTicketsParams
 ): Promise<ReservationSchemaFields> {
-    const baseData: TicketCheckoutInputData = {
+    const baseData: ReserveTicketInputData = {
         ...data,
         user: userID,
         status: "RESERVED",
         dateReserved: calculateDateNow(),
         expiresAt: calculateFutureDate({minute: 30}),
+        pricePaid: 0,
     };
 
     if (baseData.reservationType === "GENERAL_ADMISSION") {

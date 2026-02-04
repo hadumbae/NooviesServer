@@ -1,5 +1,5 @@
 /**
- * @file TicketCheckout.submit.schema.ts
+ * @file ReserveTicket.submit.schema.ts
  *
  * Zod schemas for validating ticket checkout submissions
  * before entering the reservation lifecycle.
@@ -31,7 +31,7 @@ import { ReservationTypeConstant } from "../../constants/ReservationTypeConstant
  * Provides shared structural validation for all reservation types
  * without enforcing reservation-type-specific seating rules.
  */
-export const TicketCheckoutSubmitBaseSchema = z.object({
+export const ReserveTicketSubmitBaseSchema = z.object({
     /** Showing being reserved. */
     showing: ObjectIdSchema,
 
@@ -62,8 +62,8 @@ export const TicketCheckoutSubmitBaseSchema = z.object({
  *
  * Explicitly forbids seating selection.
  */
-const TicketCheckoutSubmitGeneralSchema =
-    TicketCheckoutSubmitBaseSchema.extend({
+const SubmitGeneralSchema =
+    ReserveTicketSubmitBaseSchema.extend({
         reservationType: z.literal(ReservationTypeConstant[0]),
         selectedSeating: z
             .union([z.null(), z.undefined()], {
@@ -77,8 +77,8 @@ const TicketCheckoutSubmitGeneralSchema =
  *
  * Requires one or more selected seat identifiers.
  */
-const TicketCheckoutSubmitReservedSchema =
-    TicketCheckoutSubmitBaseSchema.extend({
+const SubmitReservedSchema =
+    ReserveTicketSubmitBaseSchema.extend({
         reservationType: z.literal(ReservationTypeConstant[1]),
         selectedSeating: generateArraySchema(ObjectIdSchema).min(1, {
             message: "Must not be an empty array.",
@@ -92,13 +92,13 @@ const TicketCheckoutSubmitReservedSchema =
  * Uses a discriminated union on `reservationType` to enforce
  * mutually exclusive input shapes at validation time.
  */
-export const TicketCheckoutSubmitSchema = z.discriminatedUnion(
+export const ReserveTicketSubmitSchema = z.discriminatedUnion(
     "reservationType",
-    [TicketCheckoutSubmitReservedSchema, TicketCheckoutSubmitGeneralSchema]
+    [SubmitReservedSchema, SubmitGeneralSchema]
 );
 
 /**
  * Type representing a validated checkout submission payload.
  */
-export type TicketCheckoutSubmitData =
-    z.infer<typeof TicketCheckoutSubmitSchema>;
+export type ReserveTicketSubmitData =
+    z.infer<typeof ReserveTicketSubmitSchema>;
