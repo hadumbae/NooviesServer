@@ -18,8 +18,8 @@ import type {ReservedShowingSnapshotSchemaFields} from "../snapshots/showing-sna
 import {Types} from "mongoose";
 import type {ISO4217CurrencyCode} from "../../../../shared/schema/enums/ISO4217CurrencyCodeEnumSchema.js";
 import type {ReservationStatus} from "../../schemas/enum/ReservationStatusEnumSchema.js";
-import type {PositiveNumber} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
 import type {ReservationType} from "../../schemas/enum/ReservationTypeEnumSchema.js";
+import type {NonNegativeNumber} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
 
 /**
  * Reservation schema fields.
@@ -99,7 +99,7 @@ export interface ReservationSchemaFields {
      * This value is authoritative and must not be derived
      * from ticket or seat pricing after payment.
      */
-    pricePaid: PositiveNumber;
+    pricePaid: NonNegativeNumber;
 
     /** Currency used for payment (ISO 4217). */
     currency: ISO4217CurrencyCode;

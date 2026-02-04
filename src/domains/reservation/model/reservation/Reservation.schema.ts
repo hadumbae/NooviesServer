@@ -66,8 +66,8 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
     pricePaid: {
         type: Number,
         validate: {
-            message: "Must be a positive number.",
-            validator: (num: number) => num > 0,
+            message: "Must not be a negative number.",
+            validator: (num: number) => num >= 0,
         },
         required: [true, "Required for reservation."],
     },

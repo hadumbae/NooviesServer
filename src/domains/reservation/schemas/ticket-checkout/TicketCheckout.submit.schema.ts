@@ -38,9 +38,6 @@ export const TicketCheckoutSubmitBaseSchema = z.object({
     /** Number of tickets included in the checkout. */
     ticketCount: PositiveNumberSchema,
 
-    /** Total price paid or payable for the reservation. */
-    pricePaid: PositiveNumberSchema,
-
     /** Currency used for pricing (ISO 4217). */
     currency: ISO4217CurrencyCodeEnumSchema,
 
