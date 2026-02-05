@@ -3,26 +3,31 @@
  *
  * Population paths for ticket reservation queries.
  *
- * Extends the standard showing population configuration
- * with reserved-seating specific relations.
+ * Defines the default population graph used when fetching
+ * reservation documents for read-oriented use cases.
  */
 
-import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulateOption, PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
 import {ShowingPopulateRefs} from "../../showing/constants/ShowingPopulateRefs.js";
 
 /**
  * Default populate configuration for ticket reservation documents.
  *
  * @remarks
- * - Includes all showing-related references
- * - Additionally populates selected seating and seat metadata
- * - Intended for read-oriented workflows such as:
+ * - Always populates the associated showing and its related references
+ * - Populates selected seating and seat metadata when present
+ * - For general admission reservations, `selectedSeating` may be null
+ *   or empty and is safely ignored by Mongoose population
+ * - Intended for read-heavy workflows such as:
  *   - Reservation review
  *   - Checkout confirmation
  *   - Administrative inspection
  */
 export const TicketReservationPopulateRefs: PopulatePath[] = [
-    ...ShowingPopulateRefs,
+    {
+        path: "showing",
+        populate: ShowingPopulateRefs as PopulateOption[],
+    },
     {
         path: "selectedSeating",
         populate: {
