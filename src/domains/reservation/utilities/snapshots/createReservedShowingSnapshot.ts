@@ -111,10 +111,10 @@ export async function createReservedShowingSnapshot(
             pricePaid,
             ticketCount,
             reservationType,
-            movie: createMovieSnapshot(movie),
-            theatre: createTheatreSnapshot(theatre),
-            screen: createScreenSnapshot(screen),
-            selectedSeats: createReservedSeatSnapshot(selectedSeating),
+            movie: await createMovieSnapshot(movie),
+            theatre: await createTheatreSnapshot(theatre),
+            screen: await createScreenSnapshot(screen),
+            selectedSeats: await createReservedSeatSnapshot(selectedSeating),
         });
 
     if (!success) {

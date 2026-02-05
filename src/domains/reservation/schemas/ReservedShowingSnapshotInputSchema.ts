@@ -33,13 +33,13 @@ export const ReservedShowingSnapshotInputSchema = z.object({
     screen: ScreenSnapshotInputSchema,
 
     /** Selected seat snapshots at reservation time. */
-    selectedSeats: generateArraySchema(ReservedSeatSnapshotInputSchema),
+    selectedSeats: generateArraySchema(ReservedSeatSnapshotInputSchema).nullable().optional(),
 
     /** Scheduled start time of the showing. */
     startTime: ValidDateInstanceSchema,
 
     /** Optional scheduled end time. */
-    endTime: ValidDateInstanceSchema.optional(),
+    endTime: ValidDateInstanceSchema.nullable().optional(),
 
     /** Primary spoken language (ISO 639-1). */
     language: ISO6391LanguageCodeSchema,
