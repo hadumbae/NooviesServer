@@ -26,7 +26,7 @@ const router = Router();
  * 3. {@link asyncHandler} – forwards async errors to the
  *    global error handler
  */
-router.get(
+router.post(
     "/reserve",
     [isAuth, validateZodSchema(ReserveTicketSubmitSchema)],
     asyncHandler(makeReservationForClient),
