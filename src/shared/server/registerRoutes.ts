@@ -26,6 +26,7 @@ import {TheatreBrowseRoutes} from "../../domains/theatre/routing/TheatreBrowseRo
 import {ScreenBrowseRoutes} from "../../domains/screen/routing/ScreenBrowseRoutes.js";
 import {ReservationRoutes} from "../../domains/reservation/routes/ReservationRoutes.js";
 import {TicketRoutes} from "../../domains/reservation/routes/TicketRoutes.js";
+import {ReservationUtilityRoutes} from "../../domains/reservation/routes/ReservationUtilityRoutes.js";
 
 /**
  * Internal route registration descriptor.
@@ -74,6 +75,8 @@ const registration: RouteRegistration[] = [
 
     {path: "/api/v1/browse/theatres", router: TheatreBrowseRoutes},
     {path: "/api/v1/browse/screens", router: ScreenBrowseRoutes},
+
+    {path: "/api/v1/reservations/utils", router: ReservationUtilityRoutes},
     {path: "/api/v1/tickets", router: TicketRoutes},
 ];
 
