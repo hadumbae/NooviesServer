@@ -11,7 +11,7 @@
 
 import {Router} from "express";
 import isAuth from "../../authentication/middleware/isAuth.js";
-import {fetchReservationsForUser} from "../controller/reservation/ReservationUtilityController.js";
+import {fetchReservationsForUser} from "../controllers/ReservationUtilityController.js";
 import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 
 const router = Router();

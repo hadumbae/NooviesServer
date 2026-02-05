@@ -13,12 +13,12 @@
  */
 
 import type {Request, Response} from "express";
-import type {ControllerAsyncFunc} from "../../../../shared/types/ControllerTypes.js";
-import QueryUtils from "../../../../shared/services/query-utils/QueryUtils.js";
+import type {ControllerAsyncFunc} from "../../../shared/types/ControllerTypes.js";
+import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import {
     countUserReservations,
     fetchPaginatedUserReservations,
-} from "../../modules/ReservationUtils.js";
+} from "../modules/ReservationUtils.js";
 
 /**
  * Fetches a paginated list of reservations for the authenticated user.

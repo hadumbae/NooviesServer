@@ -19,7 +19,7 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
 import { BaseRepository } from "../../../shared/repository/BaseRepository.js";
-import { ReservationController } from "../controller/reservation/ReservationController.js";
+import { ReservationCRUDController } from "../controllers/ReservationCRUDController.js";
 import { ReservationQueryOptionService } from "../services/query-options/ReservationQueryOptionService.js";
 
 /**
@@ -75,7 +75,7 @@ export class ReservationServiceProvider {
         });
 
         /** Fully configured Reservation controller. */
-        const controller = new ReservationController({
+        const controller = new ReservationCRUDController({
             repository,
             optionService,
             aggregateService,

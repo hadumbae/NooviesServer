@@ -10,7 +10,7 @@
 import {Router} from "express";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
-import {makeReservationForClient} from "../controller/ticket/TicketController.js";
+import {makeReservationForClient} from "../controllers/TicketController.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 import {ReserveTicketSubmitSchema} from "../schemas/reserve-ticket/ReserveTicket.submit.schema.js";
 
