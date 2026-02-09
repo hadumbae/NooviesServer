@@ -1,23 +1,33 @@
-import { SeatMapSchema } from "./SeatMap.schema.js";
+/**
+ * @file SeatMap.virtuals.ts
+ *
+ * Virtual field definitions for the SeatMap schema.
+ *
+ * Provides computed pricing and seat-position metadata,
+ * primarily for read and layout-oriented workflows.
+ */
+
+import {SeatMapSchema} from "./SeatMap.schema.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 import type {SeatSchemaFields} from "../../seat/model/Seat.types.js";
 
 /**
- * @summary
- * Computes the effective price for a seat.
+ * Computes the effective price for a seat map entry.
  *
  * @remarks
- * - Uses `overridePrice` when defined.
- * - Otherwise computes `basePrice * priceMultiplier`.
- * - Requires `mongoose-lean-virtuals` when queried via `.lean()`.
+ * - Uses `overridePrice` when defined
+ * - Falls back to `basePrice * priceMultiplier`
+ * - Requires `mongoose-lean-virtuals` when queried via `.lean()`
  *
  * @example
+ * ```ts
  * const seatMap = await SeatMapModel
  *   .findById(id)
  *   .populate("seat")
  *   .lean({ virtuals: true });
  *
  * seatMap.finalPrice;
+ * ```
  */
 SeatMapSchema.virtual("finalPrice").get(function () {
     if (this.overridePrice) {
@@ -28,11 +38,10 @@ SeatMapSchema.virtual("finalPrice").get(function () {
 });
 
 /**
- * @summary
- * Seat X-coordinate.
+ * X-coordinate of the seat.
  *
  * @remarks
- * Exposed only when the `seat` reference is populated.
+ * Only available when the `seat` reference is populated.
  */
 SeatMapSchema.virtual("x").get(function () {
     if (this.seat && typeof this.seat === "object") {
@@ -43,11 +52,10 @@ SeatMapSchema.virtual("x").get(function () {
 });
 
 /**
- * @summary
- * Seat Y-coordinate.
+ * Y-coordinate of the seat.
  *
  * @remarks
- * Exposed only when the `seat` reference is populated.
+ * Only available when the `seat` reference is populated.
  */
 SeatMapSchema.virtual("y").get(function () {
     if (this.seat && typeof this.seat === "object") {
@@ -58,11 +66,10 @@ SeatMapSchema.virtual("y").get(function () {
 });
 
 /**
- * @summary
- * Seat row identifier.
+ * Logical row identifier for the seat.
  *
  * @remarks
- * Exposed only when the `seat` reference is populated.
+ * Only available when the `seat` reference is populated.
  */
 SeatMapSchema.virtual("row").get(function () {
     if (this.seat && typeof this.seat === "object") {
@@ -73,9 +80,23 @@ SeatMapSchema.virtual("row").get(function () {
 });
 
 /**
+ * Human-readable seat label.
+ *
  * @remarks
+ * Only available when the `seat` reference is populated.
+ */
+SeatMapSchema.virtual("seatLabel").get(function () {
+    if (this.seat && typeof this.seat === "object") {
+        return (this.seat as SeatSchemaFields).seatLabel ?? undefined;
+    }
+
+    return undefined;
+});
+
+/**
  * Enables virtual fields on lean query results.
  *
+ * @remarks
  * Must be registered **after** all virtual definitions.
  */
 SeatMapSchema.plugin(mongooseLeanVirtuals);
