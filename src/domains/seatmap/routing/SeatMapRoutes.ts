@@ -3,13 +3,13 @@ import {
     createBaseRoutes,
     type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
-import type {ISeatMapController} from "../controller/SeatMapController.js";
 import {SeatMapInputSchema} from "../schema/SeatMapInput.schema.js";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import SeatMapServiceProvider from "../provider/SeatMapServiceProvider.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
+import type {ISeatMapController} from "../controller/SeatMapController.types.js";
 
 /**
  * Extract the SeatMap controller and model from the SeatMap service provider.
