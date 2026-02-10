@@ -7,9 +7,6 @@ import type {
     BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type {
-    PopulationPipelineStages,
-} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {MovieCreditQueryMatchFilters} from "../schemas/query/MovieCreditQueryOption.types.js";
@@ -84,21 +81,6 @@ export default class MovieCreditController
     fetchQueryOptions(req: Request): QueryOptionTypes<IMovieCredit, MovieCreditQueryMatchFilters> {
         const options = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(options);
-    }
-
-    /**
-     * Provides predefined population pipelines for movie credits.
-     * Populates references to `movies`, `people`, and `roletypes`.
-     *
-     * @returns A {@link PopulationPipelineStages} array
-     *          for enriching query results.
-     *
-     * @example
-     * // Always applies lookups to movies, people, and roletypes,
-     * // regardless of query parameters.
-     */
-    fetchPopulatePipelines(): PopulationPipelineStages {
-        return this.optionService.generatePopulationPipelines();
     }
 
     /**

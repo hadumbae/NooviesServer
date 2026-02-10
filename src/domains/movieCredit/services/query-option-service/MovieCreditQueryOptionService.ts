@@ -23,7 +23,6 @@ import type {Request} from "express";
 import ZodParseError from "../../../../shared/errors/ZodParseError.js";
 import {type FilterQuery, type SortOrder} from "mongoose";
 import type {
-    PopulationPipelineStages,
     ReferenceFilterPipelineStages
 } from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
@@ -177,25 +176,5 @@ export default class MovieCreditQueryOptionService implements MovieCreditQueryOp
                 sorts: [],
             },
         };
-    }
-
-    /**
-     * Generates population pipeline stages for MovieCredit results.
-     *
-     * @remarks
-     * These stages are intended to run after pagination to enrich
-     * results with referenced Movie, Person, and RoleType documents.
-     *
-     * @returns Aggregation pipeline stages for population.
-     */
-    generatePopulationPipelines(): PopulationPipelineStages {
-        return [
-            {$lookup: {from: "movies", localField: "movie", foreignField: "_id", as: "movie"}},
-            {$lookup: {from: "people", localField: "person", foreignField: "_id", as: "person"}},
-            {$lookup: {from: "roletypes", localField: "roleType", foreignField: "_id", as: "roleType"}},
-            {$unwind: {path: "$movie", preserveNullAndEmptyArrays: true}},
-            {$unwind: {path: "$person", preserveNullAndEmptyArrays: true}},
-            {$unwind: {path: "$roleType", preserveNullAndEmptyArrays: true}},
-        ];
     }
 }

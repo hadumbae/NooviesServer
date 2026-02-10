@@ -7,6 +7,7 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
 import {MovieCreditPersistenceManager} from "../repositories/managers/MovieCreditPersistenceManager.js";
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {MovieCreditPopulationPipelines} from "../queries/MovieCreditPopulationPipelines.js";
 
 /**
  * @file MovieCreditServiceProvider.ts
@@ -61,7 +62,10 @@ export default class MovieCreditServiceProvider {
         const optionService = new MovieCreditQueryOptionService();
 
         /** Aggregation pipeline service */
-        const aggregateService = new AggregateQueryService({model});
+        const aggregateService = new AggregateQueryService({
+            model,
+            populationPipelines: MovieCreditPopulationPipelines,
+        });
 
         /** HTTP controller */
         const controller = new MovieCreditController({

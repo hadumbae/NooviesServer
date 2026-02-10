@@ -5,7 +5,6 @@ import type {
     MovieCreditQueryOptions
 } from "../../schemas/query/MovieCreditQueryOption.types.js";
 import type {
-    PopulationPipelineStages,
     ReferenceFilterPipelineStages
 } from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
 
@@ -27,12 +26,4 @@ export interface MovieCreditQueryOptionMethods
      * @returns Aggregation pipeline stages for reference filtering.
      */
     generateReferenceFilters(params: MovieCreditQueryOptions): ReferenceFilterPipelineStages;
-
-    /**
-     * Generates aggregation pipeline stages used to populate
-     * referenced documents after pagination.
-     *
-     * @returns Aggregation pipeline stages for population.
-     */
-    generatePopulationPipelines(): PopulationPipelineStages;
 }
