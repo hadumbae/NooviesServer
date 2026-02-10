@@ -1,21 +1,25 @@
-import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
-
 /**
- * @constant SeatMapPopulateRefs
- * @description
- * Default population paths for the `SeatMap` Mongoose model.
+ * @file SeatMapPopulateRefs.ts
  *
- * Provides a reusable, type-safe set of references for `.populate()`
- * calls across repositories, services, and controllers.
+ * Default population configuration for the `SeatMap` Mongoose model.
  *
- * Ensures consistency and prevents hard-coded string paths, while
- * keeping population logic synchronized with the schema.
+ * Centralizes all `.populate()` paths used when resolving seat map
+ * relations, ensuring consistency across repositories, services,
+ * and controllers.
  *
  * @remarks
- * - Uses `as const` to preserve literal string types and readonly tuple inference.
- * - Populates:
- *   - `showing`
- *   - `seat` with nested population of `screen` and `theatre`
+ * - Prevents hard-coded population strings
+ * - Keeps population logic synchronized with the schema
+ * - Uses `as const` to preserve literal path types
+ *
+ * Populates:
+ * - `showing`
+ *   - `movie` (with `genres`)
+ *   - `screen`
+ *   - `theatre`
+ * - `seat`
+ *   - `screen`
+ *   - `theatre`
  *
  * @example
  * ```ts
@@ -23,21 +27,20 @@ import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js"
  *   .populate(SeatMapPopulateRefs)
  *   .exec();
  * ```
- *
- * @see SeatMapSchemaFields – Interface for the underlying model fields.
  */
-const SeatMapPopulateRefs: PopulatePath[] = [
+
+import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+
+/**
+ * Reusable population paths for the `SeatMap` model.
+ */
+const SeatMapPopulateRefs: readonly PopulatePath[] = [
     {
         path: "showing",
         populate: [
             {path: "movie", populate: [{path: "genres"}]},
             {path: "screen"},
             {path: "theatre"},
-            {path: "seatMapCount"},
-            {path: "unavailableSeatsCount"},
-            {path: "availableSeatsCount"},
-            {path: "reservedSeatsCount"},
-            {path: "soldSeatsCount"},
         ],
     },
     {
