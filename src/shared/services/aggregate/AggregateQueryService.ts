@@ -114,10 +114,10 @@ export default class AggregateQueryService<
         }
 
         if (typeof limit === "number") pipeline.push({$limit: limit});
-        if (populate) pipeline.push(...this._populationPipelines);
         if (virtuals) pipeline.push(...this._virtualsPipelines);
+        if (populate) pipeline.push(...this._populationPipelines);
 
-        return this._model.aggregate(pipeline).option({virtuals});
+        return this._model.aggregate(pipeline);
     }
 
     /**
