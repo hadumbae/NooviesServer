@@ -20,6 +20,8 @@ import SeatMapPopulateRefs from "../constants/SeatMapPopulateRefs.js";
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
 import {SeatMapPersistenceManager} from "../repositories/managers/SeatMapPersistenceManager.js";
+import {SeatMapPopulationPipelines} from "../queries/SeatMapPopulationPipelines.js";
+import {SeatMapVirtualPipelines} from "../queries/SeatMapVirtualPipelines.js";
 
 /**
  * Service provider for the SeatMap domain.
@@ -66,7 +68,8 @@ export default class SeatMapServiceProvider {
         /** Aggregate query execution service */
         const aggregateService = new AggregateQueryService({
             model,
-            populateRefs,
+            populationPipelines: SeatMapPopulationPipelines,
+            virtualsPipelines: SeatMapVirtualPipelines,
         });
 
         /** HTTP controller for SeatMap endpoints */

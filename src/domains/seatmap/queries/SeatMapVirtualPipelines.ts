@@ -51,11 +51,16 @@ export const SeatMapVirtualPipelines: VirtualPipelineStages = [
     },
     {
         $addFields: {
-            finalPrice: "$refSeat.finalPrice",
             x: "$refSeat.x",
             y: "$refSeat.y",
             row: "$refSeat.row",
             seatLabel: "$refSeat.seatLabel",
+            finalPrice: {
+                $ifNull: [
+                    "$overridePrice",
+                    {$multiply: ["$basePrice", "$priceMultiplier"]},
+                ],
+            },
         },
     },
     {

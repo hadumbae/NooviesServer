@@ -29,6 +29,7 @@ import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/Lo
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {SeatMapMatchFilters} from "../../schema/query-option/SeatMapMatchParam.schema.js";
+import {SeatMapPopulationPipelines} from "../../queries/SeatMapPopulationPipelines.js";
 
 /**
  * Query option service for SeatMap list and search endpoints.
@@ -142,11 +143,6 @@ export default class SeatMapQueryOptionService
      * Builds population pipeline stages for SeatMap documents.
      */
     generatePopulationPipelines(): PopulationPipelineStages {
-        return [
-            {$lookup: {from: "seats", localField: "seat", foreignField: "_id", as: "seat"}},
-            {$lookup: {from: "showings", localField: "showing", foreignField: "_id", as: "showing"}},
-            {$unwind: {path: "seat", preserveNullAndEmptyArrays: true}},
-            {$unwind: {path: "showing", preserveNullAndEmptyArrays: true}},
-        ];
+        return SeatMapPopulationPipelines;
     }
 }
