@@ -14,6 +14,8 @@ import {ShowingSchema} from "../model/showing/Showing.schema.js";
 import ShowingQueryOptionService from "../service/query-option/ShowingQueryOptionService.js";
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import {ShowingCRUDWriter} from "../repositories/ShowingCRUDWriter.js";
+import {ShowingPopulationPipelines} from "../queries/ShowingPopulationPipelines.js";
+import {ShowingSeatMapVirtualPipelines} from "../queries/ShowingSeatMapVirtualPipelines.js";
 
 /**
  * Service provider for the Showing module.
@@ -56,7 +58,11 @@ export default class ShowingServiceProvider {
         const repository = new BaseRepository({model, populateRefs, writer});
 
         const queryService = new ShowingQueryOptionService();
-        const aggregateService = new AggregateQueryService({model, populateRefs});
+        const aggregateService = new AggregateQueryService({
+            model,
+            populationPipelines: ShowingPopulationPipelines,
+            virtualsPipelines: ShowingSeatMapVirtualPipelines,
+        });
 
         const controller = new ShowingController({
             repository,

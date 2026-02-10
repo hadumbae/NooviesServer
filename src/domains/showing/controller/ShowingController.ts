@@ -23,7 +23,6 @@ import type ShowingQueryOptionService from "../service/query-option/ShowingQuery
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type { ShowingSchemaFields } from "../model/showing/Showing.types.js";
 import type { ShowingQueryMatchFilters } from "../schema/query/ShowingMatchParams.js";
-import type { PopulationPipelineStages } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 
 /**
  * HTTP controller method contract for Showing resources.
@@ -99,17 +98,5 @@ export default class ShowingController
     ): QueryOptionTypes<ShowingSchemaFields, ShowingQueryMatchFilters> {
         const options = this.queryService.fetchQueryParams(req);
         return this.queryService.generateQueryOptions(options);
-    }
-
-    /**
-     * Generate aggregation population pipelines for Showing queries.
-     *
-     * @remarks
-     * Used when reference-based filters or sorts require aggregation.
-     *
-     * @returns Aggregation pipeline stages for populating references.
-     */
-    fetchPopulatePipelines(): PopulationPipelineStages {
-        return this.queryService.generatePopulationPipelines();
     }
 }
