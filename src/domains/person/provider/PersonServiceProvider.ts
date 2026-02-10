@@ -49,7 +49,7 @@ export default class PersonServiceProvider {
         const imageService = new PersonImageService();
 
         // Service for aggregate queries for Person
-        const aggregateService = new AggregateQueryService({ model, populateRefs });
+        const aggregateService = new AggregateQueryService({ model });
 
         // Controller handling HTTP requests for Person
         const controller = new PersonController({

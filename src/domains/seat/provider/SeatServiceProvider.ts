@@ -36,7 +36,7 @@ export default class SeatServiceProvider {
         });
 
         const optionService = new SeatQueryOptionService();
-        const aggregateService = new AggregateQueryService({model, populateRefs});
+        const aggregateService = new AggregateQueryService({model});
 
         const controller = new SeatController({
             repository,

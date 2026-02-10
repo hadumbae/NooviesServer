@@ -62,7 +62,7 @@ export default class MovieServiceProvider {
         const imageService = new MovieImageService();
 
         // Service for aggregate queries for Movie
-        const aggregateService = new AggregateQueryService({ model, populateRefs });
+        const aggregateService = new AggregateQueryService({ model });
 
         // CRUD controller for Movie entity
         const controller = new MovieController({

@@ -61,7 +61,7 @@ export default class MovieCreditServiceProvider {
         const optionService = new MovieCreditQueryOptionService();
 
         /** Aggregation pipeline service */
-        const aggregateService = new AggregateQueryService({model, populateRefs});
+        const aggregateService = new AggregateQueryService({model});
 
         /** HTTP controller */
         const controller = new MovieCreditController({

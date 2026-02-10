@@ -41,7 +41,7 @@ export default class ScreenServiceProvider {
         const optionService = new ScreenQueryOptionService();
         const seatService = new ScreenSeatService();
         const searchService = new ScreenSearchService();
-        const aggregateService = new AggregateQueryService({ model, populateRefs });
+        const aggregateService = new AggregateQueryService({ model });
 
         const controller = new ScreenController({
             repository,

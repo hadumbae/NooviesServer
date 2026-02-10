@@ -50,10 +50,7 @@ export default class TheatreServiceProvider {
         const queryUtils = QueryUtils;
 
         /** Aggregation helper bound to the Theatre model */
-        const aggregateService = new AggregateQueryService({
-            model,
-            populateRefs,
-        });
+        const aggregateService = new AggregateQueryService({model});
 
         /** Theatre-specific query option parser */
         const optionService = new TheatreQueryOptionService();
@@ -71,7 +68,6 @@ export default class TheatreServiceProvider {
 
         /** Public browse controller */
         const browseController = new TheatreBrowseController({
-            optionService,
             searchService,
         });
 
