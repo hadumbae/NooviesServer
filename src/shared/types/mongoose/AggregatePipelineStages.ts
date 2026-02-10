@@ -1,21 +1,32 @@
-import type {PipelineStage} from "mongoose";
-
 /**
- * @file aggregation-pipeline.types.ts
+ * @file AggregatePipelineStages.ts
  *
  * Strongly-typed aggregation pipeline stage groups used for
- * composing MongoDB/Mongoose queries.
+ * composing MongoDB aggregation queries in a predictable,
+ * domain-safe manner.
  *
- * These aliases constrain which stages are allowed in specific
- * aggregation contexts (population, filtering, sorting, virtuals).
+ * These aliases constrain which pipeline stages are permitted
+ * in specific aggregation contexts (population, filtering,
+ * sorting, and virtual field resolution).
+ *
+ * @remarks
+ * - Encourages consistent aggregation composition across domains
+ * - Prevents accidental misuse of pipeline stages
+ * - Improves readability of complex aggregation flows
  */
+
+import type {PipelineStage} from "mongoose";
 
 /**
  * Pipeline stages used exclusively for **reference population**.
  *
+ * Intended to resolve ObjectId references into full documents
+ * prior to filtering, sorting, or projection.
+ *
  * Constraints:
  * - Only `$lookup` and `$unwind` stages are permitted
- * - Intended for populating related collections prior to filtering or sorting
+ * - No filtering or sorting logic should appear here
+ * - Designed to be composed with other pipeline groups
  *
  * @example
  * ```ts
@@ -33,17 +44,19 @@ import type {PipelineStage} from "mongoose";
  * ```
  */
 export type PopulationPipelineStages = (
-    PipelineStage.Lookup |
-    PipelineStage.Unwind
+    | PipelineStage.Lookup
+    | PipelineStage.Unwind
     )[];
 
 /**
  * Pipeline stages used for **reference-level filtering**.
  *
+ * Applies conditional logic against populated reference fields.
+ *
  * Constraints:
- * - `$lookup` must precede `$match`
- * - `$match` operates on populated reference fields
- * - `$unset` may remove sensitive or unnecessary reference fields
+ * - `$lookup` and `$unwind` must precede `$match`
+ * - `$match` operates on populated reference data
+ * - `$unset` may remove sensitive or unused reference fields
  *
  * @example
  * ```ts
@@ -56,18 +69,21 @@ export type PopulationPipelineStages = (
  * ```
  */
 export type ReferenceFilterPipelineStages = (
-    PipelineStage.Lookup |
-    PipelineStage.Match |
-    PipelineStage.Unset
+    | PipelineStage.Lookup
+    | PipelineStage.Unwind
+    | PipelineStage.Match
+    | PipelineStage.Unset
     )[];
 
 /**
  * Pipeline stages used for **reference-level sorting**.
  *
+ * Enables sorting based on populated reference fields.
+ *
  * Constraints:
- * - Sorting is applied after reference population
- * - `$sort` may target populated reference fields
- * - `$unset` may remove unneeded fields post-sort
+ * - Reference population must occur before `$sort`
+ * - `$sort` may target nested reference fields
+ * - `$unset` may remove unnecessary fields after sorting
  *
  * @example
  * ```ts
@@ -80,22 +96,27 @@ export type ReferenceFilterPipelineStages = (
  * ```
  */
 export type ReferenceSortPipelineStages = (
-    PipelineStage.Lookup |
-    PipelineStage.Unwind |
-    PipelineStage.Sort |
-    PipelineStage.Unset
+    | PipelineStage.Lookup
+    | PipelineStage.Unwind
+    | PipelineStage.Sort
+    | PipelineStage.Unset
     )[];
 
 /**
- * Pipeline stages used for **virtual field construction**.
+ * Pipeline stages used for **virtual field materialization**.
  *
  * Typically used to:
  * - Join related collections
- * - Compute derived fields
+ * - Compute derived or denormalized fields
  * - Shape the final document output
+ *
+ * @remarks
+ * Commonly composed after population pipelines to replicate
+ * Mongoose virtual behavior in aggregation-based workflows.
  */
 export type VirtualPipelineStages = (
-    PipelineStage.Lookup |
-    PipelineStage.AddFields |
-    PipelineStage.Project
+    | PipelineStage.Lookup
+    | PipelineStage.Unwind
+    | PipelineStage.AddFields
+    | PipelineStage.Project
     )[];
