@@ -34,7 +34,7 @@ import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js"
 /**
  * Reusable population paths for the `SeatMap` model.
  */
-const SeatMapPopulateRefs: readonly PopulatePath[] = [
+const SeatMapPopulateRefs: PopulatePath[] = [
     {
         path: "showing",
         populate: [
