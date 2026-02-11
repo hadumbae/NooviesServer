@@ -7,10 +7,12 @@ import MovieService from "../service/movie/MovieService.js";
 import MovieQueryOptionService from "../service/MovieQueryOptionService.js";
 import MovieFavouriteService from "../service/user/MovieFavouriteService.js";
 import MovieFavouriteController from "../controller/MovieFavouriteController.js";
-import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import type {MovieSchemaFields} from "../model/Movie.types.js";
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {MoviePopulationPipelines} from "../queries/MoviePopulationPipelines.js";
+import {MovieVirtualPipelines} from "../queries/MovieVirtualPipelines.js";
 
 /**
  * @class MovieServiceProvider
@@ -46,11 +48,11 @@ export default class MovieServiceProvider {
 
         // References to populate in queries
         const populateRefs: PopulatePath[] = [
-            { path: "genres" },
+            {path: "genres"},
         ];
 
         // Repository for Movie with CRUD operations and population options
-        const repository = new BaseRepository<MovieSchemaFields>({ model, populateRefs });
+        const repository = new BaseRepository<MovieSchemaFields>({model, populateRefs});
 
         // Core business service for Movie
         const service = new MovieService();
@@ -62,7 +64,11 @@ export default class MovieServiceProvider {
         const imageService = new MovieImageService();
 
         // Service for aggregate queries for Movie
-        const aggregateService = new AggregateQueryService({ model });
+        const aggregateService = new AggregateQueryService({
+            model,
+            populationPipelines: MoviePopulationPipelines,
+            virtualsPipelines: MovieVirtualPipelines,
+        });
 
         // CRUD controller for Movie entity
         const controller = new MovieController({

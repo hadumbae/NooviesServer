@@ -1,18 +1,22 @@
 /**
  * @file AggregatePipelineStages.ts
  *
- * Strongly-typed aggregation pipeline stage groups used for
+ * Strongly-typed aggregation pipeline stage groupings used for
  * composing MongoDB aggregation queries in a predictable,
- * domain-safe manner.
+ * domain-safe, and intention-revealing manner.
  *
- * These aliases constrain which pipeline stages are permitted
- * in specific aggregation contexts (population, filtering,
- * sorting, and virtual field resolution).
+ * These type aliases restrict which pipeline stages are allowed
+ * in specific aggregation contexts such as:
+ * - Reference population
+ * - Reference-level filtering
+ * - Reference-level sorting
+ * - Virtual field materialization
  *
  * @remarks
  * - Encourages consistent aggregation composition across domains
- * - Prevents accidental misuse of pipeline stages
- * - Improves readability of complex aggregation flows
+ * - Prevents accidental misuse of unrelated pipeline stages
+ * - Improves readability and architectural clarity
+ * - Makes pipeline intent explicit at the type level
  */
 
 import type {PipelineStage} from "mongoose";
@@ -21,12 +25,12 @@ import type {PipelineStage} from "mongoose";
  * Pipeline stages used exclusively for **reference population**.
  *
  * Intended to resolve ObjectId references into full documents
- * prior to filtering, sorting, or projection.
+ * prior to filtering, sorting, or projection logic.
  *
  * Constraints:
  * - Only `$lookup` and `$unwind` stages are permitted
- * - No filtering or sorting logic should appear here
- * - Designed to be composed with other pipeline groups
+ * - No `$match`, `$sort`, or projection logic should appear here
+ * - Designed to be composed before filter/sort pipelines
  *
  * @example
  * ```ts
@@ -54,9 +58,10 @@ export type PopulationPipelineStages = (
  * Applies conditional logic against populated reference fields.
  *
  * Constraints:
- * - `$lookup` and `$unwind` must precede `$match`
+ * - `$lookup` / `$unwind` must precede `$match`
  * - `$match` operates on populated reference data
  * - `$unset` may remove sensitive or unused reference fields
+ * - Root-level filtering should use standard `$match` pipelines
  *
  * @example
  * ```ts
@@ -82,8 +87,9 @@ export type ReferenceFilterPipelineStages = (
  *
  * Constraints:
  * - Reference population must occur before `$sort`
- * - `$sort` may target nested reference fields
+ * - `$sort` may target nested populated fields
  * - `$unset` may remove unnecessary fields after sorting
+ * - Sorting logic should remain isolated from filtering pipelines
  *
  * @example
  * ```ts
@@ -105,18 +111,24 @@ export type ReferenceSortPipelineStages = (
 /**
  * Pipeline stages used for **virtual field materialization**.
  *
- * Typically used to:
- * - Join related collections
- * - Compute derived or denormalized fields
- * - Shape the final document output
+ * Used to replicate or replace Mongoose virtual behavior
+ * within aggregation-based workflows.
+ *
+ * Typical responsibilities:
+ * - Joining related collections
+ * - Computing derived or denormalized fields
+ * - Shaping the final document output
+ * - Removing intermediate fields
  *
  * @remarks
- * Commonly composed after population pipelines to replicate
- * Mongoose virtual behavior in aggregation-based workflows.
+ * - Commonly composed after population pipelines
+ * - Safe to use in reporting and read-heavy query paths
+ * - Should not introduce filtering logic
  */
 export type VirtualPipelineStages = (
     | PipelineStage.Lookup
     | PipelineStage.Unwind
     | PipelineStage.AddFields
     | PipelineStage.Project
+    | PipelineStage.Unset
     )[];
