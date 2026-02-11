@@ -20,7 +20,6 @@ import filterNullishAttributes from "../../../../shared/utility/filterNullishAtt
 import type {FilterQuery} from "mongoose";
 import type {QueryOptionTypes, SortQuery} from "../../../../shared/types/query-options/QueryOptionService.types.js";
 import type {
-    PopulationPipelineStages,
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages
 } from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
@@ -29,7 +28,6 @@ import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/Lo
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {SeatMapMatchFilters} from "../../schema/query-option/SeatMapMatchParam.schema.js";
-import {SeatMapPopulationPipelines} from "../../queries/SeatMapPopulationPipelines.js";
 
 /**
  * Query option service for SeatMap list and search endpoints.
@@ -137,12 +135,5 @@ export default class SeatMapQueryOptionService
                 sorts: this.generateReferenceSorts(options),
             },
         };
-    }
-
-    /**
-     * Builds population pipeline stages for SeatMap documents.
-     */
-    generatePopulationPipelines(): PopulationPipelineStages {
-        return SeatMapPopulationPipelines;
     }
 }
