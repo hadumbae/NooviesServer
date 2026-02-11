@@ -38,7 +38,7 @@ import type {
     ReserveSeatTicketData,
     ReserveTicketsParams,
 } from "./TicketReservationUtils.types.js";
-import {TicketReservationPopulateRefs} from "../constants/TicketReservationPopulateRefs.js";
+import {ReservationPopulateRefs} from "../constants/ReservationPopulateRefs.js";
 
 /**
  * Persists a validated `RESERVED` reservation.
@@ -54,7 +54,7 @@ const saveReservation = async (
     const doc = new Reservation(inputData);
     await doc.save();
 
-    await doc.populate(TicketReservationPopulateRefs);
+    await doc.populate(ReservationPopulateRefs);
 
     return doc;
 };

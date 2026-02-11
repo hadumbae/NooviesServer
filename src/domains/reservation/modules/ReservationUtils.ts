@@ -12,7 +12,7 @@
  */
 
 import Reservation from "../model/reservation/Reservation.model.js";
-import {TicketReservationPopulateRefs} from "../constants/TicketReservationPopulateRefs.js";
+import {ReservationPopulateRefs} from "../constants/ReservationPopulateRefs.js";
 import type {FetchPaginatedUserReservationsParams} from "./ReservationUtils.types.js";
 import {Types} from "mongoose";
 import type {ReservationSchemaFields} from "../model/reservation/Reservation.types.js";
@@ -41,6 +41,6 @@ export const fetchPaginatedUserReservations = async (
         .sort({dateReserved: -1})
         .skip(perPage * (page - 1))
         .limit(perPage)
-        .populate(TicketReservationPopulateRefs)
+        .populate(ReservationPopulateRefs)
         .lean();
 };

@@ -1,17 +1,21 @@
 /**
  * @file ReservationServiceProvider.ts
  *
- * Service provider for the Reservation domain.
+ * Composition root for the Reservation domain.
  *
- * Acts as the composition root for all reservation-related
- * infrastructure, responsible for constructing and wiring:
- * - The Reservation model
- * - Repository and query services
- * - Aggregation utilities
- * - The Reservation controller
+ * Responsibilities:
+ * - Provide the Reservation model
+ * - Construct repository abstraction
+ * - Configure query option service
+ * - Configure aggregation service
+ * - Wire and expose controllers
  *
- * Ensures consistent configuration and avoids duplicated
- * setup logic across the application.
+ * @remarks
+ * This provider centralizes all Reservation domain wiring.
+ * It prevents duplicated construction logic across routes
+ * and guarantees consistent configuration.
+ *
+ * Should be invoked during application bootstrap.
  */
 
 import Reservation from "../model/reservation/Reservation.model.js";
@@ -21,60 +25,58 @@ import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.j
 import { BaseRepository } from "../../../shared/repository/BaseRepository.js";
 import { ReservationCRUDController } from "../controllers/ReservationCRUDController.js";
 import { ReservationQueryOptionService } from "../services/query-options/ReservationQueryOptionService.js";
+import { ReservationPopulateRefs } from "../constants/ReservationPopulateRefs.js";
 
 /**
- * Reservation service provider.
- *
- * @remarks
- * Centralizes dependency construction for the Reservation domain,
- * ensuring that schema hooks, repositories, query services, and
- * controllers are consistently and correctly assembled.
+ * Service provider for Reservation domain bindings.
  */
 export class ReservationServiceProvider {
+
     /**
-     * Register and assemble Reservation domain services.
+     * Assemble Reservation domain infrastructure.
      *
-     * @remarks
-     * This method should be invoked during application bootstrap
-     * before routes or controllers are used.
-     *
-     * @returns Reservation domain bindings including:
-     * - The Reservation model
-     * - Default populate paths
-     * - Constructed controllers
+     * @returns Domain bindings:
+     * - model
+     * - default populate refs
+     * - controllers
      */
     static register() {
-        /** Reservation mongoose model. */
+        /**
+         * Reservation mongoose model.
+         */
         const model = Reservation;
 
         /**
-         * Default populate paths for reservation queries.
+         * Default populate configuration.
          *
-         * @remarks
-         * Ensures commonly referenced entities are hydrated
-         * consistently across repositories and aggregate queries.
+         * Ensures consistent hydration of related entities
+         * across repositories and aggregate queries.
          */
-        const populateRefs: PopulatePath[] = [
-            "showing",
-            "selectedSeating",
-        ];
+        const populateRefs: PopulatePath[] = ReservationPopulateRefs;
 
-        /** Repository abstraction for reservation persistence. */
+        /**
+         * Persistence abstraction layer.
+         */
         const repository = new BaseRepository({
             model,
             populateRefs,
         });
 
-        /** Query option parsing and transformation service. */
+        /**
+         * Query parameter parsing and transformation.
+         */
         const optionService = new ReservationQueryOptionService();
 
-        /** Aggregation pipeline service for complex reservation queries. */
+        /**
+         * Aggregation pipeline service.
+         */
         const aggregateService = new AggregateQueryService({
             model,
-            populateRefs,
         });
 
-        /** Fully configured Reservation controller. */
+        /**
+         * Fully composed CRUD controller.
+         */
         const controller = new ReservationCRUDController({
             repository,
             optionService,
