@@ -25,7 +25,6 @@ import type {
     SortQuery
 } from "../../../../shared/types/query-options/QueryOptionService.types.js";
 import type {
-    PopulationPipelineStages,
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages
 } from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
@@ -34,7 +33,6 @@ import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {ShowingSchemaFields} from "../../model/showing/Showing.types.js";
 import type {ShowingQueryMatchFilters} from "../../schema/query/ShowingMatchParams.js";
-import {ShowingPopulationPipelines} from "../../queries/ShowingPopulationPipelines.js";
 
 /**
  * Builds query options and aggregation pipelines for
@@ -176,14 +174,5 @@ export default class ShowingQueryOptionService
                 sorts: this.generateReferenceSorts(options),
             },
         };
-    }
-
-    /**
-     * Generates population pipeline stages for Showings.
-     *
-     * @returns Aggregation pipeline stages for population
-     */
-    generatePopulationPipelines(): PopulationPipelineStages {
-        return ShowingPopulationPipelines;
     }
 }
