@@ -11,6 +11,7 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 import Seat from "../model/Seat.model.js";
 import {SeatPersistenceManager} from "../repositories/managers/SeatPersistenceManager.js";
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {SeatPopulationPipelines} from "../queries/SeatPopulationPipelines.js";
 
 /**
  * Service provider for Seat-related infrastructure.
@@ -36,7 +37,10 @@ export default class SeatServiceProvider {
         });
 
         const optionService = new SeatQueryOptionService();
-        const aggregateService = new AggregateQueryService({model});
+        const aggregateService = new AggregateQueryService({
+            model,
+            populationPipelines: SeatPopulationPipelines,
+        });
 
         const controller = new SeatController({
             repository,

@@ -11,7 +11,6 @@
  */
 
 import type {
-    PopulationPipelineStages,
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages
 } from "../mongoose/AggregatePipelineStages.js";
@@ -54,11 +53,4 @@ export default interface IReferenceQueryOptionService<TSchema, TOptions, TMatchF
      * @returns Aggregation pipeline stages for sorting documents based on references.
      */
     generateReferenceSorts(params: TOptions): ReferenceSortPipelineStages;
-
-    /**
-     * Generates aggregation pipeline stages for populating referenced documents.
-     *
-     * @returns Aggregation pipeline stages to populate references in the schema.
-     */
-    generatePopulationPipelines(): PopulationPipelineStages;
 }

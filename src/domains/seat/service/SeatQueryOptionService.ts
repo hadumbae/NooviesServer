@@ -25,7 +25,6 @@ import filterNullishAttributes from "../../../shared/utility/filterNullishAttrib
 import type {SeatSchemaFields} from "../model/Seat.types.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {
-    PopulationPipelineStages,
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages,
 } from "../../../shared/types/mongoose/AggregatePipelineStages.js";
@@ -176,20 +175,6 @@ export default class SeatQueryOptionService
      */
     generateReferenceSorts(params: SeatQueryOptions): ReferenceSortPipelineStages {
         return [];
-    }
-
-    /**
-     * Generates aggregation pipeline stages for populating referenced documents (e.g., screens, theatres).
-     *
-     * @returns Population pipeline stages (`PopulationPipelineStages`)
-     */
-    generatePopulationPipelines(): PopulationPipelineStages {
-        return [
-            { $lookup: { from: "screens", localField: "screen", foreignField: "_id", as: "screen" } },
-            { $lookup: { from: "theatres", localField: "theatre", foreignField: "_id", as: "theatre" } },
-            { $unwind: { path: "$screen", preserveNullAndEmptyArrays: true } },
-            { $unwind: { path: "$theatre", preserveNullAndEmptyArrays: true } },
-        ];
     }
 
     /**

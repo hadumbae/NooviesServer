@@ -17,7 +17,6 @@ import type {
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
-import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
 
 /**
  * Constructor parameters for {@link SeatController}.
@@ -59,9 +58,5 @@ export default class SeatController
     ): QueryOptionTypes<SeatSchemaFields, SeatQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
-    }
-
-    fetchPopulatePipelines(): PopulationPipelineStages {
-        return this.optionService.generatePopulationPipelines();
     }
 }
