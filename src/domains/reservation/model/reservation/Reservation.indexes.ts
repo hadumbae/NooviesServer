@@ -1,62 +1,74 @@
 /**
  * @file Reservation.indexes.ts
  *
- * Reservation schema indexes.
+ * Defines all MongoDB indexes for the Reservation schema.
  *
- * Defines query, lifecycle, and uniqueness indexes used to:
- * - optimize reservation lookup
- * - support lifecycle sweeps
- * - enforce seat-level exclusivity
+ * Responsibilities:
+ * - Optimize common reservation queries
+ * - Support lifecycle expiration sweeps
+ * - Enforce seat-level exclusivity for reserved seating
  *
  * @remarks
- * General admission reservations do not allocate individual seats.
- * For `"GENERAL_ADMISSION"`:
- * - `selectedSeating` is expected to be `null` or empty
- * - seat-level uniqueness constraints are not applicable
+ * Reservation types:
  *
- * Seat exclusivity is therefore enforced **only** for
- * `"RESERVED_SEATS"` reservations via a partial unique index.
+ * - "GENERAL_ADMISSION"
+ *   - Capacity-based
+ *   - Does NOT allocate individual seats
+ *   - `selectedSeating` is null or empty
+ *
+ * - "RESERVED_SEATS"
+ *   - Seat-based
+ *   - Requires seat-level uniqueness enforcement
+ *
+ * Seat exclusivity is enforced ONLY for:
+ * - reservationType = "RESERVED_SEATS"
+ * - status = "RESERVED"
+ *
+ * Cancelled, expired, or completed reservations
+ * do NOT block seat reuse.
  */
 
 import ReservationSchema from "./Reservation.schema.js";
 
 /**
- * Enables efficient lookup of a user’s reservation
+ * Efficient lookup of a user's reservation
  * for a specific showing.
  *
- * Applicable to both general admission and reserved seating.
+ * Applies to both GA and reserved seating.
  */
-ReservationSchema.index({showing: 1, user: 1});
+ReservationSchema.index({ showing: 1, user: 1 });
 
 /**
- * Optimizes retrieval of a user’s reservation history,
- * ordered by creation time (most recent first).
+ * Optimizes retrieval of a user's reservation history,
+ * ordered by most recent first.
  */
-ReservationSchema.index({user: 1, dateReserved: -1});
+ReservationSchema.index({ user: 1, dateReserved: -1 });
 
 /**
  * Supports lifecycle sweeps for expiring reservations.
  *
- * Used by background jobs to locate and transition
- * expired or stale reservations.
+ * Used by background jobs to:
+ * - Find active reservations nearing expiration
+ * - Transition stale reservations
  */
-ReservationSchema.index({status: 1, expiresAt: 1});
+ReservationSchema.index({ status: 1, expiresAt: 1 });
 
 /**
  * Enforces seat-level exclusivity for reserved seating.
  *
- * @remarks
- * This index intentionally excludes `"GENERAL_ADMISSION"` reservations:
- * - `selectedSeating` is `null` or empty for GA
- * - GA reservations are capacity-based, not seat-based
+ * Unique per:
+ * - showing
+ * - selectedSeating
  *
+ * @remarks
  * Implemented as a partial unique index so that:
- * - only `"RESERVED_SEATS"` reservations participate
- * - only active (`"RESERVED"`) reservations block seat reuse
- * - completed or cancelled reservations do not conflict
+ * - Only "RESERVED_SEATS" reservations participate
+ * - Only active ("RESERVED") reservations block reuse
+ * - GA reservations are excluded
+ * - Cancelled/expired/completed reservations do not conflict
  */
 ReservationSchema.index(
-    {showing: 1, selectedSeating: 1},
+    { showing: 1, selectedSeating: 1 },
     {
         unique: true,
         partialFilterExpression: {
