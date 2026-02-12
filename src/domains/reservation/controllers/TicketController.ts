@@ -9,7 +9,7 @@
 
 import type {Request, Response} from "express";
 import type {ControllerAsyncFunc} from "../../../shared/types/ControllerTypes.js";
-import {reserveTickets} from "../modules/TicketReservationUtils.js";
+import {reserveTickets} from "../modules/tickets/TicketReservationUtils.js";
 import type {ReserveTicketSubmitData} from "../schemas/reserve-ticket/ReserveTicket.submit.schema.js";
 
 /**
