@@ -3,21 +3,31 @@
  *
  * UTC-safe date utility helpers built on Luxon.
  *
- * Provides small, deterministic helpers for producing `Date` objects
- * normalized to UTC, suitable for persistence and comparison.
+ * @description
+ * Provides small, deterministic helper functions for generating native
+ * JavaScript `Date` objects normalized to UTC.
+ *
+ * @remarks
+ * - All returned values are explicitly converted to UTC.
+ * - Designed for persistence (database timestamps) and reliable comparisons.
+ * - Avoids implicit local timezone behavior of `new Date()`.
  */
 
 import {DateTime, type DurationLike} from "luxon";
 
 /**
- * Returns the current UTC date-time as a native `Date`.
+ * Returns the current date-time normalized to UTC.
+ *
+ * @description
+ * Wraps `DateTime.now()` to ensure consistent UTC normalization before
+ * converting to a native JavaScript `Date`.
+ *
+ * @returns A `Date` instance representing the current moment in UTC
  *
  * @remarks
- * - Uses Luxon for timezone safety
- * - Always normalized to UTC
- * - Intended for persistence (e.g. timestamps, lifecycle fields)
- *
- * @returns Current date-time in UTC
+ * - Equivalent to "now" in absolute time.
+ * - Safe for persistence (e.g., `createdAt`, `updatedAt`, lifecycle fields).
+ * - Prevents accidental reliance on system-local timezone offsets.
  */
 export function calculateDateNow(): Date {
     return DateTime
@@ -27,20 +37,26 @@ export function calculateDateNow(): Date {
 }
 
 /**
- * Calculates a future UTC date-time from now using a Luxon duration.
+ * Calculates a future UTC date-time relative to the current moment.
+ *
+ * @description
+ * Adds a Luxon `DurationLike` object to the current UTC time and
+ * returns the resulting value as a native JavaScript `Date`.
+ *
+ * @param duration - A Luxon-compatible duration object
+ * (e.g. `{ minutes: 15 }`, `{ hours: 2 }`, `{ days: 1 }`)
+ *
+ * @returns A `Date` instance representing the computed future moment in UTC
  *
  * @remarks
- * - The calculation is relative to the current moment
- * - Result is normalized to UTC
- * - Suitable for expiration timestamps and deadlines
- *
- * @param duration Luxon duration-like object (e.g. `{ minutes: 15 }`)
- * @returns Future date-time in UTC
+ * - The calculation is always relative to the current moment.
+ * - Result is normalized to UTC before conversion.
+ * - Suitable for expiration timestamps, deadlines, token lifetimes, and scheduling.
  */
 export function calculateFutureDate(duration: DurationLike): Date {
     return DateTime
         .now()
-        .plus(duration)
         .toUTC()
+        .plus(duration)
         .toJSDate();
 }
