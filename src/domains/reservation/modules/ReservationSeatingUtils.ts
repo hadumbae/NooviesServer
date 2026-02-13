@@ -1,18 +1,9 @@
 /**
- * @file ReservationSeatingUtils.ts
+ * @file Seating validation and lifecycle utilities for reservation workflows.
  *
- * Seating validation, locking, and finalization utilities used during
- * reservation workflows.
- *
- * Supports:
- * - Capacity-based seating (general admission)
- * - Explicit seat selection with temporary locking (reserved seating)
- *
- * @remarks
- * - Assumes showing and screen context has already been validated upstream
- * - Does not perform payment capture
- * - Seat locks created here are temporary and must be finalized
- *   or released by downstream workflows
+ * Handles:
+ * - Capacity checks for general admission
+ * - Temporary seat locking and finalization for reserved seating
  */
 
 import {Types} from "mongoose";
@@ -25,23 +16,15 @@ import Seat from "../../seat/model/Seat.model.js";
 import {countPaidReservationsByShowing} from "../utilities/countPaidReservationsByShowing.js";
 import type {ReservationDoc} from "../model/reservation/Reservation.types.js";
 import Reservation from "../model/reservation/Reservation.model.js";
+import {fetchReservationOrThrow} from "./ReservationThrowUtils.js";
+import type {ShowingSchemaFields} from "../../showing/model/showing/Showing.types.js";
 
 /**
- * Checks whether sufficient seating capacity exists for a
- * ticket-count-based reservation request.
- *
- * Availability is determined by comparing:
- * - Total physical seats on the screen
- * - Seats already consumed by `PAID` reservations
- * - Tickets requested in the current operation
+ * Determines if remaining seating capacity can satisfy a ticket request.
  *
  * @remarks
- * - Intended for general admission or capacity-based seating
- * - Does not lock seats or mutate state
- * - Subject to race conditions if not followed by a locking step
- *
- * @param params - Ticket count and showing/screen context
- * @returns `true` if sufficient capacity exists, otherwise `false`
+ * Pure availability check. Callers should follow with a locking step
+ * to avoid race conditions in concurrent workflows.
  */
 export async function checkSeatAvailabilityForReservation(
     {ticketCount, showingID, screenID}: CheckSeatsForTicketParams
@@ -59,26 +42,10 @@ export async function checkSeatAvailabilityForReservation(
 }
 
 /**
- * Atomically locks seat-map entries for a reserved-seating reservation
- * and returns their populated seat data.
- *
- * Transitions seat-map documents from:
- * `AVAILABLE` → `PENDING`
- * to prevent concurrent reservation attempts.
- *
- * If any requested seat cannot be locked, all tentative locks are reverted
- * and a booking conflict error is thrown.
- *
- * @remarks
- * - Intended exclusively for reserved-seating workflows
- * - Returned documents represent a temporary lock only
- * - Caller must either finalize or release the lock
- *
- * @param seatIDs - Seat-map ObjectIds to lock
- * @returns Locked seat-map documents with populated seat data
+ * Attempts to acquire a temporary lock on the requested seats.
  *
  * @throws BookingError
- * When one or more requested seats are already reserved
+ * If any requested seat cannot be locked.
  */
 export async function fetchAvailableSeatingForReservation(
     seatIDs: Types.ObjectId[]
@@ -108,24 +75,13 @@ export async function fetchAvailableSeatingForReservation(
 }
 
 /**
- * Finalizes seat ownership for a persisted reservation.
- *
- * Transitions locked seat-map entries from:
- * `PENDING` → `RESERVED`
- * and associates them with the reservation.
+ * Commits previously locked seats to the reservation.
  *
  * @remarks
- * - No-op for general admission reservations
- * - Must be called only after the reservation has been persisted
- * - On partial failure:
- *   - All seat locks are reverted
- *   - The reservation is marked as `INVALID`
- *   - A booking conflict error is thrown
- *
- * @param reservation - Persisted reservation with locked seating
+ * On failure, locks are released and the reservation is invalidated.
  *
  * @throws BookingError
- * When one or more locked seats cannot be finalized
+ * If locked seats cannot be finalized.
  */
 export async function reserveSeatsByReservation(
     reservation: ReservationDoc
@@ -159,5 +115,29 @@ export async function reserveSeatsByReservation(
             errorCode: "ERR_SEAT_RESERVED",
             message: "Seat(s) already reserved.",
         });
+    }
+}
+
+/**
+ * Releases reserved seating for a cancellable reservation.
+ *
+ * @remarks
+ * No-op for general admission or non-active reservations.
+ */
+export async function cancelSeatsByReservation(resID: Types.ObjectId): Promise<void> {
+    const reservation = await fetchReservationOrThrow(resID);
+    const {status, reservationType, selectedSeating} = reservation;
+
+    if (reservationType === "GENERAL_ADMISSION") return;
+    if (!(status === "RESERVED" || status === "PAID")) return;
+
+    await reservation.populate("showing");
+    const populatedShowing = reservation.showing as unknown as ShowingSchemaFields;
+
+    if (populatedShowing.status === "SCHEDULED" || populatedShowing.status === "SOLD_OUT") {
+        await SeatMap.updateMany(
+            {_id: {$in: selectedSeating}},
+            {reservation: null, status: "AVAILABLE"}
+        );
     }
 }
