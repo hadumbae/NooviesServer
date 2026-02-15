@@ -92,7 +92,7 @@ export const throwOnReservationExpiry = (
 export const throwOnReservationUserMismatch = (
     {userID, reservation: {user: resUser}}: ReservationUserMismatchParams
 ): void => {
-    if (resUser !== userID) {
+    if (!resUser.equals(userID)) {
         throw new BookingError({
             statusCode: 403,
             errorCode: "ERR_UNAUTHORIZED",
