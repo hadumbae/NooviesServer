@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type UserSchemaFields from "@models/UserSchemaFields.js";
+import type {UserSchemaFields} from "@models/User.types.js";
 import type UserService from "../service/user-service/UserService.js";
 import createHttpError from "http-errors";
 import type { UserControllerConstructor, UserControllerMethods } from "./UserController.types.js";

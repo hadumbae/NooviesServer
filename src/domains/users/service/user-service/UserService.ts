@@ -1,6 +1,6 @@
 import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
-import User from "@models/User.js";
+import User from "@models/User.model.js";
 import type { PasswordUpdateData, UserServiceMethods } from "./UserService.types.js";
 
 /**

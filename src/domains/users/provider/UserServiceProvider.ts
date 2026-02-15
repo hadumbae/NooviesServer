@@ -1,5 +1,5 @@
-import User from "../model/User.js";
-import type UserSchemaFields from "@models/UserSchemaFields.js";
+import User from "@models/User.model.js";
+import type {UserSchemaFields} from "@models/User.types.js";
 
 import UserController from "../controller/UserController.js";
 
@@ -40,12 +40,12 @@ export default class UserServiceProvider {
         const model = User;
         const populateRefs: string[] = [];
 
-        const repository = new BaseRepository<UserSchemaFields>({ model, populateRefs });
+        const repository = new BaseRepository<UserSchemaFields>({model, populateRefs});
         const queryUtils = QueryUtils;
         const service = new UserService();
-        const aggregateService = new AggregateQueryService({ model, populateRefs });
+        const aggregateService = new AggregateQueryService({model});
 
-        const controller = new UserController({ repository, queryUtils, service, aggregateService });
+        const controller = new UserController({repository, queryUtils, service, aggregateService});
 
         return {
             repository,

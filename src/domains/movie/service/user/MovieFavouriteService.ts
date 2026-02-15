@@ -9,7 +9,7 @@
 import MovieModel from "../../model/Movie.model.js";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
-import User from "@models/User.js";
+import User from "@models/User.model.js";
 import Showing from "../../../showing/model/showing/Showing.model.js";
 import type {ShowingSchemaFields} from "../../../showing/model/showing/Showing.types.js";
 import type {MovieSchemaFields} from "../../model/Movie.types.js";

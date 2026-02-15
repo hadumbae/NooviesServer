@@ -1,13 +1,13 @@
 import {type UserRegisterInput} from "../schema/UserRegisterInputSchema.js";
 import ZodParseError from "../../../shared/errors/ZodParseError.js";
 import bcrypt from "bcryptjs";
-import User from "../../users/model/User.js";
+import User from "@models/User.model.js";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
 import {z, type ZodIssue} from "zod";
 import jwt from "jsonwebtoken";
 import type {UserCredentials} from "../types/UserCredentials.js";
-import type UserSchemaFields from "@models/UserSchemaFields.js";
+import type {UserSchemaFields} from "@models/User.types.js";
 import type {UserLoginInput} from "../schema/UserLoginInputSchema.js";
 import type {AuthServiceMethods} from "./AuthService.types.js";
 

@@ -2,7 +2,7 @@ import type {
     BaseControllerCRUDMethods,
     IBaseCRUDControllerConstructor
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type UserSchemaFields from "@models/UserSchemaFields.js";
+import type {UserSchemaFields} from "@models/User.types.js";
 import type UserService from "../service/user-service/UserService.js";
 import type { Request, Response } from "express";
 

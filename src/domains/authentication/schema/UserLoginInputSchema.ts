@@ -1,5 +1,5 @@
 import { z } from "zod";
-import User from "../../users/model/User.js";
+import User from "@models/User.model.js";
 
 /**
  * Zod schema for validating user login input.
