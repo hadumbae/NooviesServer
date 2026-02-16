@@ -1,5 +1,6 @@
 /**
- * @file Exposes the Mongoose model for user documents.
+ * @file User.model.ts
+ * Exposes the Mongoose model for user documents.
  */
 
 import {Model, model} from "mongoose";

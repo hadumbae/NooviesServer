@@ -1,21 +1,13 @@
-// User.types.ts
+/**
+ * @file User.types.ts
+ * Type definitions for User persistence models.
+ */
 
 import {Types} from "mongoose";
 import type {UserRole} from "../schema/enum/UserRoleEnumSchema.js";
 
 /**
- * Interface representing the fields of a User document in the database.
- *
- * @example
- * ```ts
- * const user: UserSchemaFields = {
- *   _id: new Types.ObjectId(),
- *   name: "Jane Doe",
- *   email: "jane@example.com",
- *   password: "hashedPassword123",
- *   roles: ["USER", "ADMIN"]
- * };
- * ```
+ * User document shape as stored in the database.
  */
 export interface UserSchemaFields {
     readonly _id: Types.ObjectId;
@@ -23,4 +15,5 @@ export interface UserSchemaFields {
     email: string;
     password: string;
     roles: UserRole[];
+    favourites: Types.ObjectId[];
 }
