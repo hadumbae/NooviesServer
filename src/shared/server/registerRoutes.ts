@@ -19,7 +19,6 @@ import ShowingRoutes from "../../domains/showing/routing/ShowingRoutes.js";
 import GenreRoutes from "../../domains/genre/routing/GenreRoutes.js";
 import UserRoutes from "../../domains/users/routing/UserRoutes.js";
 import SeatMapRoutes from "../../domains/seatmap/routing/SeatMapRoutes.js";
-import MovieFavouriteRoutes from "../../domains/movie/routing/MovieFavouriteRoutes.js";
 import MovieCreditRoutes from "../../domains/movieCredit/routing/MovieCreditRoutes.js";
 import RoleTypeRoutes from "../../domains/roleType/routing/RoleTypeRoutes.js";
 import {TheatreBrowseRoutes} from "../../domains/theatre/routing/TheatreBrowseRoutes.js";
@@ -63,7 +62,6 @@ const registration: RouteRegistration[] = [
     {path: "/api/v1/admin/theatres", router: TheatreRoutes},
 
     {path: "/api/v1/admin/movies", router: MovieRoutes},
-    {path: "/api/v1/admin/movies", router: MovieFavouriteRoutes},
     {path: "/api/v1/admin/movie/credits", router: MovieCreditRoutes},
 
     {path: "/api/v1/admin/showings", router: ShowingRoutes},
