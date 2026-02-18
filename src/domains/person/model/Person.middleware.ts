@@ -33,34 +33,6 @@ PersonSchema.pre(
 );
 
 /**
- * Pre-query middleware for lean queries with virtuals.
- *
- * Automatically populates:
- * - `movieCount`
- * - `creditCount`
- *
- * @remarks
- * Applies to `find`, `findOne`, and `findOneAndUpdate`
- * when `{ lean: { virtuals: true } }` is enabled.
- */
-PersonSchema.pre(
-    ["find", "findOne", "findOneAndUpdate"],
-    {query: true},
-    async function (this: Query<any, PersonSchemaFields>) {
-        const hasVirtuals =
-            typeof this._mongooseOptions.lean === "object" &&
-            this._mongooseOptions.lean.virtuals === true;
-
-        if (hasVirtuals) {
-            this.populate([
-                {path: "movieCount"},
-                {path: "creditCount"},
-            ]);
-        }
-    },
-);
-
-/**
  * Pre-document deletion middleware.
  *
  * Cascades deletion to all MovieCredit documents

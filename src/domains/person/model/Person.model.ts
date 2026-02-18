@@ -2,7 +2,6 @@ import { model, type Model } from "mongoose";
 import type { PersonSchemaFields } from "../interfaces/PersonSchemaFields.js";
 import { PersonSchema } from "./Person.schema.js";
 
-import "./Person.virtuals.js";
 import "./Person.middleware.js";
 
 /**
