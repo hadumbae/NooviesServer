@@ -15,7 +15,6 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 import type {MovieSchemaFields} from "../model/Movie.types.js";
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import {MoviePopulationPipelines} from "../queries/MoviePopulationPipelines.js";
-import {MovieVirtualPipelines} from "../queries/MovieVirtualPipelines.js";
 
 /**
  * Composes and exposes Movie-related dependencies.
@@ -39,7 +38,6 @@ export default class MovieServiceProvider {
         const aggregateService = new AggregateQueryService({
             model,
             populationPipelines: MoviePopulationPipelines,
-            virtualsPipelines: MovieVirtualPipelines,
         });
 
         const controller = new MovieController({

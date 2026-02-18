@@ -27,32 +27,6 @@ MovieSchema.pre(
 );
 
 /**
- * Pre-query middleware for movie retrieval operations.
- *
- * Automatically populates the `showingCount` virtual when queries are executed
- * with `lean({ virtuals: true })`, ensuring derived data is included in lean
- * query results.
- *
- * @param this - The query being executed (`find`, `findOne`, or `findOneAndUpdate`)
- * @param next - Callback to continue query execution
- */
-MovieSchema.pre(
-    ["find", "findOne", "findOneAndUpdate"],
-    {query: true},
-    async function (this: Query<unknown, MovieSchemaFields>, next: () => void): Promise<void> {
-        const hasVirtuals =
-            typeof this._mongooseOptions.lean === "object" &&
-            this._mongooseOptions.lean.virtuals === true;
-
-        if (hasVirtuals) {
-            this.populate([{path: "showingCount"}]);
-        }
-
-        next();
-    }
-);
-
-/**
  * Pre-deletion middleware for Movie documents.
  *
  * Triggered when deleting a movie via `document.deleteOne()`.
