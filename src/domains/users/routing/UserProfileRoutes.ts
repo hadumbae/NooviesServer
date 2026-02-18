@@ -24,7 +24,7 @@ router.get(
 /**
  * Adds a movie to favourites.
  */
-router.get(
+router.patch(
     "/favourites/add",
     [isAuth, validateZodSchema(UserFavouriteMovieInputSchema)],
     asyncHandler(UserFavouriteController.patchAddMovieToFavourites)
@@ -33,7 +33,7 @@ router.get(
 /**
  * Removes a movie from favourites.
  */
-router.get(
+router.patch(
     "/favourites/remove",
     [isAuth, validateZodSchema(UserFavouriteMovieInputSchema)],
     asyncHandler(UserFavouriteController.patchRemoveMovieToFavourites)
