@@ -8,7 +8,6 @@ import User from "@models/User.model.js";
 import createHttpError from "http-errors";
 import type {UserSchemaFields} from "@models/User.types.js";
 import MovieModel from "../../../movie/model/Movie.model.js";
-import {Promise} from "mongoose";
 
 /**
  * Retrieves a paginated list of a user's favourite movies.
