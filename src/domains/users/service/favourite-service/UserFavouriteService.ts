@@ -1,6 +1,6 @@
 /**
- * @file UserFavouriteService.ts
- * User favourite movie service operations.
+ * @file User favourite movie service operations.
+ * UserFavouriteService.ts
  */
 
 import type {FetchUserFavouritesParams, UserFavouriteMovieParams} from "./UserFavouriteService.types.js";
@@ -8,9 +8,10 @@ import User from "@models/User.model.js";
 import createHttpError from "http-errors";
 import type {UserSchemaFields} from "@models/User.types.js";
 import MovieModel from "../../../movie/model/Movie.model.js";
+import {fetchRequiredMovie} from "../../../movie/service/fetch-service/MovieFetchService.js";
 
 /**
- * Retrieves a paginated list of a user's favourite movies.
+ * Retrieves a paginated list of a user's favourite Movies.
  */
 export const fetchUserFavourites = async (
     {userID, page, perPage}: FetchUserFavouritesParams
@@ -32,24 +33,34 @@ export const fetchUserFavourites = async (
         totalItems,
         items,
     };
-}
+};
 
 /**
- * Adds a movie to a user's favourites.
+ * Adds a Movie to a user's favourites.
  */
 export const addUserFavouriteMovie = async (
     {userID, movieID}: UserFavouriteMovieParams
 ): Promise<void> => {
-    const movie = await MovieModel.findById(movieID).select("_id").lean().orFail();
+    const movie = await fetchRequiredMovie({_id: movieID, options: {lean: true, select: "_id"}});
     await User.findByIdAndUpdate(userID, {$addToSet: {favourites: movie._id}}).orFail();
-}
+};
 
 /**
- * Removes a movie from a user's favourites.
+ * Removes a Movie from a user's favourites.
  */
 export const removeUserFavouriteMovie = async (
     {userID, movieID}: UserFavouriteMovieParams
 ): Promise<void> => {
-    const movie = await MovieModel.findById(movieID).select("_id").lean().orFail();
+    const movie = await fetchRequiredMovie({_id: movieID, options: {lean: true, select: "_id"}});
     await User.findByIdAndUpdate(userID, {$pull: {favourites: movie._id}}).orFail();
-}
+};
+
+/**
+ * Checks whether a Movie is in a user's favourites.
+ */
+export const isUserFavouriteMovie = async (
+    {userID, movieID}: UserFavouriteMovieParams
+): Promise<boolean> => {
+    const isFavourite = await User.exists({_id: userID, favourites: movieID});
+    return isFavourite !== null;
+};

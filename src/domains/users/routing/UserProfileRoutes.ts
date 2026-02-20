@@ -21,6 +21,12 @@ router.get(
     asyncHandler(UserFavouriteController.getFavouriteMovies)
 );
 
+router.get(
+    "/favourites/check/movie/:movieID",
+    [isAuth],
+    asyncHandler(UserFavouriteController.getIsFavouriteMovie)
+);
+
 /**
  * Adds a movie to favourites.
  */
