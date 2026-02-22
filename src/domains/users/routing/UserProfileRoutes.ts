@@ -1,6 +1,6 @@
 /**
- * @file UserProfileRoutes.ts
- * Routes for authenticated user favourite movie actions.
+ * @file Authenticated routes for user favourite movie actions.
+ * UserProfileRoutes.ts
  */
 
 import {Router} from 'express';
@@ -12,37 +12,25 @@ import {UserFavouriteMovieInputSchema} from "../schema/UserFavouriteMovieInputSc
 
 const router = Router();
 
-/**
- * Retrieves authenticated user's favourites.
- */
+/** Lists favourites for the current user. */
 router.get(
     "/favourites/user",
     [isAuth],
     asyncHandler(UserFavouriteController.getFavouriteMovies)
 );
 
+/** Checks favourite status for a movie. */
 router.get(
     "/favourites/check/movie/:movieID",
     [isAuth],
     asyncHandler(UserFavouriteController.getIsFavouriteMovie)
 );
 
-/**
- * Adds a movie to favourites.
- */
+/** Toggles favourite state for a movie. */
 router.patch(
-    "/favourites/add",
+    "/favourites/toggle",
     [isAuth, validateZodSchema(UserFavouriteMovieInputSchema)],
-    asyncHandler(UserFavouriteController.patchAddMovieToFavourites)
-);
-
-/**
- * Removes a movie from favourites.
- */
-router.patch(
-    "/favourites/remove",
-    [isAuth, validateZodSchema(UserFavouriteMovieInputSchema)],
-    asyncHandler(UserFavouriteController.patchRemoveMovieToFavourites)
+    asyncHandler(UserFavouriteController.patchToggleUserMovieFavourite)
 );
 
 export {
