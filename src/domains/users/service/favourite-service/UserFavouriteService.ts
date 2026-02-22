@@ -1,10 +1,10 @@
 /**
- * @file User favourite movie service operations.
+ * @file Service operations for user favourite movies.
  * UserFavouriteService.ts
  */
 
 import type {
-    FetchUserFavouritesParams,
+    FetchUserFavouritesParams, IsUserFavouriteMovieReturns,
     ToggleUserFavouriteMovieReturns,
     UserFavouriteMovieParams
 } from "./UserFavouriteService.types.js";
@@ -14,9 +14,7 @@ import type {UserSchemaFields} from "@models/User.types.js";
 import MovieModel from "../../../movie/model/Movie.model.js";
 import {fetchRequiredMovie} from "../../../movie/service/fetch-service/MovieFetchService.js";
 
-/**
- * Retrieves a paginated list of a user's favourite Movies.
- */
+/** Returns paginated favourites for a user. */
 export const fetchUserFavourites = async (
     {userID, page, perPage}: FetchUserFavouritesParams
 ) => {
@@ -39,16 +37,22 @@ export const fetchUserFavourites = async (
     };
 };
 
-/**
- * Checks whether a Movie is in a user's favourites.
- */
+/** Determines if a movie is favourited by a user. */
 export const isUserFavouriteMovie = async (
     {userID, movieID}: UserFavouriteMovieParams
-): Promise<boolean> => {
-    const isFavourite = await User.exists({_id: userID, favourites: movieID});
-    return isFavourite !== null;
+): Promise<IsUserFavouriteMovieReturns> => {
+    const checkValue = await User.exists({_id: userID, favourites: movieID});
+    const isFavourite = checkValue !== null
+
+    return {
+        isFavourite,
+        message: isFavourite
+            ? "Movie is a favourite."
+            : "Movie is not a favourite.",
+    };
 };
 
+/** Toggles a movie in the user's favourites. */
 export const toggleCurrentUserFavouriteMovie = async (
     {userID, movieID}: UserFavouriteMovieParams,
 ): Promise<ToggleUserFavouriteMovieReturns> => {

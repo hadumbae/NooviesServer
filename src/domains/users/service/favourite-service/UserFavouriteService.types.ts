@@ -18,6 +18,12 @@ export type UserFavouriteMovieParams = {
     movieID: Types.ObjectId;
 }
 
+/** Favourite status lookup result. */
+export type IsUserFavouriteMovieReturns = {
+    isFavourite: boolean;
+    message: string;
+}
+
 /** Result of a toggle favourite operation. */
 export type ToggleUserFavouriteMovieReturns = {
     added: boolean;

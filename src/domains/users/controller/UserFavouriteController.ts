@@ -35,9 +35,9 @@ export const getIsFavouriteMovie: ControllerAsyncFunc = async (
     const {movieID} = req.params;
 
     const mID = isValidObjectId(movieID);
-    const isFav = await UserFavouriteService.isUserFavouriteMovie({userID, movieID: mID});
+    const isFavRes = await UserFavouriteService.isUserFavouriteMovie({userID, movieID: mID});
 
-    return res.status(200).json(isFav);
+    return res.status(200).json(isFavRes);
 }
 
 /** Toggles the current user's favourite state for a movie. */
