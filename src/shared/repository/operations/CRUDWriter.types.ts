@@ -38,7 +38,7 @@ export type CRUDUpdateParams<
     unset?: Partial<TSchema>;
     /** Request-level options */
     options?: RequestOptions;
-    // For retrying in case of versioning errors
+    /** For retrying in case of versioning errors */
     retries?: number;
 };
 
