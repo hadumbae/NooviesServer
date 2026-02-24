@@ -7,7 +7,7 @@ import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js
 import type { PersonQueryMatchFilters } from "../schema/query/PersonQueryOption.types.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 
@@ -18,7 +18,7 @@ import type { QueryOptionTypes } from "../../../shared/types/query-options/Query
  * - {@link PersonQueryOptionService} for query parsing/filter generation
  * - {@link PersonImageService} for profile image management
  */
-interface IPersonControllerConstructor extends IBaseCRUDControllerConstructor<PersonSchemaFields> {
+interface IPersonControllerConstructor extends BaseCRUDControllerConstructorParams<PersonSchemaFields> {
     /** Service for parsing query parameters and generating filters/sorts. */
     optionService: PersonQueryOptionService;
 

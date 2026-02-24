@@ -5,7 +5,7 @@ import type MovieCreditQueryOptionService from "../services/query-option-service
 import type MovieCreditService from "../services/movie-credit-service/MovieCreditService.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
@@ -14,7 +14,7 @@ import type {MovieCreditQueryMatchFilters} from "../schemas/query/MovieCreditQue
 /**
  * Constructor parameters for {@link MovieCreditController}.
  */
-export interface IMovieCreditControllerConstructor extends IBaseCRUDControllerConstructor<IMovieCredit> {
+export interface IMovieCreditControllerConstructor extends BaseCRUDControllerConstructorParams<IMovieCredit> {
     /** Service responsible for performing CRUD operations on movie credits. */
     service: MovieCreditService;
     /** Service responsible for extracting filters, sorts, and population options from queries. */

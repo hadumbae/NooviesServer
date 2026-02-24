@@ -9,7 +9,7 @@
 
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {SeatMapSchemaFields} from "../model/SeatMap.types.js";
 import type SeatMapService from "../service/seat-map-service/SeatMapService.js";
@@ -20,7 +20,7 @@ import type {Request, Response} from "express";
  * Constructor parameters for {@link SeatMapController}.
  */
 export interface ISeatMapControllerConstructor
-    extends IBaseCRUDControllerConstructor<SeatMapSchemaFields> {
+    extends BaseCRUDControllerConstructorParams<SeatMapSchemaFields> {
 
     /** SeatMap domain business logic service */
     service: SeatMapService;

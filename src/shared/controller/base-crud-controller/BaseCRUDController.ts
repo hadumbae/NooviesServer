@@ -20,7 +20,7 @@ import type {PopulationPipelineStages} from "../../types/mongoose/AggregatePipel
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor,
+    BaseCRUDControllerConstructorParams,
 } from "./BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
 import type {ModelObject} from "../../types/ModelObject.js";
@@ -52,7 +52,7 @@ export default class BaseCRUDController<
      *
      * @param params - Repository, aggregate service, and base controller options.
      */
-    constructor(params: IBaseCRUDControllerConstructor<TSchema>) {
+    constructor(params: BaseCRUDControllerConstructorParams<TSchema>) {
         const {repository, aggregateService, ...superParams} = params;
         super(superParams);
 

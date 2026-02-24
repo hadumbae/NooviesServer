@@ -10,7 +10,7 @@ import type {MovieQueryMatchFilters} from "../schema/query/MovieQueryOption.type
 import type {MovieSchemaFields} from "../model/Movie.types.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 
 /**
@@ -18,7 +18,7 @@ import type {
  *
  * Extends the base CRUD controller constructor with movie-specific services.
  */
-export interface IMovieControllerConstructor extends IBaseCRUDControllerConstructor<MovieSchemaFields> {
+export interface IMovieControllerConstructor extends BaseCRUDControllerConstructorParams<MovieSchemaFields> {
     /** Service for CRUD operations on movies. */
     service: IMovieService;
 

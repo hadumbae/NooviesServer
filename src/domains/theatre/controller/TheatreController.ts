@@ -2,7 +2,7 @@ import type { Request } from "express";
 import type { TheatreQueryMatchFilters } from "../schema/query/TheatreQueryOption.types.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";
@@ -19,10 +19,10 @@ export interface ITheatreController extends BaseControllerCRUDMethods<TheatreSch
 /**
  * Constructor parameters for {@link TheatreController}.
  *
- * Extends {@link IBaseCRUDControllerConstructor} with an additional
+ * Extends {@link BaseCRUDControllerConstructorParams} with an additional
  * {@link TheatreQueryOptionService} for handling query filters and sorting.
  */
-export interface ITheatreControllerConstructor extends IBaseCRUDControllerConstructor<TheatreSchemaFields> {
+export interface ITheatreControllerConstructor extends BaseCRUDControllerConstructorParams<TheatreSchemaFields> {
     /** Service for parsing, validating, and generating query filters and sorts. */
     optionService: TheatreQueryOptionService;
 }

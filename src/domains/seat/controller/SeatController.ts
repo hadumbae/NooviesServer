@@ -13,7 +13,7 @@ import type {SeatSchemaFields} from "../model/Seat.types.js";
 import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor,
+    BaseCRUDControllerConstructorParams,
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
@@ -22,7 +22,7 @@ import type {SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
  * Constructor parameters for {@link SeatController}.
  */
 export interface ISeatControllerConstructor
-    extends IBaseCRUDControllerConstructor<SeatSchemaFields> {
+    extends BaseCRUDControllerConstructorParams<SeatSchemaFields> {
     /** Seat-specific query option service. */
     optionService: SeatQueryOptionService;
 }

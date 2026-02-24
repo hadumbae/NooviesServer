@@ -1,6 +1,6 @@
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {UserSchemaFields} from "@models/User.types.js";
 import type UserService from "../service/user-service/UserService.js";
@@ -12,7 +12,7 @@ import type { Request, Response } from "express";
  * Extends the base CRUD controller constructor and includes a reference
  * to the user service.
  */
-export interface UserControllerConstructor extends IBaseCRUDControllerConstructor<UserSchemaFields> {
+export interface UserControllerConstructor extends BaseCRUDControllerConstructorParams<UserSchemaFields> {
     /** Instance of the user service used by the controller. */
     service: UserService;
 }

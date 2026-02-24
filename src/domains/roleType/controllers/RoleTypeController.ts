@@ -4,7 +4,7 @@ import type RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionServ
 import type { Request } from "express";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type { RoleTypeQueryMatchFilters } from "../schemas/filters/RoleTypeOption.types.js";
@@ -12,10 +12,10 @@ import type { RoleTypeQueryMatchFilters } from "../schemas/filters/RoleTypeOptio
 /**
  * Constructor parameters for {@link RoleTypeController}.
  *
- * Extends {@link IBaseCRUDControllerConstructor} with a required
+ * Extends {@link BaseCRUDControllerConstructorParams} with a required
  * {@link RoleTypeQueryOptionService} for parsing queries.
  */
-export interface IRoleTypeControllerConstructor extends IBaseCRUDControllerConstructor<IRoleType> {
+export interface IRoleTypeControllerConstructor extends BaseCRUDControllerConstructorParams<IRoleType> {
     /** Service for parsing query params into match filters and sorts. */
     optionService: RoleTypeQueryOptionService;
 }

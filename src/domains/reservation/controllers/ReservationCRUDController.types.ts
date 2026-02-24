@@ -9,7 +9,7 @@
 
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor,
+    BaseCRUDControllerConstructorParams,
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {ReservationSchemaFields} from "../model/reservation/Reservation.types.js";
 import type {ReservationQueryOptionService} from "../services/query-options/ReservationQueryOptionService.js";
@@ -22,7 +22,7 @@ import type {ReservationQueryMatchFilters} from "../schemas/query/ReservationQue
  * a reservation-specific query option service.
  */
 export interface ReservationCRUDConstructor
-    extends IBaseCRUDControllerConstructor<ReservationSchemaFields> {
+    extends BaseCRUDControllerConstructorParams<ReservationSchemaFields> {
 
     /** Service used to parse and build reservation query options. */
     optionService: ReservationQueryOptionService;

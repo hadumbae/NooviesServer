@@ -4,7 +4,7 @@ import type GenreQueryOptionService from "../service/GenreQueryOptionService.js"
 import type { GenreQueryMatchFilters } from "../schema/query/GenreQueryOption.types.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {GenreSchemaFields} from "../model/Genre.types.js";
@@ -17,7 +17,7 @@ export interface IGenreController extends BaseControllerCRUDMethods<GenreSchemaF
 /**
  * Constructor interface for {@link GenreController}.
  */
-export interface IGenreControllerConstructor extends IBaseCRUDControllerConstructor<GenreSchemaFields> {
+export interface IGenreControllerConstructor extends BaseCRUDControllerConstructorParams<GenreSchemaFields> {
     /**
      * Service responsible for generating query filters and sorts from request parameters.
      */

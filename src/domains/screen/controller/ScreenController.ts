@@ -7,7 +7,7 @@ import type ScreenSeatService from "../service/screen-seat-service/ScreenSeatSer
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
 import type {ScreenQueryMatchFilters} from "../schema/query/ScreenQueryOption.types.js";
@@ -43,7 +43,7 @@ export interface IScreenController extends BaseControllerCRUDMethods<ScreenSchem
  *
  * Extends the base CRUD controller constructor with screen-specific services.
  */
-export interface IScreenControllerConstructor extends IBaseCRUDControllerConstructor<ScreenSchemaFields> {
+export interface IScreenControllerConstructor extends BaseCRUDControllerConstructorParams<ScreenSchemaFields> {
     /** Service for CRUD operations and business logic on screens. */
     service: ScreenService;
 

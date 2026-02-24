@@ -17,7 +17,7 @@ import type { Request } from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type {
     BaseControllerCRUDMethods,
-    IBaseCRUDControllerConstructor
+    BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type ShowingQueryOptionService from "../service/query-option/ShowingQueryOptionService.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
@@ -41,7 +41,7 @@ export interface ShowingControllerMethods
  * Constructor dependencies for {@link ShowingController}.
  */
 export interface ShowingControllerConstructor
-    extends IBaseCRUDControllerConstructor<ShowingSchemaFields> {
+    extends BaseCRUDControllerConstructorParams<ShowingSchemaFields> {
 
     /**
      * Service responsible for:
