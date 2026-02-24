@@ -1,45 +1,35 @@
 /**
- * @file BaseRepository.ts
- *
- * Generic base repository for Mongoose-backed persistence.
- *
- * Provides a standardized CRUD implementation with:
- * - Delegated read/write/delete operations
- * - Consistent error normalization
- * - Optional population and virtual handling
- *
- * Intended to be extended or composed by concrete repositories.
+ * @file Base repository for CRUD persistence.
+ * BaseRepository.ts
  */
 
-import type {ModelObject} from "../types/ModelObject.js";
+import type { ModelObject } from "../types/ModelObject.js";
 import type {
     CRUDCountParams,
     CRUDFindByIDParams,
     CRUDFindBySlugParams,
     CRUDFindParams,
     CRUDPaginationParams,
-    ReadMethods
+    ReadMethods,
 } from "./operations/CRUDReader.types.js";
 import type {
     CRUDCreateParams,
+    CRUDUpdateActionParams,
     CRUDUpdateParams,
-    WriteMethods
+    WriteMethods,
 } from "./operations/CRUDWriter.types.js";
 import type {
     CRUDDestroyParams,
-    DeleteMethods
+    DeleteMethods,
 } from "./operations/CRUDDeleter.types.js";
-import {CRUDReader} from "./operations/CRUDReader.js";
-import {CRUDWriter} from "./operations/CRUDWriter.js";
-import {CRUDDeleter} from "./operations/CRUDDeleter.js";
-import type {BaseRepositoryConstructor} from "./BaseRepository.types.js";
-import {CRUDBase} from "./base/CRUDBase.js";
+import { CRUDReader } from "./operations/CRUDReader.js";
+import { CRUDWriter } from "./operations/CRUDWriter.js";
+import { CRUDDeleter } from "./operations/CRUDDeleter.js";
+import type { BaseRepositoryConstructor } from "./BaseRepository.types.js";
+import { CRUDBase } from "./base/CRUDBase.js";
 
 /**
- * Generic CRUD repository for Mongoose models.
- *
- * @template TSchema - Persisted document shape
- * @template TInput  - Input payload shape for create/update operations
+ * Composes read, write, and delete operations for Mongoose-backed models.
  */
 export class BaseRepository<TSchema extends ModelObject, TInput = unknown>
     extends CRUDBase<TSchema>
@@ -53,14 +43,10 @@ export class BaseRepository<TSchema extends ModelObject, TInput = unknown>
     protected deleter: CRUDDeleter<TSchema>;
 
     /**
-     * Creates a new repository instance.
-     *
-     * Allows optional injection of CRUD operation handlers.
-     *
-     * @param params - Repository construction parameters
+     * Initializes CRUD operation handlers.
      */
     constructor(params: BaseRepositoryConstructor<TSchema, TInput>) {
-        const {reader, writer, deleter, ...superParams} = params;
+        const { reader, writer, deleter, ...superParams } = params;
 
         super(superParams);
 
@@ -69,42 +55,72 @@ export class BaseRepository<TSchema extends ModelObject, TInput = unknown>
         this.deleter = deleter ?? new CRUDDeleter(superParams);
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns document count.
+     */
     async count(params: CRUDCountParams<TSchema> = {}): Promise<number> {
         return this.reader.count(params);
     }
 
-    /** @inheritdoc */
+    /**
+     * Retrieves matching documents.
+     */
     async find(params: CRUDFindParams<TSchema> = {}): Promise<TSchema[]> {
         return this.reader.find(params);
     }
 
-    /** @inheritdoc */
+    /**
+     * Retrieves a document by ObjectId.
+     */
     async findById(params: CRUDFindByIDParams): Promise<TSchema> {
         return this.reader.findById(params);
     }
 
-    /** @inheritdoc */
+    /**
+     * Retrieves a document by slug.
+     */
     async findBySlug(params: CRUDFindBySlugParams): Promise<TSchema> {
         return this.reader.findBySlug(params);
     }
 
-    /** @inheritdoc */
+    /**
+     * Retrieves paginated documents.
+     */
     async paginate(params: CRUDPaginationParams<TSchema>): Promise<TSchema[]> {
         return this.reader.paginate(params);
     }
 
-    /** @inheritdoc */
+    /**
+     * Executes the raw create operation.
+     */
+    async createAction(params: CRUDCreateParams<TInput>): Promise<TSchema> {
+        return this.writer.createAction(params);
+    }
+
+    /**
+     * Creates a document.
+     */
     async create(params: CRUDCreateParams<TInput>): Promise<TSchema> {
         return this.writer.create(params);
     }
 
-    /** @inheritdoc */
+    /**
+     * Executes the raw update operation.
+     */
+    async updateAction(params: CRUDUpdateActionParams<TSchema, TInput>): Promise<TSchema> {
+        return this.writer.updateAction(params);
+    }
+
+    /**
+     * Updates a document.
+     */
     async update(params: CRUDUpdateParams<TSchema, TInput>): Promise<TSchema> {
         return this.writer.update(params);
     }
 
-    /** @inheritdoc */
+    /**
+     * Deletes a document.
+     */
     async destroy(params: CRUDDestroyParams): Promise<void> {
         return this.deleter.destroy(params);
     }
