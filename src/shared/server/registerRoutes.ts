@@ -27,6 +27,7 @@ import {ReservationRoutes} from "../../domains/reservation/routes/ReservationRou
 import {TicketRoutes} from "../../domains/reservation/routes/TicketRoutes.js";
 import {ReservationUtilityRoutes} from "../../domains/reservation/routes/ReservationUtilityRoutes.js";
 import {UserProfileRoutes} from "../../domains/users/routing/UserProfileRoutes.js";
+import {MovieReviewCRUDRoutes} from "../../domains/movieReview/routes/MovieReviewCRUDRoutes.js";
 
 /**
  * Internal route registration descriptor.
@@ -64,6 +65,7 @@ const registration: RouteRegistration[] = [
 
     {path: "/api/v1/admin/movies", router: MovieRoutes},
     {path: "/api/v1/admin/movie/credits", router: MovieCreditRoutes},
+    {path: "/api/v1/admin/movie/reviews", router: MovieReviewCRUDRoutes},
 
     {path: "/api/v1/admin/showings", router: ShowingRoutes},
     {path: "/api/v1/admin/seatmaps", router: SeatMapRoutes},
