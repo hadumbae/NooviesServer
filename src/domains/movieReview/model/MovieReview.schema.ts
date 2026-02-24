@@ -41,14 +41,4 @@ export const MovieReviewSchema = new Schema<MovieReviewSchemaFields>({
         type: Boolean,
         default: false,
     },
-
-    helpfulVotes: {
-        type: Number,
-        min: 0,
-        default: 0,
-        validate: {
-            validator: (val) => !val || Number.isInteger(val) && val >= 0,
-            message: "Must be a non-negative integer if provided.",
-        },
-    },
 });

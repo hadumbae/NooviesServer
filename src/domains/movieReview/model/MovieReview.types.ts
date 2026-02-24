@@ -15,5 +15,4 @@ export interface MovieReviewSchemaFields {
     rating: number;
     reviewText?: string;
     isRecommended?: boolean;
-    helpfulVotes?: number;
 }

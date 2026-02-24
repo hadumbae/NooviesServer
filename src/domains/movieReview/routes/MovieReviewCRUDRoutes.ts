@@ -25,7 +25,6 @@ const unsetExclusion: (keyof MovieReviewSchemaFields)[] = [
     "movie",
     "rating",
     "isRecommended",
-    "helpfulVotes",
 ];
 
 const unsetMiddleware = unsetModelFormFields({ model, excludeKeys: unsetExclusion });
