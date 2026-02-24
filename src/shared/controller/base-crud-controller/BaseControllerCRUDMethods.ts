@@ -13,7 +13,7 @@
 
 import type {Request, Response} from "express";
 import type {PopulationPipelineStages} from "../../types/mongoose/AggregatePipelineStages.js";
-import type {IBaseControllerConstructor} from "../BaseController.js";
+import type {BaseConstructorParams} from "../BaseController.js";
 import type {BaseRepository} from "../../repository/BaseRepository.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
@@ -116,7 +116,7 @@ export interface BaseControllerCRUDMethods<
  * @template TSchema - Document shape handled by the controller.
  */
 export interface IBaseCRUDControllerConstructor<TSchema extends ModelObject>
-    extends IBaseControllerConstructor
+    extends BaseConstructorParams
 {
     /** Repository handling persistence operations. */
     repository: BaseRepository<TSchema>;

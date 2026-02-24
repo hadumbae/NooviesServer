@@ -5,13 +5,13 @@
  */
 
 import type {Request, Response} from "express";
-import type {IBaseControllerConstructor} from "../../../../shared/controller/BaseController.js";
+import type {BaseConstructorParams} from "../../../../shared/controller/BaseController.js";
 import type {TheatreSearchService} from "../../services/search-service/TheatreSearchService.js";
 
 /**
  * Dependency container for `TheatreBrowseController`.
  */
-export type TheatreBrowseControllerConstructor = IBaseControllerConstructor & {
+export type TheatreBrowseControllerConstructor = BaseConstructorParams & {
     /** Executes theatre browsing and search queries */
     searchService: TheatreSearchService;
 };
