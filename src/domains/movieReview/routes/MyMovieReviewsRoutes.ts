@@ -26,7 +26,7 @@ router.post(
 );
 
 router.post(
-    "/current/update/reviewID",
+    "/current/update/:reviewID",
     [isAuth, validateZodSchema(MovieReviewUpdateInputSchema)],
     asyncHandler(MyMovieReviewController.patchUpdateMovieReviewForCurrentUser),
 );
