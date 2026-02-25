@@ -2,6 +2,7 @@ import type {Response} from 'express';
 import {ZodError} from "zod";
 import ZodParseError from "../../../errors/ZodParseError.js";
 import {ZodDuplicateIndexError} from "../../../errors/zod/ZodDuplicateIndexError.js";
+import InvalidQueryOptionError from "../../../errors/InvalidQueryOptionError.js";
 
 /**
  * Determines whether an error is a globally handled Zod-related error.
@@ -10,7 +11,10 @@ import {ZodDuplicateIndexError} from "../../../errors/zod/ZodDuplicateIndexError
  * @returns `true` if the error is a Zod validation or parsing error.
  */
 export const isGlobalZodError = (error: unknown) =>
-    error instanceof ZodError || error instanceof ZodParseError;
+    error instanceof ZodError ||
+    error instanceof ZodParseError ||
+    error instanceof ZodDuplicateIndexError ||
+    error instanceof InvalidQueryOptionError;
 
 /**
  * Handles all globally recognized Zod-related errors.
@@ -26,6 +30,23 @@ export const isGlobalZodError = (error: unknown) =>
  * - `ZodDuplicateIndexError` → **409**
  */
 export const handleGlobalZodErrors = (error: unknown, res: Response) => {
+    if (error instanceof InvalidQueryOptionError) {
+        const {
+            errorType,
+            message = "[INVALID] Malformed Query Options",
+            model,
+            errors,
+        } = error.toJSON();
+
+        res.status(400).json({errorType, message, model, errors});
+    }
+
+    if (error instanceof ZodDuplicateIndexError) {
+        const {errors, message = "Duplicate Index. Uniqueness violated."} = error.toJSON();
+
+        res.status(409).json({message, errors});
+    }
+
     if (error instanceof ZodError) {
         const {message, errors} = {
             message: "Validation failed.",
@@ -41,11 +62,5 @@ export const handleGlobalZodErrors = (error: unknown, res: Response) => {
 
         res.status(422).json({message, errors});
         return;
-    }
-
-    if (error instanceof ZodDuplicateIndexError) {
-        const {errors, message = "Duplicate Index. Uniqueness violated."} = error.toJSON();
-
-        res.status(409).json({message, errors});
     }
 };
