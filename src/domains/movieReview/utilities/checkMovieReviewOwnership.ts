@@ -20,6 +20,11 @@ type OwnershipParams = {
 export async function checkMovieReviewOwnership(
     {userID, reviewID}: OwnershipParams
 ): Promise<boolean> {
-    const review = await MovieReview.findById(reviewID).orFail();
+    const review = await MovieReview
+        .findById(reviewID)
+        .select("user")
+        .lean()
+        .orFail();
+
     return review.user.equals(userID) ?? null;
 }
