@@ -10,7 +10,7 @@ import type {
     MovieReviewCRUDWriterMethods,
     MovieReviewUpdateActionParams
 } from "./MovieReviewCRUDWriter.types.js";
-import {MovieReviewModel} from "../model/MovieReview.model.js";
+import {MovieReview} from "../model/MovieReview.model.js";
 import {checkMovieReviewOwnership} from "../utilities/checkMovieReviewOwnership.js";
 import createHttpError from "http-errors";
 
@@ -22,7 +22,7 @@ export class MovieReviewCRUDWriter
     implements MovieReviewCRUDWriterMethods {
 
     constructor() {
-        super({model: MovieReviewModel});
+        super({model: MovieReview});
     }
 
     async createAction(

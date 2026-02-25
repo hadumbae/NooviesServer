@@ -4,7 +4,7 @@
  */
 
 import type { FetchPaginatedUserReviewsParams } from "./MyMovieReviewService.types.js";
-import { MovieReviewModel } from "../model/MovieReview.model.js";
+import { MovieReview } from "../model/MovieReview.model.js";
 import { MovieReviewPopulatePaths } from "../queries/MovieReviewPopulatePaths.js";
 
 /**
@@ -13,7 +13,7 @@ import { MovieReviewPopulatePaths } from "../queries/MovieReviewPopulatePaths.js
 export const fetchCurrentUserMovieReviews = (
     { userID, page, perPage }: FetchPaginatedUserReviewsParams
 ) => {
-    return MovieReviewModel
+    return MovieReview
         .find({ user: userID })
         .skip((page - 1) * perPage)
         .limit(perPage)

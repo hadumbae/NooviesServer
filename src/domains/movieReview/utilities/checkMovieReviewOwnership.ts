@@ -4,7 +4,7 @@
  */
 
 import {Types} from "mongoose";
-import {MovieReviewModel} from "../model/MovieReview.model.js";
+import {MovieReview} from "../model/MovieReview.model.js";
 
 /**
  * Parameters for `checkMovieReviewOwnership`
@@ -20,6 +20,6 @@ type OwnershipParams = {
 export async function checkMovieReviewOwnership(
     {userID, reviewID}: OwnershipParams
 ): Promise<boolean> {
-    const review = await MovieReviewModel.findById(reviewID).orFail();
+    const review = await MovieReview.findById(reviewID).orFail();
     return review.user.equals(userID) ?? null;
 }

@@ -11,7 +11,7 @@ import { MovieReviewSchema } from "./MovieReview.schema.js";
 /**
  * Mongoose model for MovieReview documents.
  */
-export const MovieReviewModel: Model<MovieReviewSchemaFields> = model<MovieReviewSchemaFields>(
+export const MovieReview: Model<MovieReviewSchemaFields> = model<MovieReviewSchemaFields>(
     "MovieReview",
     MovieReviewSchema,
 );

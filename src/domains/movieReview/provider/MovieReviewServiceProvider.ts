@@ -3,7 +3,7 @@
  * MovieReviewServiceProvider.ts
  */
 
-import {MovieReviewModel} from "../model/MovieReview.model.js";
+import {MovieReview} from "../model/MovieReview.model.js";
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import {MovieReviewPopulatePaths} from "../queries/MovieReviewPopulatePaths.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
@@ -16,7 +16,7 @@ import {MovieReviewCRUDWriter} from "../repositories/MovieReviewCRUDWriter.js";
  */
 export class MovieReviewServiceProvider {
     static register() {
-        const model = MovieReviewModel;
+        const model = MovieReview;
 
         const repository = new BaseRepository({
             model,
