@@ -9,7 +9,7 @@ import {MovieReviewPopulatePaths} from "../queries/MovieReviewPopulatePaths.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import {MovieReviewPopulationPipelines} from "../queries/MovieReviewPopulationPipelines.js";
 import {MovieReviewCRUDController} from "../controllers/crud/MovieReviewCRUDController.js";
-import {MovieReviewCRUDWriter} from "../repositories/MovieReviewCRUDWriter.js";
+import {MovieReviewQueryOptionService} from "../services/query-options/MovieReviewQueryOptionService.js";
 
 /**
  * Registers MovieReview data access and controller services.
@@ -21,7 +21,6 @@ export class MovieReviewServiceProvider {
         const repository = new BaseRepository({
             model,
             populateRefs: MovieReviewPopulatePaths,
-            writer: new MovieReviewCRUDWriter(),
         });
 
         const aggregateService = new AggregateQueryService({
@@ -29,9 +28,12 @@ export class MovieReviewServiceProvider {
             populationPipelines: MovieReviewPopulationPipelines,
         });
 
+        const optionService = new MovieReviewQueryOptionService();
+
         const crudController = new MovieReviewCRUDController({
             repository,
             aggregateService,
+            optionService,
         });
 
         return {
