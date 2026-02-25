@@ -25,7 +25,7 @@ router.post(
     asyncHandler(MyMovieReviewController.postCreateMovieReviewForCurrentUser),
 );
 
-router.post(
+router.patch(
     "/current/update/:reviewID",
     [isAuth, validateZodSchema(MovieReviewUpdateInputSchema)],
     asyncHandler(MyMovieReviewController.patchUpdateMovieReviewForCurrentUser),
