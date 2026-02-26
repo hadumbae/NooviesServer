@@ -29,6 +29,7 @@ import {ReservationUtilityRoutes} from "../../domains/reservation/routes/Reserva
 import {UserProfileRoutes} from "../../domains/users/routing/UserProfileRoutes.js";
 import {MovieReviewCRUDRoutes} from "../../domains/movieReview/routes/MovieReviewCRUDRoutes.js";
 import {MyMovieReviewsRoutes} from "../../domains/movieReview/routes/MyMovieReviewsRoutes.js";
+import {MovieBrowseRoutes} from "../../domains/movie/routing/client/MovieBrowseRoutes.js";
 
 /**
  * Internal route registration descriptor.
@@ -48,7 +49,7 @@ type RouteRegistration = {
  * - Public and authentication routes are registered first
  * - Admin routes are grouped and namespaced under `/api/v1/admin`
  */
-const registration: RouteRegistration[] = [
+const adminRegistration: RouteRegistration[] = [
     // --- AUTH ROUTES ---
 
     {path: "/auth", router: AuthRoutes},
@@ -72,9 +73,10 @@ const registration: RouteRegistration[] = [
     {path: "/api/v1/admin/seatmaps", router: SeatMapRoutes},
 
     {path: "/api/v1/admin/reservations", router: ReservationRoutes},
+];
 
-    // --- BROWSE Routes ---
-
+const clientRegistration: RouteRegistration[] = [
+    {path: "/api/v1/browse/movies", router: MovieBrowseRoutes},
     {path: "/api/v1/browse/theatres", router: TheatreBrowseRoutes},
     {path: "/api/v1/browse/screens", router: ScreenBrowseRoutes},
 
@@ -95,7 +97,7 @@ const registration: RouteRegistration[] = [
  * @param app Express application instance
  */
 export default function registerRoutes(app: Express) {
-    registration.forEach(({path, router}) => {
+    [...adminRegistration, ...clientRegistration].forEach(({path, router}) => {
         app.use(path, router);
     });
 }
