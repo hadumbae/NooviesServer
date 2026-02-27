@@ -1,5 +1,5 @@
 /**
- * @file Parameter types for current user MovieReview persistence operations.
+ * @file Parameter contracts for current-user MovieReview services.
  * MyMovieReviewService.types.ts
  */
 
@@ -10,7 +10,7 @@ import type {MovieReviewUpdateInputData} from "../schema/MovieReviewUpdateInputS
 import type {MovieReviewSchemaFields} from "../model/MovieReview.types.js";
 
 /**
- * Parameters for paginated MovieReview queries owned by a user.
+ * Input for fetching paginated user-owned MovieReviews.
  */
 export type FetchPaginatedUserReviewsParams = {
     userID: Types.ObjectId;
@@ -20,7 +20,7 @@ export type FetchPaginatedUserReviewsParams = {
 }
 
 /**
- * Parameters for creating a user-owned MovieReview.
+ * Input for creating a user-owned MovieReview.
  */
 export type CreateUserMovieReviewParams = {
     userID: Types.ObjectId;
@@ -29,7 +29,7 @@ export type CreateUserMovieReviewParams = {
 }
 
 /**
- * Parameters for updating a user-owned MovieReview.
+ * Input for updating a user-owned MovieReview.
  */
 export type UpdateUserMovieReviewParams = {
     reviewID: Types.ObjectId;
@@ -37,4 +37,12 @@ export type UpdateUserMovieReviewParams = {
     data: MovieReviewUpdateInputData;
     unset?: Partial<MovieReviewSchemaFields>;
     options?: Pick<RequestOptions, "populate" | "virtuals">;
+}
+
+/**
+ * Input for deleting a user-owned MovieReview.
+ */
+export type DeleteUserMovieReviewParams = {
+    reviewID: Types.ObjectId;
+    userID: Types.ObjectId;
 }

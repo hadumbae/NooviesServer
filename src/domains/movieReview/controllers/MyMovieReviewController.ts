@@ -1,5 +1,5 @@
 /**
- * @file Controllers for current user MovieReview operations.
+ * @file HTTP controllers for current-user MovieReview routes.
  * MyMovieReviewController.ts
  */
 
@@ -13,8 +13,7 @@ import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js
 import type {MovieReviewUpdateInputData} from "../schema/MovieReviewUpdateInputSchema.js";
 
 /**
- * Handles HTTP requests for retrieving paginated MovieReviews
- * belonging to the authenticated user.
+ * Returns paginated MovieReviews owned by the authenticated user.
  */
 export const getFetchCurrentUserMovieReview: ControllerAsyncFunc = async (
     req: Request, res: Response
@@ -36,8 +35,7 @@ export const getFetchCurrentUserMovieReview: ControllerAsyncFunc = async (
 }
 
 /**
- * Handles HTTP requests for creating a MovieReview
- * for the authenticated user.
+ * Creates a MovieReview for the authenticated user.
  */
 export const postCreateMovieReviewForCurrentUser: ControllerAsyncFunc = async (
     req: Request, res: Response
@@ -59,7 +57,9 @@ export const postCreateMovieReviewForCurrentUser: ControllerAsyncFunc = async (
 }
 
 /**
- * Handles HTTP requests for updating an owned MovieReview.
+ * Updates a MovieReview owned by the authenticated user.
+ *
+ * Ownership and conflict handling are enforced at the service layer.
  */
 export const patchUpdateMovieReviewForCurrentUser: ControllerAsyncFunc = async (
     req: Request, res: Response
@@ -84,4 +84,25 @@ export const patchUpdateMovieReviewForCurrentUser: ControllerAsyncFunc = async (
     return res
         .status(200)
         .json(review);
+}
+
+/**
+ * Deletes a MovieReview owned by the authenticated user.
+ */
+export const deleteRemoveMovieReviewForCurrentUser: ControllerAsyncFunc = async (
+    req: Request, res: Response
+) => {
+    const userID = fetchRequestUser(req);
+
+    const {reviewID} = req.params;
+    const revID = isValidObjectId(reviewID);
+
+    await MyMovieReviewService.deleteMovieReviewForCurrentUser({
+        userID,
+        reviewID: revID,
+    });
+
+    return res
+        .status(200)
+        .json({message: "Movie Review deleted."});
 }

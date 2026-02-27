@@ -1,10 +1,11 @@
 /**
- * @file Current user MovieReview persistence service.
+ * @file Persistence service for current-user MovieReview operations.
  * MyMovieReviewService.ts
  */
 
 import type {
     CreateUserMovieReviewParams,
+    DeleteUserMovieReviewParams,
     FetchPaginatedUserReviewsParams,
     UpdateUserMovieReviewParams
 } from "./MyMovieReviewService.types.js";
@@ -20,9 +21,9 @@ import {DocumentVersionError} from "../../../shared/errors/DocumentVersionError.
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
 
 /**
- * Retrieves paginated MovieReviews owned by the authenticated user.
+ * Fetches paginated MovieReviews for a user.
  *
- * @returns Paginated MovieReview results.
+ * Applies optional population and virtual configuration.
  */
 export const fetchCurrentUserMovieReviews = async (
     {userID, page, perPage, options}: FetchPaginatedUserReviewsParams
@@ -48,9 +49,9 @@ export const fetchCurrentUserMovieReviews = async (
 }
 
 /**
- * Creates a MovieReview for the authenticated user.
+ * Creates a MovieReview scoped to a user.
  *
- * @returns The populated MovieReview.
+ * Handles duplicate index errors and returns a populated document.
  */
 export const createMovieReviewForCurrentUser = async (
     {userID, data, options}: CreateUserMovieReviewParams
@@ -71,9 +72,10 @@ export const createMovieReviewForCurrentUser = async (
 }
 
 /**
- * Updates an owned MovieReview with retry support for version conflicts.
+ * Updates a user-owned MovieReview.
  *
- * @returns The updated populated MovieReview.
+ * Enforces ownership, retries on persistence conflicts,
+ * and maps version errors to DocumentVersionError.
  */
 export const updateMovieReviewForCurrentUser = async (
     {userID, reviewID, data, unset, options}: UpdateUserMovieReviewParams
@@ -107,4 +109,20 @@ export const updateMovieReviewForCurrentUser = async (
     });
 
     return updatedQuery.orFail();
+}
+
+/**
+ * Deletes a user-owned MovieReview.
+ *
+ * Throws if the document does not exist or ownership validation fails.
+ */
+export const deleteMovieReviewForCurrentUser = async (
+    {userID, reviewID}: DeleteUserMovieReviewParams
+): Promise<void> => {
+    const review = await MovieReview.findById(reviewID).orFail();
+
+    const isOwner = checkMovieReviewOwnership({userID, reviewID});
+    if (!isOwner) throw createHttpError(403, "Invalid User, Can Only Delete Owned Review.");
+
+    await review.deleteOne();
 }
