@@ -16,8 +16,8 @@ import {fetchRequestUser} from "../../../../../shared/utility/request/fetchReque
 export const getReviewsByMovie: ControllerAsyncFunc = async (
     req: Request, res: Response
 ): Promise<Response> => {
-    const {movieID: mID} = req.params;
-    const movieID = isValidObjectId(mID);
+    const {_id} = req.params;
+    const movieID = isValidObjectId(_id);
 
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const options = QueryUtils.fetchOptionsFromQuery(req);
@@ -41,10 +41,10 @@ export const getReviewsByMovie: ControllerAsyncFunc = async (
 export const getReviewDetailsByMovie: ControllerAsyncFunc = async (
     req: Request, res: Response
 ): Promise<Response> => {
-    const {movieID: mID} = req.params;
+    const {_id} = req.params;
 
     const userID = fetchRequestUser(req);
-    const movieID = isValidObjectId(mID);
+    const movieID = isValidObjectId(_id);
 
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const options = QueryUtils.fetchOptionsFromQuery(req);

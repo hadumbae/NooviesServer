@@ -72,6 +72,7 @@ export const fetchReviewDetailsByMovie = async (
                 ],
                 userReview: [
                     {$match: {user: userID}},
+                    {$limit: 1},
                     ...populationPipelines,
                 ],
             }
@@ -79,9 +80,9 @@ export const fetchReviewDetailsByMovie = async (
         {
             $project: {
                 items: "$items",
+                userReview: {$ifNull: [{$arrayElemAt: ["$userReview", 0]}, null]},
                 totalItems: {$arrayElemAt: ["$stats.totalItems", 0]},
                 averageRating: {$arrayElemAt: ["$stats.averageRating", 0]},
-                userReview: {$arrayElemAt: ["$stats.userReview", 0]},
             }
         },
     ]);
