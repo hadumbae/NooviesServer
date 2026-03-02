@@ -1,19 +1,22 @@
 /**
- * @file Browse movie details data-access operations.
+ * @file Movie review browse data-access operations.
  * BrowseMovieDetailsService.ts
  */
 
-import type {BrowseReviewsByMovieParams} from "./BrowseMovieDetailsService.types.js";
+import type {
+    BrowseReviewsByMovieParams,
+    ReviewDetailsByMovieParams,
+    ReviewDetailsByMovieReturns
+} from "./BrowseMovieDetailsService.types.js";
 import type {PaginationReturns} from "../../../../shared/types/PaginationReturns.js";
 import type {MovieReviewSchemaFields} from "../../../movieReview/model/MovieReview.types.js";
 import {MovieReview} from "../../../movieReview/model/MovieReview.model.js";
 import populateQuery from "../../../../shared/utility/mongoose/populateQuery.js";
 import {MovieReviewPopulatePaths} from "../../../movieReview/queries/MovieReviewPopulatePaths.js";
+import {MovieReviewPopulationPipelines} from "../../../movieReview/queries/MovieReviewPopulationPipelines.js";
 
 /**
- * Retrieves paginated reviews for a movie.
- *
- * Applies population based on provided request options.
+ * Returns paginated reviews for a movie.
  */
 export const fetchReviewsByMovie = async (
     {movieID, page, perPage, options}: BrowseReviewsByMovieParams
@@ -36,4 +39,52 @@ export const fetchReviewsByMovie = async (
         totalItems,
         items,
     };
+}
+
+/**
+ * Returns paginated reviews with aggregate stats and the requesting user's review.
+ */
+export const fetchReviewDetailsByMovie = async (
+    {userID, movieID, page, perPage, options}: ReviewDetailsByMovieParams
+): Promise<ReviewDetailsByMovieReturns> => {
+    const populationPipelines = options?.populate ? MovieReviewPopulationPipelines : [];
+
+    const [result] = await MovieReview.aggregate<ReviewDetailsByMovieReturns>([
+        {
+            $match: {movie: movieID}
+        },
+        {
+            $facet: {
+                stats: [
+                    {
+                        $group: {
+                            _id: null,
+                            totalItems: {$sum: 1},
+                            averageRating: {$avg: "$rating"},
+                        }
+                    }
+                ],
+                items: [
+                    {$sort: {createdAt: -1}},
+                    {$skip: perPage * (page - 1)},
+                    {$limit: perPage},
+                    ...populationPipelines,
+                ],
+                userReview: [
+                    {$match: {user: userID}},
+                    ...populationPipelines,
+                ],
+            }
+        },
+        {
+            $project: {
+                items: "$items",
+                totalItems: {$arrayElemAt: ["$stats.totalItems", 0]},
+                averageRating: {$arrayElemAt: ["$stats.averageRating", 0]},
+                userReview: {$arrayElemAt: ["$stats.userReview", 0]},
+            }
+        },
+    ]);
+
+    return result;
 }

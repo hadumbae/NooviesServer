@@ -1,17 +1,34 @@
 /**
- * @file Parameter types for browse movie details services.
+ * @file Parameter and return types for movie review browse services.
  * BrowseMovieDetailsService.types.ts
  */
 
 import {Types} from "mongoose";
 import type {RequestOptions} from "../../../../shared/types/request-options/RequestOptions.js";
+import type {PaginationReturns} from "../../../../shared/types/PaginationReturns.js";
+import type {MovieReviewSchemaFields} from "../../../movieReview/model/MovieReview.types.js";
 
 /**
- * Input parameters for fetching movie reviews.
+ * Parameters for paginated movie review retrieval.
  */
 export type BrowseReviewsByMovieParams = {
+    movieID: Types.ObjectId;
     page: number;
     perPage: number;
-    movieID: Types.ObjectId;
     options?: Pick<RequestOptions, "populate" | "virtuals">;
+}
+
+/**
+ * Parameters for review retrieval including user context.
+ */
+export type ReviewDetailsByMovieParams = BrowseReviewsByMovieParams & {
+    userID: Types.ObjectId;
+}
+
+/**
+ * Paginated review data with aggregate rating and user-specific review.
+ */
+export type ReviewDetailsByMovieReturns = PaginationReturns<MovieReviewSchemaFields> & {
+    averageRating: number;
+    userReview: MovieReviewSchemaFields | null;
 }

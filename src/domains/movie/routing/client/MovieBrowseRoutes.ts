@@ -1,5 +1,5 @@
 /**
- * @file Route definitions for movie browse endpoints.
+ * @file Movie browse route registrations.
  * MovieBrowseRoutes.ts
  */
 
@@ -11,12 +11,21 @@ import * as MovieBrowseController from "../../controller/client/movie-browse-con
 const router = Router();
 
 /**
- * Review retrieval route for a movie.
+ * Registers movie review browse endpoints.
  */
 router.get(
     "/item/:_id/reviews",
     [isAuth],
     asyncHandler(MovieBrowseController.getReviewsByMovie),
+);
+
+/**
+ * Registers detailed movie review browse endpoint.
+ */
+router.get(
+    "/item/:_id/reviews/details",
+    [isAuth],
+    asyncHandler(MovieBrowseController.getReviewDetailsByMovie),
 );
 
 export {
