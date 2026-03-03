@@ -13,4 +13,8 @@ export const MovieReviewPopulatePaths: PopulatePath[] = [
         path: "movie",
         populate: { path: "genres" },
     },
+    {
+        path: "user",
+        select: "name -email -password -roles -favourites"
+    }
 ];

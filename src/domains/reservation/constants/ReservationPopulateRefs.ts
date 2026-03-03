@@ -19,8 +19,8 @@
  * - Selected seating resolves its seat reference
  */
 
-import type { PopulateOption, PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
-import { ShowingPopulateRefs } from "../../showing/constants/ShowingPopulateRefs.js";
+import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import {ShowingPopulateRefs} from "../../showing/constants/ShowingPopulateRefs.js";
 
 /**
  * Default Reservation populate definitions.
@@ -31,7 +31,7 @@ export const ReservationPopulateRefs: PopulatePath[] = [
          * Populate showing and its nested relations.
          */
         path: "showing",
-        populate: ShowingPopulateRefs as PopulateOption[],
+        populate: ShowingPopulateRefs as PopulatePath[],
     },
     {
         /**

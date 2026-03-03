@@ -20,6 +20,25 @@ export const MovieReviewPopulationPipelines: PopulationPipelineStages = [
         }
     },
     {
+        $lookup: {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "user",
+            pipeline: [
+                {
+                    $project: {
+                        _id: 0,
+                        name: 1,
+                    },
+                }
+            ],
+        },
+    },
+    {
         $unwind: "$movie",
+    },
+    {
+        $unwind: "$user",
     },
 ];
