@@ -17,10 +17,22 @@ export const MovieReviewSchema = new Schema<MovieReviewSchemaFields>({
         required: [true, "Required."],
     },
 
+    displayName: {
+        type: String,
+        maxlength: [100, "Must be 100 characters or less."],
+        required: [true, "Required."],
+    },
+
     movie: {
         type: Schema.Types.ObjectId,
         ref: "Movie",
         immutable: true,
+        required: [true, "Required."],
+    },
+
+    summary: {
+        type: String,
+        maxlength: [500, "Must be 500 characters or less."],
         required: [true, "Required."],
     },
 
@@ -41,4 +53,10 @@ export const MovieReviewSchema = new Schema<MovieReviewSchemaFields>({
         type: Boolean,
         default: false,
     },
+
+    helpfulLikes: {
+        type: [Schema.Types.ObjectId],
+        ref: "User",
+        default: [],
+    }
 });
