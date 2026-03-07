@@ -29,6 +29,6 @@ export type ReviewDetailsByMovieParams = BrowseReviewsByMovieParams & {
  * Paginated review data with aggregate rating and user-specific review.
  */
 export type ReviewDetailsByMovieReturns = PaginationReturns<MovieReviewSchemaFields> & {
-    averageRating: number;
+    averageRating: number | null;
     userReview: MovieReviewSchemaFields | null;
 }

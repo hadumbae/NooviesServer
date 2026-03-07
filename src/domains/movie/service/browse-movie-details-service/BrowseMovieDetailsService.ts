@@ -61,10 +61,18 @@ export const fetchReviewDetailsByMovie = async (
                             _id: null,
                             totalItems: {$sum: 1},
                             averageRating: {$avg: "$rating"},
-                        }
-                    }
+                        },
+                    },
                 ],
                 items: [
+                    {
+                        $addFields: {
+                            isLikedByUser: {
+                                $in: [userID, {$ifNull: ["$helpfulLikes", []]}]
+                            },
+                        },
+                    },
+                    {$project: {helpfulLikes: 0}},
                     {$sort: {createdAt: -1}},
                     {$skip: perPage * (page - 1)},
                     {$limit: perPage},
@@ -73,6 +81,8 @@ export const fetchReviewDetailsByMovie = async (
                 userReview: [
                     {$match: {user: userID}},
                     {$limit: 1},
+                    {$addFields: {isLikedByUser: true}},
+                    {$project: {helpfulLikes: 0}},
                     ...populationPipelines,
                 ],
             }
@@ -81,8 +91,8 @@ export const fetchReviewDetailsByMovie = async (
             $project: {
                 items: "$items",
                 userReview: {$ifNull: [{$arrayElemAt: ["$userReview", 0]}, null]},
-                totalItems: {$arrayElemAt: ["$stats.totalItems", 0]},
-                averageRating: {$arrayElemAt: ["$stats.averageRating", 0]},
+                totalItems: {$ifNull: [{$arrayElemAt: ["$stats.totalItems", 0]}, 0]},
+                averageRating: {$ifNull: [{$arrayElemAt: ["$stats.averageRating", 0]}, null]},
             }
         },
     ]);
