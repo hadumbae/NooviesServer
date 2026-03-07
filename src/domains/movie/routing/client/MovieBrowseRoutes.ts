@@ -1,9 +1,9 @@
 /**
- * @file Movie browse route registrations.
- * MovieBrowseRoutes.ts
+ * @file Movie review browse route registrations.
+ * @filename MovieBrowseRoutes.ts
  */
 
-import {Router} from "express";
+import { Router } from "express";
 import isAuth from "../../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../../shared/utility/handlers/asyncHandler.js";
 import * as MovieBrowseController from "../../controller/client/movie-browse-controller/MovieBrowseController.js";
@@ -11,7 +11,7 @@ import * as MovieBrowseController from "../../controller/client/movie-browse-con
 const router = Router();
 
 /**
- * Registers movie review browse endpoints.
+ * Route for paginated movie reviews.
  */
 router.get(
     "/item/:_id/reviews",
@@ -20,7 +20,7 @@ router.get(
 );
 
 /**
- * Registers detailed movie review browse endpoint.
+ * Route for paginated reviews with aggregate stats and user review.
  */
 router.get(
     "/item/:_id/reviews/details",
@@ -28,6 +28,15 @@ router.get(
     asyncHandler(MovieBrowseController.getReviewDetailsByMovie),
 );
 
+/**
+ * Route for featured movie reviews.
+ */
+router.get(
+    "/item/:_id/reviews/featured",
+    [isAuth],
+    asyncHandler(MovieBrowseController.getFeaturedReviewsByMovie),
+);
+
 export {
-    router as MovieBrowseRoutes
-}
+    router as MovieBrowseRoutes,
+};
