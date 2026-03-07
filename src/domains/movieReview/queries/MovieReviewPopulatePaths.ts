@@ -15,6 +15,6 @@ export const MovieReviewPopulatePaths: PopulatePath[] = [
     },
     {
         path: "user",
-        select: "name -email -password -roles -favourites"
+        select: "name"
     }
 ];
