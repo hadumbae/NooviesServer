@@ -59,4 +59,4 @@ export const MovieReviewSchema = new Schema<MovieReviewSchemaFields>({
         ref: "User",
         default: [],
     }
-});
+}, {timestamps: true});
