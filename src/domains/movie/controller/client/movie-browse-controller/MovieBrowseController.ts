@@ -35,6 +35,27 @@ export const getReviewsByMovie: ControllerAsyncFunc = async (
 }
 
 /**
+ * Returns featured reviews for a movie and the requesting user's review.
+ */
+export const getFeaturedReviewsByMovie: ControllerAsyncFunc = async (
+    req: Request, res: Response
+) => {
+    const {_id} = req.params;
+
+    const userID = fetchRequestUser(req);
+    const movieID = isValidObjectId(_id);
+    const options = QueryUtils.fetchOptionsFromQuery(req);
+
+    const data = await BrowseMovieDetailsService.fetchFeaturedReviewsByMovie({
+        movieID,
+        userID,
+        options,
+    });
+
+    return res.status(200).json(data)
+}
+
+/**
  * Handles paginated movie review retrieval with aggregate stats
  * and the requesting user's review.
  */

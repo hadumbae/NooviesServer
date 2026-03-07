@@ -44,7 +44,7 @@ export const fetchReviewsByMovie = async (
 /**
  * Fetches featured reviews for a movie.
  */
-export const featuredReviewsByMovie = async (
+export const fetchFeaturedReviewsByMovie = async (
     {movieID, userID, options}: FeaturedReviewsByMovieParams
 ): Promise<FeaturedReviewsByMovieReturns> => {
     const populationPipelines = options?.populate ? MovieReviewPopulationPipelines : [];
