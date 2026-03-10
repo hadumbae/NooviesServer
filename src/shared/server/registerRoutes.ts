@@ -30,6 +30,7 @@ import {UserProfileRoutes} from "../../domains/users/routing/UserProfileRoutes.j
 import {MovieReviewCRUDRoutes} from "../../domains/movieReview/routes/MovieReviewCRUDRoutes.js";
 import {MyMovieReviewsRoutes} from "../../domains/movieReview/routes/MyMovieReviewsRoutes.js";
 import {MovieBrowseRoutes} from "../../domains/movie/routing/client/MovieBrowseRoutes.js";
+import {MovieViewDataRoutes} from "../../domains/movie/routing/client/MovieViewDataRoutes.js";
 
 /**
  * Internal route registration descriptor.
@@ -77,6 +78,8 @@ const adminRegistration: RouteRegistration[] = [
 
 const clientRegistration: RouteRegistration[] = [
     {path: "/api/v1/browse/movies", router: MovieBrowseRoutes},
+    {path: "/api/v1/views/desktop/client/movies", router: MovieViewDataRoutes},
+
     {path: "/api/v1/browse/theatres", router: TheatreBrowseRoutes},
     {path: "/api/v1/browse/screens", router: ScreenBrowseRoutes},
 
