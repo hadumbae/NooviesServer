@@ -14,6 +14,7 @@ import {MovieReview} from "../../../movieReview/model/MovieReview.model.js";
 import populateQuery from "../../../../shared/utility/mongoose/populateQuery.js";
 import {MovieReviewPopulatePaths} from "../../../movieReview/queries/MovieReviewPopulatePaths.js";
 import {MovieReviewPopulationPipelines} from "../../../movieReview/queries/MovieReviewPopulationPipelines.js";
+import {addMovieReviewDetailsPipelines} from "../../../movieReview/utilities/addMovieReviewDetailsPipelines.js";
 
 /**
  * Returns paginated reviews for a movie.
@@ -53,26 +54,28 @@ export const fetchFeaturedReviewsByMovie = async (
         {$match: {movie: movieID}},
         {
             $facet: {
-                userReview: [
+                userReviews: [
                     {$match: {user: userID}},
                     {$limit: 1},
-                    {$addFields: {isLikedByUser: true}},
+                    addMovieReviewDetailsPipelines({userID}),
                     {$project: {helpfulLikes: 0}},
                     ...populationPipelines,
                 ],
                 reviews: [
-                    {
-                        $addFields: {
-                            helpfulCount: {$size: {$ifNull: ["$helpfulVotes", []]}},
-                            isLikedByUser: {$in: [userID, {$ifNull: ["$helpfulLikes", []]}]},
-                        }
-                    },
+                    {$match: {user: {$ne: userID}}},
+                    addMovieReviewDetailsPipelines({userID}),
                     {$project: {helpfulLikes: 0}},
                     {$sort: {helpfulCount: -1}},
                     {$limit: 3},
                     ...populationPipelines,
                 ],
             },
+        },
+        {
+            $project: {
+                userReview: {$ifNull: [{$arrayElemAt: ["$userReviews", 0]}, null]},
+                reviews: "$reviews",
+            }
         }
     ]);
 
@@ -103,13 +106,7 @@ export const fetchReviewDetailsByMovie = async (
                     },
                 ],
                 items: [
-                    {
-                        $addFields: {
-                            isLikedByUser: {
-                                $in: [userID, {$ifNull: ["$helpfulLikes", []]}]
-                            },
-                        },
-                    },
+                    addMovieReviewDetailsPipelines({userID}),
                     {$project: {helpfulLikes: 0}},
                     {$sort: {createdAt: -1}},
                     {$skip: perPage * (page - 1)},
@@ -119,7 +116,7 @@ export const fetchReviewDetailsByMovie = async (
                 userReview: [
                     {$match: {user: userID}},
                     {$limit: 1},
-                    {$addFields: {isLikedByUser: true}},
+                    addMovieReviewDetailsPipelines({userID}),
                     {$project: {helpfulLikes: 0}},
                     ...populationPipelines,
                 ],
