@@ -33,7 +33,7 @@ router.patch(
 
 router.delete(
     "/current/delete/:reviewID",
-    [isAuth, validateZodSchema(MovieReviewUpdateInputSchema)],
+    [isAuth],
     asyncHandler(MyMovieReviewController.deleteRemoveMovieReviewForCurrentUser),
 );
 
