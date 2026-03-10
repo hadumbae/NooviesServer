@@ -1,6 +1,6 @@
 /**
- * @file MovieServiceProvider.ts
- * Wires Movie model, repository, services, and controller dependencies.
+ * @file Composes and registers movie module dependencies.
+ * @filename MovieServiceProvider.ts
  */
 
 import MovieModel from "../model/Movie.model.js";
@@ -15,20 +15,18 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 import type {MovieSchemaFields} from "../model/Movie.types.js";
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import {MoviePopulationPipelines} from "../queries/MoviePopulationPipelines.js";
+import {MoviePopulatePaths} from "../queries/MoviePopulatePaths.js";
 
 /**
- * Composes and exposes Movie-related dependencies.
+ * Dependency provider for the movie module.
  */
 export default class MovieServiceProvider {
     /**
-     * Creates and returns configured Movie components.
+     * Registers and returns configured movie components.
      */
     static register() {
         const model = MovieModel;
-
-        const populateRefs: PopulatePath[] = [
-            {path: "genres"},
-        ];
+        const populateRefs: PopulatePath[] = MoviePopulatePaths;
 
         const repository = new BaseRepository<MovieSchemaFields>({model, populateRefs});
         const service = new MovieService();
@@ -50,6 +48,7 @@ export default class MovieServiceProvider {
 
         return {
             model,
+            populateRefs,
             repository,
             services: {
                 imageService,
