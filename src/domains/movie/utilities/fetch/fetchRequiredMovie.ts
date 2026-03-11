@@ -14,7 +14,9 @@ import type {MovieDocument} from "../../type/MovieTypes.js";
  * Parameters for fetching a required movie.
  * Accepts either a database identifier or a slug.
  */
-type FetchParams = Omit<RequestOptions, "limit"> & (
+type FetchParams = {
+    options: Omit<RequestOptions, "limit">
+} & (
     /** Fetch by MongoDB identifier */
     | { _id: Types.ObjectId, slug?: never }
     /** Fetch by unique slug */
@@ -26,16 +28,12 @@ type FetchParams = Omit<RequestOptions, "limit"> & (
  * Throws if no document is found.
  */
 export function fetchRequiredMovie(
-    {_id, slug, populate, virtuals, populatePaths}: FetchParams,
+    {_id, slug, options}: FetchParams,
 ): Promise<MovieDocument> {
-    const baseQuery = _id
+    const query = _id
         ? MovieModel.findById(_id)
         : MovieModel.findOne({slug});
 
-    const query = populateQuery({
-        query: baseQuery,
-        options: {populate, virtuals, populatePaths},
-    });
-
-    return query.orFail();
+    const movie = populateQuery({query, options});
+    return movie.orFail();
 }
