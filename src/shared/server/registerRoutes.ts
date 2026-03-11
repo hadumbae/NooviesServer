@@ -78,7 +78,6 @@ const adminRegistration: RouteRegistration[] = [
 
 const clientRegistration: RouteRegistration[] = [
     {path: "/api/v1/browse/movies", router: MovieBrowseRoutes},
-    {path: "/api/v1/views/desktop/client/movies", router: MovieViewDataRoutes},
 
     {path: "/api/v1/browse/theatres", router: TheatreBrowseRoutes},
     {path: "/api/v1/browse/screens", router: ScreenBrowseRoutes},
@@ -91,6 +90,10 @@ const clientRegistration: RouteRegistration[] = [
     {path: "/api/v1/user/reviews", router: MyMovieReviewsRoutes},
 ];
 
+const clientViewRegistration: RouteRegistration[] = [
+    {path: "/api/v1/views/desktop/client/movies", router: MovieViewDataRoutes},
+];
+
 /**
  * Registers all application routes on the provided Express app.
  *
@@ -100,7 +103,11 @@ const clientRegistration: RouteRegistration[] = [
  * @param app Express application instance
  */
 export default function registerRoutes(app: Express) {
-    [...adminRegistration, ...clientRegistration].forEach(({path, router}) => {
+    [
+        ...adminRegistration,
+        ...clientRegistration,
+        ...clientViewRegistration,
+    ].forEach(({path, router}) => {
         app.use(path, router);
     });
 }
