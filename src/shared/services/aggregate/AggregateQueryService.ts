@@ -95,6 +95,7 @@ export default class AggregateQueryService<
     async query<TResult = any>(
         params: AggregateQueryParams<TSchema, TMatchFilters>
     ): Promise<AggregateQueryResults<TResult>> {
+
         const {
             options: {match, reference},
             limit,
@@ -117,7 +118,9 @@ export default class AggregateQueryService<
         if (virtuals) pipeline.push(...this._virtualsPipelines);
         if (populate) pipeline.push(...this._populationPipelines);
 
-        return this._model.aggregate(pipeline);
+        return pipeline.length > 0
+            ? this._model.aggregate(pipeline)
+            : this._model.find();
     }
 
     /**
