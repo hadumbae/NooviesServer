@@ -31,6 +31,7 @@ import {MovieReviewCRUDRoutes} from "../../domains/movieReview/routes/MovieRevie
 import {MyMovieReviewsRoutes} from "../../domains/movieReview/routes/MyMovieReviewsRoutes.js";
 import {MovieBrowseRoutes} from "../../domains/movie/routing/client/MovieBrowseRoutes.js";
 import {MovieViewDataRoutes} from "../../domains/movie/routing/client/MovieViewDataRoutes.js";
+import {IpApiRoutes} from "../../domains/external/ipapi/routing/IpApiRoutes.js";
 
 /**
  * Internal route registration descriptor.
@@ -94,6 +95,10 @@ const clientViewRegistration: RouteRegistration[] = [
     {path: "/api/v1/views/desktop/client/movies", router: MovieViewDataRoutes},
 ];
 
+const externalRegistration: RouteRegistration[] = [
+    {path: "/api/v1/ext/ip-geo", router: IpApiRoutes},
+];
+
 /**
  * Registers all application routes on the provided Express app.
  *
@@ -107,6 +112,7 @@ export default function registerRoutes(app: Express) {
         ...adminRegistration,
         ...clientRegistration,
         ...clientViewRegistration,
+        ...externalRegistration,
     ].forEach(({path, router}) => {
         app.use(path, router);
     });
