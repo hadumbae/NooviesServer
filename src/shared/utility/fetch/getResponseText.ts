@@ -17,10 +17,10 @@ import {HttpResponseError} from "../../errors/HttpResponseError.js";
  * @throws {HttpResponseError} If reading the response body fails.
  */
 export async function getResponseText(response: Response): Promise<string> {
-    const {url, text, status, statusText} = response;
+    const {url, status, statusText} = response;
 
     try {
-        return await text();
+        return await response.text();
     } catch (error: unknown) {
         if (error instanceof Error) {
             throw new HttpResponseError({
