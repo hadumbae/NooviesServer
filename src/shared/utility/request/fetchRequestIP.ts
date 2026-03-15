@@ -6,7 +6,6 @@
 
 import "dotenv/config";
 import type {Request} from "express";
-import process from "node:process";
 
 /**
  * Returns the client IP address for the incoming request.
