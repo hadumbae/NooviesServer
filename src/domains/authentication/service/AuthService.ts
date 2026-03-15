@@ -1,5 +1,5 @@
 import {type UserRegisterInput} from "../schema/UserRegisterInputSchema.js";
-import ZodParseError from "../../../shared/errors/ZodParseError.js";
+import { RequestValidationError } from "../../../shared/errors/RequestValidationError.js";
 import bcrypt from "bcryptjs";
 import User from "@models/User.model.js";
 import {Types} from "mongoose";
@@ -51,7 +51,7 @@ export default class AuthService implements AuthServiceMethods {
      *
      * @param data - User registration input.
      * @returns The created user document.
-     * @throws ZodParseError if the email is already in use.
+     * @throws RequestValidationError if the email is already in use.
      */
     async register(data: UserRegisterInput): Promise<UserSchemaFields> {
         const {name, email, password} = data;
@@ -76,7 +76,7 @@ export default class AuthService implements AuthServiceMethods {
      * @param data - User login input containing email and password.
      * @returns User credentials including JWT token.
      * @throws HttpError 404 if user is not found.
-     * @throws ZodParseError if password is incorrect.
+     * @throws RequestValidationError if password is incorrect.
      */
     async login(data: UserLoginInput): Promise<UserCredentials> {
         const {email: inputEmail, password: inputPassword} = data;
@@ -91,7 +91,7 @@ export default class AuthService implements AuthServiceMethods {
         const isValid = await bcrypt.compare(inputPassword, password);
         if (!isValid) {
             const error = {code: "invalid_string", message: "Incorrect Password.", path: ["password"]};
-            throw new ZodParseError({message: "Authentication failed.", errors: [error as ZodIssue]});
+            throw new RequestValidationError({message: "Authentication failed.", errors: [error as ZodIssue]});
         }
 
         // --- USER DETAILS ---
@@ -137,7 +137,7 @@ export default class AuthService implements AuthServiceMethods {
      * Checks whether an email is already in use.
      *
      * @param email - Email to check.
-     * @throws ZodParseError if the email already exists.
+     * @throws RequestValidationError if the email already exists.
      */
     async checkForExistingEmail(email: string) {
         const emailCount = await User.countDocuments({email});
@@ -147,7 +147,7 @@ export default class AuthService implements AuthServiceMethods {
                 path: ['email'],
                 message: "Email is already in use!"
             }];
-            throw new ZodParseError({errors});
+            throw new RequestValidationError({errors});
         }
     }
 }

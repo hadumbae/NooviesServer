@@ -1,5 +1,5 @@
 import cloudinary from "@config/cloudinary.js";
-import ZodParseError from "../../errors/ZodParseError.js";
+import { RequestValidationError } from "../../errors/RequestValidationError.js";
 import type {CloudinaryUtilsMethods} from "./CloudinaryUtils.types.js";
 import {
     type CloudinaryImageObject,
@@ -26,7 +26,7 @@ const CloudinaryUtils: CloudinaryUtilsMethods = {
 
         if (!success) {
             const message = "Invalid return from Cloudinary. Please check image data and try again.";
-            throw new ZodParseError({message, errors: error?.errors});
+            throw new RequestValidationError({message, errors: error?.errors});
         }
 
         return data!;

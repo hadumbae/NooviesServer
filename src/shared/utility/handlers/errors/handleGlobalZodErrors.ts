@@ -1,6 +1,6 @@
 import type {Response} from 'express';
 import {ZodError} from "zod";
-import ZodParseError from "../../../errors/ZodParseError.js";
+import { RequestValidationError } from "../../../errors/RequestValidationError.js";
 import {ZodDuplicateIndexError} from "../../../errors/zod/ZodDuplicateIndexError.js";
 import InvalidQueryOptionError from "../../../errors/InvalidQueryOptionError.js";
 
@@ -12,7 +12,7 @@ import InvalidQueryOptionError from "../../../errors/InvalidQueryOptionError.js"
  */
 export const isGlobalZodError = (error: unknown) =>
     error instanceof ZodError ||
-    error instanceof ZodParseError ||
+    error instanceof RequestValidationError ||
     error instanceof ZodDuplicateIndexError ||
     error instanceof InvalidQueryOptionError;
 
@@ -57,7 +57,7 @@ export const handleGlobalZodErrors = (error: unknown, res: Response) => {
         return;
     }
 
-    if (error instanceof ZodParseError) {
+    if (error instanceof RequestValidationError) {
         const {message, errors} = error;
 
         res.status(422).json({message, errors});

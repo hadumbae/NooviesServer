@@ -15,7 +15,7 @@ import {
     type SeatMapQueryOptions,
     SeatMapQueryOptionSchema
 } from "../../schema/query-option/SeatMapQueryOption.schema.js";
-import ZodParseError from "../../../../shared/errors/ZodParseError.js";
+import {RequestValidationError} from "../../../../shared/errors/RequestValidationError.js";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {FilterQuery} from "mongoose";
 import type {QueryOptionTypes, SortQuery} from "../../../../shared/types/query-options/QueryOptionService.types.js";
@@ -45,13 +45,13 @@ export default class SeatMapQueryOptionService
      * @param req - Express request
      * @returns Validated query options
      *
-     * @throws {ZodParseError}
+     * @throws {RequestValidationError}
      */
     fetchQueryParams(req: Request): SeatMapQueryOptions {
         const {success, data, error} = SeatMapQueryOptionSchema.safeParse(req.query);
 
         if (!success) {
-            throw new ZodParseError({
+            throw new RequestValidationError({
                 message: "Failed to parse SeatMap query options.",
                 errors: error.errors,
             });

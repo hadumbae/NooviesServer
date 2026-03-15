@@ -1,14 +1,14 @@
 import type { ZodIssue } from "zod";
-import ZodParseError from "../../../shared/errors/ZodParseError.js";
+import { RequestValidationError } from "../../../shared/errors/RequestValidationError.js";
 
 /**
- * Creates a {@link ZodParseError} describing duplicate seat conflicts
+ * Creates a {@link RequestValidationError} describing duplicate seat conflicts
  * at the **row level**.
  *
  * This helper is used to enforce that each seat within a theatre
  * is uniquely identified by its theatre, screen, row, and seat number.
  * When a duplicate seat is detected (based on a known `indexString`),
- * a structured {@link ZodParseError} is returned containing field-specific
+ * a structured {@link RequestValidationError} is returned containing field-specific
  * validation issues for:
  *
  * - **theatre** – Seats in this theatre already exist.
@@ -18,7 +18,7 @@ import ZodParseError from "../../../shared/errors/ZodParseError.js";
  * @param indexString - A unique identifier string for a seat, typically
  *   encoding its theatre, screen, row, and seat number
  *   (e.g. `"theatre_1_screen_1_row_1_seatNumber_1"`).
- * @returns A {@link ZodParseError} if the seat is a duplicate, otherwise `undefined`.
+ * @returns A {@link RequestValidationError} if the seat is a duplicate, otherwise `undefined`.
  *
  * @example
  * ```ts
@@ -49,7 +49,7 @@ export default function createSeatsByRowDuplicateError(indexString: string) {
             },
         ];
 
-        return new ZodParseError({
+        return new RequestValidationError({
             errors,
             message:
                 "Duplicate seat detected: theatre, screen, row, and seat number must form a unique combination.",

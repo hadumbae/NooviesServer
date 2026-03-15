@@ -1,13 +1,13 @@
 import type { ZodIssue } from "zod";
-import ZodParseError from "../../../shared/errors/ZodParseError.js";
+import { RequestValidationError } from "../../../shared/errors/RequestValidationError.js";
 
 /**
- * Creates a {@link ZodParseError} for duplicate seat conflicts.
+ * Creates a {@link RequestValidationError} for duplicate seat conflicts.
  *
  * Includes all relevant fields: theatre, screen, and either row+seatNumber or x+y.
  *
  * @param indexString - Unique identifier string for a seat.
- * @returns A {@link ZodParseError} if a duplicate exists, otherwise `undefined`.
+ * @returns A {@link RequestValidationError} if a duplicate exists, otherwise `undefined`.
  */
 export default function createSeatDuplicateError(indexString: string) {
     console.log("Error Here!: ", indexString);
@@ -22,7 +22,7 @@ export default function createSeatDuplicateError(indexString: string) {
             { path: ["seatNumber"], code: "custom", message: "Seat number already taken in this row." },
         ];
 
-        return new ZodParseError({
+        return new RequestValidationError({
             errors,
             message: "Duplicate seat: row + seat number must be unique.",
         });
@@ -36,7 +36,7 @@ export default function createSeatDuplicateError(indexString: string) {
             { path: ["y"], code: "custom", message: "Y coordinate already used." },
         ];
 
-        return new ZodParseError({
+        return new RequestValidationError({
             errors,
             message: "Duplicate seat: coordinates (x, y) must be unique.",
         });

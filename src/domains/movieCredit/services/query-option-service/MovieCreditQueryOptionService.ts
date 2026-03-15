@@ -20,7 +20,7 @@
  */
 
 import type {Request} from "express";
-import ZodParseError from "../../../../shared/errors/ZodParseError.js";
+import {RequestValidationError} from "../../../../shared/errors/RequestValidationError.js";
 import {type FilterQuery, type SortOrder} from "mongoose";
 import type {
     ReferenceFilterPipelineStages
@@ -57,7 +57,7 @@ export default class MovieCreditQueryOptionService implements MovieCreditQueryOp
      * @param req - Express request containing raw query parameters.
      * @returns Validated and normalized {@link MovieCreditQueryOptions}.
      *
-     * @throws {ZodParseError}
+     * @throws {RequestValidationError}
      * Thrown when query validation fails.
      */
     fetchQueryParams(req: Request): MovieCreditQueryOptions {
@@ -65,7 +65,7 @@ export default class MovieCreditQueryOptionService implements MovieCreditQueryOp
             MovieCreditQueryOptionsSchema.safeParse(req.query);
 
         if (!success) {
-            throw new ZodParseError({
+            throw new RequestValidationError({
                 message: "Validation Failed.",
                 errors: error.errors,
             });

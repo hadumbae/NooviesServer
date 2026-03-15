@@ -6,7 +6,7 @@ import type {
     ReservationQueryOptions,
 } from "../../schemas/query/ReservationQueryOption.types.js";
 import {ReservationQueryOptionSchema} from "../../schemas/query/ReservationQueryOption.schema.js";
-import ZodParseError from "../../../../shared/errors/ZodParseError.js";
+import {RequestValidationError} from "../../../../shared/errors/RequestValidationError.js";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {
@@ -39,13 +39,13 @@ export class ReservationQueryOptionService
      *
      * @param req - Express request object
      * @returns Validated reservation query options
-     * @throws ZodParseError If validation fails
+     * @throws RequestValidationError If validation fails
      */
     fetchQueryParams(req: Request): ReservationQueryOptions {
         const {data, success, error} = ReservationQueryOptionSchema.safeParse(req.query);
 
         if (!success) {
-            throw new ZodParseError({
+            throw new RequestValidationError({
                 errors: error?.errors,
                 raw: req.query,
                 message: "Invalid Showing Query.",

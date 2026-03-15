@@ -1,6 +1,6 @@
 import type {Request} from "express";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
-import ZodParseError from "../../../shared/errors/ZodParseError.js";
+import {RequestValidationError} from "../../../shared/errors/RequestValidationError.js";
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type {ScreenSchemaFields} from "../model/Screen.types.js";
 import {
@@ -28,11 +28,11 @@ export default class ScreenQueryOptionService implements IQueryOptionService<Scr
      *
      * @param req - Express request object
      * @returns Validated {@link ScreenQueryOptions} object
-     * @throws {ZodParseError} If query parameters are invalid
+     * @throws {RequestValidationError} If query parameters are invalid
      */
     fetchQueryParams(req: Request): ScreenQueryOptions {
         const {success, data, error} = ScreenQueryOptionsSchema.safeParse(req.query);
-        if (!success) throw new ZodParseError({message: "Invalid Query Params.", errors: error.errors});
+        if (!success) throw new RequestValidationError({message: "Invalid Query Params.", errors: error.errors});
         return filterNullishAttributes(data);
     }
 

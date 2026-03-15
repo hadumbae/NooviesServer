@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import ZodParseError from "../../../errors/ZodParseError.js";
+import {RequestValidationError} from "../../../errors/RequestValidationError.js";
 
 /**
  * Handles errors thrown during Zod schema validation.
@@ -17,7 +17,7 @@ import ZodParseError from "../../../errors/ZodParseError.js";
  * @param message - Optional custom message for the thrown `ZodParseError`.
  *                  Defaults to `"Validation Failed."`.
  *
- * @throws {ZodParseError} When `error` is a `ZodError`.
+ * @throws {RequestValidationError} When `error` is a `ZodError`.
  * @throws {Error} Re-throws the original error if it is not a `ZodError`.
  *
  * @example
@@ -37,7 +37,7 @@ export default (error: unknown, message: string = "Validation Failed."): never =
             return issue;
         });
 
-        throw new ZodParseError({ message, errors });
+        throw new RequestValidationError({ message, errors });
     }
 
     throw error;

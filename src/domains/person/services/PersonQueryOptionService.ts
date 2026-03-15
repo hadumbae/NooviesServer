@@ -1,6 +1,6 @@
 import type {Request} from "express";
 import {PersonQueryMatchFiltersSchema} from "../schema/query/PersonQueryOption.schema.js";
-import ZodParseError from "../../../shared/errors/ZodParseError.js";
+import {RequestValidationError} from "../../../shared/errors/RequestValidationError.js";
 import {type FilterQuery, type SortOrder} from "mongoose";
 import type {PersonQueryMatchFilters, PersonQueryOptions} from "../schema/query/PersonQueryOption.types.js";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
@@ -21,14 +21,14 @@ export default class PersonQueryOptionService
      *
      * @param req - Express request object containing query parameters.
      * @returns Parsed and validated filters for querying Person documents.
-     * @throws ZodParseError if query parameters are invalid.
+     * @throws RequestValidationError if query parameters are invalid.
      */
     fetchQueryParams(req: Request): PersonQueryMatchFilters {
         const {success, data, error} = PersonQueryMatchFiltersSchema.safeParse(req.query);
 
         if (!success) {
             const message = "Invalid Query Parameters.";
-            throw new ZodParseError({message, errors: error.errors});
+            throw new RequestValidationError({message, errors: error.errors});
         }
 
         return data;

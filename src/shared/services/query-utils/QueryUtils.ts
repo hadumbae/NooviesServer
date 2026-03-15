@@ -1,5 +1,5 @@
 import type {Request} from "express";
-import ZodParseError from "../../errors/ZodParseError.js";
+import {RequestValidationError} from "../../errors/RequestValidationError.js";
 import {type QueryOptionParams, QueryOptionParamsSchema} from "../../schema/query/QueryOptionParamsSchema.js";
 import type {IQueryUtils} from "./IQueryUtils.js";
 import {
@@ -12,7 +12,7 @@ import {
  * from an Express request object.
  *
  * All validation is performed using Zod schemas. If validation fails,
- * a {@link ZodParseError} is thrown with details about the error.
+ * a {@link RequestValidationError} is thrown with details about the error.
  */
 const QueryUtils: IQueryUtils = {
     /**
@@ -20,7 +20,7 @@ const QueryUtils: IQueryUtils = {
      *
      * @param req - The Express request containing the query parameters.
      * @returns A strongly typed {@link QueryPaginationParams} object if validation succeeds.
-     * @throws {ZodParseError} If the query parameters do not match {@link QueryPaginationParamsSchema}.
+     * @throws {RequestValidationError} If the query parameters do not match {@link QueryPaginationParamsSchema}.
      *
      * @example
      * ```ts
@@ -29,12 +29,12 @@ const QueryUtils: IQueryUtils = {
      * ```
      */
     fetchPaginationFromQuery(req: Request): QueryPaginationParams {
-        const { success, data, error } =
+        const {success, data, error} =
             QueryPaginationParamsSchema.safeParse(req.query);
 
         if (!success) {
             const message = "Invalid Pagination Query.";
-            throw new ZodParseError({ message, errors: error.errors });
+            throw new RequestValidationError({message, errors: error.errors});
         }
 
         return data;
@@ -46,7 +46,7 @@ const QueryUtils: IQueryUtils = {
      *
      * @param req - The Express request containing the query parameters.
      * @returns A strongly typed {@link QueryOptionParams} object if validation succeeds.
-     * @throws {ZodParseError} If the query parameters do not match {@link QueryOptionParamsSchema}.
+     * @throws {RequestValidationError} If the query parameters do not match {@link QueryOptionParamsSchema}.
      *
      * @example
      * ```ts
@@ -55,12 +55,12 @@ const QueryUtils: IQueryUtils = {
      * ```
      */
     fetchOptionsFromQuery(req: Request): QueryOptionParams {
-        const { success, data, error } =
+        const {success, data, error} =
             QueryOptionParamsSchema.safeParse(req.query);
 
         if (!success) {
             const message = "Invalid Query Options.";
-            throw new ZodParseError({ message, errors: error?.errors });
+            throw new RequestValidationError({message, errors: error?.errors});
         }
 
         return data;

@@ -17,7 +17,7 @@
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import type {Request} from "express";
 import {type ShowingQueryOptions, ShowingQueryOptionSchema} from "../../schema/query/ShowingQueryOptions.js";
-import ZodParseError from "../../../../shared/errors/ZodParseError.js";
+import {RequestValidationError} from "../../../../shared/errors/RequestValidationError.js";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {
@@ -47,14 +47,14 @@ export default class ShowingQueryOptionService
      * @param req - Express request containing raw query params
      * @returns Validated Showing query options
      *
-     * @throws {ZodParseError}
+     * @throws {RequestValidationError}
      * Thrown when validation fails
      */
     fetchQueryParams(req: Request): ShowingQueryOptions {
         const {data, success, error} = ShowingQueryOptionSchema.safeParse(req.query);
 
         if (!success) {
-            throw new ZodParseError({
+            throw new RequestValidationError({
                 errors: error?.errors,
                 raw: req.query,
                 message: "Invalid Showing Query.",
