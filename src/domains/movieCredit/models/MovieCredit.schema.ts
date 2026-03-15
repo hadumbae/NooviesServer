@@ -182,7 +182,7 @@ MovieCreditSchema.index({movie: 1, department: 1});
 /** Unique billing order per movie (CAST only) */
 MovieCreditSchema.index(
     {movie: 1, billingOrder: 1},
-    {unique: true, partialFilterExpression: {department: "CAST"}},
+    {unique: true, partialFilterExpression: {department: "CAST", billingOrder: {$exists: true, $gt: null}}},
 );
 
 /** Unique CAST credit identity */
