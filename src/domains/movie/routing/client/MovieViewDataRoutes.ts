@@ -7,11 +7,12 @@ import {Router} from "express";
 import isAuth from "../../../authentication/middleware/isAuth.js";
 import asyncHandler from "../../../../shared/utility/handlers/asyncHandler.js";
 import * as BrowseMovieCreditsController from "../../../movieCredit/controllers/client/BrowseMovieCreditsController.js";
+import * as BrowseShowingsController from "../../../showing/controllers/client/BrowseShowingsController.js";
 
 const router = Router();
 
 /**
- * Movie credits and related view data routes.
+ * Routes for retrieving movie-related view data.
  */
 router.get(
     "/:slug/credits",
@@ -19,6 +20,12 @@ router.get(
     asyncHandler(BrowseMovieCreditsController.getFetchGroupedCreditsWithMovie)
 );
 
+router.get(
+    "/:slug/showings",
+    [isAuth],
+    asyncHandler(BrowseShowingsController.getFetchShowingsWithMovie)
+);
+
 export {
     router as MovieViewDataRoutes,
-}
+};
