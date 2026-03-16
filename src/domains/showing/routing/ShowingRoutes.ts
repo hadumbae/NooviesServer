@@ -1,11 +1,11 @@
-import ShowingServiceProvider from "../provider/ShowingServiceProvider.js";
+import ShowingServiceProvider from "../providers/ShowingServiceProvider.js";
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
     type BaseRouteConfig
 } from "../../../shared/routing/BaseRoutes.js";
-import type { ShowingControllerMethods } from "../controller/ShowingController.js";
-import { ShowingInputSchema } from "../schema/ShowingInputSchema.js";
+import type { ShowingControllerMethods } from "../controllers/ShowingController.js";
+import { ShowingInputSchema } from "../validation/ShowingInputSchema.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 

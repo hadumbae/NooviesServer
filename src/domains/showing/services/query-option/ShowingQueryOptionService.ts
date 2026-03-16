@@ -16,7 +16,7 @@
 
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import type {Request} from "express";
-import {type ShowingQueryOptions, ShowingQueryOptionSchema} from "../../schema/query/ShowingQueryOptions.js";
+import {type ShowingQueryOptions, ShowingQueryOptionSchema} from "../../validation/query/ShowingQueryOptions.js";
 import {RequestValidationError} from "../../../../shared/errors/RequestValidationError.js";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
@@ -31,8 +31,8 @@ import type {
 import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/LookupMatchStage.types.js";
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
-import type {ShowingSchemaFields} from "../../model/showing/Showing.types.js";
-import type {ShowingQueryMatchFilters} from "../../schema/query/ShowingMatchParams.js";
+import type {ShowingSchemaFields} from "../../models/showing/Showing.types.js";
+import type {ShowingQueryMatchFilters} from "../../validation/query/ShowingMatchParams.js";
 
 /**
  * Builds query options and aggregation pipelines for

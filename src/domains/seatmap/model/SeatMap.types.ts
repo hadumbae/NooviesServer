@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import type { SeatMapStatus } from "../schema/enum/SeatMapStatusEnumSchema.js";
 import type { SeatSchemaFields } from "../../seat/model/Seat.types.js";
-import type { ShowingSchemaFields } from "../../showing/model/showing/Showing.types.js";
+import type { ShowingSchemaFields } from "../../showing/models/showing/Showing.types.js";
 
 /**
  * Input payload for creating or updating a seat-map entry.

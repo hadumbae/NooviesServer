@@ -2,16 +2,16 @@ import {Types} from "mongoose";
 import type {
     ReservedShowingSnapshotSchemaFields
 } from "../../model/snapshots/showing-snapshot/ReservedShowingSnapshot.types.js";
-import Showing from "../../../showing/model/showing/Showing.model.js";
+import Showing from "../../../showing/models/showing/Showing.model.js";
 import {DocumentNotFoundError} from "../../../../shared/errors/DocumentNotFoundError.js";
 import {InconsistentDataError} from "../../../../shared/errors/InconsistentDataError.js";
 import {ReservedShowingSnapshotInputSchema} from "../../schemas/ReservedShowingSnapshotInputSchema.js";
 import {createMovieSnapshot} from "../../../movie/utilities/snapshots/createMovieSnapshot.js";
 import {createTheatreSnapshot} from "../../../theatre/utilities/snapshots/createTheatreSnapshot.js";
 import {createScreenSnapshot} from "../../../screen/utilities/snapshot/createScreenSnapshot.js";
-import type {ShowingSchemaFields} from "../../../showing/model/showing/Showing.types.js";
+import type {ShowingSchemaFields} from "../../../showing/models/showing/Showing.types.js";
 import {createReservedSeatSnapshot} from "../../../seatmap/utilities/snapshots/createReservedSeatSnapshot.js";
-import ShowingModel from "../../../showing/model/showing/Showing.model.js";
+import ShowingModel from "../../../showing/models/showing/Showing.model.js";
 import type {ReservationType} from "../../schemas/enum/ReservationTypeEnumSchema.js";
 
 /**

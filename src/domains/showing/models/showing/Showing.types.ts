@@ -17,7 +17,7 @@ import { Types } from "mongoose";
 import type { ScreenSchemaFields }
     from "../../../screen/model/Screen.types.js";
 import type { ShowingStatusCode }
-    from "../../schema/ShowingStatusEnumSchema.js";
+    from "../../validation/ShowingStatusEnumSchema.js";
 import type { TheatreSchemaFields }
     from "../../../theatre/model/Theatre.types.js";
 import type { ISO6391LanguageCode }

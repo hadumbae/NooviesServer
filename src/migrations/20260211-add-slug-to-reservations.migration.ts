@@ -28,7 +28,7 @@ import "dotenv/config";
 import connect from "@config/database.js";
 import mongoose from "mongoose";
 import Reservation from "../domains/reservation/model/reservation/Reservation.model.js";
-import Showing from "../domains/showing/model/showing/Showing.model.js";
+import Showing from "../domains/showing/models/showing/Showing.model.js";
 import createHttpError from "http-errors";
 import generateSlug from "../shared/utility/generateSlug.js";
 import type { MovieSchemaFields } from "../domains/movie/model/Movie.types.js";

@@ -5,8 +5,8 @@
  */
 
 import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
-import type {ShowingInput} from "../schema/ShowingInputSchema.js";
-import type {ShowingSchemaFields} from "../model/showing/Showing.types.js";
+import type {ShowingInput} from "../validation/ShowingInputSchema.js";
+import type {ShowingSchemaFields} from "../models/showing/Showing.types.js";
 import {Types} from "mongoose";
 import type {SimpleDateString} from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
 import type {TimeString} from "../../../shared/schema/date-time/TimeStringSchema.js";

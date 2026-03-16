@@ -14,9 +14,9 @@
  */
 
 import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
-import Showing from "../model/showing/Showing.model.js";
+import Showing from "../models/showing/Showing.model.js";
 import {Types} from "mongoose";
-import type {PopulatedShowing} from "../model/showing/Showing.types.js";
+import type {PopulatedShowing} from "../models/showing/Showing.types.js";
 
 /**
  * Retrieves a showing by ID with all required relations populated.

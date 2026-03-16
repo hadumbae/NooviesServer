@@ -22,7 +22,7 @@ import {DateTime} from "luxon";
 import {createReservedShowingSnapshot} from "../../utilities/snapshots/createReservedShowingSnapshot.js";
 import type {ReservationStatus} from "../../schemas/enum/ReservationStatusEnumSchema.js";
 import {reserveSeatsByReservation} from "../../modules/ReservationSeatingUtils.js";
-import Showing from "../../../showing/model/showing/Showing.model.js";
+import Showing from "../../../showing/models/showing/Showing.model.js";
 import generateSlug from "../../../../shared/utility/generateSlug.js";
 import type {MovieSchemaFields} from "../../../movie/model/Movie.types.js";
 

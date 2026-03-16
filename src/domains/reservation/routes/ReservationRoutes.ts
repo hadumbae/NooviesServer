@@ -20,7 +20,7 @@ import {
     type BaseRouteMiddleware,
     createBaseRoutes,
 } from "../../../shared/routing/BaseRoutes.js";
-import type {ShowingControllerMethods} from "../../showing/controller/ShowingController.js";
+import type {ShowingControllerMethods} from "../../showing/controllers/ShowingController.js";
 
 /**
  * Register Reservation domain services and controllers.

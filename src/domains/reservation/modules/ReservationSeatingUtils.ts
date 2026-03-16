@@ -17,7 +17,7 @@ import {countPaidReservationsByShowing} from "../utilities/countPaidReservations
 import type {ReservationDoc} from "../model/reservation/Reservation.types.js";
 import Reservation from "../model/reservation/Reservation.model.js";
 import {fetchReservationOrThrow} from "./ReservationThrowUtils.js";
-import type {ShowingSchemaFields} from "../../showing/model/showing/Showing.types.js";
+import type {ShowingSchemaFields} from "../../showing/models/showing/Showing.types.js";
 
 /**
  * Determines if remaining seating capacity can satisfy a ticket request.

@@ -19,10 +19,10 @@ import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type ShowingQueryOptionService from "../service/query-option/ShowingQueryOptionService.js";
+import type ShowingQueryOptionService from "../services/query-option/ShowingQueryOptionService.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type { ShowingSchemaFields } from "../model/showing/Showing.types.js";
-import type { ShowingQueryMatchFilters } from "../schema/query/ShowingMatchParams.js";
+import type { ShowingSchemaFields } from "../models/showing/Showing.types.js";
+import type { ShowingQueryMatchFilters } from "../validation/query/ShowingMatchParams.js";
 
 /**
  * HTTP controller method contract for Showing resources.
