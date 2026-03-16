@@ -15,7 +15,7 @@ import type {MovieDocument} from "../../type/MovieTypes.js";
  * Accepts either a database identifier or a slug.
  */
 type FetchParams = {
-    options: Omit<RequestOptions, "limit">
+    options?: Omit<RequestOptions, "limit">
 } & (
     /** Fetch by MongoDB identifier */
     | { _id: Types.ObjectId, slug?: never }
