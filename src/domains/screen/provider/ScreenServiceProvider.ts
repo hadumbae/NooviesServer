@@ -10,6 +10,8 @@ import AggregateQueryService from "../../../shared/services/aggregate/AggregateQ
 import ScreenSeatService from "../service/screen-seat-service/ScreenSeatService.js";
 import {ScreenSearchService} from "../service/screen-search-service/ScreenSearchService.js";
 import {ScreenBrowseController} from "../controller/screen-browse/ScreenBrowseController.js";
+import {ScreenPopulationPipelines} from "../queries/ScreenPopulationPipelines.js";
+import {ScreenVirtualPipelines} from "../queries/ScreenVirtualPipelines.js";
 
 /**
  * @file ScreenServiceProvider.ts
@@ -41,7 +43,11 @@ export default class ScreenServiceProvider {
         const optionService = new ScreenQueryOptionService();
         const seatService = new ScreenSeatService();
         const searchService = new ScreenSearchService();
-        const aggregateService = new AggregateQueryService({ model });
+        const aggregateService = new AggregateQueryService({
+            model,
+            populationPipelines: ScreenPopulationPipelines,
+            virtualsPipelines: ScreenVirtualPipelines,
+        });
 
         const controller = new ScreenController({
             repository,
