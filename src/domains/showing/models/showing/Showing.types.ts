@@ -16,8 +16,7 @@ import type {MovieSchemaFields, MovieWithGenres}
     from "../../../movie/model/Movie.types.js";
 import type {ShowingConfigSchemaFields}
     from "../showing-config/ShowingConfig.types.js";
-import type {Location}
-    from "../../../../shared/schema/theatre/Location.types.js";
+import type ILocation from "../../../../shared/model/location/ILocation.js";
 
 /**
  * Core showing fields.
@@ -52,7 +51,7 @@ export interface ShowingSchemaFields {
     config?: ShowingConfigSchemaFields | null;
 
     /** Embedded location data. */
-    location: Location;
+    location: ILocation;
 
     slug: string;
 }
