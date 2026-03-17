@@ -8,10 +8,10 @@
  */
 export interface ShowingConfigSchemaFields {
     /** Enables seat reservations. */
-    canReserveSeats?: boolean | null;
+    canReserveSeats?: boolean;
 
     /** Marks special screenings (e.g. premieres). */
-    isSpecialEvent?: boolean | null;
+    isSpecialEvent?: boolean;
 
     /** Whether the showing is active and bookable. */
     isActive: boolean;
