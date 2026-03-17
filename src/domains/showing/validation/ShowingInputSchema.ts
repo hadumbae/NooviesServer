@@ -21,8 +21,6 @@ import {ObjectIdStringSchema}
     from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
 import {NonEmptyStringSchema}
     from "../../../shared/schema/strings/NonEmptyStringSchema.js";
-import {BooleanValueSchema}
-    from "../../../shared/schema/booleans/BooleanValueSchema.js";
 import {PositiveNumberSchema}
     from "../../../shared/schema/numbers/PositiveNumberSchema.js";
 import {ShowingStatusEnumSchema}
@@ -67,12 +65,6 @@ export const ShowingInputSchema = z
         subtitleLanguages: z
             .array(NonEmptyStringSchema)
             .nonempty({message: "Must not be empty."}),
-
-        /** Marks special screenings (e.g. premieres, festivals). */
-        isSpecialEvent: BooleanValueSchema.optional().default(false),
-
-        /** Whether the showing is active and bookable. */
-        isActive: BooleanValueSchema.optional().default(true),
 
         /** Referenced Movie ObjectId. */
         movie: ObjectIdStringSchema,

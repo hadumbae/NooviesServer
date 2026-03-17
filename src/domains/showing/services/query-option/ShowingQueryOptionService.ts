@@ -75,10 +75,10 @@ export default class ShowingQueryOptionService
             movie: options.movie,
             theatre: options.theatre,
             screen: options.screen,
-            isSpecialEvent: options.isSpecialEvent,
-            isActive: options.isActive,
             ticketPrice: options.ticketPrice,
             status: options.status,
+            "config.isSpecialEvent": options.isSpecialEvent,
+            "config.isActive": options.isActive,
         });
     }
 

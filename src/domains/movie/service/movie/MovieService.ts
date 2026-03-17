@@ -53,7 +53,7 @@ export default class MovieService implements IMovieService {
                             $expr: {
                                 $and: [
                                     { $eq: ["$movie", "$$movieId"] },
-                                    { $eq: ["$isActive", true] }
+                                    { $eq: ["$config.isActive", true] }
                                 ]
                             }
                         }

@@ -38,4 +38,4 @@ ShowingSchema.index({startTime: 1, endTime: 1});
  * @remarks
  * Avoids duplicate index key errors while still supporting both filters.
  */
-ShowingSchema.index({ startTime: 1, isActive: 1, isSpecialEvent: 1 });
+ShowingSchema.index({ startTime: 1, "config.isActive": 1, "config.isSpecialEvent": 1 });
