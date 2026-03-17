@@ -22,10 +22,10 @@ export const ShowingConfigInputSchema = z.object({
     canReserveSeats: BooleanValueSchema.nullable().optional(),
 
     /** Marks special screenings (e.g. premieres, festivals). */
-    isSpecialEvent: BooleanValueSchema.optional().default(false),
+    isSpecialEvent: BooleanValueSchema.nullable().optional(),
 
     /** Whether the showing is active and bookable. */
-    isActive: BooleanValueSchema.optional().default(true),
+    isActive: BooleanValueSchema,
 });
 
 /**

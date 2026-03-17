@@ -1,18 +1,6 @@
 /**
- * @file ShowingInput.schema.ts
- *
- * Zod input schema for creating and updating `Showing` entities.
- *
- * Validates and normalizes incoming payloads by enforcing:
- * - Valid and logically ordered date/time values
- * - Positive ticket pricing
- * - Required ObjectId references
- * - Domain-safe boolean defaults
- * - Valid lifecycle status values
- *
- * Includes a cross-field refinement ensuring the computed
- * end datetime occurs after the computed start datetime
- * when both are provided.
+ * @file Zod input schema for showing create/update operations.
+ * @filename ShowingInput.schema.ts
  */
 
 import {z} from "zod";
@@ -33,62 +21,37 @@ import {ShowingConfigInputSchema}
     from "./showing/showing-config/ShowingConfigInputSchema.js";
 
 /**
- * Input schema for showing creation and update operations.
+ * Input schema for showing creation and updates.
  *
- * @remarks
- * - `endAtDate` and `endAtTime` are optional, but when both are provided
- *   they must resolve to a datetime later than
- *   `startAtDate` + `startAtTime`.
- * - Boolean flags default to domain-safe values.
+ * Ensures end datetime occurs after start datetime when both are provided.
  */
 export const ShowingInputSchema = z
     .object({
-        /** Start date (YYYY-MM-DD). */
         startAtDate: SimpleDateStringSchema,
-
-        /** Start time (HH:mm:ss). */
         startAtTime: TimeStringSchema,
 
-        /** Optional end date (YYYY-MM-DD). */
         endAtDate: SimpleDateStringSchema.optional(),
-
-        /** Optional end time (HH:mm:ss). */
         endAtTime: TimeStringSchema.optional(),
 
-        /** Ticket price; must be greater than zero. */
         ticketPrice: PositiveNumberSchema,
 
-        /** Primary spoken language (ISO-639-1). */
         language: NonEmptyStringSchema,
 
-        /** Subtitle languages (non-empty ISO-639-1 list). */
         subtitleLanguages: z
             .array(NonEmptyStringSchema)
             .nonempty({message: "Must not be empty."}),
 
-        /** Referenced Movie ObjectId. */
         movie: ObjectIdStringSchema,
-
-        /** Referenced Theatre ObjectId. */
         theatre: ObjectIdStringSchema,
-
-        /** Referenced Screen ObjectId. */
         screen: ObjectIdStringSchema,
 
-        /** Showing lifecycle status. */
         status: ShowingStatusEnumSchema,
 
-        /**
-         * Optional showing-level configuration overrides.
-         *
-         * Nullable to allow explicit clearing.
-         */
-        config: ShowingConfigInputSchema.nullable().optional(),
+        /** Nullable to allow explicit clearing. */
+        config: ShowingConfigInputSchema,
     })
     .superRefine((values, ctx) => {
         const {startAtDate, startAtTime, endAtDate, endAtTime} = values;
-
-        console.log("Values: ", values);
 
         if (endAtDate && endAtTime) {
             const start = DateTime.fromISO(`${startAtDate}T${startAtTime}`);
@@ -113,6 +76,6 @@ export const ShowingInputSchema = z
     });
 
 /**
- * Inferred input type for showing create/update operations.
+ * Input type inferred from {@link ShowingInputSchema}.
  */
 export type ShowingInput = z.infer<typeof ShowingInputSchema>;

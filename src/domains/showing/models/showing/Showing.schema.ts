@@ -94,7 +94,7 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
 
         config: {
             type: ShowingConfigSchema,
-            default: null,
+            required: [true, "Config is required."],
         },
 
         /** Embedded location data for the showing. */

@@ -7,26 +7,24 @@ import {Schema} from "mongoose";
 import type {ShowingConfigSchemaFields} from "./ShowingConfig.types.js";
 
 /**
- * Configuration flags for a showing.
+ * Showing-level configuration flags affecting runtime behaviour.
  */
 export const ShowingConfigSchema = new Schema<ShowingConfigSchemaFields>({
-    /** Enables seat reservations. Defaults to `false`. */
+    /** Whether the showing is active and bookable. */
+    isActive: {
+        type: Boolean,
+        required: [true, "Is Active is required."],
+    },
+
+    /** Enables seat reservations. */
     canReserveSeats: {
         type: Boolean,
         default: false,
     },
 
-    /** Marks special screenings. */
+    /** Marks special screenings (e.g. premieres). */
     isSpecialEvent: {
         type: Boolean,
         default: false,
-        required: true,
-    },
-
-    /** Controls whether the showing is active. */
-    isActive: {
-        type: Boolean,
-        default: true,
-        required: true,
     },
 });

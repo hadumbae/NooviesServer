@@ -48,7 +48,7 @@ export interface ShowingSchemaFields {
     status: ShowingStatusCode;
 
     /** Optional configuration flags. */
-    config?: ShowingConfigSchemaFields | null;
+    config: ShowingConfigSchemaFields;
 
     /** Embedded location data. */
     location: ILocation;

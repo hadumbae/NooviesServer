@@ -4,15 +4,15 @@
  */
 
 /**
- * Showing configuration fields.
+ * Showing-level configuration flags affecting runtime behaviour.
  */
 export interface ShowingConfigSchemaFields {
     /** Enables seat reservations. */
-    canReserveSeats: boolean;
+    canReserveSeats?: boolean | null;
 
-    /** Marks special screenings. */
-    isSpecialEvent: boolean;
+    /** Marks special screenings (e.g. premieres). */
+    isSpecialEvent?: boolean | null;
 
-    /** Controls whether the showing is active. */
+    /** Whether the showing is active and bookable. */
     isActive: boolean;
 }
