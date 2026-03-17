@@ -1,9 +1,18 @@
 /**
- * Fields for the showing configuration schema.
- *
- * Represents feature flags that affect showing behaviour.
+ * @file Type definitions for showing configuration.
+ * @filename ShowingConfig.types.ts
+ */
+
+/**
+ * Showing configuration fields.
  */
 export interface ShowingConfigSchemaFields {
-    /** Whether seat reservations are allowed for the showing */
+    /** Enables seat reservations. */
     canReserveSeats: boolean;
+
+    /** Marks special screenings. */
+    isSpecialEvent: boolean;
+
+    /** Controls whether the showing is active. */
+    isActive: boolean;
 }

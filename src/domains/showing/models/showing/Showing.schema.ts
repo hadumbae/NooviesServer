@@ -12,6 +12,7 @@ import SlugSchemaTypeOptions
     from "../../../../shared/model/SlugSchemaTypeOptions.js";
 import {ShowingConfigSchema}
     from "../showing-config/ShowingConfig.schema.js";
+import {LocationSchema} from "../../../../shared/model/location/Location.js";
 
 /**
  * ISO-639-1 language field definition.
@@ -95,6 +96,9 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             type: ShowingConfigSchema,
             default: null,
         },
+
+        /** Embedded location data for the showing. */
+        location: LocationSchema,
 
         slug: SlugSchemaTypeOptions,
     },

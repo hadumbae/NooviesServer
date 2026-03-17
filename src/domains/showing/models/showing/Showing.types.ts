@@ -3,19 +3,21 @@
  * @filename Showing.types.ts
  */
 
-import { Types } from "mongoose";
-import type { ScreenSchemaFields }
+import {Types} from "mongoose";
+import type {ScreenSchemaFields}
     from "../../../screen/model/Screen.types.js";
-import type { ShowingStatusCode }
+import type {ShowingStatusCode}
     from "../../validation/ShowingStatusEnumSchema.js";
-import type { TheatreSchemaFields }
+import type {TheatreSchemaFields}
     from "../../../theatre/model/Theatre.types.js";
-import type { ISO6391LanguageCode }
+import type {ISO6391LanguageCode}
     from "../../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
-import type { MovieSchemaFields, MovieWithGenres }
+import type {MovieSchemaFields, MovieWithGenres}
     from "../../../movie/model/Movie.types.js";
-import type { ShowingConfigSchemaFields }
+import type {ShowingConfigSchemaFields}
     from "../showing-config/ShowingConfig.types.js";
+import type {Location}
+    from "../../../../shared/schema/theatre/Location.types.js";
 
 /**
  * Core showing fields.
@@ -48,6 +50,9 @@ export interface ShowingSchemaFields {
 
     /** Optional configuration flags. */
     config?: ShowingConfigSchemaFields | null;
+
+    /** Embedded location data. */
+    location: Location;
 
     slug: string;
 }
