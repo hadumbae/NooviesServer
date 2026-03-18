@@ -16,7 +16,7 @@ import type {MovieSchemaFields, MovieWithGenres}
     from "../../../movie/model/Movie.types.js";
 import type {ShowingConfigSchemaFields}
     from "../showing-config/ShowingConfig.types.js";
-import type ILocation from "../../../../shared/model/location/ILocation.js";
+import type {LocationSchemaFields} from "../../../../shared/model/location/LocationSchemaFields.js";
 import type {BaseSoftDeleteModel} from "../../../../shared/types/schema/BaseModel.js";
 
 /**
@@ -53,8 +53,8 @@ export type ShowingSchemaFields = BaseSoftDeleteModel & {
     /** Behavioral flags via {@link ShowingConfigSchemaFields}. */
     config: ShowingConfigSchemaFields;
 
-    /** Snapshot of {@link ILocation} at time of creation. */
-    location: ILocation;
+    /** Snapshot of {@link LocationSchemaFields} at time of creation. */
+    location: LocationSchemaFields;
 
     /** Unique human-readable identifier. */
     slug: string;

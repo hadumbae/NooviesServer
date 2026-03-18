@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import type ILocation from "../../../shared/model/location/ILocation.js";
+import type {LocationSchemaFields} from "../../../shared/model/location/LocationSchemaFields.js";
 
 /**
  * @file TheatreSchemaFields.ts
@@ -30,7 +30,7 @@ export interface TheatreSchemaFields {
     /**
      * Physical location details of the theatre.
      */
-    location: ILocation;
+    location: LocationSchemaFields;
 
     /**
      * URL-safe unique identifier used for routing and lookups.

@@ -1,5 +1,5 @@
 import {Schema} from "mongoose";
-import type ILocation from "./ILocation.js";
+import type {LocationSchemaFields} from "./LocationSchemaFields.js";
 import {CoordinateSchema} from "../coordinate/Coordinate.js";
 import {IANAZone} from "luxon";
 import ISO3166Alpha2CodeConstant from "../../constants/country/ISO3166Alpha2CodeConstant.js";
@@ -8,7 +8,7 @@ import ISO3166Alpha2CodeConstant from "../../constants/country/ISO3166Alpha2Code
  * Mongoose schema for embedding a physical location into documents.
  * Captures address components, ISO country code, timezone, and optional geocoordinates.
  */
-export const LocationSchema = new Schema<ILocation>({
+export const LocationSchema = new Schema<LocationSchemaFields>({
     /**
      * Street address line (e.g., "123 Main St").
      * Trimmed and limited to 2000 characters.

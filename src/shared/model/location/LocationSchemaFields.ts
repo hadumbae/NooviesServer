@@ -5,7 +5,7 @@ import type {ISO3166Alpha2CountryCode} from "../../schema/enums/ISO3166Alpha2Cou
 /**
  * Interface representing a physical location.
  */
-export default interface ILocation {
+export interface LocationSchemaFields {
     /**
      * Street address (e.g., "123 Main St").
      */
