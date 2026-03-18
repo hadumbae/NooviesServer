@@ -3,7 +3,7 @@
  * @filename Showing.schema.ts
  */
 
-import {Schema, type SchemaDefinitionProperty} from "mongoose";
+import {type Model, Schema, type SchemaDefinitionProperty} from "mongoose";
 import ShowingStatusConstant from "../../constants/ShowingStatusConstant.js";
 import ISO6391CodeConstant
     from "../../../../shared/constants/language/ISO6391CodeConstant.js";
@@ -15,6 +15,13 @@ import {ShowingConfigSchema}
 import {LocationSchema} from "../../../../shared/model/location/Location.js";
 import {IsDeletedSchemaTypeOptions} from "../../../../shared/model/IsDeletedSchemaTypeOptions.js";
 import {DeletedAtSchemaTypeOptions} from "../../../../shared/model/DeletedAtSchemaTypeOptions.js";
+import type {ModelSoftDeleteMethods} from "../../../../shared/types/schema/ModelSoftDelete.js";
+
+/**
+ * Mongoose {@link Model} type for Showings.
+ * Integrates {@link ShowingSchemaFields} with {@link ModelSoftDeleteMethods}.
+ */
+export type ShowingModel = Model<ShowingSchemaFields, {}, ModelSoftDeleteMethods<ShowingSchemaFields>>;
 
 /**
  * Shared configuration for {@link ISO6391CodeConstant} fields.
@@ -26,39 +33,39 @@ const LanguageDefinition: SchemaDefinitionProperty = {
 };
 
 /**
- * Mongoose schema for {@link ShowingSchemaFields}.
- * Includes validation for event timing and language requirements.
+ * Mongoose schema definition for {@link ShowingSchemaFields}.
+ * Enforces temporal consistency and soft-delete state.
  */
-export const ShowingSchema = new Schema<ShowingSchemaFields>(
+export const ShowingSchema = new Schema<ShowingSchemaFields, ShowingModel, ModelSoftDeleteMethods<ShowingSchemaFields>>(
     {
-        /** Reference to "Movie" collection. */
+        /** Reference to the "Movie" collection. */
         movie: {
             type: Schema.Types.ObjectId,
             ref: "Movie",
             required: true,
         },
 
-        /** Reference to "Theatre" collection. */
+        /** Reference to the "Theatre" collection. */
         theatre: {
             type: Schema.Types.ObjectId,
             ref: "Theatre",
             required: true,
         },
 
-        /** Reference to "Screen" collection. */
+        /** Reference to the "Screen" collection. */
         screen: {
             type: Schema.Types.ObjectId,
             ref: "Screen",
             required: true,
         },
 
-        /** Scheduled commencement time. Used as the anchor for {@link endTime} validation. */
+        /** Commencement time. Anchor for {@link endTime} validation. */
         startTime: {
             type: Date,
             required: [true, "Start Time is required."],
         },
 
-        /** Ensures chronologically valid duration if provided. */
+        /** Must be strictly later than {@link startTime}. */
         endTime: {
             type: Date,
             default: null,
@@ -70,17 +77,17 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             },
         },
 
-        /** Validates positive currency value. */
+        /** Cost per seat via {@link Number}. */
         ticketPrice: {
             type: Number,
             min: [0.01, "Ticket Price must be greater than 0."],
             required: true,
         },
 
-        /** Primary spoken language. */
+        /** Audio {@link LanguageDefinition}. */
         language: LanguageDefinition,
 
-        /** Enforces at least one subtitle selection. */
+        /** Caption/subtitle {@link LanguageDefinition} array. */
         subtitleLanguages: {
             type: [LanguageDefinition],
             validate: {
@@ -92,7 +99,7 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             required: [true, "Subtitle languages are required."],
         },
 
-        /** Lifecycle state restricted to {@link ShowingStatusConstant}. */
+        /** Operational state via {@link ShowingStatusConstant}. */
         status: {
             type: String,
             enum: {
@@ -102,26 +109,26 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             required: [true, "Status is required."],
         },
 
-        /** Embedded {@link ShowingConfigSchema}. */
+        /** Feature flags via {@link ShowingConfigSchema}. */
         config: {
             type: ShowingConfigSchema,
             required: [true, "Config is required."],
         },
 
-        /** Snapshot via {@link LocationSchema}. */
+        /** Embedded {@link LocationSchema}. */
         location: LocationSchema,
 
         /** {@link SlugSchemaTypeOptions} */
         slug: SlugSchemaTypeOptions,
 
-        /** Soft-delete toggle via {@link IsDeletedSchemaTypeOptions}. */
+        /** Soft-delete flag via {@link IsDeletedSchemaTypeOptions}. */
         isDeleted: IsDeletedSchemaTypeOptions,
 
-        /** Soft-delete timestamp via {@link DeletedAtSchemaTypeOptions}. */
+        /** Soft-delete audit via {@link DeletedAtSchemaTypeOptions}. */
         deletedAt: DeletedAtSchemaTypeOptions,
     },
     {
-        /** Managed {@link ModelTimestamps}. */
+        /** Standard {@link ModelTimestamps}. */
         timestamps: true,
     }
 );

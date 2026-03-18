@@ -1,5 +1,5 @@
-import { Model, model } from "mongoose";
-import { ShowingSchema } from "./Showing.schema.js";
+import {Model, model} from "mongoose";
+import {type ShowingModel, ShowingSchema} from "./Showing.schema.js";
 import ShowingServiceProvider from "../../providers/ShowingServiceProvider.js";
 
 /**
@@ -42,6 +42,6 @@ ShowingServiceProvider.registerMiddleware();
  * @see ShowingSchemaFields - TypeScript interface for Showing documents.
  * @see ShowingSchema - Underlying schema definition.
  */
-const Showing: Model<ShowingSchemaFields> = model<ShowingSchemaFields>("Showing", ShowingSchema);
+const Showing: ShowingModel = model<ShowingSchemaFields, ShowingModel>("Showing", ShowingSchema);
 
 export default Showing;
