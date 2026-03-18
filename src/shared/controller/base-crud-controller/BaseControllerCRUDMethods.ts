@@ -9,11 +9,15 @@ import type {BaseRepository} from "../../repository/BaseRepository.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
 import type {ModelObject} from "../../types/ModelObject.js";
+import {Types} from "mongoose";
 
 /**
  * Required CRUD and query interface for controllers.
  */
-export interface BaseControllerCRUDMethods<TSchema extends ModelObject, TMatchFilters = unknown> {
+export interface BaseControllerCRUDMethods<
+    TSchema extends ModelObject = { _id: Types.ObjectId },
+    TMatchFilters = unknown
+> {
     all(req: Request, res: Response): Promise<Response>;
 
     paginated(req: Request, res: Response): Promise<Response>;
