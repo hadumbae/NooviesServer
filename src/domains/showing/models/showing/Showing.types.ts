@@ -17,49 +17,53 @@ import type {MovieSchemaFields, MovieWithGenres}
 import type {ShowingConfigSchemaFields}
     from "../showing-config/ShowingConfig.types.js";
 import type ILocation from "../../../../shared/model/location/ILocation.js";
+import type {BaseSoftDeleteModel} from "../../../../shared/types/schema/BaseModel.js";
 
 /**
- * Core showing fields.
+ * Core schema fields for a theatre showing; inherits {@link BaseSoftDeleteModel}.
  */
-export interface ShowingSchemaFields {
-    readonly _id: Types.ObjectId;
-
+export type ShowingSchemaFields = BaseSoftDeleteModel & {
+    /** Wall-clock time for the start of the event. */
     startTime: Date;
 
-    /** Must be later than `startTime` when provided. */
+    /** Optional conclusion time; logic enforced via {@link ShowingSchema}. */
     endTime?: Date | null;
 
+    /** Base cost before taxes or fees. */
     ticketPrice: number;
 
+    /** Primary {@link ISO6391LanguageCode}. */
     language: ISO6391LanguageCode;
 
-    /** Must contain at least one language. */
+    /** Collection of {@link ISO6391LanguageCode} for captions/subtitles. */
     subtitleLanguages: ISO6391LanguageCode[];
 
-    /** ID or populated movie. */
-    movie: Types.ObjectId | MovieSchemaFields;
+    /** Reference to {@link MovieSchemaFields}. */
+    movie: Types.ObjectId;
 
-    /** ID or populated theatre. */
-    theatre: Types.ObjectId | TheatreSchemaFields;
+    /** Reference to {@link TheatreSchemaFields}. */
+    theatre: Types.ObjectId;
 
-    /** ID or populated screen. */
-    screen: Types.ObjectId | ScreenSchemaFields;
+    /** Reference to {@link ScreenSchemaFields}. */
+    screen: Types.ObjectId;
 
+    /** Lifecycle state via {@link ShowingStatusCode}. */
     status: ShowingStatusCode;
 
-    /** Optional configuration flags. */
+    /** Behavioral flags via {@link ShowingConfigSchemaFields}. */
     config: ShowingConfigSchemaFields;
 
-    /** Embedded location data. */
+    /** Snapshot of {@link ILocation} at time of creation. */
     location: ILocation;
 
+    /** Unique human-readable identifier. */
     slug: string;
 }
 
 /**
- * Showing with populated relations.
+ * Representation of a showing with joined {@link TheatreSchemaFields}, {@link ScreenSchemaFields}, and {@link MovieWithGenres}.
  */
-export interface PopulatedShowing extends ShowingSchemaFields {
+export type PopulatedShowing = Omit<ShowingSchemaFields, "theatre" | "screen" | "movie"> & {
     theatre: TheatreSchemaFields;
     screen: ScreenSchemaFields;
     movie: MovieWithGenres;

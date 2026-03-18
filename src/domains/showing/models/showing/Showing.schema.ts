@@ -13,9 +13,11 @@ import SlugSchemaTypeOptions
 import {ShowingConfigSchema}
     from "../showing-config/ShowingConfig.schema.js";
 import {LocationSchema} from "../../../../shared/model/location/Location.js";
+import {IsDeletedSchemaTypeOptions} from "../../../../shared/model/IsDeletedSchemaTypeOptions.js";
+import {DeletedAtSchemaTypeOptions} from "../../../../shared/model/DeletedAtSchemaTypeOptions.js";
 
 /**
- * ISO-639-1 language field definition.
+ * Shared configuration for {@link ISO6391CodeConstant} fields.
  */
 const LanguageDefinition: SchemaDefinitionProperty = {
     type: String,
@@ -24,34 +26,39 @@ const LanguageDefinition: SchemaDefinitionProperty = {
 };
 
 /**
- * Showing collection schema.
+ * Mongoose schema for {@link ShowingSchemaFields}.
+ * Includes validation for event timing and language requirements.
  */
 export const ShowingSchema = new Schema<ShowingSchemaFields>(
     {
+        /** Reference to "Movie" collection. */
         movie: {
             type: Schema.Types.ObjectId,
             ref: "Movie",
             required: true,
         },
 
+        /** Reference to "Theatre" collection. */
         theatre: {
             type: Schema.Types.ObjectId,
             ref: "Theatre",
             required: true,
         },
 
+        /** Reference to "Screen" collection. */
         screen: {
             type: Schema.Types.ObjectId,
             ref: "Screen",
             required: true,
         },
 
+        /** Scheduled commencement time. Used as the anchor for {@link endTime} validation. */
         startTime: {
             type: Date,
             required: [true, "Start Time is required."],
         },
 
-        /** Must be later than `startTime` when provided. */
+        /** Ensures chronologically valid duration if provided. */
         endTime: {
             type: Date,
             default: null,
@@ -63,15 +70,17 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             },
         },
 
+        /** Validates positive currency value. */
         ticketPrice: {
             type: Number,
             min: [0.01, "Ticket Price must be greater than 0."],
             required: true,
         },
 
+        /** Primary spoken language. */
         language: LanguageDefinition,
 
-        /** Must be a non-empty array. */
+        /** Enforces at least one subtitle selection. */
         subtitleLanguages: {
             type: [LanguageDefinition],
             validate: {
@@ -83,6 +92,7 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             required: [true, "Subtitle languages are required."],
         },
 
+        /** Lifecycle state restricted to {@link ShowingStatusConstant}. */
         status: {
             type: String,
             enum: {
@@ -92,21 +102,26 @@ export const ShowingSchema = new Schema<ShowingSchemaFields>(
             required: [true, "Status is required."],
         },
 
+        /** Embedded {@link ShowingConfigSchema}. */
         config: {
             type: ShowingConfigSchema,
             required: [true, "Config is required."],
         },
 
-        /** Embedded location data for the showing. */
+        /** Snapshot via {@link LocationSchema}. */
         location: LocationSchema,
 
+        /** {@link SlugSchemaTypeOptions} */
         slug: SlugSchemaTypeOptions,
+
+        /** Soft-delete toggle via {@link IsDeletedSchemaTypeOptions}. */
+        isDeleted: IsDeletedSchemaTypeOptions,
+
+        /** Soft-delete timestamp via {@link DeletedAtSchemaTypeOptions}. */
+        deletedAt: DeletedAtSchemaTypeOptions,
     },
     {
-        /** Automatically managed timestamps. */
-        timestamps: {
-            createdAt: "createdAt",
-            updatedAt: "updatedAt",
-        },
+        /** Managed {@link ModelTimestamps}. */
+        timestamps: true,
     }
 );

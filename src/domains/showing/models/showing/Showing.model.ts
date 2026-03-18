@@ -24,6 +24,7 @@ import type {ShowingSchemaFields} from "./Showing.types.js";
 import "./Showing.virtuals.js";
 import "./Showing.indexes.js";
 import "./Showing.hooks.js";
+import "./Showing.methods.js";
 
 /**
  * Registers all Showing-related middleware and lifecycle hooks.
