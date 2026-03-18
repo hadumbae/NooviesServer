@@ -1,27 +1,33 @@
-import {Types} from "mongoose";
-
 /**
- * @file CRUDDeleter.types.ts
- *
- * Shared types for delete (destroy) CRUD operations.
+ * @file Shared types for delete (destroy) CRUD operations.
+ * @filename CRUDDeleter.types.ts
  */
 
+import {Types} from "mongoose";
+import type {BaseModel} from "../../types/schema/BaseModel.js";
+
 /**
- * Parameters required to delete a single document.
+ * Parameters required to identify a single document for deletion.
  */
 export type CRUDDestroyParams = {
-    /** MongoDB ObjectId of the target document */
+    /** Primary key via {@link Types.ObjectId}. */
     _id: Types.ObjectId;
 };
 
 /**
  * Contract for delete-capable repositories or services.
+ * * @template TSchema - The model shape extending {@link BaseModel}.
  */
-export interface DeleteMethods {
+export interface DeleteMethods<TSchema extends BaseModel> {
     /**
-     * Permanently deletes a document.
-     *
-     * @param params - Deletion parameters
+     * Permanently deletes a document from the database.
+     * * @param params - {@link CRUDDestroyParams}
      */
     destroy(params: CRUDDestroyParams): Promise<void>;
+
+    /**
+     * Marks a document as deleted without removing the record.
+     * * @param params - {@link CRUDDestroyParams}
+     */
+    softDelete(params: CRUDDestroyParams): Promise<TSchema>;
 }
