@@ -30,7 +30,8 @@ export class CRUDWriter<TSchema extends ModelObject, TInput = unknown>
             options: { populatePaths = this.populateRefs, populate, virtuals } = {},
         } = params;
 
-        const doc = await this.model.create(data);
+        const newDoc = new this.model(data);
+        const doc = await newDoc.save();
 
         const query = populateQuery({
             query: this.model.findById(doc._id),
