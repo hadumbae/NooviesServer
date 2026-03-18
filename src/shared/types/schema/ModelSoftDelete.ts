@@ -3,6 +3,8 @@
  * @filename ModelSoftDelete.ts
  */
 
+import type {BaseModel} from "./BaseModel.js";
+
 /**
  * Common flags for models implementing soft-deletion.
  */
@@ -16,4 +18,8 @@ export type ModelSoftDelete = {
      * Used for restoration or TTL-based permanent cleanup.
      */
     deletedAt: Date | null;
+}
+
+export type ModelSoftDeleteMethods<TModel extends BaseModel = BaseModel> = {
+    softDelete: () => Promise<BaseModel>;
 }
