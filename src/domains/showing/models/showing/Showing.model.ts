@@ -20,9 +20,10 @@ import ShowingServiceProvider from "../../providers/ShowingServiceProvider.js";
  * and predictable lifecycle behavior.
  */
 
+import type {ShowingSchemaFields} from "./Showing.types.js";
 import "./Showing.virtuals.js";
 import "./Showing.indexes.js";
-import type {ShowingSchemaFields} from "./Showing.types.js";
+import "./Showing.hooks.js";
 
 /**
  * Registers all Showing-related middleware and lifecycle hooks.
