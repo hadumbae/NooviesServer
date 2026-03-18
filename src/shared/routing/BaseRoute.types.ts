@@ -1,5 +1,10 @@
 /**
- * Supported HTTP methods for base routes.
+ * @file Type definitions for route generation logic.
+ * @filename BaseRoute.types.ts
+ */
+
+/**
+ * Supported HTTP methods for standard CRUD operations.
  */
 export type BaseRouteMethods =
     | "get"
@@ -9,12 +14,8 @@ export type BaseRouteMethods =
     | "delete";
 
 /**
- * Logical identifiers for standard CRUD routes.
- *
- * Used to:
- * - Register routes
- * - Apply middleware selectively
- * - Exclude routes at creation time
+ * Identifiers for standard endpoints.
+ * Used for selective middleware application and route exclusion in {@link createBaseRoutes}.
  */
 export type BaseRoutePathKeys =
     | "all"
@@ -24,4 +25,5 @@ export type BaseRoutePathKeys =
     | "slug"
     | "update"
     | "delete"
+    | "soft-delete"
     | "query";
