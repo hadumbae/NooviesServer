@@ -4,9 +4,9 @@
  */
 
 import {z} from "zod";
-import {URLStringSchema} from "../../../../../shared/schema/strings/URLStringSchema.js";
 import {ISO3166Alpha2CountryCodeSchema} from "../../../../../shared/schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 import {QueryPaginationParamsSchema} from "../../../../../shared/schema/query/QueryPaginationParamsSchema.js";
+import {URLParamStringSchema} from "../../../../../shared/schema/url/URLParamStringSchema.js";
 
 /**
  * Query parameters for fetching showings in the movie view.
@@ -15,7 +15,7 @@ import {QueryPaginationParamsSchema} from "../../../../../shared/schema/query/Qu
  */
 export const ShowingsViewQueryStringSchema =
     QueryPaginationParamsSchema.extend({
-        near: URLStringSchema.optional(),
+        near: URLParamStringSchema,
         country: ISO3166Alpha2CountryCodeSchema,
     });
 
