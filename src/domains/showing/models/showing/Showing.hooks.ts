@@ -26,8 +26,15 @@ ShowingSchema.pre("validate", {document: true}, async function (this: HydratedDo
 
 /**
  * Automatically filters out records where {@link ModelSoftDelete} fields are active.
+ * * @remarks
+ * This filter can be bypassed by passing `{ getSoftDeleted: true }` in the query options.
+ * Useful for administrative views or restoration logic.
  */
 ShowingSchema.pre("find", {query: true}, async function (next: () => void) {
+    if (this.getOptions().getSoftDeleted) {
+        return next();
+    }
+
     this.where({isDeleted: false, deletedAt: null});
-    next();
+    return next();
 });
