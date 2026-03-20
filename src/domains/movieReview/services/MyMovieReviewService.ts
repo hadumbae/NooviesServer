@@ -1,6 +1,6 @@
 /**
  * @file Persistence service for current-user MovieReview operations.
- * MyMovieReviewService.ts
+ * @filename MyMovieReviewService.ts
  */
 
 import type {
@@ -19,44 +19,51 @@ import {checkMovieReviewOwnership} from "../utilities/checkMovieReviewOwnership.
 import createHttpError from "http-errors";
 import {DocumentVersionError} from "../../../shared/errors/DocumentVersionError.js";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
+import {MovieReviewPopulationPipelines} from "../queries/MovieReviewPopulationPipelines.js";
 
 /**
- * Fetches paginated MovieReviews for a user.
- *
- * Applies optional population and virtual configuration.
+ * Fetches a paginated list of movie reviews authored by a specific user.
+ * @param params - User ID and pagination values.
+ * @returns A {@link PaginationReturns} object containing items and total count.
  */
 export const fetchCurrentUserMovieReviews = async (
-    {userID, page, perPage, options}: FetchPaginatedUserReviewsParams
+    {userID, page, perPage}: FetchPaginatedUserReviewsParams
 ): Promise<PaginationReturns<MovieReviewSchemaFields>> => {
-    const fetchQuery = MovieReview.find({user: userID})
-        .skip((page - 1) * perPage)
-        .limit(perPage);
-
-    const populatedQuery = populateQuery({
-        query: fetchQuery,
-        options: {...options, populatePaths: MovieReviewPopulatePaths},
-    });
-
-    const [totalItems, items] = await Promise.all([
-        MovieReview.countDocuments({user: userID}),
-        populatedQuery,
+    const [results] = await MovieReview.aggregate<PaginationReturns<MovieReviewSchemaFields>>([
+        { $match: { user: userID } },
+        {
+            $facet: {
+                totalCount: [{ $count: "count" }],
+                items: [
+                    { $sort: { createdAt: -1 } },
+                    { $skip: perPage * (page - 1) },
+                    { $limit: perPage },
+                    ...MovieReviewPopulationPipelines,
+                    { $addFields: { helpfulCount: { $size: "$helpfulLikes" } } },
+                    { $project: { helpfulLikes: 0 } },
+                ],
+            },
+        },
+        {
+            $project: {
+                totalItems: { $ifNull: [{ $arrayElemAt: ["$totalCount.count", 0] }, 0] },
+                items: 1,
+            },
+        },
     ]);
 
-    return {
-        totalItems,
-        items,
-    };
+    return results;
 }
 
 /**
- * Creates a MovieReview scoped to a user.
- *
- * Handles duplicate index errors and returns a populated document.
+ * Creates a new movie review for the authenticated user.
+ * @param params - User ID, review data, and population options.
+ * @returns Returns a fully populated document according to {@link MovieReviewPopulatePaths}.
  */
 export const createMovieReviewForCurrentUser = async (
     {userID, data, options}: CreateUserMovieReviewParams
 ): Promise<MovieReviewSchemaFields> => {
-    const userReviewData = {...data, user: userID};
+    const userReviewData = { ...data, user: userID };
 
     const doc = await handlePersistenceQuery({
         query: () => MovieReview.create(userReviewData),
@@ -65,22 +72,22 @@ export const createMovieReviewForCurrentUser = async (
 
     const query = populateQuery({
         query: MovieReview.findById(doc._id),
-        options: {...options, populatePaths: MovieReviewPopulatePaths},
+        options: { ...options, populatePaths: MovieReviewPopulatePaths },
     });
 
     return query.orFail();
 }
 
 /**
- * Updates a user-owned MovieReview.
- *
- * Enforces ownership, retries on persistence conflicts,
- * and maps version errors to DocumentVersionError.
+ * Updates an existing movie review authored by the current user.
+ * @param params - Target ID, update data, unset fields, and population options.
+ * @throws {HttpResponseError} 403 if user does not own the review.
+ * @returns Returns a fully populated document according to {@link MovieReviewPopulatePaths}.
  */
 export const updateMovieReviewForCurrentUser = async (
     {userID, reviewID, data, unset, options}: UpdateUserMovieReviewParams
 ): Promise<MovieReviewSchemaFields> => {
-    const isOwner = checkMovieReviewOwnership({userID, reviewID});
+    const isOwner = checkMovieReviewOwnership({ userID, reviewID });
     if (!isOwner) throw createHttpError(403, "Invalid User, Can Only Update Owned Review.");
 
     const docToUpdate = await MovieReview.findById(reviewID).orFail();
@@ -105,23 +112,23 @@ export const updateMovieReviewForCurrentUser = async (
 
     const updatedQuery = populateQuery({
         query: MovieReview.findById(reviewID),
-        options: {...options, populatePaths: MovieReviewPopulatePaths}
+        options: { ...options, populatePaths: MovieReviewPopulatePaths }
     });
 
     return updatedQuery.orFail();
 }
 
 /**
- * Deletes a user-owned MovieReview.
- *
- * Throws if the document does not exist or ownership validation fails.
+ * Deletes a movie review authored by the current user.
+ * @param params - User ID and the target Review ID.
+ * @throws {HttpResponseError} 403 if ownership check fails.
  */
 export const deleteMovieReviewForCurrentUser = async (
     {userID, reviewID}: DeleteUserMovieReviewParams
 ): Promise<void> => {
     const review = await MovieReview.findById(reviewID).orFail();
 
-    const isOwner = checkMovieReviewOwnership({userID, reviewID});
+    const isOwner = checkMovieReviewOwnership({ userID, reviewID });
     if (!isOwner) throw createHttpError(403, "Invalid User, Can Only Delete Owned Review.");
 
     await review.deleteOne();
