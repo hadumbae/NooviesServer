@@ -1,13 +1,14 @@
 /**
  * @file Aggregate population pipelines for MovieReview.
- * MovieReviewPopulationPipelines.ts
+ * @filename MovieReviewPopulationPipelines.ts
  */
 
 import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
-import {MoviePopulationPipelines} from "../../movie/queries/MoviePopulationPipelines.js";
+import {MovieWithRatingPipelines} from "./MovieWithRatingPipelines.js";
 
 /**
  * Aggregation pipelines for populating related MovieReview data.
+ * @returns {PopulationPipelineStages} A sequence of lookup and transformation stages.
  */
 export const MovieReviewPopulationPipelines: PopulationPipelineStages = [
     {
@@ -16,7 +17,7 @@ export const MovieReviewPopulationPipelines: PopulationPipelineStages = [
             localField: "movie",
             foreignField: "_id",
             as: "movie",
-            pipeline: MoviePopulationPipelines,
+            pipeline: MovieWithRatingPipelines,
         }
     },
     {

@@ -1,44 +1,14 @@
 /**
- * @file MoviePopulationPipelines.ts
- *
- * Aggregate population pipelines for the `Movie` domain.
- *
- * Defines reusable `$lookup` stages for resolving Movie
- * reference fields when using MongoDB aggregation instead
- * of Mongoose `.populate()`.
- *
- * @remarks
- * - Intended for aggregation-based query execution
- * - Mirrors Mongoose population behavior in pipeline form
- * - Keeps reference resolution centralized and schema-aligned
- * - Safe to compose before virtual pipelines
- *
- * Populates:
- * - `genres` (sorted alphabetically by name)
- *
- * @example
- * ```ts
- * MovieModel.aggregate([
- *   ...MoviePopulationPipelines,
- *   ...MovieVirtualPipelines,
- * ]);
- * ```
+ * @file Aggregation pipelines for populating Movie domain references.
+ * @filename MoviePopulationPipelines.ts
  */
 
-import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+import type {PipelineStage} from "mongoose";
 
 /**
- * Aggregation stages for populating Movie reference fields.
- *
- * Performs a `$lookup` on the `genres` collection and:
- * - Sorts genres alphabetically
- * - Removes internal version keys
- *
- * @remarks
- * - Designed for composition inside larger aggregation flows
- * - Does not unwind genres (preserves array structure)
+ * Reusable aggregation stages for resolving Movie reference fields.
  */
-export const MoviePopulationPipelines: PopulationPipelineStages = [
+export const MoviePopulationPipelines: PipelineStage.Lookup[] = [
     {
         $lookup: {
             from: "genres",
