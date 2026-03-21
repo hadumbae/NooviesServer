@@ -4,6 +4,8 @@
  */
 
 import {Types} from "mongoose";
+import type {LeanUserSchemaFields} from "@models/User.types.js";
+import type {MovieWithRating} from "../../movie/model/Movie.types.js";
 
 /**
  * Movie review document fields.
@@ -19,3 +21,12 @@ export interface MovieReviewSchemaFields {
     isRecommended?: boolean;
     helpfulLikes: Types.ObjectId[];
 }
+
+export type MyMovieReviewSchemaFields = Omit<
+    MovieReviewSchemaFields,
+    "user" | "movie" | "helpfulLikes"
+> & {
+    user: LeanUserSchemaFields;
+    movie: MovieWithRating;
+    helpfulCount: number;
+};

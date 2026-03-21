@@ -1,100 +1,99 @@
-import { Types } from "mongoose";
-import type { URLString } from "../../../shared/schema/strings/URLStringSchema.js";
-import type { ISO6391LanguageCode } from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
-import type { CloudinaryImageObject } from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
-import type { GenreSchemaFields } from "../../genre/model/Genre.types.js";
+/**
+ * @file Persistence and variant types for Movie documents.
+ * @filename Movie.types.ts
+ */
+
+import {Types} from "mongoose";
+import type {URLString} from "../../../shared/schema/strings/URLStringSchema.js";
+import type {ISO6391LanguageCode} from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
+import type {CloudinaryImageObject} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
+import type {GenreSchemaFields} from "../../genre/model/Genre.types.js";
 
 /**
- * Movie document schema fields.
- *
- * Represents a persisted movie entity in the catalog.
- * Defines the authoritative application-level data model,
- * including identification, localization, release metadata,
- * media assets, and genre relationships.
- *
- * @remarks
- * Fields defined here may be transformed into immutable
- * snapshot representations when embedded into reservations,
- * tickets, analytics records, or other historical contexts.
+ * Interface representing the comprehensive shape of a Movie document in the database.
  */
 export interface MovieSchemaFields {
-    /** MongoDB document identifier. */
+    /** Unique MongoDB document identifier. */
     readonly _id: Types.ObjectId;
 
-    /** Primary display title used for listings and marketing. */
+    /** Primary display title used for catalog listings. */
     title: string;
 
-    /** Original-language title, if different from the primary title. */
+    /** Original-language title; useful for foreign cinema entries. */
     originalTitle?: string;
 
-    /** Optional marketing or promotional tagline. */
+    /** Optional marketing tagline or short promotional hook. */
     tagline?: string;
 
-    /** Production country (ISO 3166-1 alpha-2). */
+    /** Production country code (ISO 3166-1 alpha-2). */
     country: string;
 
-    /** Full plot synopsis or description. */
+    /** Comprehensive plot summary or description. */
     synopsis: string;
 
     /**
      * Official release date.
-     *
-     * @remarks
-     * May be null or omitted if the release date is unknown
-     * or has not yet been finalized.
+     * * @remarks
+     * Can be `null` or `undefined` if the movie is in pre-production or the date is TBD.
      */
     releaseDate?: Date | null;
 
-    /** Indicates whether the movie has been publicly released. */
+    /** Boolean flag indicating if the movie has passed its release window. */
     isReleased?: boolean;
 
-    /** Runtime in minutes. */
+    /** Total duration of the film in minutes. */
     runtime: number;
 
-    /** Original spoken language of the movie (ISO 639-1). */
+    /** Primary spoken language of the source material (ISO 639-1). */
     originalLanguage: ISO6391LanguageCode;
 
-    /** Available audio languages. */
+    /** List of available audio tracks by language code. */
     languages: ISO6391LanguageCode[];
 
-    /** Available subtitle languages. */
+    /** List of available subtitle tracks by language code. */
     subtitles: ISO6391LanguageCode[];
 
     /**
-     * Poster image asset metadata.
-     *
-     * @remarks
-     * Stored as a Cloudinary object when present.
+     * Metadata for the movie's poster asset.
+     * * @remarks
+     * Points to a {@link CloudinaryImageObject} containing secure URLs and dimensions.
      */
     posterImage?: CloudinaryImageObject | null;
 
     /**
-     * Trailer URL.
-     *
-     * @remarks
-     * Typically points to an external video hosting service.
+     * Direct link to a hosted trailer (e.g., YouTube, Vimeo).
      */
     trailerURL?: URLString | null;
 
     /**
-     * Associated genres.
-     *
-     * @remarks
-     * May contain either ObjectId references or fully populated
-     * genre documents depending on query context.
+     * Associated movie categories.
+     * * @remarks
+     * Polymorphic field that holds either raw `ObjectId` references or
+     * resolved {@link GenreSchemaFields} documents.
      */
     genres: (Types.ObjectId | GenreSchemaFields)[];
 
-    /** Indicates whether the movie is currently available for booking. */
+    /** Administrative flag to enable/disable public booking or visibility. */
     isAvailable?: boolean;
 
-    /** URL-friendly unique identifier. */
+    /** Unique, URL-safe string derived from the title for routing. */
     slug: string;
 }
 
 /**
- * Movie representation with fully populated genres.
+ * Specialized type representing a Movie where the `genres` field is guaranteed
+ * to be an array of fully populated {@link GenreSchemaFields} objects.
  */
-export interface MovieWithGenres extends MovieSchemaFields {
+export type MovieWithGenres = Omit<MovieSchemaFields, "genres"> & {
+    /** Fully resolved genre documents. */
     genres: GenreSchemaFields[];
-}
+};
+
+/**
+ * Specialized type for analytical or display views, extending {@link MovieWithGenres}
+ * with a calculated rating metric.
+ */
+export type MovieWithRating = MovieWithGenres & {
+    /** Calculated average score from 0 to 5 based on user reviews. */
+    averageRating: number;
+};
