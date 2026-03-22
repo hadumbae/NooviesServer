@@ -1,16 +1,18 @@
+/**
+ * @file Mongoose schema definition for the Genre collection.
+ * @filename Genre.schema.ts
+ */
+
 import {Schema} from "mongoose";
 import type {GenreSchemaFields} from "./Genre.types.js";
 import {CloudinaryImageSchema} from "../../../shared/model/cloudinary-image/CloudinaryImage.js";
 
 /**
- * Genre mongoose schema.
- *
- * @remarks
- * - Enforces uniqueness and validation for genre fields
- * - Includes timestamps and slug indexing
+ * Mongoose schema for persistent Genre documents.
+ * @remarks Enforces uniqueness on names and slugs, includes timestamps, and validates movie metrics.
  */
 const GenreSchema = new Schema<GenreSchemaFields>({
-    /** Unique display name of the genre. */
+    /** Unique display name of the genre (max 150 characters). */
     name: {
         type: String,
         required: [true, "Name is required."],
@@ -19,20 +21,30 @@ const GenreSchema = new Schema<GenreSchemaFields>({
         maxlength: [150, "Must be 150 characters or less."],
     },
 
-    /** Descriptive text for the genre. */
+    /** Detailed description of the genre (max 1000 characters). */
     description: {
         type: String,
         required: [true, "Description is required."],
         maxlength: [1000, "Description must be 1000 characters or less."],
     },
 
-    /** Associated Cloudinary image. */
+    /** Primary representative image asset via Cloudinary. */
     image: {
         type: CloudinaryImageSchema,
         default: null,
     },
 
-    /** URL-friendly identifier. */
+    /** Counter for associated movies; must be a non-negative integer. */
+    movieCount: {
+        type: Number,
+        default: 0,
+        validate: {
+            message: "Must be a non-negative integer.",
+            validator: (val?: number) => val !== undefined ? (Number.isInteger(val) && val >= 0) : true,
+        },
+    },
+
+    /** Unique URL-friendly string used for routing. */
     slug: {
         type: String,
         unique: [true, "Slug must be unique."],

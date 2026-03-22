@@ -1,3 +1,8 @@
+/**
+ * @file Mongoose middleware hooks for the Genre model.
+ * @filename Genre.hooks.ts
+ */
+
 import GenreSchema from "./Genre.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import MovieModel from "../../movie/model/Movie.model.js";
@@ -5,7 +10,8 @@ import type {GenreSchemaFields} from "./Genre.types.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
 
 /**
- * Automatically regenerates the slug when the genre name changes.
+ * Middleware to synchronize the URL slug with the genre name.
+ * @remarks Triggers during validation if the 'name' field has been modified.
  */
 GenreSchema.pre(
     "validate",
@@ -20,26 +26,8 @@ GenreSchema.pre(
 );
 
 /**
- * Populates virtual fields when lean queries request virtuals.
- */
-GenreSchema.pre(
-    ["find", "findOne", "findOneAndUpdate"],
-    {query: true},
-    function (this: Query<any, GenreSchemaFields>, next: () => void): void {
-        const hasVirtuals =
-            typeof this._mongooseOptions.lean === "object" &&
-            this._mongooseOptions.lean.virtuals === true;
-
-        if (hasVirtuals) {
-            this.populate([{path: "movieCount"}]);
-        }
-
-        next();
-    }
-);
-
-/**
- * Removes this genre reference from all movies before deletion.
+ * Cleanup middleware to remove genre references from movies upon document deletion.
+ * @remarks Specifically handles the `$pull` operation for the movies' 'genres' array.
  */
 GenreSchema.pre(
     "deleteOne",
@@ -51,7 +39,8 @@ GenreSchema.pre(
 );
 
 /**
- * Deletes all movies associated with the genre when removed via queries.
+ * Cascade deletion middleware for query-based genre removals.
+ * @remarks Deletes all associated movies when a genre is removed via static query methods.
  */
 GenreSchema.pre(
     ["deleteOne", "deleteMany"],
