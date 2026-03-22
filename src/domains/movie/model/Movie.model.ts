@@ -1,7 +1,7 @@
 import {Model, model,} from "mongoose";
 import {MovieSchema} from "./Movie.schema.js";
 
-import "./Movie.middleware.js";
+import "./Movie.hooks.js";
 import type {MovieSchemaFields} from "./Movie.types.js";
 
 /**
