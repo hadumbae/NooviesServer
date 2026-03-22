@@ -14,19 +14,38 @@ import {MovieReviewPopulatePaths} from "../queries/MovieReviewPopulatePaths.js";
 import populateQuery from "../../../shared/utility/mongoose/populateQuery.js";
 import {handlePersistenceQuery} from "../../../shared/utility/mongoose/handlePersistenceQuery.js";
 import {handleMovieReviewDuplicateIndex} from "../utilities/handleMovieReviewDuplicateIndex.js";
-import type {MovieReviewSchemaFields} from "../model/MovieReview.types.js";
+import type {MovieReviewSchemaFields, MyMovieReviewSchemaFields} from "../model/MovieReview.types.js";
 import {checkMovieReviewOwnership} from "../utilities/checkMovieReviewOwnership.js";
 import createHttpError from "http-errors";
 import {DocumentVersionError} from "../../../shared/errors/DocumentVersionError.js";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
 import {MovieReviewPopulationPipelines} from "../queries/MovieReviewPopulationPipelines.js";
+import {Types} from "mongoose";
+
+/**
+ * Fetches a single movie review enriched for the current user's view.
+ * @param reviewID - The unique identifier of the target review.
+ * @returns A {@link MyMovieReviewSchemaFields} object containing the populated review.
+ */
+export const fetchCurrentUserMovieReview = async (
+    reviewID: Types.ObjectId
+): Promise<MyMovieReviewSchemaFields> => {
+    const [results] = await MovieReview.aggregate<MyMovieReviewSchemaFields>([
+        { $match: { _id: reviewID } },
+        { $addFields: { helpfulCount: { $size: "$helpfulLikes" } } },
+        { $project: { helpfulLikes: 0 } },
+        ...MovieReviewPopulationPipelines,
+    ]);
+
+    return results;
+}
 
 /**
  * Fetches a paginated list of movie reviews authored by a specific user.
  * @param params - User ID and pagination values.
  * @returns A {@link PaginationReturns} object containing items and total count.
  */
-export const fetchCurrentUserMovieReviews = async (
+export const fetchCurrentUserMovieReviewList = async (
     {userID, page, perPage}: FetchPaginatedUserReviewsParams
 ): Promise<PaginationReturns<MovieReviewSchemaFields>> => {
     const [results] = await MovieReview.aggregate<PaginationReturns<MovieReviewSchemaFields>>([
@@ -81,8 +100,8 @@ export const createMovieReviewForCurrentUser = async (
 /**
  * Updates an existing movie review authored by the current user.
  * @param params - Target ID, update data, unset fields, and population options.
- * @throws {HttpResponseError} 403 if user does not own the review.
- * @returns Returns a fully populated document according to {@link MovieReviewPopulatePaths}.
+ * @throws {HttpResponseError} 403 if the user does not own the review.
+ * @returns Returns the updated, fully populated document.
  */
 export const updateMovieReviewForCurrentUser = async (
     {userID, reviewID, data, unset, options}: UpdateUserMovieReviewParams

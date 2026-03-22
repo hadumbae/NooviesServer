@@ -1,6 +1,6 @@
 /**
  * @file HTTP controllers for current-user MovieReview routes.
- * MyMovieReviewController.ts
+ * @filename MyMovieReviewController.ts
  */
 
 import type {ControllerAsyncFunc} from "../../../shared/types/ControllerTypes.js";
@@ -13,16 +13,32 @@ import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js
 import type {MovieReviewUpdateInputData} from "../schema/MovieReviewUpdateInputSchema.js";
 
 /**
- * Returns paginated MovieReviews owned by the authenticated user.
+ * Retrieves a single Movie Review owned by the authenticated user.
  */
 export const getFetchCurrentUserMovieReview: ControllerAsyncFunc = async (
+    req: Request, res: Response
+) => {
+    const {reviewID} = req.params;
+    const revID = isValidObjectId(reviewID);
+
+    const review = await MyMovieReviewService.fetchCurrentUserMovieReview(revID);
+
+    return res
+        .status(200)
+        .json(review);
+}
+
+/**
+ * Returns a paginated list of Movie Reviews authored by the authenticated user.
+ */
+export const getFetchCurrentUserMovieReviewList: ControllerAsyncFunc = async (
     req: Request, res: Response
 ) => {
     const userID = fetchRequestUser(req);
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const {populate, virtuals} = QueryUtils.fetchOptionsFromQuery(req);
 
-    const data = await MyMovieReviewService.fetchCurrentUserMovieReviews({
+    const data = await MyMovieReviewService.fetchCurrentUserMovieReviewList({
         userID,
         page,
         perPage,
@@ -35,7 +51,7 @@ export const getFetchCurrentUserMovieReview: ControllerAsyncFunc = async (
 }
 
 /**
- * Creates a MovieReview for the authenticated user.
+ * Creates a new Movie Review for the authenticated user.
  */
 export const postCreateMovieReviewForCurrentUser: ControllerAsyncFunc = async (
     req: Request, res: Response
@@ -57,9 +73,7 @@ export const postCreateMovieReviewForCurrentUser: ControllerAsyncFunc = async (
 }
 
 /**
- * Updates a MovieReview owned by the authenticated user.
- *
- * Ownership and conflict handling are enforced at the service layer.
+ * Updates an existing Movie Review owned by the authenticated user.
  */
 export const patchUpdateMovieReviewForCurrentUser: ControllerAsyncFunc = async (
     req: Request, res: Response
@@ -87,7 +101,7 @@ export const patchUpdateMovieReviewForCurrentUser: ControllerAsyncFunc = async (
 }
 
 /**
- * Deletes a MovieReview owned by the authenticated user.
+ * Removes a Movie Review authored by the current user.
  */
 export const deleteRemoveMovieReviewForCurrentUser: ControllerAsyncFunc = async (
     req: Request, res: Response
