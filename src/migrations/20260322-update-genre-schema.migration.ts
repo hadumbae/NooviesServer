@@ -1,5 +1,5 @@
 /**
- * @file Migration script to update existing Genre documents with default schema fields.
+ * @file Migration script to synchronize genre movie counts with the current database state.
  * @filename 20260322-update-genre-schema.migration.ts
  */
 
@@ -10,9 +10,11 @@ import Genre from "../domains/genre/model/Genre.model.js";
 import MovieModel from "../domains/movie/model/Movie.model.js";
 
 /**
- * Executes a manual migration to ensure all Genre documents comply with the updated schema.
- * @remarks Connects to the database, iterates through all genres via a cursor to manage memory,
- * and initializes the `movieCount` field if it is currently undefined or null.
+ * Performs a deep synchronization of the `movieCount` field for all existing genres.
+ * @remarks
+ * - Uses a cursor to iterate through genres to avoid memory overhead on large datasets.
+ * - Queries {@link MovieModel} to calculate the true document count per genre.
+ * - Updates each genre document with the accurate count, ensuring UI consistency.
  */
 connect().then(async () => {
     const cursor = Genre.find().cursor();
@@ -22,6 +24,7 @@ connect().then(async () => {
         genre !== null;
         genre = await cursor.next()
     ) {
+        /** Calculate actual movie associations for the current genre. */
         const count = await MovieModel.countDocuments({genres: genre._id});
 
         console.log(`Updating: ${genre.name} / ${count} movies`);
