@@ -10,7 +10,7 @@ import type {MovieSchemaFields} from "./Movie.types.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
 import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
 import MovieModel from "./Movie.model.js";
-import Genre from "../../genre/model/Genre.model.js";
+import Genre from "../../genre/models/genre/Genre.model.js";
 
 /**
  * Middleware to synchronize the URL slug with the movie title.

@@ -3,10 +3,10 @@
  * @filename Genre.types.ts
  */
 
-import type {CloudinaryImageObject} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
+import type {CloudinaryImageObject} from "../../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
 import {Types} from "mongoose";
-import type {BaseModel} from "../../../shared/types/schema/BaseModel.js";
-import type {ModelTimestamps} from "../../../shared/types/schema/ModelTimestamps.js";
+import type {BaseModel} from "../../../../shared/types/schema/BaseModel.js";
+import type {ModelTimestamps} from "../../../../shared/types/schema/ModelTimestamps.js";
 
 /**
  * Represents the comprehensive shape of a Genre document in the database.

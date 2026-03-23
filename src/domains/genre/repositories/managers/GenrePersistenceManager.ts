@@ -1,7 +1,7 @@
 import {PersistenceManager} from "../../../../shared/repository/managers/PersistenceManager.js";
 import type {PersistenceManagerMethods} from "../../../../shared/repository/managers/PersistenceManager.types.js";
 import type {ZodIssue} from "zod";
-import Genre from "../../model/Genre.model.js";
+import Genre from "../../models/genre/Genre.model.js";
 import {ZodDuplicateIndexError} from "../../../../shared/errors/zod/ZodDuplicateIndexError.js";
 
 /**

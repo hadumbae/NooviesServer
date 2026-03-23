@@ -5,7 +5,7 @@
 
 import {Schema} from "mongoose";
 import type {GenreSchemaFields} from "./Genre.types.js";
-import {CloudinaryImageSchema} from "../../../shared/model/cloudinary-image/CloudinaryImage.js";
+import {CloudinaryImageSchema} from "../../../../shared/model/cloudinary-image/CloudinaryImage.js";
 
 /**
  * Mongoose schema for persistent Genre documents.

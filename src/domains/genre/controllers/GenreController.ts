@@ -1,13 +1,13 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type { Request } from "express";
-import type GenreQueryOptionService from "../service/GenreQueryOptionService.js";
-import type { GenreQueryMatchFilters } from "../schema/query/GenreQueryOption.types.js";
+import type GenreQueryOptionService from "../services/GenreQueryOptionService.js";
+import type { GenreQueryMatchFilters } from "../validation/query/GenreQueryOption.types.js";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
 } from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type {GenreSchemaFields} from "../model/Genre.types.js";
+import type {GenreSchemaFields} from "../models/genre/Genre.types.js";
 
 /**
  * Interface for the Genre controller, extending the base CRUD controller interface.

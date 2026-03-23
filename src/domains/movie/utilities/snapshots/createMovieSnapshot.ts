@@ -23,7 +23,7 @@ import {DocumentNotFoundError} from "../../../../shared/errors/DocumentNotFoundE
 import {MovieSnapshotInputSchema} from "../../schema/MovieSnapshotInputSchema.js";
 import {InconsistentDataError} from "../../../../shared/errors/InconsistentDataError.js";
 import {MovieSnapshot} from "../../model/movie-snapshot/MovieSnapshot.model.js";
-import type {GenreSchemaFields} from "../../../genre/model/Genre.types.js";
+import type {GenreSchemaFields} from "../../../genre/models/genre/Genre.types.js";
 import type {MovieSchemaFields} from "../../model/Movie.types.js";
 
 /**

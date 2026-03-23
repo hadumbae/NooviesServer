@@ -7,7 +7,7 @@ import {Types} from "mongoose";
 import type {URLString} from "../../../shared/schema/strings/URLStringSchema.js";
 import type {ISO6391LanguageCode} from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
 import type {CloudinaryImageObject} from "../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
-import type {GenreSchemaFields} from "../../genre/model/Genre.types.js";
+import type {GenreSchemaFields} from "../../genre/models/genre/Genre.types.js";
 
 /**
  * Interface representing the comprehensive shape of a Movie document in the database.

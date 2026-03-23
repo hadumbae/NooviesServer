@@ -1,12 +1,12 @@
-import GenreServiceProvider from "../provider/GenreServiceProvider.js";
+import GenreServiceProvider from "../providers/GenreServiceProvider.js";
 import {
     type BaseRouteMiddleware,
     createBaseRoutes,
 } from "../../../shared/routing/BaseRoutes.js";
-import {GenreInputSchema} from "../schema/GenreInputSchema.js";
+import {GenreInputSchema} from "../validation/GenreInputSchema.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
-import type {GenreSchemaFields} from "../model/Genre.types.js";
+import type {GenreSchemaFields} from "../models/genre/Genre.types.js";
 
 /**
  * Extract the Genre model and controller from the service provider.

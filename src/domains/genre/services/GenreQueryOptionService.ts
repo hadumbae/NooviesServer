@@ -1,11 +1,11 @@
 import type {Request} from "express";
-import type {GenreQueryMatchFilters, GenreQueryOptions} from "../schema/query/GenreQueryOption.types.js";
+import type {GenreQueryMatchFilters, GenreQueryOptions} from "../validation/query/GenreQueryOption.types.js";
 import type {FilterQuery, SortOrder} from "mongoose";
-import {GenreQueryOptionsSchema} from "../schema/query/GenreQueryOption.schema.js";
+import {GenreQueryOptionsSchema} from "../validation/query/GenreQueryOption.schema.js";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type {GenreSchemaFields} from "../model/Genre.types.js";
+import type {GenreSchemaFields} from "../models/genre/Genre.types.js";
 
 /**
  * Service responsible for parsing and generating query options
