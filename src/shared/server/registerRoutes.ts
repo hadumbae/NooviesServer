@@ -32,6 +32,7 @@ import {MyMovieReviewsRoutes} from "../../domains/movieReview/routes/MyMovieRevi
 import {MovieBrowseRoutes} from "../../domains/movie/routing/client/MovieBrowseRoutes.js";
 import {MovieViewDataRoutes} from "../../domains/movie/routing/client/MovieViewDataRoutes.js";
 import {IpApiRoutes} from "../../domains/external/ipapi/routing/IpApiRoutes.js";
+import {GenreViewDataRoutes} from "../../domains/genre/routing/GenreViewDataRoutes.js";
 
 /**
  * Internal route registration descriptor.
@@ -77,6 +78,10 @@ const adminRegistration: RouteRegistration[] = [
     {path: "/api/v1/admin/reservations", router: ReservationRoutes},
 ];
 
+const adminViewRegistration: RouteRegistration[] = [
+    {path: "/api/v1/admin/genres", router: GenreViewDataRoutes},
+];
+
 const clientRegistration: RouteRegistration[] = [
     {path: "/api/v1/browse/movies", router: MovieBrowseRoutes},
 
@@ -110,6 +115,7 @@ const externalRegistration: RouteRegistration[] = [
 export default function registerRoutes(app: Express) {
     [
         ...adminRegistration,
+        ...adminViewRegistration,
         ...clientRegistration,
         ...clientViewRegistration,
         ...externalRegistration,
