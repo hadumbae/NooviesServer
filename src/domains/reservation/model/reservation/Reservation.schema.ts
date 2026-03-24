@@ -1,9 +1,9 @@
 /**
- * @file Mongoose schema definition for the Reservation model.
+ * @file Mongoose schema definition and model type for the Reservation domain.
  * @filename Reservation.schema.ts
  */
 
-import {Schema} from "mongoose";
+import {type Model, Schema} from "mongoose";
 import {ReservedShowingSnapshotSchema} from "../snapshots/showing-snapshot/ReservedShowingSnapshot.schema.js";
 import type {ReservationSchemaFields} from "./Reservation.types.js";
 import ISO4217CurrencyCodesConstant from "../../../../shared/constants/currency/ISO4217CurrencyCodesConstant.js";
@@ -12,22 +12,21 @@ import {ReservationTypeConstant} from "../../constants/ReservationTypeConstant.j
 import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOptions.js";
 import {IsDeletedSchemaTypeOptions} from "../../../../shared/model/IsDeletedSchemaTypeOptions.js";
 import {DeletedAtSchemaTypeOptions} from "../../../../shared/model/DeletedAtSchemaTypeOptions.js";
+import type {ModelSoftDeleteMethods} from "../../../../shared/types/schema/ModelSoftDelete.js";
+
+/**
+ * TypeScript type representing the compiled Reservation Model.
+ */
+export type ReservationModel = Model<ReservationSchemaFields, {}, ModelSoftDeleteMethods<ReservationSchemaFields>>;
 
 /**
  * Mongoose schema representing a booking transaction.
- * ---
- * ### Key Features
- * * **Relational Integrity:** Links `User` and `Showing` with strict required-field validation.
- * * **Snapshotting:** Persists an immutable {@link ReservedShowingSnapshotSchema} to protect historical
- * data against future changes to the original Movie or Showing.
- * * **Seating Logic:** Supports both `GENERAL_ADMISSION` and `RESERVED_SEATS` via conditional
- * `selectedSeating` validation.
- * * **Financial Tracking:** Enforces non-negative pricing and valid ISO 4217 currency codes.
- * * **Lifecycle Management:** Includes explicit date fields for payment, cancellation, and
- * expiration, along with a mandatory `expiresAt` deadline.
- * * **System Metadata:** Standardized audit trails (timestamps), SEO-friendly slugs, and soft-delete support.
  */
-const ReservationSchema = new Schema<ReservationSchemaFields>({
+const ReservationSchema = new Schema<
+    ReservationSchemaFields,
+    ReservationModel,
+    ModelSoftDeleteMethods<ReservationSchemaFields>
+>({
     /** Reference to the User who initiated the booking. */
     user: {
         type: Schema.Types.ObjectId,
@@ -49,8 +48,9 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
         required: [true, "Ticket count is required."],
     },
 
-    /** * Collection of specific seat references.
-     * Validated to ensure it's either null (for GA) or a non-empty array.
+    /**
+     * Collection of specific seat references.
+     * Validated to ensure it is either null (for GA) or a non-empty array of ObjectIDs.
      */
     selectedSeating: {
         type: [{type: Schema.Types.ObjectId, ref: "SeatMap"}],
@@ -63,7 +63,7 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
         },
     },
 
-    /** The actual total amount paid, stored as a non-negative number. */
+    /** The total amount paid, stored as a non-negative number. */
     pricePaid: {
         type: Number,
         validate: {
@@ -73,7 +73,7 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
         required: [true, "Required for reservation."],
     },
 
-    /** The currency of the transaction. */
+    /** The ISO 4217 currency code used for the transaction. */
     currency: {
         type: String,
         enum: {
@@ -93,20 +93,20 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
         required: [true, "Required for reservation."],
     },
 
-    /** Primary lifecycle dates. */
-    dateReserved: { type: Date, required: [true, "Required for reservation."] },
-    datePaid: { type: Date },
-    dateCancelled: { type: Date },
-    dateRefunded: { type: Date },
-    dateExpired: { type: Date },
+    /** Timestamps for various business lifecycle stages. */
+    dateReserved: {type: Date, required: [true, "Required for reservation."]},
+    datePaid: {type: Date},
+    dateCancelled: {type: Date},
+    dateRefunded: {type: Date},
+    dateExpired: {type: Date},
 
-    /** The hard deadline for payment before the system releases the held inventory. */
+    /** The hard deadline for payment before the system releases held inventory. */
     expiresAt: {
         type: Date,
         required: [true, "Expiry date is required for all reservations."],
     },
 
-    /** Determines if seating is assigned or general admission. */
+    /** Distinguishes between assigned seating and general admission logic. */
     reservationType: {
         type: String,
         enum: {
@@ -116,14 +116,14 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
         required: [true, "Type is required for reservation."],
     },
 
-    /** An immutable point-in-time copy of showing/movie data for audit/ticket integrity. */
+    /** Immutable point-in-time copy of data to ensure ticket integrity if source records change. */
     snapshot: {
         type: ReservedShowingSnapshotSchema,
         immutable: true,
         required: [true, "Snapshot is required."],
     },
 
-    /** Optional notes with trim and length constraints. */
+    /** Optional descriptive notes with length constraints. */
     notes: {
         type: String,
         min: [1, "Must not be an empty string."],
@@ -131,22 +131,23 @@ const ReservationSchema = new Schema<ReservationSchemaFields>({
         trim: true,
     },
 
-    /** A human-readable verification code (e.g., for QR codes or ticket printing). */
+    /** Unique human-readable verification code. Indexed for fast lookups. */
     uniqueCode: {
         type: String,
         trim: true,
+        unique: [true, "Unique code must be unique."],
         max: [50, "Must not be more than 50 characters."],
         required: [true, "Unique Code is required."],
     },
 
-    /** Pre-defined SEO/ID options for URL generation. */
+    /** Standardized SEO-friendly slug options. */
     slug: SlugSchemaTypeOptions,
 
-    /** Pre-defined soft-delete flags and timestamps. */
+    /** Logic flags and timestamps for soft-deletion. */
     isDeleted: IsDeletedSchemaTypeOptions,
     deletedAt: DeletedAtSchemaTypeOptions,
 }, {
-    /** Automatically adds and manages `createdAt` and `updatedAt` fields. */
+    /** Automatically handles `createdAt` and `updatedAt` properties. */
     timestamps: true,
 });
 
