@@ -1,7 +1,6 @@
 /**
- * @file Reservation.types.ts
- *
- * Type definitions for the Reservation domain model.
+ * @file Type definitions and schema field structures for the Reservation domain.
+ * @filename Reservation.types.ts
  */
 
 import type {ReservedShowingSnapshotSchemaFields} from "../snapshots/showing-snapshot/ReservedShowingSnapshot.types.js";
@@ -10,82 +9,88 @@ import type {ISO4217CurrencyCode} from "../../../../shared/schema/enums/ISO4217C
 import type {ReservationStatus} from "../../schemas/enum/ReservationStatusEnumSchema.js";
 import type {ReservationType} from "../../schemas/enum/ReservationTypeEnumSchema.js";
 import type {NonNegativeNumber} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
+import type {BaseModelWithSlug} from "../../../../shared/types/schema/BaseModel.js";
+import type {ModelTimestamps} from "../../../../shared/types/schema/ModelTimestamps.js";
+import type {ModelSoftDelete} from "../../../../shared/types/schema/ModelSoftDelete.js";
 
 /**
- * Core reservation fields.
- *
- * @remarks
- * Uses a snapshot-first design:
- * - Historical showing data is stored immutably in {@link snapshot}
- * - Live references exist for navigation and analytics
- * - Lifecycle timestamps are status-dependent
+ * Composite metadata for the Reservation model.
  */
-export interface ReservationSchemaFields {
-    readonly _id: Types.ObjectId;
+type ReservationModelMeta = BaseModelWithSlug & ModelTimestamps & ModelSoftDelete;
 
-    /** Immutable showing snapshot captured at reservation time. */
-    snapshot: ReservedShowingSnapshotSchemaFields;
-
-    /** User who initiated the reservation. */
-    user: Types.ObjectId;
-
-    /** Live showing reference. */
-    showing: Types.ObjectId;
-
-    /** Number of tickets reserved. */
-    ticketCount: number;
-
-    /**
-     * Seat references.
-     *
-     * Required for `"RESERVED_SEATS"`,
-     * absent for `"GENERAL_ADMISSION"`.
-     */
-    selectedSeating?: Types.ObjectId[] | null;
-
-    /** Total paid amount (non-negative). */
-    pricePaid: NonNegativeNumber;
-
-    /** ISO 4217 currency code. */
-    currency: ISO4217CurrencyCode;
-
-    /** Current lifecycle status. */
-    status: ReservationStatus;
-
-    /** Reservation creation timestamp. */
+/**
+ * Lifecycle date fields for tracking the state transitions of a reservation.
+ */
+type ReservationDateSchemaFields = {
+    /** The timestamp when the initial booking was created. */
     dateReserved: Date;
 
-    /** Payment timestamp. */
+    /** The timestamp when payment was successfully processed. */
     datePaid?: Date | null;
 
-    /** Cancellation timestamp. */
+    /** The timestamp when the user or system manually cancelled the order. */
     dateCancelled?: Date | null;
 
-    /** Refund timestamp. */
+    /** The timestamp when a refund was issued following a cancellation. */
     dateRefunded?: Date | null;
 
-    /** Expiration timestamp (for unpaid reservations). */
+    /** The timestamp when the system automatically expired an unpaid temporary hold. */
     dateExpired?: Date | null;
 
-    /** Expiration cutoff for unpaid reservations. */
+    /** The calculated deadline by which the reservation must be paid before automatic expiration. */
     expiresAt: Date;
-
-    /** Reservation mode at booking time. */
-    reservationType: ReservationType;
-
-    /** Optional internal notes. */
-    notes?: string | null;
-
-    /** URL-safe identifier derived from showing. */
-    slug: string;
 }
 
 /**
- * Narrowed reservation document by reservation type.
- *
- * Enforces seating invariants at the type level.
+ * Comprehensive field definitions for the Reservation schema.
+ */
+export type ReservationSchemaFields = ReservationModelMeta & ReservationDateSchemaFields & {
+    /** Immutable point-in-time data of the showing at the moment of reservation. */
+    snapshot: ReservedShowingSnapshotSchemaFields;
+
+    /** Reference to the User who owns this reservation. */
+    user: Types.ObjectId;
+
+    /** Reference to the specific Showing event. */
+    showing: Types.ObjectId;
+
+    /** Total quantity of tickets purchased. */
+    ticketCount: number;
+
+    /** Optional array of specific seat references (only for RESERVED_SEATS type). */
+    selectedSeating?: Types.ObjectId[] | null;
+
+    /** Total amount paid by the customer. */
+    pricePaid: NonNegativeNumber;
+
+    /** The ISO 4217 currency code used for the transaction. */
+    currency: ISO4217CurrencyCode;
+
+    /** Current lifecycle status (e.g., PENDING, CONFIRMED, CANCELLED). */
+    status: ReservationStatus;
+
+    /** The technical category of the reservation (General vs. Assigned seating). */
+    reservationType: ReservationType;
+
+    /** A short, human-readable identifier for ticket verification (e.g., "ABC-123"). */
+    uniqueCode: string;
+
+    /** Optional internal or user-provided notes. */
+    notes?: string | null;
+};
+
+/**
+ * Refined TypeScript type for the Reservation document.
  */
 export type ReservationDoc = Omit<ReservationSchemaFields, "reservationType" | "selectedSeating"> & (
-    | { reservationType: "GENERAL_ADMISSION"; selectedSeating?: null }
-    | { reservationType: "RESERVED_SEATS"; selectedSeating: Types.ObjectId[] }
-);
+    | {
+    /** Open seating where specific positions are not tracked. */
+    reservationType: "GENERAL_ADMISSION";
+    selectedSeating?: null
+}
+    | {
+    /** Specific assigned seating requiring valid seat references. */
+    reservationType: "RESERVED_SEATS";
+    selectedSeating: Types.ObjectId[]
+}
+    );

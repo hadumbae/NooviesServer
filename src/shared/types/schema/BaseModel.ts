@@ -6,14 +6,22 @@
 import {Types} from "mongoose";
 import type {ModelTimestamps} from "./ModelTimestamps.js";
 import type {ModelSoftDelete} from "./ModelSoftDelete.js";
+import type {SlugString} from "../../schema/strings/SlugStringSchema.js";
 
 /**
  * Minimal record structure with a BSON {@link Types.ObjectId}.
  */
 export type BaseModel = {
     /** Primary key via {@link Types.ObjectId}. */
-    _id: Types.ObjectId;
+    readonly _id: Types.ObjectId;
 };
+
+/**
+ * An extension of the base model that includes a URL-friendly unique identifier.
+ */
+export type BaseModelWithSlug = BaseModel & {
+    slug: SlugString;
+}
 
 /**
  * Composition of {@link BaseModel}, {@link ModelTimestamps}, and {@link ModelSoftDelete}.
