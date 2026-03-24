@@ -1,18 +1,6 @@
 /**
- * @file Reservation.hooks.ts
- *
- * Mongoose lifecycle middleware for the Reservation model.
- *
- * Responsibilities:
- * - Enforce lifecycle timestamp invariants
- * - Validate reservation-type seating constraints
- * - Maintain showing → movie slug consistency
- * - Create immutable reservation snapshot at creation
- * - Trigger seat locking after persistence
- *
- * @remarks
- * This module augments the Reservation schema via middleware.
- * All logic runs automatically during the Mongoose lifecycle.
+ * @file Mongoose lifecycle middleware and query hooks for the Reservation model.
+ * @filename Reservation.hooks.ts
  */
 
 import ReservationSchema from "./Reservation.schema.js";
@@ -25,16 +13,11 @@ import {reserveSeatsByReservation} from "../../modules/ReservationSeatingUtils.j
 import Showing from "../../../showing/models/showing/Showing.model.js";
 import generateSlug from "../../../../shared/utility/generateSlug.js";
 import type {MovieSchemaFields} from "../../../movie/model/Movie.types.js";
+import {generateNanoID} from "../../../../shared/utility/generateNanoID.js";
 
 /**
- * Maps reservation statuses to their required lifecycle timestamp field.
- *
- * @remarks
- * Ensures terminal and paid states persist their corresponding date field.
- *
- * Example:
- * - PAID → datePaid
- * - CANCELLED → dateCancelled
+ * Mapping of reservation statuses to their mandatory audit timestamp fields.
+ * * Ensures that terminal or transitional states have the matching date recorded for audit trails.
  */
 const REQUIRED_DATES_BY_STATUS: Partial<
     Record<ReservationStatus, keyof ReservationSchemaFields>
@@ -46,16 +29,9 @@ const REQUIRED_DATES_BY_STATUS: Partial<
 } as const;
 
 /**
- * Validates lifecycle timestamp rules.
- *
- * Enforces:
- * - Required timestamps for terminal and paid statuses
- * - Future-dated expiration for `RESERVED` reservations
- *
- * @param doc - Hydrated reservation document
- *
- * @remarks
- * Uses Luxon in UTC to prevent timezone inconsistencies.
+ * Internal validator for enforcing temporal business rules.
+ * * **Status Consistency:** Checks that the status matches its corresponding date field.
+ * * **Expiry Window:** Ensures `expiresAt` is set to a future timestamp for new or updated reservations.
  */
 function validateDates(
     doc: HydratedDocument<ReservationSchemaFields>,
@@ -63,78 +39,47 @@ function validateDates(
     const requiredDate = REQUIRED_DATES_BY_STATUS[doc.status];
 
     if (requiredDate && !doc[requiredDate]) {
-        doc.invalidate(
-            requiredDate,
-            `Required for reservations with status "${doc.status}".`,
-        );
+        doc.invalidate(requiredDate, `Required for reservations with status "${doc.status}".`);
     }
 
-    if (doc.status === "RESERVED") {
-        if (doc.isNew || doc.isModified("expiresAt")) {
-            const now = DateTime.utc();
-            const expiresAt = DateTime
-                .fromJSDate(doc.expiresAt)
-                .toUTC()
-                .endOf("day");
+    if (doc.status === "RESERVED" && (doc.isNew || doc.isModified("expiresAt"))) {
+        const now = DateTime.utc();
+        const expiresAt = DateTime.fromJSDate(doc.expiresAt).toUTC();
 
-            if (!(expiresAt > now)) {
-                doc.invalidate(
-                    "expiresAt",
-                    "Must be a future date for reserved reservations.",
-                );
-            }
+        if (!(expiresAt > now)) {
+            doc.invalidate("expiresAt", "Must be a future date for reserved reservations.");
         }
     }
 }
 
 /**
- * Validates seating constraints based on reservation type.
- *
- * Rules:
- * - `RESERVED_SEATS` requires a non-empty `selectedSeating` array
- * - `GENERAL_ADMISSION` must not contain seating selections
- *
- * @param doc - Hydrated reservation document
+ * Validates seating requirements based on the chosen reservation type.
+ * * **RESERVED_SEATS:** Strictly requires a non-empty array of seat identifiers.
+ * * **GENERAL_ADMISSION:** Explicitly forbids the presence of a seating array.
  */
 function validateByType(
     doc: HydratedDocument<ReservationSchemaFields>,
 ): void {
     if (doc.reservationType === "RESERVED_SEATS") {
-        if (!Array.isArray(doc.selectedSeating)) {
+        if (!Array.isArray(doc.selectedSeating) || doc.selectedSeating.length === 0) {
             doc.invalidate(
                 "selectedSeating",
-                "Required for reserved seating reservations.",
-            );
-        } else if (doc.selectedSeating.length === 0) {
-            doc.invalidate(
-                "selectedSeating",
-                "Must contain at least one seat.",
+                "Specific seat selections are required for this reservation type.",
             );
         }
     }
 
-    if (
-        doc.reservationType === "GENERAL_ADMISSION" &&
-        Array.isArray(doc.selectedSeating)
-    ) {
+    if (doc.reservationType === "GENERAL_ADMISSION" && doc.selectedSeating?.length) {
         doc.invalidate(
             "selectedSeating",
-            "Must not be present for general admission.",
+            "Seat selections cannot be provided for general admission bookings.",
         );
     }
 }
 
 /**
- * Ensures reservation slug matches the associated movie title.
- *
- * - Loads the showing
- * - Populates its movie
- * - Generates a slug from the movie title
- *
- * @param doc - Hydrated reservation document
- *
- * @remarks
- * Runs only when the `showing` field is modified.
+ * Synchronizes the reservation slug with the associated movie's current title.
+ * * Loads the related `Showing` and `Movie` to generate a human-readable URL identifier.
  */
 async function validateShowingSlug(
     doc: HydratedDocument<ReservationSchemaFields>,
@@ -146,27 +91,36 @@ async function validateShowingSlug(
         .lean();
 
     if (!showing) {
-        doc.invalidate("showing", "Invalid showing.");
+        doc.invalidate("showing", "The referenced showing does not exist.");
         return;
     }
 
     doc.slug = generateSlug(
-        (showing.movie as MovieSchemaFields).title,
+        (showing.movie as unknown as MovieSchemaFields).title,
     );
 }
 
 /**
- * Pre-validation middleware.
- *
- * Executes:
- * - Showing slug validation (if modified)
- * - Lifecycle date validation
- * - Reservation-type seating validation
- * - Immutable snapshot creation (creation only)
- *
- * @remarks
- * Snapshot is generated once during initial reservation creation
- * and remains immutable thereafter.
+ * Generates a human-readable, unique alphanumeric verification code for the reservation.
+ * * * **Format:** `RES-XXXXX-XXXXX`
+ * * **Utility:** Uses two 5-character NanoID segments for a balance of brevity and collision resistance.
+ */
+function validateUniqueCode(
+    doc: HydratedDocument<ReservationSchemaFields>,
+): void {
+    const nID = generateNanoID({length: 5});
+    const codeString = `res-${nID()}-${nID()}`;
+
+    doc.uniqueCode = codeString.toUpperCase();
+}
+
+/**
+ * Pre-validation hook: Orchestrates all document-level business logic.
+ * ---
+ * 1. **Relational Sync:** Generates a slug based on the associated movie.
+ * 2. **Integrity:** Validates dates and seating types.
+ * 3. **Identity:** Generates a unique verification code.
+ * 4. **Snapshotting:** Creates an immutable point-in-time record of the showing for new reservations.
  */
 ReservationSchema.pre(
     "validate",
@@ -177,6 +131,7 @@ ReservationSchema.pre(
 
         validateDates(this);
         validateByType(this);
+        validateUniqueCode(this);
 
         if (this.isNew) {
             this.snapshot = await createReservedShowingSnapshot({
@@ -193,16 +148,25 @@ ReservationSchema.pre(
 );
 
 /**
- * Post-save middleware.
- *
- * Locks seats for newly created reservations.
- *
- * @remarks
- * Executed only when the document is first persisted.
- * Seat locking occurs after successful save to preserve data integrity.
+ * Post-save hook: Triggers external side-effects after successful persistence.
+ * ---
+ * * **Inventory Control:** Automatically locks the physical seats once the
+ * reservation record is successfully created.
  */
 ReservationSchema.post("save", async function (this: HydratedDocument<ReservationDoc>) {
     if (this.isNew) {
         await reserveSeatsByReservation(this);
     }
+});
+
+/**
+ * Pre-find hook: Enforces soft-deletion filtering globally for all read queries.
+ */
+ReservationSchema.pre("find", {query: true}, async function (next: () => void) {
+    if (this.getOptions().getSoftDeleted) {
+        return next();
+    }
+
+    this.where({isDeleted: false, deletedAt: null});
+    return next();
 });
