@@ -2,6 +2,9 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
+      "@shared/*": ["shared/*"],
+      "@domains/*": ["domains/*"],
+
       "@config/*": ["shared/config/*"],
       "@models/*": ["domains/users/model/*"]
     },
@@ -13,6 +16,7 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "module": "NodeNext",
+    "moduleResolution": "Bundler",
     "outDir": "dist"
   }
 }
