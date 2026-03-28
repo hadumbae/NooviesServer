@@ -17,7 +17,7 @@ const routes = Router();
  * GET /fetch-by-code/:code
  */
 routes.get(
-    "fetch-by-code/:code",
+    "/fetch-by-code/:code",
     [isAuth],
     asyncHandler(getFetchByUniqueCode)
 );
