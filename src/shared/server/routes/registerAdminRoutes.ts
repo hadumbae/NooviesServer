@@ -18,6 +18,7 @@ import SeatMapRoutes from "../../../domains/seatmap/routing/SeatMapRoutes.js";
 import {ReservationRoutes} from "../../../domains/reservation/routes/ReservationRoutes.js";
 import type {RouteRegistration} from "../registerRoutes.js";
 import {FetchRoutes as FetchAdminReservationRoutes} from "@domains/reservation/features/fetch-reservations/admin";
+import {ReservationUpdateRoutes} from "@domains/reservation/features/update-reservations/routes";
 
 /**
  * Orchestrates the mounting of standard administrative CRUD routes across all functional domains.
@@ -41,6 +42,7 @@ export function registerAdminRoutes(app: Express) {
         {path: "/api/v1/admin/seatmaps", router: SeatMapRoutes},
 
         {path: "/api/v1/admin/reservations", router: ReservationRoutes},
+        {path: "/api/v1/admin/reservations/feat", router: ReservationUpdateRoutes},
         {path: "/api/v1/admin/reservations/feat", router: FetchAdminReservationRoutes},
     ];
 
