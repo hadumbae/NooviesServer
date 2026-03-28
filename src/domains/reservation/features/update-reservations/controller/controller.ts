@@ -6,6 +6,7 @@
 import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
 import type {Request, Response} from "express";
 import {
+    cancelReservation,
     resetReservationExpiry,
     updateReservationNotes
 } from "@domains/reservation/features/update-reservations/service";
@@ -13,9 +14,6 @@ import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
 
 /**
  * Handles the partial update of a reservation's administrative notes.
- * @param req - Express request containing the reservation `_id` in params and notes in the body.
- * @param res - Express response object.
- * @returns A promise resolving to a `200 OK` response with the updated reservation.
  */
 export const patchUpdateReservationNotes: ControllerAsyncFunc = async (
     req: Request, res: Response
@@ -36,9 +34,6 @@ export const patchUpdateReservationNotes: ControllerAsyncFunc = async (
 
 /**
  * Resets the expiration timer for a pending reservation.
- * @param req - Express request containing the reservation `_id` in params.
- * @param res - Express response object.
- * @returns A promise resolving to a `200 OK` response with the new expiration timestamp.
  */
 export const patchResetReservationExpiry: ControllerAsyncFunc = async (
     req: Request, res: Response
@@ -51,6 +46,25 @@ export const patchResetReservationExpiry: ControllerAsyncFunc = async (
     const reservation = await resetReservationExpiry({
         reservationID,
         duration: {days: 1},
+    });
+
+    return res.status(200).json(reservation);
+}
+
+/**
+ * Transitions a reservation to a cancelled state.
+ */
+export const patchCancelReservation: ControllerAsyncFunc = async (
+    req: Request, res: Response
+): Promise<Response> => {
+    const data = req.validatedBody;
+    const {_id} = req.params;
+
+    const reservationID = isValidObjectId(_id);
+
+    const reservation = await cancelReservation({
+        reservationID,
+        data,
     });
 
     return res.status(200).json(reservation);

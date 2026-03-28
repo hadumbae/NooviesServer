@@ -30,3 +30,16 @@ export type ResetReservationExpiryParams = {
      */
     duration?: DurationLike;
 };
+
+/**
+ * Parameters required to transition a reservation to a cancelled state.
+ */
+export type CancelReservationParams = {
+    /** The unique Mongoose identifier for the target reservation document. */
+    reservationID: Types.ObjectId;
+
+    /** * Optional validated input to override or append to the reservation's notes
+     * (e.g., "Customer requested cancellation via phone").
+     */
+    data?: ReservationNotesInput;
+};
