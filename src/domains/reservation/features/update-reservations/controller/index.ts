@@ -1,5 +1,10 @@
-import {patchUpdateReservationNotes} from "@domains/reservation/features/update-reservations/controller/controller";
+import {
+    patchResetReservationExpiry,
+    patchUpdateReservationNotes
+} from "@domains/reservation/features/update-reservations/controller/controller";
 
 export {
-    patchUpdateReservationNotes
+    patchUpdateReservationNotes,
+    patchResetReservationExpiry,
+
 }
