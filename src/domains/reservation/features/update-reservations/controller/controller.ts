@@ -6,7 +6,7 @@
 import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
 import type {Request, Response} from "express";
 import {
-    cancelReservation,
+    cancelReservation, refundReservation,
     resetReservationExpiry,
     updateReservationNotes
 } from "@domains/reservation/features/update-reservations/service";
@@ -63,6 +63,22 @@ export const patchCancelReservation: ControllerAsyncFunc = async (
     const reservationID = isValidObjectId(_id);
 
     const reservation = await cancelReservation({
+        reservationID,
+        data,
+    });
+
+    return res.status(200).json(reservation);
+}
+
+export const patchRefundReservation: ControllerAsyncFunc = async (
+    req: Request, res: Response
+): Promise<Response> => {
+    const data = req.validatedBody;
+    const {_id} = req.params;
+
+    const reservationID = isValidObjectId(_id);
+
+    const reservation = await refundReservation({
         reservationID,
         data,
     });

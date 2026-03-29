@@ -4,17 +4,19 @@
  */
 
 import type {
-    CancelReservationParams,
+    CancelReservationParams, RefundReservationParams,
     ResetReservationExpiryParams,
     UpdateReservationNotesParams
 } from "@domains/reservation/features/update-reservations/service/service.types";
 import type {AdminReservation} from "@domains/reservation/features/fetch-reservations/admin";
 import createHttpError from "http-errors";
-import {
-    fetchAdminReservationByID
-} from "@domains/reservation/features/fetch-reservations/admin/utilities/fetchAdminReservationByID";
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {DateTime} from "luxon";
+
+import {
+    fetchAdminReservationByID,
+    fetchRequiredAdminReservation
+} from "@domains/reservation/features/fetch-reservations/admin/utilities";
 
 /**
  * Updates the administrative notes for a specific reservation.
@@ -94,6 +96,35 @@ export const cancelReservation = async (
 
     reservation.status = "CANCELLED";
     reservation.dateCancelled = new Date();
+    reservation.notes = data?.notes ?? reservation.notes ?? null;
+
+    await reservation.save();
+
+    return reservation;
+}
+
+/**
+ * Transition a reservation to a refunded state.
+ * @param params - Object containing the target `reservationID` and optional notes.
+ * @returns The updated reservation document with the `REFUNDED` status.
+ * @throws 404 if the reservation does not exist.
+ * @throws 409 if the status is not `PAID` or `CANCELLED`.
+ */
+export const refundReservation = async (
+    {reservationID, data}: RefundReservationParams
+) => {
+    const reservation = await fetchRequiredAdminReservation(reservationID);
+
+    if (reservation.status !== "PAID" && reservation.status !== "CANCELLED") {
+        throw createHttpError(409, "Invalid status, must be 'PAID' or 'CANCELLED'.");
+    }
+
+    if (reservation.status === "PAID") {
+        reservation.dateCancelled = new Date();
+    }
+
+    reservation.status = "REFUNDED";
+    reservation.dateRefunded = new Date();
     reservation.notes = data?.notes ?? reservation.notes ?? null;
 
     await reservation.save();

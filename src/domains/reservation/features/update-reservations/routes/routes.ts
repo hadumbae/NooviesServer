@@ -10,7 +10,7 @@ import {ReservationNotesInputSchema} from "@domains/reservation/features/update-
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {
     patchUpdateReservationNotes,
-    patchResetReservationExpiry, patchCancelReservation
+    patchResetReservationExpiry, patchCancelReservation, patchRefundReservation
 } from "@domains/reservation/features/update-reservations/controller";
 
 /**
@@ -44,6 +44,15 @@ routes.patch(
     "/update/:_id/cancel",
     [isAuth, validateZodSchema(ReservationNotesInputSchema)],
     asyncHandler(patchCancelReservation),
+);
+
+/**
+ * PATCH /api/v1/admin/reservations/feat/update/:_id/refund
+ */
+routes.patch(
+    "/update/:_id/cancel",
+    [isAuth, validateZodSchema(ReservationNotesInputSchema)],
+    asyncHandler(patchRefundReservation),
 );
 
 export {

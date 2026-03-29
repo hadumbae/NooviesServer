@@ -43,3 +43,16 @@ export type CancelReservationParams = {
      */
     data?: ReservationNotesInput;
 };
+
+/**
+ * Parameters required to execute a refund for a reservation.
+ */
+export type RefundReservationParams = {
+    /** The unique Mongoose identifier for the target reservation document. */
+    reservationID: Types.ObjectId;
+
+    /** * Optional validated input to document the refund reason or transaction ID
+     * within the administrative notes.
+     */
+    data?: ReservationNotesInput;
+};
