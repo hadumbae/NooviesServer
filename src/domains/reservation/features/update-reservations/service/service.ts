@@ -104,16 +104,19 @@ export const cancelReservation = async (
 }
 
 /**
- * Transition a reservation to a refunded state.
- * @param params - Object containing the target `reservationID` and optional notes.
+ * Transitions a reservation to a `REFUNDED` state.
+ * @param params - Object containing the target `reservationID` and optional refund notes.
  * @returns The updated reservation document with the `REFUNDED` status.
- * @throws 404 if the reservation does not exist.
- * @throws 409 if the status is not `PAID` or `CANCELLED`.
+ * @throws 409 - If the reservation was never paid or is not in a valid state for refunding.
  */
 export const refundReservation = async (
     {reservationID, data}: RefundReservationParams
 ) => {
     const reservation = await fetchRequiredAdminReservation(reservationID);
+
+    if (!reservation.isPaid) {
+        throw createHttpError(409, "Invalid status, must be a paid reservation.");
+    }
 
     if (reservation.status !== "PAID" && reservation.status !== "CANCELLED") {
         throw createHttpError(409, "Invalid status, must be 'PAID' or 'CANCELLED'.");
