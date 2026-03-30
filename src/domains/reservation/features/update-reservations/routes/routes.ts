@@ -50,7 +50,7 @@ routes.patch(
  * PATCH /api/v1/admin/reservations/feat/update/:_id/refund
  */
 routes.patch(
-    "/update/:_id/cancel",
+    "/update/:_id/refund",
     [isAuth, validateZodSchema(ReservationNotesInputSchema)],
     asyncHandler(patchRefundReservation),
 );
