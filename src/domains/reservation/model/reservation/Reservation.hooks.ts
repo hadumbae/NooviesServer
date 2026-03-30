@@ -7,13 +7,15 @@ import ReservationSchema from "./Reservation.schema.js";
 import type {HydratedDocument} from "mongoose";
 import type {ReservationSchemaFields, ReservationDoc} from "./Reservation.types.js";
 import {DateTime} from "luxon";
-import {createReservedShowingSnapshot} from "../../utilities/snapshots/createReservedShowingSnapshot.js";
 import type {ReservationStatus} from "../../schemas/enum/ReservationStatusEnumSchema.js";
-import {reserveSeatsByReservation} from "../../modules/ReservationSeatingUtils.js";
 import {
     generateReservationSlug,
     generateReservationUniqueCode
 } from "../../features/generate-reservation-code/index.js";
+import {
+    createReservedShowingSnapshot,
+    reserveReservationSeats
+} from "@domains/reservation/features/reserve-tickets/services";
 
 /**
  * Mapping of reservation statuses to their mandatory audit timestamp fields.
@@ -123,7 +125,7 @@ ReservationSchema.pre("validate", async function (this: HydratedDocument<Reserva
  */
 ReservationSchema.post("save", async function (this: HydratedDocument<ReservationDoc>) {
     if (this.isNew) {
-        await reserveSeatsByReservation(this);
+        await reserveReservationSeats(this);
     }
 });
 

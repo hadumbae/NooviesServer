@@ -22,6 +22,7 @@ export const BOOKING_ERROR_CODES = [
     "ERR_RESERVATION_NOT_FOUND",
     "ERR_UNAUTHORIZED",
     "ERR_RESERVATION_EXPIRED",
+    "ERR_UNKNOWN_ERROR",
 ] as const;
 
 /**

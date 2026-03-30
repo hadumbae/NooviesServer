@@ -8,10 +8,10 @@ import type {RouteRegistration} from "../registerRoutes.js";
 import {MovieBrowseRoutes} from "../../../domains/movie/routing/client/MovieBrowseRoutes.js";
 import {TheatreBrowseRoutes} from "../../../domains/theatre/routing/TheatreBrowseRoutes.js";
 import {ScreenBrowseRoutes} from "../../../domains/screen/routing/ScreenBrowseRoutes.js";
-import {ReservationUtilityRoutes} from "../../../domains/reservation/routes/ReservationUtilityRoutes.js";
-import {TicketRoutes} from "../../../domains/reservation/routes/TicketRoutes.js";
+import {ReserveTicketsRoutes} from "@domains/reservation/features/reserve-tickets/routes/routes";
 import {UserProfileRoutes} from "../../../domains/users/routing/UserProfileRoutes.js";
 import {MyMovieReviewsRoutes} from "../../../domains/movieReview/routes/MyMovieReviewsRoutes.js";
+import {ReservationUtilityRoutes} from "@domains/reservation/features/fetch-client-reservations/routes";
 
 /**
  * Mounts all primary routes intended for end-user consumption.
@@ -24,7 +24,7 @@ export function registerClientRoutes(app: Express) {
         {path: "/api/v1/browse/screens", router: ScreenBrowseRoutes},
 
         {path: "/api/v1/reservations/utils", router: ReservationUtilityRoutes},
-        {path: "/api/v1/tickets", router: TicketRoutes},
+        {path: "/api/v1/tickets", router: ReserveTicketsRoutes},
 
         {path: "/api/v1/profile", router: UserProfileRoutes},
         {path: "/api/v1/user/reviews", router: MyMovieReviewsRoutes},
