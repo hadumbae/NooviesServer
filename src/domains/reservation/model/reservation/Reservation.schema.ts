@@ -10,9 +10,9 @@ import ISO4217CurrencyCodesConstant from "../../../../shared/constants/currency/
 import ReservationStatusConstant from "../../constants/ReservationStatusConstant.js";
 import {ReservationTypeConstant} from "../../constants/ReservationTypeConstant.js";
 import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOptions.js";
-import {IsDeletedSchemaTypeOptions} from "../../../../shared/model/IsDeletedSchemaTypeOptions.js";
-import {DeletedAtSchemaTypeOptions} from "../../../../shared/model/DeletedAtSchemaTypeOptions.js";
-import type {ModelSoftDeleteMethods} from "../../../../shared/types/schema/ModelSoftDelete.js";
+import {IsDeletedSchemaTypeOptions} from "@shared/model/IsDeletedSchemaTypeOptions";
+import {DeletedAtSchemaTypeOptions} from "@shared/model/DeletedAtSchemaTypeOptions";
+import type {ModelSoftDeleteMethods} from "@shared/types/schema/ModelSoftDelete";
 
 /**
  * TypeScript type representing the compiled Reservation Model.
@@ -114,6 +114,12 @@ const ReservationSchema = new Schema<
             message: "Invalid type value.",
         },
         required: [true, "Type is required for reservation."],
+    },
+
+    /** Direct flag for payment confirmation; defaults to false until gateway callback. */
+    isPaid: {
+        type: Boolean,
+        default: false,
     },
 
     /** Immutable point-in-time copy of data to ensure ticket integrity if source records change. */
