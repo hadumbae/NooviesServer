@@ -1,5 +1,5 @@
-import {ReservationUtilityRoutes} from "@domains/reservation/features/fetch-client-reservations/routes/routes";
+import {FetchClientReservationRoutes} from "@domains/reservation/features/fetch-client-reservations/routes/routes";
 
 export {
-    ReservationUtilityRoutes,
+    FetchClientReservationRoutes,
 }

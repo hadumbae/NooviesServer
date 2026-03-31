@@ -14,11 +14,11 @@ const router = Router();
  * GET `/user/fetch-reservations`
  */
 router.get(
-    "/user/fetch-reservations",
+    "/user/paginated",
     [isAuth],
     asyncHandler(fetchReservationsForUser),
 );
 
 export {
-    router as ReservationUtilityRoutes,
+    router as FetchClientReservationRoutes,
 };

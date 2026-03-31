@@ -10,11 +10,6 @@ import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import {ReserveTicketInputSchema} from "@domains/reservation/features/reserve-tickets/schemas/inputSchema";
 
-import {
-    patchCancelClientReservation,
-    patchCheckoutClientReservation,
-} from "@domains/reservation/features/client-reservations/controllers";
-
 import {postReserveTickets} from "@domains/reservation/features/reserve-tickets/controllers";
 
 const router = Router();
@@ -28,23 +23,6 @@ router.post(
     asyncHandler(postReserveTickets),
 );
 
-/**
- * Completes checkout for an existing reservation.
- */
-router.patch(
-    "/checkout/:resID",
-    [isAuth],
-    asyncHandler(patchCheckoutClientReservation),
-);
-
-/**
- * Cancels an existing reservation.
- */
-router.patch(
-    "/cancel/:resID",
-    [isAuth],
-    asyncHandler(patchCancelClientReservation),
-);
 
 export {
     router as ReserveTicketsRoutes,
