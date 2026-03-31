@@ -12,12 +12,12 @@ import Seat from "@domains/seat/model/Seat.model";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import SeatMap from "@domains/seatmap/model/SeatMap.model";
 import type {SeatMapSchemaFields} from "@domains/seatmap/model/SeatMap.types";
-import {ReservationPopulateRefs} from "@domains/reservation/constants/ReservationPopulateRefs";
 import {RequestValidationError} from "@shared/errors/RequestValidationError";
 import {
     type ReserveTicketPersistenceData,
     ReserveTicketPersistenceSchema
 } from "@domains/reservation/features/reserve-tickets/schemas";
+import {ReservationPopulateRefs} from "@domains/reservation/constants";
 
 /**
  * Main entry point for initiating a ticket reservation hold.

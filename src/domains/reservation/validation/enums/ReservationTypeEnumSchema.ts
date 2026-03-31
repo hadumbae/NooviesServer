@@ -8,7 +8,7 @@
  */
 
 import {z} from "zod";
-import {ReservationTypeConstant} from "../../constants/ReservationTypeConstant.js";
+import {ReservationTypeConstant} from "@domains/reservation/constants";
 
 /**
  * Zod schema for reservation type values.

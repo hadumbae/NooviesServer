@@ -7,12 +7,11 @@ import {type Model, Schema} from "mongoose";
 import {ReservedShowingSnapshotSchema} from "../snapshots/showing-snapshot/ReservedShowingSnapshot.schema.js";
 import type {ReservationSchemaFields} from "./Reservation.types.js";
 import ISO4217CurrencyCodesConstant from "../../../../shared/constants/currency/ISO4217CurrencyCodesConstant.js";
-import ReservationStatusConstant from "../../constants/ReservationStatusConstant.js";
-import {ReservationTypeConstant} from "../../constants/ReservationTypeConstant.js";
 import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOptions.js";
 import {IsDeletedSchemaTypeOptions} from "@shared/model/IsDeletedSchemaTypeOptions";
 import {DeletedAtSchemaTypeOptions} from "@shared/model/DeletedAtSchemaTypeOptions";
 import type {ModelSoftDeleteMethods} from "@shared/types/schema/ModelSoftDelete";
+import {ReservationStatusConstant, ReservationTypeConstant} from "@domains/reservation/constants";
 
 /**
  * TypeScript type representing the compiled Reservation Model.

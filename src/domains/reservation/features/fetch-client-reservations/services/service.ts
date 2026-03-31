@@ -4,10 +4,10 @@
  */
 
 import Reservation from "../../../model/reservation/Reservation.model";
-import {ReservationPopulateRefs} from "../../../constants/ReservationPopulateRefs";
 import type {FetchPaginatedUserReservationsParams} from "./service.types";
 import type {ReservationSchemaFields} from "../../../model/reservation/Reservation.types";
 import type {PaginationReturns} from "@shared/types/PaginationReturns";
+import {ReservationPopulateRefs} from "@domains/reservation/constants";
 
 /**
  * Retrieves a paginated collection of reservations belonging to a specific user.

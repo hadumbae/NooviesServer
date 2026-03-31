@@ -21,11 +21,11 @@
 import Reservation from "../model/reservation/Reservation.model.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
-import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
-import { BaseRepository } from "../../../shared/repository/BaseRepository.js";
-import { ReservationCRUDController } from "../controllers/ReservationCRUDController.js";
-import { ReservationQueryOptionService } from "../services/query-options/ReservationQueryOptionService.js";
-import { ReservationPopulateRefs } from "../constants/ReservationPopulateRefs.js";
+import type { PopulatePath } from "@shared/types/mongoose/PopulatePath";
+import { BaseRepository } from "@shared/repository/BaseRepository";
+import { ReservationCRUDController } from "@domains/reservation/features/reservation-crud/controllers/controller";
+import { ReservationQueryOptionService } from "domains/reservation/features/get-query-options/services";
+import {ReservationPopulateRefs} from "@domains/reservation/constants";
 
 /**
  * Service provider for Reservation domain bindings.

@@ -19,7 +19,7 @@
  * - Selected seating resolves its seat reference
  */
 
-import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
 import {ShowingPopulateRefs} from "../../showing/constants/ShowingPopulateRefs.js";
 
 /**

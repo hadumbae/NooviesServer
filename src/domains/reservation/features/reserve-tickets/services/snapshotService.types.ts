@@ -3,8 +3,8 @@
  * @filename snapshotService.types.ts
  */
 
-import type {ReservationType} from "@domains/reservation/schemas/enum/ReservationTypeEnumSchema";
 import {Types} from "mongoose";
+import type {ReservationType} from "@domains/reservation/validation/enums";
 
 /**
  * Input parameters required to generate a historically accurate showing snapshot.

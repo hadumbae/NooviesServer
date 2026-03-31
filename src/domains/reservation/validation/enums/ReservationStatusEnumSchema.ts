@@ -10,7 +10,7 @@
  */
 
 import { z } from "zod";
-import ReservationStatusConstant from "../../constants/ReservationStatusConstant.js";
+import {ReservationStatusConstant} from "@domains/reservation/constants";
 
 /**
  * Reservation status validation schema.

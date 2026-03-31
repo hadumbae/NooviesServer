@@ -7,7 +7,6 @@ import ReservationSchema from "./Reservation.schema.js";
 import type {HydratedDocument} from "mongoose";
 import type {ReservationSchemaFields, ReservationDoc} from "./Reservation.types.js";
 import {DateTime} from "luxon";
-import type {ReservationStatus} from "../../schemas/enum/ReservationStatusEnumSchema.js";
 import {
     generateReservationSlug,
     generateReservationUniqueCode
@@ -16,6 +15,7 @@ import {
     createReservedShowingSnapshot,
     reserveReservationSeats
 } from "@domains/reservation/features/reserve-tickets/services";
+import type {ReservationStatus} from "@domains/reservation/validation/enums";
 
 /**
  * Mapping of reservation statuses to their mandatory audit timestamp fields.

@@ -8,16 +8,16 @@
  */
 
 import { z } from "zod";
-import { MovieSnapshotInputSchema } from "../../movie/schema/MovieSnapshotInputSchema.js";
-import { TheatreSnapshotInputSchema } from "../../theatre/schema/TheatreSnapshotInputSchema.js";
-import { ScreenSnapshotInputSchema } from "../../screen/schema/ScreenSnapshotInputSchema.js";
-import generateArraySchema from "../../../shared/utility/schema/generateArraySchema.js";
-import { ReservedSeatSnapshotInputSchema } from "../../seatmap/schema/ReservedSeatSnapshotInputSchema.js";
-import { ValidDateInstanceSchema } from "../../../shared/schema/date-time/ValidDateInstanceSchema.js";
-import { PositiveNumberSchema } from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import { BooleanValueSchema } from "../../../shared/schema/booleans/BooleanValueSchema.js";
-import { ReservationTypeEnumSchema } from "./enum/ReservationTypeEnumSchema.js";
-import { ISO6391LanguageCodeSchema } from "../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
+import generateArraySchema from "@shared/utility/schema/generateArraySchema";
+import { ValidDateInstanceSchema } from "@shared/schema/date-time/ValidDateInstanceSchema";
+import { PositiveNumberSchema } from "@shared/schema/numbers/PositiveNumberSchema";
+import { BooleanValueSchema } from "@shared/schema/booleans/BooleanValueSchema";
+import { ISO6391LanguageCodeSchema } from "@shared/schema/enums/ISO6391LanguageCodeSchema";
+import {ReservationTypeEnumSchema} from "@domains/reservation/validation/enums";
+import {MovieSnapshotInputSchema} from "@domains/movie/schema/MovieSnapshotInputSchema";
+import {TheatreSnapshotInputSchema} from "@domains/theatre/schema/TheatreSnapshotInputSchema";
+import {ScreenSnapshotInputSchema} from "@domains/screen/schema/ScreenSnapshotInputSchema";
+import {ReservedSeatSnapshotInputSchema} from "@domains/seatmap/schema/ReservedSeatSnapshotInputSchema";
 
 /**
  * Input validation schema for reserved showing snapshot creation.

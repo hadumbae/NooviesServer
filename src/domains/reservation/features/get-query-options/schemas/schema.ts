@@ -1,8 +1,7 @@
 import { z } from "zod";
-import { ObjectIdStringSchema } from "../../../../shared/schema/mongoose/ObjectIdStringSchema.js";
-import { ReservationStatusEnumSchema } from "../enum/ReservationStatusEnumSchema.js";
-import { ReservationTypeEnumSchema } from "../enum/ReservationTypeEnumSchema.js";
-import { URLParamMongooseSortOrderSchema } from "../../../../shared/schema/url/URLParamMongooseSortOrderSchema.js";
+import {URLParamMongooseSortOrderSchema} from "@shared/schema/url/URLParamMongooseSortOrderSchema";
+import {ReservationStatusEnumSchema, ReservationTypeEnumSchema} from "@domains/reservation/validation/enums";
+import {ObjectIdStringSchema} from "@shared/schema/mongoose/ObjectIdStringSchema";
 
 /**
  * @file ReservationQueryOption.schema.ts

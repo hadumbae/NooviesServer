@@ -8,12 +8,15 @@
  * required for historical, operational, and financial integrity.
  */
 
-import type { ISO6391LanguageCode } from "../../../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
-import type { ScreenSnapshotSchemaFields } from "../../../../screen/model/screen-snapshot/ScreenSnapshot.types.js";
-import type { MovieSnapshotSchemaFields } from "../../../../movie/model/movie-snapshot/MovieSnapshot.types.js";
-import type { ReservedSeatSnapshotSchemaFields } from "../../../../seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.types.js";
-import type { ReservationType } from "../../../schemas/enum/ReservationTypeEnumSchema.js";
-import type { TheatreSnapshotSchemaFields } from "../../../../theatre/model/theatre-snapshot/TheatreSnapshot.types.js";
+
+import type {ReservationType} from "@domains/reservation/validation/enums";
+import type {ISO6391LanguageCode} from "@shared/schema/enums/ISO6391LanguageCodeSchema";
+import type {
+    ReservedSeatSnapshotSchemaFields
+} from "@domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.types";
+import type {MovieSnapshotSchemaFields} from "@domains/movie/model/movie-snapshot/MovieSnapshot.types";
+import type {ScreenSnapshotSchemaFields} from "@domains/screen/model/screen-snapshot/ScreenSnapshot.types";
+import type {TheatreSnapshotSchemaFields} from "@domains/theatre/model/theatre-snapshot/TheatreSnapshot.types";
 
 /**
  * Immutable snapshot of a reserved showing.

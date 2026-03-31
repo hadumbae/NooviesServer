@@ -24,12 +24,12 @@
 
 import { Schema, type SchemaDefinitionProperty } from "mongoose";
 import type { ReservedShowingSnapshotSchemaFields } from "./ReservedShowingSnapshot.types.js";
-import ISO6391CodeConstant from "../../../../../shared/constants/language/ISO6391CodeConstant.js";
-import { MovieSnapshotSchema } from "../../../../movie/model/movie-snapshot/MovieSnapshot.schema.js";
-import { TheatreSnapshotSchema } from "../../../../theatre/model/theatre-snapshot/TheatreSnapshot.schema.js";
-import { ScreenSnapshotSchema } from "../../../../screen/model/screen-snapshot/ScreenSnapshot.schema.js";
-import { ReservedSeatSnapshotSchema } from "../../../../seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.schema.js";
-import { ReservationTypeConstant } from "../../../constants/ReservationTypeConstant.js";
+import {ReservationTypeConstant} from "@domains/reservation/constants";
+import ISO6391CodeConstant from "@shared/constants/language/ISO6391CodeConstant";
+import {MovieSnapshotSchema} from "@domains/movie/model/movie-snapshot/MovieSnapshot.schema";
+import {TheatreSnapshotSchema} from "@domains/theatre/model/theatre-snapshot/TheatreSnapshot.schema";
+import {ScreenSnapshotSchema} from "@domains/screen/model/screen-snapshot/ScreenSnapshot.schema";
+import {ReservedSeatSnapshotSchema} from "@domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.schema";
 
 /**
  * Reusable ISO 639-1 language field definition.

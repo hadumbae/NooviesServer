@@ -9,16 +9,16 @@
  * query option handling.
  */
 
-import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type {ReservationSchemaFields} from "../model/reservation/Reservation.types.js";
+import BaseCRUDController from "@shared/controller/base-crud-controller/BaseCRUDController";
+import type {ReservationSchemaFields} from "../../../model/reservation/Reservation.types";
 import type {
     ReservationCRUDConstructor,
     ReservationCRUDMethods,
-} from "./ReservationCRUDController.types.js";
-import type {ReservationQueryOptionService} from "../services/query-options/ReservationQueryOptionService.js";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
+} from "./controller.types";
 import type {Request} from "express";
-import type {ReservationQueryMatchFilters} from "../schemas/query/ReservationQueryOption.types.js";
+import type {ReservationQueryMatchFilters} from "@domains/reservation/features/get-query-options/schemas";
+import {ReservationQueryOptionService} from "@domains/reservation/features/get-query-options/services";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 
 /**
  * Reservation CRUD controller.

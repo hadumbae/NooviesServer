@@ -10,10 +10,10 @@
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams,
-} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type {ReservationSchemaFields} from "../model/reservation/Reservation.types.js";
-import type {ReservationQueryOptionService} from "../services/query-options/ReservationQueryOptionService.js";
-import type {ReservationQueryMatchFilters} from "../schemas/query/ReservationQueryOption.types.js";
+} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+import type {ReservationSchemaFields} from "@domains/reservation/model/reservation/Reservation.types";
+import {ReservationQueryOptionService} from "@domains/reservation/features/get-query-options/services";
+import type {ReservationQueryMatchFilters} from "@domains/reservation/features/get-query-options/schemas";
 
 /**
  * Constructor contract for {@link ReservationCRUDController}.

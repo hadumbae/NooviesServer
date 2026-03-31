@@ -11,7 +11,6 @@ import Showing from "@domains/showing/models/showing/Showing.model";
 import ShowingModel from "@domains/showing/models/showing/Showing.model";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
-import {ReservedShowingSnapshotInputSchema} from "../../../schemas/ReservedShowingSnapshotInputSchema";
 import {createMovieSnapshot} from "@domains/movie/utilities/snapshots/createMovieSnapshot";
 import {createTheatreSnapshot} from "@domains/theatre/utilities/snapshots/createTheatreSnapshot";
 import {createScreenSnapshot} from "@domains/screen/utilities/snapshot/createScreenSnapshot";
@@ -20,6 +19,7 @@ import {createReservedSeatSnapshot} from "@domains/seatmap/utilities/snapshots/c
 import type {
     CreateReservedShowingSnapshotParams
 } from "@domains/reservation/features/reserve-tickets/services/snapshotService.types";
+import {ReservedShowingSnapshotInputSchema} from "@domains/reservation/features/reserve-tickets/schemas";
 
 /**
  * Internal interface representing a Showing document with unresolved ObjectIDs.
@@ -53,18 +53,16 @@ export async function createReservedShowingSnapshot(
 
     const {movie, theatre, screen} = showing as ShowingWithReferences;
 
-
-    const {data, success, error} =
-        ReservedShowingSnapshotInputSchema.safeParse({
-            ...showing,
-            pricePaid,
-            ticketCount,
-            reservationType,
-            movie: await createMovieSnapshot(movie),
-            theatre: await createTheatreSnapshot(theatre),
-            screen: await createScreenSnapshot(screen),
-            selectedSeats: await createReservedSeatSnapshot(selectedSeating),
-        });
+    const {data, success, error} = ReservedShowingSnapshotInputSchema.safeParse({
+        ...showing,
+        pricePaid,
+        ticketCount,
+        reservationType,
+        movie: await createMovieSnapshot(movie),
+        theatre: await createTheatreSnapshot(theatre),
+        screen: await createScreenSnapshot(screen),
+        selectedSeats: await createReservedSeatSnapshot(selectedSeating),
+    });
 
     if (!success) {
         throw new InconsistentDataError({

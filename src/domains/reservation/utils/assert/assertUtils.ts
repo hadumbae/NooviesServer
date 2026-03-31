@@ -8,18 +8,18 @@ import {calculateDateNow} from "@shared/utility/date/LuxonDateUtils";
 import {BookingError} from "@shared/errors/reservations/BookingError";
 import {Types} from "mongoose";
 import Reservation from "../../model/reservation/Reservation.model";
-import type {ReservationDocument} from "../../types/ReservationTypes";
 import type {AssertReservationOwnershipParams} from "./assertUtils.types";
+import type {DocumentType} from "@shared/types/mongoose/DocumentType";
 
 /**
  * Retrieves a reservation document or terminates the request with a 404 error.
  * @param _id - The unique MongoDB ObjectId of the reservation.
- * @returns A promise resolving to the hydrated {@link ReservationDocument}.
+ * @returns A promise resolving to the hydrated {@link DocumentType}.
  * @throws {BookingError} 404 - If the identifier does not match any record.
  */
 export const assertReservationExists = async (
     _id: Types.ObjectId
-): Promise<ReservationDocument> => {
+): Promise<DocumentType<ReservationSchemaFields>> => {
     const reservation = await Reservation.findById(_id);
 
     if (!reservation) {

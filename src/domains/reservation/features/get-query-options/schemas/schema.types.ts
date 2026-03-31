@@ -3,7 +3,7 @@ import {
     ReservationQueryMatchFilterSchema,
     ReservationQueryMatchSortSchema,
     ReservationQueryOptionSchema,
-} from "./ReservationQueryOption.schema.js";
+} from "./schema";
 
 /**
  * Match filter options for reservation queries.
