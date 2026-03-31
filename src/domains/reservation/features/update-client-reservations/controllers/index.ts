@@ -1,7 +1,7 @@
 import {
     patchCancelClientReservation,
     patchCheckoutClientReservation,
-} from "@domains/reservation/features/client-reservations/controllers/controller";
+} from "@domains/reservation/features/update-client-reservations/controllers/controller";
 
 export {
     patchCheckoutClientReservation,

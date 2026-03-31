@@ -10,7 +10,7 @@ import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
 import {
     cancelClientReservation,
     checkoutClientReservation
-} from "@domains/reservation/features/client-reservations/services";
+} from "@domains/reservation/features/update-client-reservations/services";
 
 /**
  * Handles the checkout (finalization) of a pending reservation hold.

@@ -12,7 +12,7 @@ import {ReserveTicketsRoutes} from "@domains/reservation/features/reserve-ticket
 import {UserProfileRoutes} from "../../../domains/users/routing/UserProfileRoutes.js";
 import {MyMovieReviewsRoutes} from "../../../domains/movieReview/routes/MyMovieReviewsRoutes.js";
 import {FetchClientReservationRoutes} from "@domains/reservation/features/fetch-client-reservations/routes";
-import {UpdateClientReservationRoutes} from "@domains/reservation/features/client-reservations/routes";
+import {UpdateClientReservationRoutes} from "@domains/reservation/features/update-client-reservations/routes";
 
 /**
  * Mounts all primary routes intended for end-user consumption.
