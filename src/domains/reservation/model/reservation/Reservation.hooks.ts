@@ -104,9 +104,10 @@ ReservationSchema.pre("validate", async function (this: HydratedDocument<Reserva
 
         validateDates(this);
         validateByType(this);
-        validateUniqueCode(this);
 
         if (this.isNew) {
+            validateUniqueCode(this);
+
             this.snapshot = await createReservedShowingSnapshot({
                 reservationType: this.reservationType,
                 ticketCount: this.ticketCount,
