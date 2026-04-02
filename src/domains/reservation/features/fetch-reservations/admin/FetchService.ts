@@ -18,6 +18,6 @@ export const fetchByUniqueCode = async (
 ): Promise<AdminReservation | null> => {
     return Reservation
         .findOne({uniqueCode})
-        .populate({path: "user", select: "_id name email"})
+        .populate({path: "user", select: "_id name email uniqueCode"})
         .lean<AdminReservation>();
 }
