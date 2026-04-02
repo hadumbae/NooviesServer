@@ -3,7 +3,7 @@
  * @filename generateReservationUniqueCode.ts
  */
 
-import {generateNanoID} from "../../../../shared/utility/generateNanoID.js";
+import {generateNanoID} from "@shared/utility/generateNanoID";
 
 /**
  * Generates a human-readable, high-entropy unique identifier for reservation validation.

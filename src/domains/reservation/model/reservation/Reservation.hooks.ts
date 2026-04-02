@@ -8,7 +8,6 @@ import type {HydratedDocument} from "mongoose";
 import type {ReservationSchemaFields, ReservationDoc} from "./Reservation.types.js";
 import {DateTime} from "luxon";
 import {
-    generateReservationSlug,
     generateReservationUniqueCode
 } from "../../features/generate-reservation-code/index.js";
 import {
@@ -16,10 +15,13 @@ import {
     reserveReservationSeats
 } from "@domains/reservation/features/reserve-tickets/services";
 import type {ReservationStatus} from "@domains/reservation/validation/enums";
+import SeatMap from "@domains/seatmap/model/SeatMap.model";
+import generateSlug from "@shared/utility/generateSlug";
+import type {PopulatedShowing} from "@domains/showing/models/showing/Showing.types";
 
 /**
  * Mapping of reservation statuses to their mandatory audit timestamp fields.
- * * Ensures that terminal or transitional states have the matching date recorded for audit trails.
+ * Ensures that terminal or transitional states have the matching date recorded for audit trails.
  */
 const REQUIRED_DATES_BY_STATUS: Partial<Record<ReservationStatus, keyof ReservationSchemaFields>> = {
     PAID: "datePaid",
@@ -29,97 +31,68 @@ const REQUIRED_DATES_BY_STATUS: Partial<Record<ReservationStatus, keyof Reservat
 } as const;
 
 /**
- * Internal validator for enforcing temporal business rules.
+ * Pre-validation hook: Orchestrates all document-level business logic and field initialization.
  */
-function validateDates(doc: HydratedDocument<ReservationSchemaFields>): void {
-    const requiredDate = REQUIRED_DATES_BY_STATUS[doc.status];
+ReservationSchema.pre("validate", async function (this: HydratedDocument<ReservationSchemaFields>, next: () => void) {
+    // --- Is New ? ---
 
-    if (requiredDate && !doc[requiredDate]) {
-        doc.invalidate(requiredDate, `Required for reservations with status "${doc.status}".`);
-    }
+    if (this.isNew) {
+        this.uniqueCode = generateReservationUniqueCode();
 
-    if (doc.status === "RESERVED" && (doc.isNew || doc.isModified("expiresAt"))) {
-        const now = DateTime.utc();
-        const expiresAt = DateTime.fromJSDate(doc.expiresAt).toUTC();
+        this.snapshot = await createReservedShowingSnapshot({
+            reservationType: this.reservationType,
+            ticketCount: this.ticketCount,
+            pricePaid: this.pricePaid,
+            selectedSeating: this.selectedSeating,
+            showingID: this.showing,
+        });
 
-        if (!(expiresAt > now)) {
-            doc.invalidate("expiresAt", "Must be a future date for reserved reservations.");
+        await this.populate({path: "showing", populate: {path: "movie"}});
+
+        if (!this.showing) {
+            this.invalidate("slug", "Failed to generate slug. Please use a valid `showing`.");
+        } else {
+            this.slug = generateSlug((this.showing as unknown as PopulatedShowing).movie.title);
         }
     }
-}
 
-/**
- * Validates seating requirements based on the chosen reservation type.
- * * **RESERVED_SEATS:** Strictly requires a non-empty array of seat identifiers.
- * * **GENERAL_ADMISSION:** Explicitly forbids the presence of a seating array.
- */
-function validateByType(doc: HydratedDocument<ReservationSchemaFields>): void {
-    if (doc.reservationType === "RESERVED_SEATS") {
-        if (!Array.isArray(doc.selectedSeating) || doc.selectedSeating.length === 0) {
-            doc.invalidate(
+    // --- Validate Dates ---
+
+    const requiredDate = REQUIRED_DATES_BY_STATUS[this.status];
+
+    if (requiredDate && !this[requiredDate]) {
+        this.invalidate(requiredDate, `Required for reservations with status "${this.status}".`);
+    }
+
+    if (this.status === "RESERVED" && (this.isNew || this.isModified("expiresAt"))) {
+        const now = DateTime.utc();
+        const expiresAt = DateTime.fromJSDate(this.expiresAt).toUTC();
+
+        if (!(expiresAt > now)) {
+            this.invalidate("expiresAt", "Must be a future date for reserved reservations.");
+        }
+    }
+
+    // --- Validate Types ---
+
+    if (this.reservationType === "RESERVED_SEATS") {
+        if (!Array.isArray(this.selectedSeating) || this.selectedSeating.length === 0) {
+            this.invalidate(
                 "selectedSeating",
                 "Specific seat selections are required for this reservation type.",
             );
         }
     }
 
-    if (doc.reservationType === "GENERAL_ADMISSION" && doc.selectedSeating?.length) {
-        doc.invalidate(
+    if (this.reservationType === "GENERAL_ADMISSION" && this.selectedSeating?.length) {
+        this.invalidate(
             "selectedSeating",
             "Seat selections cannot be provided for general admission bookings.",
         );
     }
-}
 
-/**
- * Synchronizes the reservation slug with the associated movie's current title.
- * * Loads the related `Showing` and `Movie` to generate a human-readable URL identifier.
- */
-async function validateShowingSlug(doc: HydratedDocument<ReservationSchemaFields>): Promise<void> {
-    const slug = await generateReservationSlug(doc.showing);
-
-    if (!slug) {
-        doc.invalidate("slug", "Failed to generate slug. Please use a valid `showing`.");
-        return;
-    }
-
-    doc.slug = slug;
-}
-
-/**
- * Generates a human-readable, unique alphanumeric verification code for the reservation.
- * * **Format:** `RES-XXXXX-XXXXX`
- */
-function validateUniqueCode(doc: HydratedDocument<ReservationSchemaFields>): void {
-    doc.uniqueCode = generateReservationUniqueCode();
-}
-
-/**
- * Pre-validation hook: Orchestrates all document-level business logic.
- */
-ReservationSchema.pre("validate", async function (this: HydratedDocument<ReservationSchemaFields>, next: () => void) {
-        if (this.isModified("showing")) {
-            await validateShowingSlug(this);
-        }
-
-        validateDates(this);
-        validateByType(this);
-
-        if (this.isNew) {
-            validateUniqueCode(this);
-
-            this.snapshot = await createReservedShowingSnapshot({
-                reservationType: this.reservationType,
-                ticketCount: this.ticketCount,
-                pricePaid: this.pricePaid,
-                selectedSeating: this.selectedSeating,
-                showingID: this.showing,
-            });
-        }
-
-        next();
-    },
-);
+    next();
+});
 
 /**
  * Post-save hook: Triggers external side-effects after successful persistence.
@@ -127,6 +100,13 @@ ReservationSchema.pre("validate", async function (this: HydratedDocument<Reserva
 ReservationSchema.post("save", async function (this: HydratedDocument<ReservationDoc>) {
     if (this.isNew) {
         await reserveReservationSeats(this);
+    }
+
+    if (this.status !== "RESERVED" && this.status !== "PAID") {
+        await SeatMap.updateMany(
+            {reservation: this._id},
+            {reservation: null, status: "AVAILABLE"},
+        );
     }
 });
 
