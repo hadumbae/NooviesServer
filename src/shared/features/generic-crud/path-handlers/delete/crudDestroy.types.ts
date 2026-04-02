@@ -1,0 +1,16 @@
+/**
+ * @file Type definitions for the generic "Delete" CRUD operation.
+ * @filename crudDelete.types.ts
+ */
+
+import type {BaseModel} from "@shared/types/schema/BaseModel";
+import type {BaseCRUDParams} from "@shared/features/generic-crud/types";
+import {Types} from "mongoose";
+
+/**
+ * Specific configuration for the document deletion operation.
+ */
+export type DeleteParams<TModel extends BaseModel> = Pick<BaseCRUDParams<TModel>, "model"> & {
+    /** The validated Mongoose ObjectId of the document to be permanently removed. */
+    _id: Types.ObjectId;
+};
