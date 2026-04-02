@@ -5,7 +5,7 @@
 
 import type {Request} from "express";
 import {z, ZodObject, type ZodRawShape} from "zod";
-import InvalidQueryOptionError from "../../errors/InvalidQueryOptionError.js";
+import InvalidRequestQueryError from "../../errors/InvalidRequestQueryError";
 
 /**
  * Parameters for query validation.
@@ -21,7 +21,7 @@ type SchemaParams<TRawShape extends ZodRawShape> = {
 /**
  * Parses and validates `req.query` using the provided schema.
  *
- * Throws {@link InvalidQueryOptionError} on validation failure.
+ * Throws {@link InvalidRequestQueryError} on validation failure.
  *
  * @typeParam TRawShape - Zod schema shape.
  * @returns Parsed query object inferred from the schema.
@@ -32,7 +32,7 @@ export function fetchRequestQueryBySchema<TRawShape extends ZodRawShape>(
     const {data: queryParams, success, error} = schema.safeParse(req.query);
 
     if (!success) {
-        throw new InvalidQueryOptionError({
+        throw new InvalidRequestQueryError({
             modelName,
             errors: error?.errors,
         });

@@ -27,7 +27,7 @@ type JSONReturns = {
 /**
  * Error representing invalid query option parameters.
  */
-export default class InvalidQueryOptionError extends Error {
+export default class InvalidRequestQueryError extends Error {
     public readonly errorType = "ERR_INVALID_QUERY_OPTIONS" as const;
     public readonly modelName?: string;
     public readonly errors: ZodIssue[];
@@ -38,7 +38,7 @@ export default class InvalidQueryOptionError extends Error {
         this.errors = errors;
         this.modelName = modelName;
 
-        Object.setPrototypeOf(this, InvalidQueryOptionError.prototype);
+        Object.setPrototypeOf(this, InvalidRequestQueryError.prototype);
         Error.captureStackTrace(this, this.constructor);
     }
 

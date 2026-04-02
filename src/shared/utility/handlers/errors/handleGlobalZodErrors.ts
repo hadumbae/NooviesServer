@@ -1,8 +1,8 @@
 import type {Response} from 'express';
 import {ZodError} from "zod";
-import { RequestValidationError } from "../../../errors/RequestValidationError.js";
-import {ZodDuplicateIndexError} from "../../../errors/zod/ZodDuplicateIndexError.js";
-import InvalidQueryOptionError from "../../../errors/InvalidQueryOptionError.js";
+import { RequestValidationError } from "@shared/errors/RequestValidationError";
+import {ZodDuplicateIndexError} from "@shared/errors/zod/ZodDuplicateIndexError";
+import InvalidRequestQueryError from "../../../errors/InvalidRequestQueryError";
 
 /**
  * Determines whether an error is a globally handled Zod-related error.
@@ -14,7 +14,7 @@ export const isGlobalZodError = (error: unknown) =>
     error instanceof ZodError ||
     error instanceof RequestValidationError ||
     error instanceof ZodDuplicateIndexError ||
-    error instanceof InvalidQueryOptionError;
+    error instanceof InvalidRequestQueryError;
 
 /**
  * Handles all globally recognized Zod-related errors.
@@ -30,7 +30,7 @@ export const isGlobalZodError = (error: unknown) =>
  * - `ZodDuplicateIndexError` → **409**
  */
 export const handleGlobalZodErrors = (error: unknown, res: Response) => {
-    if (error instanceof InvalidQueryOptionError) {
+    if (error instanceof InvalidRequestQueryError) {
         const {
             errorType,
             message = "[INVALID] Malformed Query Options",

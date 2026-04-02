@@ -8,11 +8,11 @@ import type IQueryOptionService from "../../../../shared/types/query-options/IQu
 import type {MovieReviewSchemaFields} from "../../model/MovieReview.types.js";
 import {type MovieReviewQueryOptions, MovieReviewQueryOptionSchema} from "../../schema/query-options/MovieReviewQueryOptionSchema.js";
 import type {MovieReviewMatchQueryFilters,} from "../../schema/query-options/MovieReviewMatchQuerySchemas.js";
-import InvalidQueryOptionError from "../../../../shared/errors/InvalidQueryOptionError.js";
+import InvalidRequestQueryError from "@shared/errors/InvalidRequestQueryError";
 import {MovieReview} from "../../model/MovieReview.model.js";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {FilterQuery, SortOrder} from "mongoose";
-import type {QueryOptionTypes} from "../../../../shared/types/query-options/QueryOptionService.types.js";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 
 /**
  * Maps validated MovieReview query parameters to Mongoose
@@ -28,7 +28,7 @@ export class MovieReviewQueryOptionService
         const {success, error, data} = MovieReviewQueryOptionSchema.safeParse(req.query);
 
         if (!success) {
-            throw new InvalidQueryOptionError({
+            throw new InvalidRequestQueryError({
                 modelName: MovieReview.modelName,
                 errors: error.errors,
             });
