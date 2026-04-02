@@ -21,7 +21,7 @@ type QueryParams<TReturn> = {
     /** Number of retry attempts on version conflict. */
     retries?: number;
     /** Optional handler for mapping duplicate index identifiers. */
-    onDuplicateIndexError?: (indexString: string) => never;
+    onDuplicateIndexError?: (indexString: string) => void | never;
     /** Optional handler invoked when retries are exhausted. */
     onVersionError?: () => never;
 }

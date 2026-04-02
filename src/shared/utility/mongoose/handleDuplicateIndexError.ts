@@ -9,7 +9,7 @@ import { ZodDuplicateIndexError } from "../../errors/zod/ZodDuplicateIndexError.
 type ErrorParams = {
     error: unknown;
     modelName?: string;
-    handleIndex?: (indexString: string) => never;
+    handleIndex?: (indexString: string) => void | never;
 };
 
 /**
