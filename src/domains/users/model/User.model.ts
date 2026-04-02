@@ -6,6 +6,7 @@
 import {Model, model} from "mongoose";
 import type {UserSchemaFields} from "./User.types.js";
 import {UserSchema} from "@models/User.schema.js";
+import "./User.hooks";
 
 /**
  * User collection model.

@@ -4,7 +4,7 @@
  */
 
 import {Types} from "mongoose";
-import type {UserRole} from "../schema/enum/UserRoleEnumSchema.js";
+import type {UserRole, UserUniqueCode} from "@domains/users/validation";
 
 /**
  * Represents the full shape of a User document as stored in MongoDB.
@@ -22,6 +22,11 @@ export interface UserSchemaFields {
     /** Hashed credential string. Never expose this in API responses. */
     password: string;
 
+    /** * Standardized system-generated identifier.
+     * @see {@link UserUniqueCode} for format specifications.
+     */
+    uniqueCode: UserUniqueCode;
+
     /** List of access levels (e.g., 'User', 'Admin') assigned to the account. */
     roles: UserRole[];
 
@@ -31,5 +36,6 @@ export interface UserSchemaFields {
 
 /**
  * A lightweight version of the User fields, containing only public identity data.
+ * Used for referencing users in lists or non-sensitive contexts.
  */
 export type LeanUserSchemaFields = Pick<UserSchemaFields, "_id" | "name">;

@@ -1,6 +1,6 @@
 /**
- * @file User.schema.ts
- * Defines the Mongoose schema for persisted user documents.
+ * @file Mongoose schema definition for the User model.
+ * @filename User.schema.ts
  */
 
 import {Schema} from "mongoose";
@@ -26,6 +26,17 @@ export const UserSchema = new Schema<UserSchemaFields>({
         type: String,
         required: [true, "Password is required."],
         minLength: [16, "Password must be at least 16 characters."],
+    },
+
+    uniqueCode: {
+        type: String,
+        match: [
+            /^USR-[A-Z0-9]{5}-[A-Z0-9]{5}$/,
+            'Invalid format. Expected USR-XXXXX-XXXXX (e.g., USR-K9P2W-LM4X1)'
+        ],
+        unique: [true, "Unique code must be unique."],
+        required: [true, "Unique Code is required."],
+        trim: true,
     },
 
     roles: {
