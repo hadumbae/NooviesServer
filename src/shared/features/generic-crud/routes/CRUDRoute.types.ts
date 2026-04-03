@@ -46,6 +46,8 @@ export type BuildCRUDRoutesParams<TModel extends BaseModel, TSchema extends ZodT
     /** Global population paths applied to all relevant handlers in this router. */
     populatePaths?: PopulatePath[];
 
+    querySchema?: TSchema;
+
     /** List of route configurations to be instantiated. */
     routes: CRUDRoute<TModel, TSchema>[];
 }

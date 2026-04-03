@@ -15,12 +15,12 @@ import type {ZodTypeAny} from "zod";
  * @returns A fully configured Express Router instance.
  */
 export const buildCRUDRoutes = <TModel extends BaseModel = BaseModel, TSchema extends ZodTypeAny = ZodTypeAny>(
-    {model, populatePaths, routes}: BuildCRUDRoutesParams<TModel, TSchema>
+    {model, querySchema, populatePaths, routes}: BuildCRUDRoutesParams<TModel, TSchema>
 ) => {
     const router = Router();
 
     for (const {method, path, middleware, handler} of routes) {
-        router[method](path, middleware, asyncHandler(handler({model, populatePaths})));
+        router[method](path, middleware, asyncHandler(handler({model, populatePaths, querySchema})));
     }
 
     return router;

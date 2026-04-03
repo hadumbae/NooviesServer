@@ -33,6 +33,7 @@ const routes: CRUDRoute<GenreSchemaFields, typeof GenreQueryOptionsSchema>[] = [
 const router: Router = buildCRUDRoutes<GenreSchemaFields, typeof GenreQueryOptionsSchema>({
     model: Genre,
     routes: routes,
+    querySchema: GenreQueryOptionsSchema,
 });
 
 export {
