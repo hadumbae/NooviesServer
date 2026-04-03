@@ -13,7 +13,7 @@ import type {ZodTypeAny} from "zod";
  * Configuration parameters for generating a specific CRUD controller.
  * ---
  */
-export type CRUDRouteHandlerParams<TModel extends BaseModel, TSchema extends ZodTypeAny> = {
+export type CRUDRouteHandlerParams<TModel extends BaseModel, TSchema extends ZodTypeAny = ZodTypeAny> = {
     /** The Mongoose model instance used for database operations. */
     model: Model<TModel>;
 

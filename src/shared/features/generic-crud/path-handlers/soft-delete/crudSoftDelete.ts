@@ -37,7 +37,7 @@ export const softDeleteDocument = async <TModel extends BaseModel>(
  * @returns An asynchronous Express controller function.
  */
 export const softDelete = <TModel extends BaseModel>(
-    {model}: CRUDRouteHandlerParams<TModel>
+    {model}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
 ) => {
     return async (req: Request, res: Response) => {
         const {_id} = req.params;

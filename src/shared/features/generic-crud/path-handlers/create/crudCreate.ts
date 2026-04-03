@@ -49,7 +49,7 @@ export const createDocument = async <TModel extends BaseModel>(
  * @returns An asynchronous Express controller function.
  */
 export const create = <TModel extends BaseModel>(
-    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
+    {model, populatePaths}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
 ) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);

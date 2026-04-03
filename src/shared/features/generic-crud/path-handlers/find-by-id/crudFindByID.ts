@@ -33,7 +33,7 @@ export const findDocumentById = async <TModel extends BaseModel>(
  * @returns An asynchronous Express controller function.
  */
 export const findById = <TModel extends BaseModel>(
-    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
+    {model, populatePaths}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
 ) => {
     return async (req: Request, res: Response) => {
         const {_id} = req.params;

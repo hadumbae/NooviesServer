@@ -32,7 +32,7 @@ export const findDocumentBySlug = async <TModel extends BaseModelWithSlug>(
  * @returns An asynchronous Express controller function.
  */
 export const findBySlug = <TModel extends BaseModelWithSlug>(
-    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
+    {model, populatePaths}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
 ) => {
     return async (req: Request, res: Response) => {
         const {slug} = req.params;

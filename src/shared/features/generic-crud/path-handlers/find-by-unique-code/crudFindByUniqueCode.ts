@@ -34,7 +34,7 @@ export const findDocumentByUniqueCode = async <TModel extends BaseModelWithUniqu
  * @returns An asynchronous Express controller function.
  */
 export const findByUniqueCode = <TModel extends BaseModelWithUniqueCode>(
-    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
+    {model, populatePaths}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
 ) => {
     return async (req: Request, res: Response) => {
         const {uniqueCode} = req.params;
