@@ -6,7 +6,7 @@
 import type {BaseModelWithUniqueCode} from "@shared/types/schema/BaseModel";
 import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {
-    FindByUniqueCodeParams
+    FindDocumentByUniqueCodeParams
 } from "@shared/features/generic-crud/path-handlers/find-by-unique-code/crudFindByUniqueCode.types";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
@@ -18,7 +18,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise resolving to the found document.
  */
 export const findDocumentByUniqueCode = async <TModel extends BaseModelWithUniqueCode>(
-    {model, uniqueCode, populatePaths, options}: FindByUniqueCodeParams<TModel>
+    {model, uniqueCode, populatePaths, options}: FindDocumentByUniqueCodeParams<TModel>
 ): Promise<TModel> => {
     const query = populateQuery({
         query: model.findOne({uniqueCode}),

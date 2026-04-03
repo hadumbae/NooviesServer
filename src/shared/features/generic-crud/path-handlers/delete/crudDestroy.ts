@@ -7,7 +7,7 @@ import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import createHttpError from "http-errors";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import type {DeleteParams} from "@shared/features/generic-crud/path-handlers/delete/crudDestroy.types";
+import type {DeleteDocumentParams} from "@shared/features/generic-crud/path-handlers/delete/crudDestroy.types";
 import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 
 /**
@@ -16,7 +16,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise that resolves once the document is successfully removed.
  */
 export const deleteDocument = async <TModel extends BaseModel>(
-    {model, _id}: DeleteParams<TModel>
+    {model, _id}: DeleteDocumentParams<TModel>
 ): Promise<void> => {
     const doc = await model.findById({_id});
     if (!doc) throw createHttpError(404, "Not found!");

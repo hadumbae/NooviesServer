@@ -10,7 +10,7 @@ import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 /**
  * Specific configuration for the "Find By Slug" database operation.
  */
-export type FindBySlugParams<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
+export type FindDocumentBySlugParams<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
     /** The URL-friendly string identifier used to locate the document. */
     slug: SlugString;
 };

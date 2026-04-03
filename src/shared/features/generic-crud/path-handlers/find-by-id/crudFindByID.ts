@@ -7,7 +7,7 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {FindByIdParams} from "@shared/features/generic-crud/path-handlers/find-by-id/crudFindByID.types";
+import type {FindDocumentByIdParams} from "@shared/features/generic-crud/path-handlers/find-by-id/crudFindByID.types";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
 import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 
@@ -17,7 +17,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise resolving to the found document.
  */
 export const findDocumentById = async <TModel extends BaseModel>(
-    {model, _id, populatePaths, options}: FindByIdParams<TModel>
+    {model, _id, populatePaths, options}: FindDocumentByIdParams<TModel>
 ): Promise<TModel> => {
     const query = populateQuery({
         query: model.findById(_id),

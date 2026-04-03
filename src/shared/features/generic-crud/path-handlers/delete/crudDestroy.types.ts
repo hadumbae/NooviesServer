@@ -10,7 +10,7 @@ import {Types} from "mongoose";
 /**
  * Specific configuration for the document deletion operation.
  */
-export type DeleteParams<TModel extends BaseModel> = Pick<BaseCRUDParams<TModel>, "model"> & {
+export type DeleteDocumentParams<TModel extends BaseModel> = Pick<BaseCRUDParams<TModel>, "model"> & {
     /** The validated Mongoose ObjectId of the document to be permanently removed. */
     _id: Types.ObjectId;
 };

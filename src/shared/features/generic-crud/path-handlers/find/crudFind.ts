@@ -7,7 +7,7 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {FindParams} from "@shared/features/generic-crud/path-handlers/find/crudFind.types";
+import type {FindDocumentsParams} from "@shared/features/generic-crud/path-handlers/find/crudFind.types";
 import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 
 /**
@@ -16,7 +16,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise resolving to an array of matching model instances.
  */
 export const findDocuments = async <TModel extends BaseModel>(
-    {model, populatePaths, filters, options}: FindParams<TModel>
+    {model, populatePaths, filters, options}: FindDocumentsParams<TModel>
 ): Promise<TModel[]> => {
     return populateQuery({
         query: model.find(filters ?? {}),

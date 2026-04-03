@@ -4,7 +4,7 @@
  */
 
 import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {SoftDeleteParams} from "@shared/features/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
+import type {SoftDeleteDocumentParams} from "@shared/features/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
 import {InvalidMethodError} from "@shared/errors/InvalidMethodError";
 import type {Request, Response} from "express";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
@@ -16,7 +16,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise resolving to the updated document in its "deleted" state.
  */
 export const softDeleteDocument = async <TModel extends BaseModel>(
-    {model, _id}: SoftDeleteParams<TModel>
+    {model, _id}: SoftDeleteDocumentParams<TModel>
 ): Promise<TModel> => {
     const doc = await model.findById({_id}).orFail();
 
