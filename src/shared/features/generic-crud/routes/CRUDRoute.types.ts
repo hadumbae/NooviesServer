@@ -8,6 +8,7 @@ import type {Model} from "mongoose";
 import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
 import type {RequestHandler} from "express";
 import type {CRUDRouteHandler} from "@shared/features/generic-crud/types";
+import type {ZodTypeAny} from "zod";
 
 /** Supported HTTP verbs for the generic CRUD router. */
 export type CRUDRouteMethods =
@@ -19,7 +20,7 @@ export type CRUDRouteMethods =
 /**
  * Definition for a single generic endpoint within a CRUD factory.
  */
-export type CRUDRoute<TModel extends BaseModel = BaseModel> = {
+export type CRUDRoute<TModel extends BaseModel = BaseModel, TSchema extends ZodTypeAny = ZodTypeAny> = {
     /** The HTTP method to be used for the route. */
     method: CRUDRouteMethods;
 
@@ -32,13 +33,13 @@ export type CRUDRoute<TModel extends BaseModel = BaseModel> = {
     middleware: RequestHandler[];
 
     /** The higher-order function that generates the actual controller logic. */
-    handler: CRUDRouteHandler<TModel>;
+    handler: CRUDRouteHandler<TModel, TSchema>;
 };
 
 /**
  * Parameter contract for the {@link buildCRUDRoutes} factory function.
  */
-export type BuildCRUDRoutesParams<TModel extends BaseModel> = {
+export type BuildCRUDRoutesParams<TModel extends BaseModel, TSchema extends ZodTypeAny = ZodTypeAny> = {
     /** The Mongoose model instance associated with these routes. */
     model: Model<TModel>;
 
@@ -46,5 +47,5 @@ export type BuildCRUDRoutesParams<TModel extends BaseModel> = {
     populatePaths?: PopulatePath[];
 
     /** List of route configurations to be instantiated. */
-    routes: CRUDRoute<TModel>[];
+    routes: CRUDRoute<TModel, TSchema>[];
 }

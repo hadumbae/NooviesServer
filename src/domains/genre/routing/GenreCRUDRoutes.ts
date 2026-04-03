@@ -11,12 +11,13 @@ import isAuth from "@domains/authentication/middleware/isAuth";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import {GenreInputSchema} from "@domains/genre/validation/GenreInputSchema";
 import {create, destroy, find, findById, paginated, update} from "@shared/features/generic-crud/path-handlers";
+import {GenreQueryOptionsSchema} from "@domains/genre/validation/query/GenreQueryOptionsSchema";
 
 /**
  * Route configuration for Genre management.
  * ---
  */
-const routes: CRUDRoute<GenreSchemaFields>[] = [
+const routes: CRUDRoute<GenreSchemaFields, typeof GenreQueryOptionsSchema>[] = [
     {path: "/find", method: "get", middleware: [isAuth], handler: find},
     {path: "/paginated", method: "get", middleware: [isAuth], handler: paginated},
     {path: `/item`, method: "post", middleware: [isAuth, validateZodSchema(GenreInputSchema)], handler: create},
@@ -29,10 +30,9 @@ const routes: CRUDRoute<GenreSchemaFields>[] = [
  * The instantiated Express Router for Genre CRUD operations.
  * Generated via {@link buildCRUDRoutes} using the Genre model and defined routes.
  */
-const router: Router = buildCRUDRoutes<GenreSchemaFields>({
+const router: Router = buildCRUDRoutes<GenreSchemaFields, typeof GenreQueryOptionsSchema>({
     model: Genre,
     routes: routes,
-    populatePaths: [] // Note: Added implicitly via factory if needed, currently empty for Genre.
 });
 
 export {
