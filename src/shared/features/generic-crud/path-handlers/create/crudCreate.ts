@@ -8,7 +8,6 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 import type {CreateDocumentParams} from "@shared/features/generic-crud/path-handlers/create/crudCreate.types";
 import {isDuplicateIndexError} from "@shared/utility/mongoose/isDuplicateIndexError";
 import {handleDuplicateIndexError} from "@shared/utility/mongoose/handleDuplicateIndexError";
@@ -49,9 +48,7 @@ export const createDocument = async <TModel extends BaseModel>(
  * @param params - Configuration including the model and optional relationship paths.
  * @returns An asynchronous Express controller function.
  */
-export const create: CRUDRouteHandler = <TModel extends BaseModel>(
-    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
-) => {
+export const create: CRUDRouteHandler<BaseModel> = ({model, populatePaths}) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
         const data = req.validatedBody;

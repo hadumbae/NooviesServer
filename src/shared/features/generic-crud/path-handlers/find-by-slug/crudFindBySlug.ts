@@ -8,7 +8,6 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 import type {FindBySlugParams} from "@shared/features/generic-crud/path-handlers/find-by-slug/crudFindBySlug.types";
 
 /**
@@ -32,9 +31,7 @@ export const findDocumentBySlug = async <TModel extends BaseModel>(
  * @param params - Configuration including the model and optional relationship paths.
  * @returns An asynchronous Express controller function.
  */
-export const findBySlug: CRUDRouteHandler = <TModel extends BaseModel>(
-    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
-) => {
+export const findBySlug: CRUDRouteHandler<BaseModel> = ({model, populatePaths}) => {
     return async (req: Request, res: Response) => {
         const {slug} = req.params;
         const options = fetchRequestOptions(req);

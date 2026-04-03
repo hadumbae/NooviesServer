@@ -8,7 +8,6 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 import {isDuplicateIndexError} from "@shared/utility/mongoose/isDuplicateIndexError";
 import {handleDuplicateIndexError} from "@shared/utility/mongoose/handleDuplicateIndexError";
 import type {UpdateDocumentParams} from "@shared/features/generic-crud/path-handlers/update/crudUpdate.types";
@@ -69,9 +68,7 @@ export const updateDocument = async <TModel extends BaseModel>(
  * @param params - Configuration including the model and optional relationship paths.
  * @returns An asynchronous Express controller function.
  */
-export const update: CRUDRouteHandler = <TModel extends BaseModel>(
-    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
-) => {
+export const update: CRUDRouteHandler<BaseModel> = ({model, populatePaths}) => {
     return async (req: Request, res: Response) => {
         const data = req.validatedBody;
         const unset = req.unsetFields;

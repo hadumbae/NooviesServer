@@ -8,7 +8,6 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 import type {
     CountDocumentsParams,
     GetPaginatedDocumentsParams
@@ -61,9 +60,7 @@ export const getPaginatedDocuments = async <TModel extends BaseModel>(
  * @param params - Configuration including the model and optional relationship paths.
  * @returns An asynchronous Express controller function.
  */
-export const paginated: CRUDRouteHandler = <TModel extends BaseModel>(
-    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
-) => {
+export const paginated: CRUDRouteHandler<BaseModel> = ({model, populatePaths}) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
 
