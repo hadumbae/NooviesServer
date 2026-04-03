@@ -20,6 +20,7 @@ import {ReservationRoutes} from "@domains/reservation/routes/ReservationRoutes.j
 import {FetchRoutes as FetchAdminReservationRoutes} from "@domains/reservation/features/fetch-reservations/admin";
 import {ReservationUpdateRoutes} from "@domains/reservation/features/update-reservations/routes";
 import {GenreCRUDRoutes} from "@domains/genre/routing/GenreCRUDRoutes";
+import {CustomerViewDataRoutes} from "@domains/customer/features/customer-details/routing";
 
 /**
  * Core metadata and foundational data configuration routes.
@@ -71,6 +72,10 @@ const reservationRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/reservations/feat", router: FetchAdminReservationRoutes},
 ];
 
+const customerRoutes: RouteRegistration[] = [
+    {path: "/api/v1/admin/customers/view-data", router: CustomerViewDataRoutes},
+]
+
 /**
  * Orchestrates the mounting of standard administrative CRUD routes across all functional domains.
  * ---
@@ -84,6 +89,7 @@ export function registerAdminRoutes(app: Express) {
         movieRoutes,
         showingRoutes,
         reservationRoutes,
+        customerRoutes,
     ];
 
     for (const routes of routeGroups) {
