@@ -11,5 +11,7 @@ declare module "express" {
         validatedFiles?: [];
 
         unsetFields?: any;
+
+        queryOptions?: unknown;
     }
 }
