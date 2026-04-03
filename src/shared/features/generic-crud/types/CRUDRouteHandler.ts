@@ -27,4 +27,4 @@ export type CRUDRouteHandlerParams<TModel extends BaseModel> = {
  * @param params - Configuration object including the model and optional populate logic.
  * @returns An asynchronous Express controller function.
  */
-export type CRUDRouteHandler = <TModel extends BaseModel>(params: CRUDRouteHandlerParams<TModel>) => ControllerAsyncFunc;
+export type CRUDRouteHandler<TModel extends BaseModel> = (params: CRUDRouteHandlerParams<TModel>) => ControllerAsyncFunc;
