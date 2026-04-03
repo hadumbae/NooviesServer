@@ -5,7 +5,7 @@
 
 import type {Express, Router} from "express";
 import {registerAuthRoutes} from "./routes/registerAuthRoutes.js";
-import {registerAdminRoutes} from "./routes/registerAdminRoutes.js";
+import {registerAdminRoutes} from "./routes/admin-routes/registerAdminRoutes.js";
 import {registerAdminViewDataRoutes} from "./routes/registerAdminViewDataRoutes.js";
 import {registerClientRoutes} from "./routes/registerClientRoutes.js";
 import {registerClientViewDataRoutes} from "./routes/registerClientViewDataRoutes.js";
