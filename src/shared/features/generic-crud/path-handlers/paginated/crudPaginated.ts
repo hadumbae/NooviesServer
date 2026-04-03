@@ -3,7 +3,6 @@
  * @filename crudPaginated.ts
  */
 
-import type {CRUDRouteHandler} from "@shared/features/generic-crud/types";
 import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
@@ -12,6 +11,7 @@ import type {
     CountDocumentsParams,
     GetPaginatedDocumentsParams
 } from "@shared/features/generic-crud/path-handlers/paginated/crudPaginated.types";
+import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 
 /**
  * Retrieves the total count of documents in a collection for pagination metadata.
@@ -60,7 +60,9 @@ export const getPaginatedDocuments = async <TModel extends BaseModel>(
  * @param params - Configuration including the model and optional relationship paths.
  * @returns An asynchronous Express controller function.
  */
-export const paginated: CRUDRouteHandler<BaseModel> = ({model, populatePaths}) => {
+export const paginated = <TModel extends BaseModel>(
+    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
+) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
 

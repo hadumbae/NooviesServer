@@ -3,12 +3,12 @@
  * @filename crudDestroy.ts
  */
 
-import type {CRUDRouteHandler} from "@shared/features/generic-crud/types";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import createHttpError from "http-errors";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
 import type {DeleteParams} from "@shared/features/generic-crud/path-handlers/delete/crudDestroy.types";
+import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 
 /**
  * Deletes a document by its ID after verifying its existence.
@@ -28,7 +28,9 @@ export const deleteDocument = async <TModel extends BaseModel>(
  * @param params - Configuration containing the model instance.
  * @returns An asynchronous Express controller function.
  */
-export const destroy: CRUDRouteHandler<BaseModel> = ({model}) => {
+export const destroy = <TModel extends BaseModel>(
+    {model}: CRUDRouteHandlerParams<TModel>
+) => {
     return async (req: Request, res: Response) => {
         const {_id} = req.params;
         const itemID = isValidObjectId(_id);

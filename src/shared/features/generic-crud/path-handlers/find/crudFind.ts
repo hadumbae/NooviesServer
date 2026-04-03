@@ -3,12 +3,12 @@
  * @filename crudFind.ts
  */
 
-import type {CRUDRouteHandler} from "@shared/features/generic-crud/types";
 import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
 import type {FindParams} from "@shared/features/generic-crud/path-handlers/find/crudFind.types";
+import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 
 /**
  * Executes a filtered database search with support for population and request modifiers.
@@ -29,7 +29,9 @@ export const findDocuments = async <TModel extends BaseModel>(
  * @param params - Configuration including the model and optional relationship paths.
  * @returns An asynchronous Express controller function.
  */
-export const find: CRUDRouteHandler<BaseModel> = ({model, populatePaths}) => {
+export const find = <TModel extends BaseModel>(
+    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
+) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
 

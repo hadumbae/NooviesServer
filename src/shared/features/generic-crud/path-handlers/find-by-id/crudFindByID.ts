@@ -3,13 +3,13 @@
  * @filename crudFindByID.ts
  */
 
-import type {CRUDRouteHandler} from "@shared/features/generic-crud/types";
 import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
 import type {FindByIdParams} from "@shared/features/generic-crud/path-handlers/find-by-id/crudFindByID.types";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
+import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 
 /**
  * Retrieves a document from the database using its primary key, applying population and virtuals.
@@ -32,7 +32,9 @@ export const findDocumentById = async <TModel extends BaseModel>(
  * @param params - Configuration including the model and optional relationship paths.
  * @returns An asynchronous Express controller function.
  */
-export const findById: CRUDRouteHandler<BaseModel> = ({model, populatePaths}) => {
+export const findById = <TModel extends BaseModel>(
+    {model, populatePaths}: CRUDRouteHandlerParams<TModel>
+) => {
     return async (req: Request, res: Response) => {
         const {_id} = req.params;
         const identifier = isValidObjectId(_id);

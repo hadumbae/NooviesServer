@@ -3,12 +3,12 @@
  * @filename crudSoftDelete.ts
  */
 
-import type {BaseModel, BaseModelWithUniqueCode} from "@shared/types/schema/BaseModel";
+import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {SoftDeleteParams} from "@shared/features/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
 import {InvalidMethodError} from "@shared/errors/InvalidMethodError";
-import type {CRUDRouteHandler} from "@shared/features/generic-crud/types";
 import type {Request, Response} from "express";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
+import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
 
 /**
  * Executes a soft-delete by invoking a document's internal `softDelete` method.
@@ -36,7 +36,9 @@ export const softDeleteDocument = async <TModel extends BaseModel>(
  * @param params - Configuration containing the model instance.
  * @returns An asynchronous Express controller function.
  */
-export const softDelete: CRUDRouteHandler<BaseModel> = ({model}) => {
+export const softDelete = <TModel extends BaseModel>(
+    {model}: CRUDRouteHandlerParams<TModel>
+) => {
     return async (req: Request, res: Response) => {
         const {_id} = req.params;
         const identifier = isValidObjectId(_id);
