@@ -1,5 +1,5 @@
 /**
- * @file Base interfaces for Mongoose domain models.
+ * @file Base interfaces and compositions for Mongoose domain models.
  * @filename BaseModel.ts
  */
 
@@ -7,12 +7,13 @@ import {Types} from "mongoose";
 import type {ModelTimestamps} from "./ModelTimestamps.js";
 import type {ModelSoftDelete} from "./ModelSoftDelete.js";
 import type {SlugString} from "../../schema/strings/SlugStringSchema.js";
+import type {UniqueCode} from "@shared/validation/codes";
 
 /**
- * Minimal record structure with a BSON {@link Types.ObjectId}.
+ * Minimal record structure containing the standard Mongoose identification field.
  */
 export type BaseModel = {
-    /** Primary key via {@link Types.ObjectId}. */
+    /** Primary database key represented as a BSON {@link Types.ObjectId}. */
     readonly _id: Types.ObjectId;
 };
 
@@ -20,11 +21,22 @@ export type BaseModel = {
  * An extension of the base model that includes a URL-friendly unique identifier.
  */
 export type BaseModelWithSlug = BaseModel & {
+    /** SEO-friendly, unique string used for resource routing. */
     slug: SlugString;
 }
 
 /**
- * Composition of {@link BaseModel}, {@link ModelTimestamps}, and {@link ModelSoftDelete}.
- * Used for standard business entities with audit trails and soft-deletion.
+ * An extension of the base model that includes a standardized system code.
+ */
+export type BaseModelWithUniqueCode = BaseModel & {
+    /**
+     * Standardized alphanumeric identifier (e.g., USR-XXXXX-XXXXX).
+     * @see {@link UniqueCode}
+     */
+    unique: UniqueCode;
+}
+
+/**
+ * Composition of core database traits including audit trails and soft-deletion capability.
  */
 export type BaseSoftDeleteModel = BaseModel & ModelTimestamps & ModelSoftDelete;
