@@ -43,7 +43,7 @@ export type BuildCRUDRoutesParams<TModel extends BaseModel> = {
     model: Model<TModel>;
 
     /** Global population paths applied to all relevant handlers in this router. */
-    populatePaths: PopulatePath[];
+    populatePaths?: PopulatePath[];
 
     /** List of route configurations to be instantiated. */
     routes: CRUDRoute<TModel>[];
