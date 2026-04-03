@@ -17,12 +17,12 @@ import {create, destroy, find, findById, paginated, update} from "@shared/featur
  * ---
  */
 const routes: CRUDRoute<GenreSchemaFields>[] = [
-    {path: "find", method: "get", middleware: [isAuth], handler: find},
-    {path: "paginated", method: "get", middleware: [isAuth], handler: paginated},
-    {path: `item`, method: "post", middleware: [isAuth, validateZodSchema(GenreInputSchema)], handler: create},
-    {path: `item/:_id`, method: "get", middleware: [isAuth], handler: findById},
-    {path: `item/:_id`, method: "patch", middleware: [isAuth, validateZodSchema(GenreInputSchema)], handler: update},
-    {path: `item/:_id`, method: "delete", middleware: [isAuth], handler: destroy},
+    {path: "/find", method: "get", middleware: [isAuth], handler: find},
+    {path: "/paginated", method: "get", middleware: [isAuth], handler: paginated},
+    {path: `/item`, method: "post", middleware: [isAuth, validateZodSchema(GenreInputSchema)], handler: create},
+    {path: `/item/:_id`, method: "get", middleware: [isAuth], handler: findById},
+    {path: `/item/:_id`, method: "patch", middleware: [isAuth, validateZodSchema(GenreInputSchema)], handler: update},
+    {path: `/item/:_id`, method: "delete", middleware: [isAuth], handler: destroy},
 ];
 
 /**
