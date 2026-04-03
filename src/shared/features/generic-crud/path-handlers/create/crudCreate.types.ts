@@ -18,7 +18,7 @@ import type {RequestOptions} from "@shared/features/fetch-request-options/schema
  * specific database constraints into domain-specific error messages.
  * ---
  */
-export type CreateDocumentParams<TModel extends BaseModel, TInput = unknown> = Omit<BaseCRUDParams<TModel>, "options"> & {
+export type CreateDocumentConfig<TModel extends BaseModel, TInput = unknown> = Omit<BaseCRUDParams<TModel>, "options"> & {
     /** The raw data payload used to instantiate the model. */
     data: Partial<TInput>;
 

@@ -7,8 +7,8 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModelWithSlug} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {FindDocumentBySlugParams} from "@shared/features/generic-crud/path-handlers/find-by-slug/crudFindBySlug.types";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
+import type {FindDocumentBySlugConfig} from "@shared/features/generic-crud/path-handlers/find-by-slug/crudFindBySlug.types";
+import type {CRUDControllerHandlerConfig} from "@shared/features/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Executes a database lookup for a document matching a specific slug string.
@@ -16,7 +16,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise resolving to the found document.
  */
 export const findDocumentBySlug = async <TModel extends BaseModelWithSlug>(
-    {model, slug, populatePaths, options}: FindDocumentBySlugParams<TModel>
+    {model, slug, populatePaths, options}: FindDocumentBySlugConfig<TModel>
 ): Promise<TModel> => {
     const query = populateQuery({
         query: model.findOne({slug}),
@@ -32,7 +32,7 @@ export const findDocumentBySlug = async <TModel extends BaseModelWithSlug>(
  * @returns An asynchronous Express controller function.
  */
 export const findBySlug = <TModel extends BaseModelWithSlug>(
-    {model, populatePaths}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
+    {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
 ) => {
     return async (req: Request, res: Response) => {
         const {slug} = req.params;

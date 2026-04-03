@@ -7,10 +7,8 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {FindDocumentsParams} from "@shared/features/generic-crud/path-handlers/find/crudFind.types";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
-import type {ZodTypeAny} from "zod";
-import {parseModelQueryOptions} from "@shared/utility/request/parseModelQueryOptions";
+import type {FindDocumentsConfig} from "@shared/features/generic-crud/path-handlers/find/crudFind.types";
+import type {CRUDControllerHandlerConfig} from "@shared/features/generic-crud/types/CRUDControllerHandler";
 import {getQueryOptionFilters} from "@shared/features/generic-crud/path-handlers/utils/getQueryOptionFilters";
 
 /**
@@ -20,7 +18,7 @@ import {getQueryOptionFilters} from "@shared/features/generic-crud/path-handlers
  * @returns A promise resolving to an array of matching model instances.
  */
 export const findDocuments = async <TModel extends BaseModel>(
-    {model, populatePaths, filters, options}: FindDocumentsParams<TModel>
+    {model, populatePaths, filters, options}: FindDocumentsConfig<TModel>
 ): Promise<TModel[]> => {
     return populateQuery({
         query: model.find(filters ?? {}),
@@ -34,24 +32,17 @@ export const findDocuments = async <TModel extends BaseModel>(
  * @param params - Configuration including the model, optional population paths, and query schema.
  * @returns An asynchronous Express controller function.
  */
-export const find = <TModel extends BaseModel, TSchema extends ZodTypeAny>(
-    {model, populatePaths, querySchema}: CRUDRouteHandlerParams<TModel, TSchema>
+export const find = <TModel extends BaseModel>(
+    {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
 ) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
-
-        /** Validate and transform model-specific query parameters if a schema is present. */
-        const queries = querySchema && parseModelQueryOptions({
-            req,
-            schema: querySchema,
-            modelName: model.modelName
-        });
 
         const items = await findDocuments({
             model,
             populatePaths,
             options,
-            filters: getQueryOptionFilters(queries)
+            filters: getQueryOptionFilters(req.queryOptions)
         });
 
         return res.status(200).json(items);

@@ -20,7 +20,7 @@ export type CountDocumentsParams<TModel extends BaseModel> = Pick<BaseCRUDParams
  * Specific configuration for the paginated document fetch operation.
  * ---
  */
-export type GetPaginatedDocumentsParams<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
+export type GetPaginatedDocumentsConfig<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
     /** Criteria used to filter the documents before applying pagination offsets. */
     filters?: FilterQuery<TModel>;
 };

@@ -10,7 +10,7 @@ import {Types} from "mongoose";
 /**
  * Specific configuration for the soft-delete database operation.
  */
-export type SoftDeleteDocumentParams<TModel extends BaseModel> = Pick<BaseCRUDParams<TModel>, "model"> & {
+export type SoftDeleteDocumentConfig<TModel extends BaseModel> = Pick<BaseCRUDParams<TModel>, "model"> & {
     /** The validated Mongoose ObjectId of the document to be soft-deleted. */
     _id: Types.ObjectId;
 };

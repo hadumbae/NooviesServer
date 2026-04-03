@@ -10,7 +10,7 @@ import type {UniqueCode} from "@shared/validation/codes";
 /**
  * Specific configuration for the "Find By Unique Code" database operation.
  */
-export type FindDocumentByUniqueCodeParams<TModel extends BaseModelWithUniqueCode> = BaseCRUDParams<TModel> & {
+export type FindDocumentByUniqueCodeConfig<TModel extends BaseModelWithUniqueCode> = BaseCRUDParams<TModel> & {
     /** The validated, uppercase system identifier used to locate the document. */
     uniqueCode: UniqueCode;
 };

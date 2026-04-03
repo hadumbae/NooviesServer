@@ -1,7 +1,7 @@
-import type {CRUDRouteHandler} from "@shared/features/generic-crud/types/CRUDRouteHandler";
+import type {CRUDControllerHandler} from "@shared/features/generic-crud/types/CRUDControllerHandler";
 import type {BaseCRUDParams} from "@shared/features/generic-crud/types/BaseCRUDParams";
 
 export type {
-    CRUDRouteHandler,
+    CRUDControllerHandler,
     BaseCRUDParams,
 }

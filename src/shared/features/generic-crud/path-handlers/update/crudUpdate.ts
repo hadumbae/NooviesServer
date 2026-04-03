@@ -9,10 +9,10 @@ import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
 import {isDuplicateIndexError} from "@shared/utility/mongoose/isDuplicateIndexError";
 import {handleDuplicateIndexError} from "@shared/utility/mongoose/handleDuplicateIndexError";
-import type {UpdateDocumentParams} from "@shared/features/generic-crud/path-handlers/update/crudUpdate.types";
+import type {UpdateDocumentConfig} from "@shared/features/generic-crud/path-handlers/update/crudUpdate.types";
 import {DocumentVersionError} from "@shared/errors/DocumentVersionError";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
+import type {CRUDControllerHandlerConfig} from "@shared/features/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Manages document retrieval, mutation, and persistence with built-in retry logic for version conflicts.
@@ -20,7 +20,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise resolving to the updated and re-hydrated document.
  */
 export const updateDocument = async <TModel extends BaseModel>(
-    params: UpdateDocumentParams<TModel>
+    params: UpdateDocumentConfig<TModel>
 ): Promise<TModel> => {
     const {_id, model, data, unset, populatePaths, options, onDuplicateIndex, retries = 3} = params;
 
@@ -69,7 +69,7 @@ export const updateDocument = async <TModel extends BaseModel>(
  * @returns An asynchronous Express controller function.
  */
 export const update = <TModel extends BaseModel>(
-    {model, populatePaths}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
+    {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
 ) => {
     return async (req: Request, res: Response) => {
         const data = req.validatedBody;

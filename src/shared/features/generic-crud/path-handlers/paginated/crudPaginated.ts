@@ -9,11 +9,10 @@ import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
 import type {
     CountDocumentsParams,
-    GetPaginatedDocumentsParams
+    GetPaginatedDocumentsConfig
 } from "@shared/features/generic-crud/path-handlers/paginated/crudPaginated.types";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
+import type {CRUDControllerHandlerConfig} from "@shared/features/generic-crud/types/CRUDControllerHandler";
 import type {ZodType} from "zod";
-import {parseModelQueryOptions} from "@shared/utility/request/parseModelQueryOptions";
 import {getQueryOptionFilters} from "@shared/features/generic-crud/path-handlers/utils/getQueryOptionFilters";
 
 /**
@@ -33,7 +32,7 @@ export const countDocuments = async <TModel extends BaseModel>(
  * @returns A promise resolving to the array of documents for the current page.
  */
 export const getPaginatedDocuments = async <TModel extends BaseModel>(
-    {model, filters, populatePaths, options}: GetPaginatedDocumentsParams<TModel>
+    {model, filters, populatePaths, options}: GetPaginatedDocumentsConfig<TModel>
 ): Promise<TModel[]> => {
     const {page = 1, perPage = 25} = options ?? {};
 
@@ -55,19 +54,12 @@ export const getPaginatedDocuments = async <TModel extends BaseModel>(
  * @returns An asynchronous Express controller function.
  */
 export const paginated = <TModel extends BaseModel, TSchema extends ZodType>(
-    {model, populatePaths, querySchema}: CRUDRouteHandlerParams<TModel, TSchema>
+    {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
 ) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
 
-        /** Validate and transform model-specific filters if a schema is provided. */
-        const queries = querySchema && parseModelQueryOptions({
-            req,
-            schema: querySchema,
-            modelName: model.modelName
-        });
-
-        const filters = getQueryOptionFilters(queries);
+        const filters = getQueryOptionFilters(req.queryOptions);
 
         const [totalItems, items] = await Promise.all([
             countDocuments({model, filters}),

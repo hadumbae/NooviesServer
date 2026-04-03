@@ -7,10 +7,10 @@ import populateQuery from "@shared/utility/mongoose/populateQuery";
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/features/fetch-request-options/utils";
-import type {CreateDocumentParams} from "@shared/features/generic-crud/path-handlers/create/crudCreate.types";
+import type {CreateDocumentConfig} from "@shared/features/generic-crud/path-handlers/create/crudCreate.types";
 import {isDuplicateIndexError} from "@shared/utility/mongoose/isDuplicateIndexError";
 import {handleDuplicateIndexError} from "@shared/utility/mongoose/handleDuplicateIndexError";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
+import type {CRUDControllerHandlerConfig} from "@shared/features/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Orchestrates document instantiation, persistence, and post-creation enrichment.
@@ -18,7 +18,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise resolving to the fully hydrated and populated document.
  */
 export const createDocument = async <TModel extends BaseModel>(
-    {model, data, populatePaths, options, onDuplicateIndex}: CreateDocumentParams<TModel>
+    {model, data, populatePaths, options, onDuplicateIndex}: CreateDocumentConfig<TModel>
 ): Promise<TModel> => {
     try {
         const newDoc = new model(data);
@@ -49,7 +49,7 @@ export const createDocument = async <TModel extends BaseModel>(
  * @returns An asynchronous Express controller function.
  */
 export const create = <TModel extends BaseModel>(
-    {model, populatePaths}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
+    {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
 ) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);

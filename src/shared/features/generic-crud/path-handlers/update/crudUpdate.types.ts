@@ -12,7 +12,7 @@ import {Types} from "mongoose";
 /**
  * Configuration parameters for executing a document update with concurrency and error handling.
  */
-export type UpdateDocumentParams<
+export type UpdateDocumentConfig<
     TModel extends BaseModel,
     TInput = unknown
 > = Omit<BaseCRUDParams<TModel>, "options"> & {

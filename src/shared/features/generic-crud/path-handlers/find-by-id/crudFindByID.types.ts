@@ -10,7 +10,7 @@ import {Types} from "mongoose";
 /**
  * Specific configuration for the "Find By ID" database operation.
  */
-export type FindDocumentByIdParams<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
+export type FindDocumentByIdConfig<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
     /** The validated Mongoose ObjectId of the document to retrieve. */
     _id: Types.ObjectId;
 };

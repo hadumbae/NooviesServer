@@ -15,7 +15,7 @@ import type {FilterQuery} from "mongoose";
  * filtering capabilities to enable complex query construction.
  * ---
  */
-export type FindDocumentsParams<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
+export type FindDocumentsConfig<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
     /** Optional Mongoose filter criteria to restrict the result set. */
     filters?: FilterQuery<TModel>;
 };

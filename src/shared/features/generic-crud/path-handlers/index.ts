@@ -10,23 +10,23 @@ import {
 import {getPaginatedDocuments, paginated} from "@shared/features/generic-crud/path-handlers/paginated/crudPaginated";
 import {softDelete, softDeleteDocument} from "@shared/features/generic-crud/path-handlers/soft-delete/crudSoftDelete";
 import {update, updateDocument} from "@shared/features/generic-crud/path-handlers/update/crudUpdate";
-import type {UpdateDocumentParams} from "@shared/features/generic-crud/path-handlers/update/crudUpdate.types";
+import type {UpdateDocumentConfig} from "@shared/features/generic-crud/path-handlers/update/crudUpdate.types";
 import type {
-    SoftDeleteDocumentParams
+    SoftDeleteDocumentConfig
 } from "@shared/features/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
 import type {
-    GetPaginatedDocumentsParams
+    GetPaginatedDocumentsConfig
 } from "@shared/features/generic-crud/path-handlers/paginated/crudPaginated.types";
 import type {
-    FindDocumentByUniqueCodeParams
+    FindDocumentByUniqueCodeConfig
 } from "@shared/features/generic-crud/path-handlers/find-by-unique-code/crudFindByUniqueCode.types";
 import type {
-    FindDocumentBySlugParams
+    FindDocumentBySlugConfig
 } from "@shared/features/generic-crud/path-handlers/find-by-slug/crudFindBySlug.types";
-import type {FindDocumentByIdParams} from "@shared/features/generic-crud/path-handlers/find-by-id/crudFindByID.types";
-import type {FindDocumentsParams} from "@shared/features/generic-crud/path-handlers/find/crudFind.types";
-import type {DeleteDocumentParams} from "@shared/features/generic-crud/path-handlers/delete/crudDestroy.types";
-import type {CreateDocumentParams} from "@shared/features/generic-crud/path-handlers/create/crudCreate.types";
+import type {FindDocumentByIdConfig} from "@shared/features/generic-crud/path-handlers/find-by-id/crudFindByID.types";
+import type {FindDocumentsConfig} from "@shared/features/generic-crud/path-handlers/find/crudFind.types";
+import type {DeleteDocumentConfig} from "@shared/features/generic-crud/path-handlers/delete/crudDestroy.types";
+import type {CreateDocumentConfig} from "@shared/features/generic-crud/path-handlers/create/crudCreate.types";
 import {getQueryOptionFilters} from "@shared/features/generic-crud/path-handlers/utils/getQueryOptionFilters";
 
 export {
@@ -52,14 +52,14 @@ export {
 }
 
 export type {
-    UpdateDocumentParams,
-    SoftDeleteDocumentParams,
-    GetPaginatedDocumentsParams,
-    FindDocumentByUniqueCodeParams,
-    FindDocumentBySlugParams,
-    FindDocumentByIdParams,
-    FindDocumentsParams,
-    DeleteDocumentParams,
-    CreateDocumentParams,
+    UpdateDocumentConfig,
+    SoftDeleteDocumentConfig,
+    GetPaginatedDocumentsConfig,
+    FindDocumentByUniqueCodeConfig,
+    FindDocumentBySlugConfig,
+    FindDocumentByIdConfig,
+    FindDocumentsConfig,
+    DeleteDocumentConfig,
+    CreateDocumentConfig,
 }
 

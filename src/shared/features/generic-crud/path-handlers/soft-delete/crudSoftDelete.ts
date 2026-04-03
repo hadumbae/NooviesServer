@@ -4,11 +4,11 @@
  */
 
 import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {SoftDeleteDocumentParams} from "@shared/features/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
+import type {SoftDeleteDocumentConfig} from "@shared/features/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
 import {InvalidMethodError} from "@shared/errors/InvalidMethodError";
 import type {Request, Response} from "express";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/CRUDRouteHandler";
+import type {CRUDControllerHandlerConfig} from "@shared/features/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Executes a soft-delete by invoking a document's internal `softDelete` method.
@@ -16,7 +16,7 @@ import type {CRUDRouteHandlerParams} from "@shared/features/generic-crud/types/C
  * @returns A promise resolving to the updated document in its "deleted" state.
  */
 export const softDeleteDocument = async <TModel extends BaseModel>(
-    {model, _id}: SoftDeleteDocumentParams<TModel>
+    {model, _id}: SoftDeleteDocumentConfig<TModel>
 ): Promise<TModel> => {
     const doc = await model.findById({_id}).orFail();
 
@@ -37,7 +37,7 @@ export const softDeleteDocument = async <TModel extends BaseModel>(
  * @returns An asynchronous Express controller function.
  */
 export const softDelete = <TModel extends BaseModel>(
-    {model}: Omit<CRUDRouteHandlerParams<TModel>, "querySchema">
+    {model}: CRUDControllerHandlerConfig<TModel>
 ) => {
     return async (req: Request, res: Response) => {
         const {_id} = req.params;
