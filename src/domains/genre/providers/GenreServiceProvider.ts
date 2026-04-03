@@ -2,9 +2,8 @@ import Genre from "../models/genre/Genre.model.js";
 import GenreController from "../controllers/GenreController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import GenreQueryOptionService from "../services/GenreQueryOptionService.js";
-import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
-import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
+import {BaseRepository} from "@shared/repository/BaseRepository";
+import {CRUDWriter} from "@shared/repository/operations/CRUDWriter";
 import {GenrePersistenceManager} from "../repositories/managers/GenrePersistenceManager.js";
 
 /**
@@ -47,13 +46,11 @@ export default class GenreServiceProvider {
         const repository = new BaseRepository({model, writer});
 
         const aggregateService = new AggregateQueryService({model});
-        const optionService = new GenreQueryOptionService();
 
         const controller = new GenreController({
             repository,
             queryUtils,
             aggregateService,
-            optionService,
         });
 
         return {
@@ -61,7 +58,6 @@ export default class GenreServiceProvider {
             repository,
             services: {
                 aggregateService,
-                optionService,
             },
             controllers: {
                 controller
