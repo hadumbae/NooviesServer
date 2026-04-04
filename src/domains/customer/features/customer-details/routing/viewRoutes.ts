@@ -19,7 +19,7 @@ const router = Router();
  * ---
  */
 router.get(
-    "profile-details/:uniqueCode",
+    "/profile-details/:uniqueCode",
     [isAuth],
     asyncHandler(getFetchCustomerProfileViewData)
 )
