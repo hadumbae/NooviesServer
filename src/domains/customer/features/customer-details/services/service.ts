@@ -10,6 +10,8 @@ import type {
 import User from "@models/User.model";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import {MovieReview} from "@domains/movieReview/model/MovieReview.model";
+import {MoviePopulationPipelines} from "@domains/movie/queries/MoviePopulationPipelines";
+import type {CustomerMovieReviewSummary} from "@domains/movieReview/model/MovieReview.types";
 
 /**
  * Aggregates a customer's profile details, recent reservations, and movie reviews into a single payload.
@@ -31,13 +33,23 @@ export const fetchCustomerProfileViewData = async (
             .limit(reservationCounts),
     ]);
 
-    const [revTotal, reviews] = await Promise.all([
-        MovieReview.countDocuments({user: customer._id}),
-        MovieReview
-            .find({user: customer._id})
-            .sort({createdAt: -1})
-            .populate({path: "movie", populate: {path: "genres"}})
-            .limit(reviewCounts)
+    const revTotal = await MovieReview.countDocuments({user: customer._id});
+    const reviews = await MovieReview.aggregate<CustomerMovieReviewSummary>([
+        {$match: {user: customer._id}},
+        {$sort: {createdAt: -1}},
+        {$limit: reviewCounts},
+        {
+            $lookup: {
+                from: "movies",
+                localField: "movie",
+                foreignField: "_id",
+                as: "movie",
+                pipeline: MoviePopulationPipelines,
+            },
+        },
+        {$unwind: "$movie"},
+        {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
+        {$project: {helpfulLikes: 0}},
     ]);
 
     return {

@@ -6,7 +6,7 @@
 import type {UserUniqueCode} from "@domains/users/validation";
 import type {UserSchemaFields} from "@models/User.types";
 import type {ReservationSchemaFields} from "@domains/reservation/model/reservation/Reservation.types";
-import type {MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types";
+import type {CustomerMovieReviewSummary} from "@domains/movieReview/model/MovieReview.types";
 
 /**
  * Configuration parameters for fetching aggregated customer profile data.
@@ -43,7 +43,7 @@ export type CustomerProfileViewData = {
     review: {
         /** Total count of reviews submitted by the customer. */
         total: number;
-        /** Subset of {@link MovieReviewSchemaFields} based on the requested count. */
-        items: MovieReviewSchemaFields[];
+        /** Subset of {@link CustomerMovieReviewSummary} including hydrated movie and like counts. */
+        items: CustomerMovieReviewSummary[];
     },
 };
