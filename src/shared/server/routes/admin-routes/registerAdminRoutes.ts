@@ -21,6 +21,7 @@ import {FetchRoutes as FetchAdminReservationRoutes} from "@domains/reservation/f
 import {ReservationUpdateRoutes} from "@domains/reservation/features/update-reservations/routes";
 import {GenreCRUDRoutes} from "@domains/genre/routing/GenreCRUDRoutes";
 import {CustomerViewDataRoutes} from "@domains/customer/features/customer-details/routing";
+import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer-review-actions/routing";
 
 /**
  * Core metadata and foundational data configuration routes.
@@ -74,6 +75,7 @@ const reservationRoutes: RouteRegistration[] = [
 
 const customerRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/customers/view-data", router: CustomerViewDataRoutes},
+    {path: "/api/v1/admin/customers/feat/review-actions", router: CustomerMovieReviewActions},
 ]
 
 /**
