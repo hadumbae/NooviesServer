@@ -63,7 +63,7 @@ export default class AuthService implements AuthServiceMethods {
             user: {_id, roles, name, email, uniqueCode},
         };
 
-        const token: string = jwt.sign(userDetails, process.env.JWT_TOKEN_KEY!, {expiresIn: "72h"});
+        const token: string = jwt.sign(userDetails, process.env.JWT_SECRET!, {expiresIn: "72h"});
 
         return {
             ...userDetails,

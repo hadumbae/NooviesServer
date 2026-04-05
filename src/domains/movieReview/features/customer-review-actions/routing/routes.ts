@@ -18,6 +18,7 @@ import {
     ResetReviewDisplayNameInputSchema,
     SetReviewRatingInputSchema
 } from "@domains/movieReview/features/customer-review-actions/validation";
+import isAdmin from "@domains/authentication/middleware/isAdmin";
 
 const router = Router();
 
@@ -29,28 +30,28 @@ const router = Router();
 /** Toggle review visibility (Public/Private) */
 router.patch(
     "/rev/:reviewID/publicity",
-    [isAuth, validateZodSchema(AdminModerationMessageInputSchema)],
+    [isAuth, isAdmin, validateZodSchema(AdminModerationMessageInputSchema)],
     asyncHandler(patchToggleReviewPublicity),
 );
 
 /** Correct or reset a reviewer's display name */
 router.patch(
     "/rev/:reviewID/display-name",
-    [isAuth, validateZodSchema(ResetReviewDisplayNameInputSchema)],
+    [isAuth, isAdmin, validateZodSchema(ResetReviewDisplayNameInputSchema)],
     asyncHandler(patchResetDisplayName),
 );
 
 /** Clear all 'helpful' engagement metrics from a review */
 router.patch(
     "/rev/:reviewID/likes",
-    [isAuth, validateZodSchema(AdminModerationMessageInputSchema)],
+    [isAuth, isAdmin, validateZodSchema(AdminModerationMessageInputSchema)],
     asyncHandler(patchResetLikes),
 );
 
 /** Manually override the star rating for a review */
 router.patch(
     "/rev/:reviewID/ratings",
-    [isAuth, validateZodSchema(SetReviewRatingInputSchema)],
+    [isAuth, isAdmin, validateZodSchema(SetReviewRatingInputSchema)],
     asyncHandler(patchSetRatings),
 );
 
