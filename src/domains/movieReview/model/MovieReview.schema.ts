@@ -5,6 +5,9 @@
 
 import {Schema} from "mongoose";
 import type {MovieReviewSchemaFields} from "./MovieReview.types.js";
+import {
+    MovieReviewModerationLogSchema
+} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.schema";
 
 /**
  * Mongoose schema for storing and validating user-submitted movie reviews.
@@ -67,5 +70,17 @@ export const MovieReviewSchema = new Schema<MovieReviewSchemaFields>({
         type: [Schema.Types.ObjectId],
         ref: "User",
         default: [],
-    }
+    },
+
+    /** Visibility toggle for public rendering or moderation. */
+    isPublic: {
+        type: Boolean,
+        default: true,
+    },
+
+    /** Nested array of administrative interventions and history. */
+    moderationLogs: {
+        type: [MovieReviewModerationLogSchema],
+        default: [],
+    },
 }, {timestamps: true});

@@ -6,6 +6,9 @@
 import {Types} from "mongoose";
 import type {LeanUserSchemaFields} from "@models/User.types.js";
 import type {MovieWithGenres, MovieWithRating} from "../../movie/model/Movie.types.js";
+import type {
+    MovieReviewModerationLogSchemaFields
+} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types";
 
 /**
  * Core fields for the Movie Review database document.
@@ -30,6 +33,10 @@ export interface MovieReviewSchemaFields {
     isRecommended?: boolean;
     /** List of User IDs who marked the review as helpful. */
     helpfulLikes: Types.ObjectId[];
+    /** Visibility status for public-facing queries. */
+    isPublic: boolean;
+    /** Chronological history of administrative actions taken on this review. */
+    moderationLogs: MovieReviewModerationLogSchemaFields[];
 }
 
 /**
@@ -49,7 +56,7 @@ export type MyMovieReviewSchemaFields = Omit<
 };
 
 /**
- * Summary representation used in admin-facing overview lists.
+ * Summary representation used in admin-facing overview lists or customer profiles.
  * ---
  */
 export type CustomerMovieReviewSummary =
