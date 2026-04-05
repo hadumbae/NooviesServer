@@ -3,7 +3,7 @@
  * @filename MovieReviewPopulationPipelines.ts
  */
 
-import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+import type {PopulationPipelineStages} from "@shared/types/mongoose/AggregatePipelineStages";
 import {MovieWithRatingPipelines} from "./MovieWithRatingPipelines.js";
 
 /**
@@ -31,6 +31,7 @@ export const MovieReviewPopulationPipelines: PopulationPipelineStages = [
                     $project: {
                         _id: 1,
                         name: 1,
+                        uniqueCode: 1,
                     },
                 }
             ],
