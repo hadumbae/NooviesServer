@@ -9,13 +9,15 @@ import type {MovieWithGenres, MovieWithRating} from "../../movie/model/Movie.typ
 import type {
     MovieReviewModerationLogSchemaFields
 } from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types";
+import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
+import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/MovieReviewUniqueCodeSchema";
 
 /**
  * Core fields for the Movie Review database document.
  * ---
  */
 export interface MovieReviewSchemaFields {
-    /** Unique database identifier for the review. */
+    /** Unique database identifier for the review document. */
     _id: Types.ObjectId;
     /** Reference to the User who authored the review. */
     user: Types.ObjectId;
@@ -23,20 +25,24 @@ export interface MovieReviewSchemaFields {
     movie: Types.ObjectId;
     /** Publicly visible name of the reviewer. */
     displayName: string;
-    /** Numeric score (1-5). */
+    /** Numeric score assigned to the movie (1-5 scale). */
     rating: number;
-    /** Brief headline of the user's opinion. */
+    /** Brief headline summarizing the user's opinion. */
     summary: string;
     /** Detailed body text of the review. */
     reviewText?: string;
-    /** Flag indicating user recommendation status. */
+    /** Flag indicating whether the reviewer suggests this movie. */
     isRecommended?: boolean;
     /** List of User IDs who marked the review as helpful. */
     helpfulLikes: Types.ObjectId[];
-    /** Visibility status for public-facing queries. */
+    /** Toggle for public visibility or moderation status. */
     isPublic: boolean;
     /** Chronological history of administrative actions taken on this review. */
     moderationLogs: MovieReviewModerationLogSchemaFields[];
+    /** SEO-friendly URL identifier. */
+    slug: SlugString;
+    /** Standardized tracking code (e.g., REV-XXXXX-XXXXX). */
+    uniqueCode: MovieReviewUniqueCode;
 }
 
 /**
@@ -47,11 +53,11 @@ export type MyMovieReviewSchemaFields = Omit<
     MovieReviewSchemaFields,
     "user" | "movie" | "helpfulLikes"
 > & {
-    /** Hydrated author profile. */
+    /** Hydrated author profile information. */
     user: LeanUserSchemaFields;
-    /** Hydrated movie data including ratings. */
+    /** Hydrated movie data including aggregate ratings. */
     movie: MovieWithRating;
-    /** Numeric tally of helpful votes. */
+    /** The total count of "helpful" marks received. */
     helpfulCount: number;
 };
 
@@ -63,6 +69,6 @@ export type CustomerMovieReviewSummary =
     Omit<MovieReviewSchemaFields, "movie" | "helpfulLikes"> & {
     /** Hydrated movie data including genre details. */
     movie: MovieWithGenres;
-    /** Numeric tally of helpful votes. */
+    /** The total count of "helpful" marks received. */
     helpfulCount: number;
 };

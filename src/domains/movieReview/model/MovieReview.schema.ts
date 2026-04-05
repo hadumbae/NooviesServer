@@ -8,6 +8,7 @@ import type {MovieReviewSchemaFields} from "./MovieReview.types.js";
 import {
     MovieReviewModerationLogSchema
 } from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.schema";
+import SlugSchemaTypeOptions from "@shared/model/SlugSchemaTypeOptions";
 
 /**
  * Mongoose schema for storing and validating user-submitted movie reviews.
@@ -83,4 +84,19 @@ export const MovieReviewSchema = new Schema<MovieReviewSchemaFields>({
         type: [MovieReviewModerationLogSchema],
         default: [],
     },
+
+    /** URL-friendly identifier for SEO and routing. */
+    slug: SlugSchemaTypeOptions,
+
+    /** Human-readable tracking code (e.g., REV-XXXXX-XXXXX). */
+    uniqueCode: {
+        type: String,
+        match: [
+            /^REV-[A-Z0-9]{5}-[A-Z0-9]{5}$/,
+            'Invalid format. Expected REV-XXXXX-XXXXX (e.g., REV-K9P2W-LM4X1)'
+        ],
+        unique: [true, "Unique code must be unique."],
+        required: [true, "Unique Code is required."],
+        trim: true,
+    }
 }, {timestamps: true});
