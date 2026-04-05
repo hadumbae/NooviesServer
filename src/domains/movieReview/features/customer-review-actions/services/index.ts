@@ -1,6 +1,6 @@
 import type {
     ResetDisplayNameConfig, ResetLikesConfig, SetRatingsConfig,
-    ToggleReviewPublicityConfig
+    ToggleReviewPublicityConfig, WriteMovieReviewModLogConfig
 } from "@domains/movieReview/features/customer-review-actions/services/service.types";
 
 export type {
@@ -8,4 +8,6 @@ export type {
     ResetDisplayNameConfig,
     ResetLikesConfig,
     SetRatingsConfig,
+    WriteMovieReviewModLogConfig,
 }
+
