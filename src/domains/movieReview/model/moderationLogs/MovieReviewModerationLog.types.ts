@@ -7,6 +7,7 @@ import type {
     MovieReviewModerationAction
 } from "@domains/movieReview/validation/moderation-actions/MovieReviewModerationActionSchema";
 import {Types} from "mongoose";
+import type {AdminModerationMessage} from "@shared/features/admin-users/schema";
 
 /**
  * Fields for a single moderation log entry within a review document.
@@ -20,7 +21,7 @@ export type MovieReviewModerationLogSchemaFields = {
     admin: Types.ObjectId;
 
     /** Contextual note or reasoning for the moderation (e.g., "Violation of TOS"). */
-    message: string;
+    message: AdminModerationMessage;
 
     /** The date and time when this specific moderation event occurred. */
     modDate: Date;
