@@ -1,16 +1,21 @@
-import {fetchCustomerProfileViewData} from "@domains/customer/features/customer-details/services/service";
+import {
+    fetchCustomerProfileViewData,
+    fetchCustomerReviewViewData
+} from "@domains/customer/features/customer-details/services/service";
 import type {
-    CustomerProfileViewData,
-    FetchCustomerProfileViewDataConfig
+    CustomerProfileViewData, CustomerReviewViewData,
+    FetchCustomerProfileViewDataConfig, FetchCustomerReviewViewDataConfig
 } from "@domains/customer/features/customer-details/services/service.types";
-
 
 export {
     fetchCustomerProfileViewData,
+    fetchCustomerReviewViewData,
 }
 
 export type {
     FetchCustomerProfileViewDataConfig,
     CustomerProfileViewData,
+    FetchCustomerReviewViewDataConfig,
+    CustomerReviewViewData,
 }
 

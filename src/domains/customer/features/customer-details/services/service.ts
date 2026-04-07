@@ -4,8 +4,8 @@
  */
 
 import type {
-    CustomerProfileViewData,
-    FetchCustomerProfileViewDataConfig
+    CustomerProfileViewData, CustomerReviewViewData,
+    FetchCustomerProfileViewDataConfig, FetchCustomerReviewViewDataConfig
 } from "@domains/customer/features/customer-details/services/service.types";
 import User from "@models/User.model";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
@@ -62,5 +62,39 @@ export const fetchCustomerProfileViewData = async (
             total: revTotal,
             items: reviews,
         },
+    };
+}
+
+/**
+ * Retrieves the full context for a specific customer review, including moderation logs.
+ * ---
+ * @param config - Context identifiers for the customer and the specific review.
+ * @returns {Promise<CustomerReviewViewData>} The hydrated review and author profile.
+ */
+export const fetchCustomerReviewViewData = async (
+    {customerCode, reviewCode}: FetchCustomerReviewViewDataConfig
+): Promise<CustomerReviewViewData> => {
+    const userSelect = "_id name email uniqueCode";
+
+    const customer = await User
+        .findOne({uniqueCode: customerCode})
+        .select(userSelect)
+        .lean()
+        .orFail();
+
+    const populatePaths = [
+        {path: "movie.genres"},
+        {path: "moderationLogs.admin", select: userSelect},
+    ];
+
+    const review = await MovieReview
+        .findOne({user: customer._id, uniqueCode: reviewCode})
+        .populate(populatePaths)
+        .lean()
+        .orFail();
+
+    return {
+        customer,
+        review,
     };
 }
