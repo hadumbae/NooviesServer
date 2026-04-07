@@ -74,22 +74,16 @@ export const fetchCustomerProfileViewData = async (
 export const fetchCustomerReviewViewData = async (
     {customerCode, reviewCode}: FetchCustomerReviewViewDataConfig
 ): Promise<CustomerReviewViewData> => {
-    const userSelect = "_id name email uniqueCode";
-
     const customer = await User
         .findOne({uniqueCode: customerCode})
-        .select(userSelect)
+        .select("_id name email uniqueCode")
         .lean()
         .orFail();
 
-    const populatePaths = [
-        {path: "movie.genres"},
-        {path: "moderationLogs.admin", select: userSelect},
-    ];
-
     const review = await MovieReview
         .findOne({user: customer._id, uniqueCode: reviewCode})
-        .populate(populatePaths)
+        .select("-moderationLogs")
+        .populate(["movie.genres"])
         .lean()
         .orFail();
 
