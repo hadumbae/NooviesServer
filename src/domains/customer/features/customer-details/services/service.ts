@@ -11,7 +11,8 @@ import User from "@models/User.model";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import {MovieReview} from "@domains/movieReview/model/MovieReview.model";
 import {MoviePopulationPipelines} from "@domains/movie/queries/MoviePopulationPipelines";
-import type {CustomerMovieReviewSummary} from "@domains/movieReview/model/MovieReview.types";
+import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types";
+import {MovieWithRatingPipelines} from "@domains/movieReview/queries/MovieWithRatingPipelines";
 
 /**
  * Aggregates a customer's profile details, recent reservations, and movie reviews into a single payload.
@@ -80,12 +81,21 @@ export const fetchCustomerReviewViewData = async (
         .lean()
         .orFail();
 
-    const review = await MovieReview
-        .findOne({user: customer._id, uniqueCode: reviewCode})
-        .select("-moderationLogs")
-        .populate(["movie.genres"])
-        .lean()
-        .orFail();
+    const [review] = await MovieReview.aggregate<MovieReviewSchemaFields>([
+        {$match: {user: customer._id, uniqueCode: reviewCode}},
+        {
+            $lookup: {
+                from: "movies",
+                localField: "movie",
+                foreignField: "_id",
+                as: "movie",
+                pipeline: MovieWithRatingPipelines,
+            },
+        },
+        {$unwind: "$movie"},
+        {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
+        {$project: {helpfulLikes: 0}},
+    ]);
 
     return {
         customer,
