@@ -4,16 +4,19 @@
  */
 
 import type {
-    CustomerProfileViewData, CustomerReviewViewData,
-    FetchCustomerProfileViewDataConfig, FetchCustomerReviewViewDataConfig
+    CustomerProfileViewData,
+    CustomerReviewViewData,
+    FetchCustomerProfileViewDataConfig,
+    FetchCustomerReviewViewDataConfig
 } from "@domains/customer/features/customer-details/services/service.types";
-import User from "@models/User.model";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import {MovieReview} from "@domains/movieReview/model/MovieReview.model";
-import {MoviePopulationPipelines} from "@domains/movie/queries/MoviePopulationPipelines";
 import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types";
-import {MovieWithRatingPipelines} from "@domains/movieReview/queries/MovieWithRatingPipelines";
 import createHttpError from "http-errors";
+import {
+    fetchRequiredCustomerByCode
+} from "@domains/customer/features/customer-details/utils/fetchRequiredCustomerByCode";
+import {CustomerReviewDetailPipelines} from "@domains/movieReview/queries/CustomerReviewDetailPipelines";
 
 /**
  * Aggregates a customer's profile details, recent reservations, and movie reviews into a single payload.
@@ -25,7 +28,7 @@ import createHttpError from "http-errors";
 export const fetchCustomerProfileViewData = async (
     {uniqueCode, reservationCounts = 5, reviewCounts = 5}: FetchCustomerProfileViewDataConfig
 ): Promise<CustomerProfileViewData> => {
-    const customer = await User.findOne({uniqueCode}).select("_id name email uniqueCode").orFail();
+    const customer = await fetchRequiredCustomerByCode(uniqueCode);
 
     const [resTotal, reservations] = await Promise.all([
         Reservation.countDocuments({user: customer._id}),
@@ -40,18 +43,7 @@ export const fetchCustomerProfileViewData = async (
         {$match: {user: customer._id}},
         {$sort: {createdAt: -1}},
         {$limit: reviewCounts},
-        {
-            $lookup: {
-                from: "movies",
-                localField: "movie",
-                foreignField: "_id",
-                as: "movie",
-                pipeline: MoviePopulationPipelines,
-            },
-        },
-        {$unwind: "$movie"},
-        {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
-        {$project: {helpfulLikes: 0}},
+        ...CustomerReviewDetailPipelines,
     ]);
 
     return {
@@ -76,29 +68,11 @@ export const fetchCustomerProfileViewData = async (
 export const fetchCustomerReviewViewData = async (
     {customerCode, reviewCode}: FetchCustomerReviewViewDataConfig
 ): Promise<CustomerReviewViewData> => {
-    const customer = await User
-        .findOne({uniqueCode: customerCode})
-        .select("_id name email uniqueCode")
-        .lean();
-
-    if (!customer) {
-        throw createHttpError(404, "Customer Not Found.");
-    }
+    const customer = await fetchRequiredCustomerByCode(customerCode);
 
     const [review] = await MovieReview.aggregate<MovieReviewSchemaFields>([
         {$match: {user: customer._id, uniqueCode: reviewCode}},
-        {
-            $lookup: {
-                from: "movies",
-                localField: "movie",
-                foreignField: "_id",
-                as: "movie",
-                pipeline: MovieWithRatingPipelines,
-            },
-        },
-        {$unwind: "$movie"},
-        {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
-        {$project: {helpfulLikes: 0}},
+        ...CustomerReviewDetailPipelines,
     ]);
 
     if (!review) {
