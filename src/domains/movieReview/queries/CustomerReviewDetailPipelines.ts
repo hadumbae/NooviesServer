@@ -3,8 +3,8 @@
  * @filename CustomerReviewDetailPipelines.ts
  */
 
-import {MoviePopulationPipelines} from "@domains/movie/queries/MoviePopulationPipelines";
 import type {PipelineStage} from "mongoose";
+import {MovieWithRatingPipelines} from "@domains/movieReview/queries/MovieWithRatingPipelines";
 
 /**
  * A reusable sequence of aggregation stages designed to transform a raw review document
@@ -18,7 +18,7 @@ export const CustomerReviewDetailPipelines: PipelineStage[] = [
             localField: "movie",
             foreignField: "_id",
             as: "movie",
-            pipeline: MoviePopulationPipelines,
+            pipeline: MovieWithRatingPipelines,
         },
     },
     {
