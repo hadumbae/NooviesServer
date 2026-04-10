@@ -13,6 +13,7 @@ import {MovieReview} from "@domains/movieReview/model/MovieReview.model";
 import {MoviePopulationPipelines} from "@domains/movie/queries/MoviePopulationPipelines";
 import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types";
 import {MovieWithRatingPipelines} from "@domains/movieReview/queries/MovieWithRatingPipelines";
+import createHttpError from "http-errors";
 
 /**
  * Aggregates a customer's profile details, recent reservations, and movie reviews into a single payload.
@@ -78,8 +79,11 @@ export const fetchCustomerReviewViewData = async (
     const customer = await User
         .findOne({uniqueCode: customerCode})
         .select("_id name email uniqueCode")
-        .lean()
-        .orFail();
+        .lean();
+
+    if (!customer) {
+        throw createHttpError(404, "Customer Not Found.");
+    }
 
     const [review] = await MovieReview.aggregate<MovieReviewSchemaFields>([
         {$match: {user: customer._id, uniqueCode: reviewCode}},
@@ -96,6 +100,10 @@ export const fetchCustomerReviewViewData = async (
         {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
         {$project: {helpfulLikes: 0}},
     ]);
+
+    if (!review) {
+        throw createHttpError(404, "Review Not Found.");
+    }
 
     return {
         customer,
