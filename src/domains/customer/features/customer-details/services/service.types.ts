@@ -101,7 +101,7 @@ export type FetchCustomerReviewsViewData = {
     /** Identity of the review author. */
     customer: LeanUserSchemaFields;
     /** Paginated review records. */
-    reviews: PaginationReturns<MovieReviewSchemaFields>;
+    reviews: PaginationReturns<CustomerMovieReviewSummary>;
 }
 
 /**
