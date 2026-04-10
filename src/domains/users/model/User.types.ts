@@ -8,6 +8,7 @@ import type {UserRole, UserUniqueCode} from "@domains/users/validation";
 
 /**
  * Represents the full shape of a User document as stored in MongoDB.
+ * ---
  */
 export interface UserSchemaFields {
     /** Unique MongoDB identifier. */
@@ -36,6 +37,6 @@ export interface UserSchemaFields {
 
 /**
  * A lightweight version of the User fields, containing only public identity data.
- * Used for referencing users in lists or non-sensitive contexts.
+ * ---
  */
-export type LeanUserSchemaFields = Pick<UserSchemaFields, "_id" | "name">;
+export type LeanUserSchemaFields = Omit<UserSchemaFields, "password" | "roles" | "favourites">;
