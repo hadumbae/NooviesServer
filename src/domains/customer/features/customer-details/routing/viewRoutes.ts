@@ -8,20 +8,12 @@ import isAuth from "@domains/authentication/middleware/isAuth";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {
     getFetchCustomerProfileViewData,
+    getFetchCustomerReviewsViewData,
     getFetchCustomerReviewViewData
 } from "@domains/customer/features/customer-details/controllers";
 
 /**
  * Express Router instance for aggregating Customer activity and identity views.
- * ---
- * ### Mechanics
- * * **Security:** All routes are protected by the {@link isAuth} middleware,
- * ensuring that only authenticated users can access profile aggregation data.
- * * **Error Handling:** Wraps controllers in {@link asyncHandler} to capture
- * rejected promises and pass them to the global Express error-handling stack.
- * * **Route Granularity:** Separates high-level profile summaries from
- * deep-dive review details, supporting both the main profile page and
- * specific moderation/detail views.
  * ---
  */
 const router = Router();
@@ -29,6 +21,7 @@ const router = Router();
 /**
  * GET /profile-details/:uniqueCode
  * ---
+ * Resolves a customer's full profile activity including identity, reservations, and review summaries.
  */
 router.get(
     "/profile-details/:uniqueCode",
@@ -37,8 +30,20 @@ router.get(
 );
 
 /**
+ * GET /profile-details/:customerCode/reviews
+ * ---
+ * Fetches a paginated list of all reviews authored by a specific customer.
+ */
+router.get(
+    "/profile-details/:customerCode/reviews",
+    [isAuth],
+    asyncHandler(getFetchCustomerReviewsViewData)
+);
+
+/**
  * GET /profile-details/:customerCode/review/:reviewCode
  * ---
+ * Retrieves the full context for a specific movie review, including author metadata.
  */
 router.get(
     "/profile-details/:customerCode/review/:reviewCode",
