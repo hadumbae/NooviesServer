@@ -23,7 +23,11 @@ export const MovieWithRatingPipelines: RatedMoviePipelines[] = [
             let: {movieID: "$_id"},
             pipeline: [
                 {
-                    $match: {$expr: [{$eq: ["$movie", "$$movieID"]}]}
+                    $match: {
+                        $expr: {
+                            $eq: ["$movie", "$$movieID"]
+                        }
+                    }
                 },
                 {
                     $project: {rating: 1, _id: 0}
