@@ -5,9 +5,6 @@
 
 import {Schema} from "mongoose";
 import type {MovieReviewSchemaFields} from "./MovieReview.types.js";
-import {
-    MovieReviewModerationLogSchema
-} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.schema";
 import SlugSchemaTypeOptions from "@shared/model/SlugSchemaTypeOptions";
 
 /**
@@ -77,12 +74,6 @@ export const MovieReviewSchema = new Schema<MovieReviewSchemaFields>({
     isPublic: {
         type: Boolean,
         default: true,
-    },
-
-    /** Nested array of administrative interventions and history. */
-    moderationLogs: {
-        type: [MovieReviewModerationLogSchema],
-        default: [],
     },
 
     /** URL-friendly identifier for SEO and routing. */

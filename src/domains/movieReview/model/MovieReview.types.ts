@@ -6,9 +6,6 @@
 import {Types} from "mongoose";
 import type {LeanUserSchemaFields} from "@models/User.types.js";
 import type {MovieWithGenres, MovieWithRating} from "../../movie/model/Movie.types.js";
-import type {
-    MovieReviewModerationLogSchemaFields
-} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types";
 import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/MovieReviewUniqueCodeSchema";
 
@@ -37,8 +34,7 @@ export interface MovieReviewSchemaFields {
     helpfulLikes: Types.ObjectId[];
     /** Toggle for public visibility or moderation status. */
     isPublic: boolean;
-    /** Chronological history of administrative actions taken on this review. */
-    moderationLogs: MovieReviewModerationLogSchemaFields[];
+
     /** SEO-friendly URL identifier. */
     slug: SlugString;
     /** Standardized tracking code (e.g., REV-XXXXX-XXXXX). */

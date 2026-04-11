@@ -20,7 +20,6 @@ connect().then(async () => {
     for (let review = await cursor.next(); review !== null; review = await cursor.next()) {
         /** Initialize new schema fields */
         review.isPublic = true;
-        review.moderationLogs = [];
 
         await review.save();
         console.log(`Updated review ID: ${review._id}`);
