@@ -1,28 +1,18 @@
 /**
- * @file TypeScript interface for Movie Review moderation audit logs.
- * @filename MovieReviewModerationLog.types.ts
+ * @fileoverview Defines the TypeScript interface for Movie Review moderation
+ * audit logs, used to track administrative actions taken on reviews.
  */
 
 import type {
     MovieReviewModerationAction
-} from "@domains/movieReview/validation/moderation-actions/MovieReviewModerationActionSchema";
-import {Types} from "mongoose";
-import type {AdminModerationMessage} from "@shared/features/admin-users/schema";
+} from "@domains/movieReview/validation/moderation-actions/MovieReviewModerationActionSchema"
+import {Types} from "mongoose"
+import type {AdminModerationMessage} from "@shared/features/admin-users/schema"
 
-/**
- * Fields for a single moderation log entry within a review document.
- * ---
- */
 export type MovieReviewModerationLogSchemaFields = {
-    /** The specific moderation command executed. */
-    action: MovieReviewModerationAction;
-
-    /** Reference to the Administrator who performed the action. */
-    admin: Types.ObjectId;
-
-    /** Contextual note or reasoning for the moderation (e.g., "Violation of TOS"). */
-    message: AdminModerationMessage;
-
-    /** The date and time when this specific moderation event occurred. */
-    modDate: Date;
-};
+    review: Types.ObjectId
+    action: MovieReviewModerationAction
+    admin: Types.ObjectId
+    message: AdminModerationMessage
+    modDate: Date
+}
