@@ -1,6 +1,5 @@
 /**
- * @file Administrative services for moderating movie reviews and managing audit logs.
- * @filename service.ts
+ * @fileoverview Provides administrative services for moderating movie reviews.
  */
 
 import type {
@@ -9,94 +8,84 @@ import type {
     SetRatingsConfig,
     ToggleReviewPublicityConfig,
     WriteMovieReviewModLogConfig,
-} from "@domains/movieReview/features/customer-review-actions/services/service.types";
-import {MovieReview} from "@domains/movieReview/model/MovieReview.model";
-import createHttpError from "http-errors";
-import {MovieReviewModerationLog} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.model";
-import type {MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types";
+} from "@domains/movieReview/features/customer-review-actions/services/service.types"
+import {MovieReview} from "@domains/movieReview/model/MovieReview.model"
+import createHttpError from "http-errors"
+import {MovieReviewModerationLog} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.model"
+import type {MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types"
 import type {
     MovieReviewModerationLogSchemaFields
-} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types";
+} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types"
 
 /**
- * Internal helper to generate and validate a moderation audit log entry.
- * ---
+ * Creates and persists a moderation audit log entry in the database.
  */
 export const writeMovieReviewModLog = async (
     {admin, action, message}: WriteMovieReviewModLogConfig
 ): Promise<MovieReviewModerationLogSchemaFields> => {
-    const log = new MovieReviewModerationLog({
-        action,
-        admin,
-        message,
-        modDate: new Date()
-    });
-
     try {
-        await log.validate();
-        return log;
+        return MovieReviewModerationLog.create({
+            action,
+            admin,
+            message,
+            modDate: new Date(),
+        })
     } catch (error: unknown) {
-        console.error("Critical: Failed to validate moderation log entry.", error);
-        throw createHttpError(500, "Action aborted: Internal logging failure.");
+        console.error("Critical: Failed to write moderation log.", error)
+        throw createHttpError(500, "Action aborted: Internal logging failure.")
     }
 }
 
 /**
- * Flips the visibility of a review (Public <-> Private) and logs the intervention.
+ * Toggles the visibility of a review between public and private states.
  */
 export const toggleReviewPublicity = async (
     {adminID, reviewID, message}: ToggleReviewPublicityConfig
 ): Promise<MovieReviewSchemaFields> => {
-    const review = await MovieReview.findById(reviewID).orFail();
-    const log = await writeMovieReviewModLog({action: "MOD_TOGGLE_PUBLICITY", admin: adminID, message});
+    const review = await MovieReview.findByIdAndUpdate(
+        reviewID,
+        [{$set: {isPublic: {$not: "$isPublic"}}}],
+        {new: true}
+    ).orFail()
 
-    review.isPublic = !review.isPublic;
-    review.moderationLogs.push(log);
+    await writeMovieReviewModLog({
+        action: "MOD_TOGGLE_PUBLICITY",
+        admin: adminID,
+        message,
+    })
 
-    return await review.save();
+    return review
 }
 
 /**
- * Overwrites a reviewer's display name, typically used for PII removal or moderation.
+ * Updates a reviewer's display name, used for moderation or PII removal.
  */
 export const resetDisplayName = async (
     {adminID, reviewID, message, displayName}: ResetDisplayNameConfig
 ): Promise<MovieReviewSchemaFields> => {
-    const review = await MovieReview.findById(reviewID).orFail();
-    const log = await writeMovieReviewModLog({action: "MOD_RESET_DISPLAY_NAME", admin: adminID, message});
-
-    review.displayName = displayName;
-    review.moderationLogs.push(log);
-
-    return await review.save();
+    const review = await MovieReview.findByIdAndUpdate(reviewID, {displayName}, {new: true}).orFail()
+    await writeMovieReviewModLog({action: "MOD_RESET_DISPLAY_NAME", admin: adminID, message})
+    return review
 }
 
 /**
- * Strips all "helpful" votes from a review to address engagement manipulation.
+ * Removes all "helpful" likes from a review to correct engagement manipulation.
  */
 export const resetLikes = async (
     {adminID, reviewID, message}: ResetLikesConfig
 ): Promise<MovieReviewSchemaFields> => {
-    const review = await MovieReview.findById(reviewID).orFail();
-    const log = await writeMovieReviewModLog({action: "MOD_RESET_LIKES", admin: adminID, message});
-
-    review.helpfulLikes = [];
-    review.moderationLogs.push(log);
-
-    return await review.save();
+    const review = await MovieReview.findByIdAndUpdate(reviewID, {helpfulLikes: []}, {new: true}).orFail()
+    await writeMovieReviewModLog({action: "MOD_RESET_LIKES", admin: adminID, message})
+    return review
 }
 
 /**
- * Manually adjusts the star rating of a review.
+ * Updates the numerical star rating assigned to a specific movie review.
  */
 export const setRatings = async (
     {adminID, reviewID, message, rating}: SetRatingsConfig
 ): Promise<MovieReviewSchemaFields> => {
-    const review = await MovieReview.findById(reviewID).orFail();
-    const log = await writeMovieReviewModLog({action: "MOD_SET_RATING", admin: adminID, message});
-
-    review.rating = rating;
-    review.moderationLogs.push(log);
-
-    return await review.save();
+    const review = await MovieReview.findByIdAndUpdate(reviewID, {rating}, {new: true}).orFail()
+    await writeMovieReviewModLog({action: "MOD_SET_RATING", admin: adminID, message})
+    return review
 }
