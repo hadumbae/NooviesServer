@@ -7,6 +7,8 @@ import type {
     CustomerProfileViewData,
     CustomerReviewViewData,
     FetchCustomerProfileViewDataConfig,
+    FetchCustomerReviewsViewData,
+    FetchCustomerReviewsViewDataConfig,
     FetchCustomerReviewViewDataConfig
 } from "@domains/customer/features/customer-details/services/service.types";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
@@ -16,7 +18,11 @@ import createHttpError from "http-errors";
 import {
     fetchRequiredCustomerByCode
 } from "@domains/customer/features/customer-details/utils/fetchRequiredCustomerByCode";
-import {CustomerReviewDetailPipelines} from "@domains/movieReview/queries/CustomerReviewDetailPipelines";
+import {MovieWithRatingPipelines} from "@domains/movieReview/queries/MovieWithRatingPipelines";
+import {MoviePopulationPipelines} from "@domains/movie/queries/MoviePopulationPipelines";
+import type {PaginationReturns} from "@shared/types/PaginationReturns";
+import {buildPaginationPipelines} from "@shared/features/pagination-pipelines";
+import type {PipelineStage} from "mongoose";
 
 /**
  * Aggregates a customer's profile details, recent reservations, and movie reviews into a single payload.
@@ -43,7 +49,18 @@ export const fetchCustomerProfileViewData = async (
         {$match: {user: customer._id}},
         {$sort: {createdAt: -1}},
         {$limit: reviewCounts},
-        ...CustomerReviewDetailPipelines,
+        {
+            $lookup: {
+                from: "movies",
+                localField: "movie",
+                foreignField: "_id",
+                as: "movie",
+                pipeline: MoviePopulationPipelines,
+            },
+        },
+        {$unwind: "$movie"},
+        {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
+        {$project: {helpfulLikes: 0}},
     ]);
 
     return {
@@ -72,7 +89,18 @@ export const fetchCustomerReviewViewData = async (
 
     const [review] = await MovieReview.aggregate<MovieReviewSchemaFields>([
         {$match: {user: customer._id, uniqueCode: reviewCode}},
-        ...CustomerReviewDetailPipelines,
+        {
+            $lookup: {
+                from: "movies",
+                localField: "movie",
+                foreignField: "_id",
+                as: "movie",
+                pipeline: MovieWithRatingPipelines,
+            },
+        },
+        {$unwind: "$movie"},
+        {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
+        {$project: {helpfulLikes: 0}},
     ]);
 
     if (!review) {
@@ -83,4 +111,42 @@ export const fetchCustomerReviewViewData = async (
         customer,
         review,
     };
+}
+
+/**
+ * Fetches a paginated list of all reviews written by a specific customer.
+ * ---
+ */
+export const fetchCustomerReviewsViewData = async (
+    {customerCode, pagination: {page, perPage}}: FetchCustomerReviewsViewDataConfig
+): Promise<FetchCustomerReviewsViewData> => {
+    const customer = await fetchRequiredCustomerByCode(customerCode);
+
+    const reviewInnerStages: PipelineStage.FacetPipelineStage[] = [
+        {$sort: {createdAt: -1}},
+        {$skip: (page - 1) * perPage},
+        {$limit: perPage},
+        {
+            $lookup: {
+                from: "movies",
+                localField: "movie",
+                foreignField: "_id",
+                as: "movie",
+                pipeline: MoviePopulationPipelines,
+            },
+        },
+        {$set: {movie: {$first: "$movie"}}},
+        {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
+        {$project: {helpfulLikes: 0}},
+    ];
+
+    const [reviews] = await MovieReview.aggregate<PaginationReturns<CustomerMovieReviewSummary>>([
+        {$match: {user: customer._id}},
+        ...buildPaginationPipelines({innerStages: reviewInnerStages}),
+    ]);
+
+    return {
+        customer,
+        reviews,
+    }
 }
