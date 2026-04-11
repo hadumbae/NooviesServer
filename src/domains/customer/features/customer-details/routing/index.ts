@@ -1,4 +1,4 @@
-import {CustomerViewDataRoutes} from "@domains/customer/features/customer-details/routing/viewRoutes";
+import {CustomerViewDataRoutes} from "@domains/customer/features/customer-details/routing/routes";
 
 export {
     CustomerViewDataRoutes
