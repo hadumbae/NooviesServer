@@ -1,6 +1,7 @@
 /**
- * @file Concrete router implementation for the Genre domain using the Generic CRUD factory.
- * @filename GenreCRUDRoutes.ts
+ * @fileoverview Concrete router implementation for the Genre domain.
+ * Combines standard Generic CRUD operations with a specialized aggregation
+ * endpoint to support complex filtering, sorting, and pagination.
  */
 
 import type {Router} from "express";
@@ -13,22 +14,29 @@ import {GenreInputSchema} from "@domains/genre/validation/GenreInputSchema";
 import {create, destroy, find, findById, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import {GenreQueryOptionsSchema} from "@domains/genre/validation/query/GenreQueryOptionsSchema";
 import {parseQueryOptions} from "shared/_feat/middleware";
+import asyncHandler from "@shared/utility/handlers/asyncHandler";
+import {aggregate} from "@shared/_feat/generic-aggregate";
 
 /**
- * Route configuration for Genre management.
- * ---
+ * Standard CRUD route definitions for the Genre domain.
  */
 const routes: CRUDRoute<GenreSchemaFields>[] = [
     {
         path: "/find",
         method: "get",
-        middleware: [isAuth, parseQueryOptions({schema: GenreQueryOptionsSchema, modelName: Genre.modelName})],
+        middleware: [
+            isAuth,
+            parseQueryOptions({schema: GenreQueryOptionsSchema, modelName: Genre.modelName})
+        ],
         handler: find
     },
     {
         path: "/paginated",
         method: "get",
-        middleware: [isAuth, parseQueryOptions({schema: GenreQueryOptionsSchema, modelName: Genre.modelName})],
+        middleware: [
+            isAuth,
+            parseQueryOptions({schema: GenreQueryOptionsSchema, modelName: Genre.modelName})
+        ],
         handler: paginated
     },
     {
@@ -59,13 +67,21 @@ const routes: CRUDRoute<GenreSchemaFields>[] = [
 
 /**
  * The instantiated Express Router for Genre CRUD operations.
- * Generated via {@link buildCRUDRoutes} using the Genre model and defined routes.
  */
 const router: Router = buildCRUDRoutes<GenreSchemaFields>({
     model: Genre,
     routes: routes,
 });
 
+/**
+ * Specialized Aggregation Endpoint.
+ */
+router.get(
+    "/query",
+    [isAuth, parseQueryOptions({schema: GenreQueryOptionsSchema, modelName: Genre.modelName})],
+    asyncHandler(aggregate({model: Genre})),
+);
+
 export {
     router as GenreCRUDRoutes,
-}
+};
