@@ -1,4 +1,5 @@
 import {Types} from "mongoose";
+import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate/optionTypes";
 
 declare module "express" {
     export interface Request {
@@ -12,6 +13,6 @@ declare module "express" {
 
         unsetFields?: any;
 
-        queryOptions?: unknown;
+        queryOptions?: AggregateQueryOptions;
     }
 }
