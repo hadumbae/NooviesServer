@@ -1,6 +1,7 @@
 /**
- * @file Zod schema and type for standardized API request configuration.
- * @filename RequestOptionsSchema.ts
+ * @fileoverview Zod schema for standardized API request configuration.
+ * Handles the coercion and validation of URL query parameters into strongly-typed
+ * options for database operations, including pagination and model hydration toggles.
  */
 
 import {z} from "zod";
@@ -8,37 +9,19 @@ import {URLParamBooleanSchema} from "@shared/schema/url/URLParamBooleanSchema";
 import {URLParamNumberSchema} from "@shared/schema/url/URLParamNumberSchema";
 
 /**
- * Validates the structure of global request modifiers typically passed as URL query parameters.
- * ---
- * ### Mechanics
- * * **Data Transformation:** Employs {@link URLParamBooleanSchema} and {@link URLParamNumberSchema}
- * to coerce incoming string-based query parameters into their native Boolean and Number types.
- * * **Middleware Integration:** Used by generic repository handlers to determine if Mongoose
- * `populate`, `virtuals`, or pagination logic should be applied to the query execution.
- * ---
+ * Validates global request modifiers for fetching data.
  */
 export const RequestOptionsSchema = z.object({
-    /** Whether to trigger Mongoose population on document references. */
     populate: URLParamBooleanSchema,
-
-    /** Whether to include virtual fields in the resulting JSON output. */
     virtuals: URLParamBooleanSchema,
-
-    /** Whether the result set should be wrapped in a pagination envelope. */
-    paginated: URLParamBooleanSchema,
-
-    /** The maximum number of documents to return in a single non-paginated request. */
     limit: URLParamNumberSchema,
-
-    /** The specific page index to retrieve for paginated queries. */
     page: URLParamNumberSchema,
-
-    /** The number of items to display per page during pagination. */
     perPage: URLParamNumberSchema,
 });
 
 /**
- * TypeScript type inferred from {@link RequestOptionsSchema}.
- * Represents a validated configuration object for fetching domain data.
+ * TypeScript type inferred from RequestOptionsSchema.
+ * Used to ensure type-safety across service and repository layers when
+ * configuring fetch operations.
  */
 export type RequestOptions = z.infer<typeof RequestOptionsSchema>;
