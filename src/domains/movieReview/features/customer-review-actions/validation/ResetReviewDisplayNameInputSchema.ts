@@ -3,7 +3,7 @@
  * @filename ResetReviewDisplayNameInputSchema.ts
  */
 
-import {AdminModerationMessageInputSchema} from "@shared/features/admin-users/schema";
+import {AdminModerationMessageInputSchema} from "@shared/_feat/admin-users/schema";
 import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
 import {z} from "zod";
 

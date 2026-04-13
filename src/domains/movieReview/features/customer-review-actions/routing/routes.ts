@@ -13,7 +13,7 @@ import {
     patchToggleReviewPublicity
 } from "@domains/movieReview/features/customer-review-actions/controllers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import {AdminModerationMessageInputSchema} from "@shared/features/admin-users/schema";
+import {AdminModerationMessageInputSchema} from "@shared/_feat/admin-users/schema";
 import {
     ResetReviewDisplayNameInputSchema,
     SetReviewRatingInputSchema

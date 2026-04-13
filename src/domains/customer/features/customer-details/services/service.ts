@@ -21,7 +21,7 @@ import {
 import {MovieWithRatingPipelines} from "@domains/movieReview/queries/MovieWithRatingPipelines"
 import {MoviePopulationPipelines} from "@domains/movie/queries/MoviePopulationPipelines"
 import type {PaginationReturns} from "@shared/types/PaginationReturns"
-import {buildPaginationPipelines} from "@shared/features/pagination-pipelines"
+import {buildPaginationPipelines} from "@shared/_feat/pagination-pipelines"
 import type {PipelineStage} from "mongoose"
 import type {
     MovieReviewModerationLogSchemaFields

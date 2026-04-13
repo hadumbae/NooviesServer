@@ -10,7 +10,7 @@ import {
     fetchCustomerReviewViewData
 } from "@domains/customer/features/customer-details/services"
 import {fetchCustomerReviewLogsViewData} from "@domains/customer/features/customer-details/services/service"
-import {fetchRequestPaginationOptions} from "@shared/features/fetch-request-options/utils"
+import {fetchRequestPaginationOptions} from "@shared/_feat/fetch-request-options/utils"
 
 /**
  * Resolves a customer's full profile activity including identity,

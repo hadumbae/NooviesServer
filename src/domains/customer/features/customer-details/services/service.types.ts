@@ -10,7 +10,7 @@ import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains
 import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/MovieReviewUniqueCodeSchema"
 import type {
     RequestPaginationOptions
-} from "@shared/features/fetch-request-options/schemas/RequestPaginationOptionsSchema"
+} from "@shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema"
 import type {PaginationReturns} from "@shared/types/PaginationReturns"
 import type {
     MovieReviewModerationLogSchemaFields

@@ -3,7 +3,7 @@
  * @filename SetReviewRatingInputSchema.ts
  */
 
-import {AdminModerationMessageInputSchema} from "@shared/features/admin-users/schema";
+import {AdminModerationMessageInputSchema} from "@shared/_feat/admin-users/schema";
 import {z} from "zod";
 import {NumberValueSchema} from "@shared/schema/numbers/NumberValueSchema";
 

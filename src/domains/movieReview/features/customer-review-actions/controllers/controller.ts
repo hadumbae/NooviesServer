@@ -11,9 +11,9 @@ import {
 } from "@domains/movieReview/features/customer-review-actions/services/service";
 import type {Request, Response} from "express";
 import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
-import {fetchAuthAdmin} from "@shared/features/admin-users/utils/fetchAuthAdmin";
+import {fetchAuthAdmin} from "@shared/_feat/admin-users/utils/fetchAuthAdmin";
 import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import type {AdminModerationMessageInputData} from "@shared/features/admin-users/schema";
+import type {AdminModerationMessageInputData} from "@shared/_feat/admin-users/schema";
 import type {ResetReviewDisplayNameInputData} from "@domains/movieReview/features/customer-review-actions/validation";
 import type {
     SetReviewRatingInputData

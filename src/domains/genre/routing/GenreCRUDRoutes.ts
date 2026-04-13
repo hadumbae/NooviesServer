@@ -4,15 +4,15 @@
  */
 
 import type {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/features/generic-crud/routes";
+import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import Genre from "@domains/genre/models/genre/Genre.model";
 import type {GenreSchemaFields} from "@domains/genre/models/genre/Genre.types";
 import isAuth from "@domains/authentication/middleware/isAuth";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import {GenreInputSchema} from "@domains/genre/validation/GenreInputSchema";
-import {create, destroy, find, findById, paginated, update} from "@shared/features/generic-crud/path-handlers";
+import {create, destroy, find, findById, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import {GenreQueryOptionsSchema} from "@domains/genre/validation/query/GenreQueryOptionsSchema";
-import {parseQueryOptions} from "@shared/features/generic-crud/middleware";
+import {parseQueryOptions} from "@shared/_feat/generic-crud/middleware";
 
 /**
  * Route configuration for Genre management.
