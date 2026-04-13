@@ -12,7 +12,7 @@ import validateZodSchema from "@shared/utility/schema/validators/validateZodSche
 import {GenreInputSchema} from "@domains/genre/validation/GenreInputSchema";
 import {create, destroy, find, findById, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import {GenreQueryOptionsSchema} from "@domains/genre/validation/query/GenreQueryOptionsSchema";
-import {parseQueryOptions} from "@shared/_feat/generic-crud/middleware";
+import {parseQueryOptions} from "shared/_feat/middleware";
 
 /**
  * Route configuration for Genre management.

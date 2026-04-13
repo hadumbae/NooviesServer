@@ -14,5 +14,6 @@ declare module "express" {
         unsetFields?: any;
 
         queryOptions?: AggregateQueryOptions;
+        parsedParams?: unknown;
     }
 }
