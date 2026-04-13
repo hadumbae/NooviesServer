@@ -4,7 +4,9 @@
  */
 
 import {z} from "zod";
-import {URLParamMongooseSortOrderSchema} from "@shared/schema/url/URLParamMongooseSortOrderSchema";
+import {
+    MongooseNumericSortSchema,
+} from "@shared/schema/url/URLParamMongooseSortOrderSchema";
 
 /**
  * Validates the available sort keys for Genre queries.
@@ -12,7 +14,7 @@ import {URLParamMongooseSortOrderSchema} from "@shared/schema/url/URLParamMongoo
  */
 export const GenreQueryMatchSortsSchema = z.object({
     /** Sort order for the genre name field. */
-    sortByName: URLParamMongooseSortOrderSchema,
+    sortByName: MongooseNumericSortSchema.optional(),
 });
 
 /** Inferred TypeScript type for genre sort parameters. */
