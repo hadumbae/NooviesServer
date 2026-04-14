@@ -3,22 +3,22 @@ import {
     createBaseRoutes,
     type BaseRouteConfig
 } from "@shared/routing/BaseRoutes";
-import type { IPersonController } from "../controller/PersonController.js";
+import type {IPersonController} from "../controller/PersonController.js";
 import PersonServiceProvider from "../provider/PersonServiceProvider.js";
-import { PersonInputSchema } from "../schema/PersonInputSchema.js";
+import {PersonInputSchema} from "@domains/person/_feat/validate-submit";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 
 /**
  * Destructure the Person model and controller from the service provider.
  */
-const { model, controllers: { controller } } = PersonServiceProvider.register();
+const {model, controllers: {controller}} = PersonServiceProvider.register();
 
 /**
  * Middleware to remove or unset specific model form fields
  * before creating or updating a Person entity.
  */
-const unsetMiddleware = unsetModelFormFields({ model, excludeKeys: ["profileImage"] });
+const unsetMiddleware = unsetModelFormFields({model, excludeKeys: ["profileImage"]});
 
 /**
  * Middleware configuration for the base CRUD routes of Person.
