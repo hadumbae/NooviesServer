@@ -5,7 +5,6 @@
 
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
-import PersonRoutes from "@domains/person/routing/PersonRoutes.js";
 import RoleTypeRoutes from "@domains/roleType/routing/RoleTypeRoutes.js";
 import SeatRoutes from "@domains/seat/routing/SeatRoutes.js";
 import ScreenRoutes from "@domains/screen/routing/ScreenRoutes.js";
@@ -22,13 +21,14 @@ import {CustomerViewDataRoutes} from "@domains/customer/features/customer-detail
 import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer-review-actions/routing";
 import {GenreCRUDRoutes} from "@domains/genre/_feat/crud";
 import {PersonImageRoutes} from "@domains/person/_feat/update-image";
+import {PersonCRUDRoutes} from "@domains/person/_feat/crud";
 
 /**
  * Core metadata and foundational data configuration routes.
  * ---
  */
 const setupRoutes: RouteRegistration[] = [
-    {path: "/api/v1/admin/persons", router: PersonRoutes},
+    {path: "/api/v1/admin/persons/crud", router: PersonCRUDRoutes},
     {path: "/api/v1/admin/persons/feat", router: PersonImageRoutes},
     {path: "/api/v1/admin/roletypes", router: RoleTypeRoutes},
     {path: "/api/v1/admin/genres/crud", router: GenreCRUDRoutes},
