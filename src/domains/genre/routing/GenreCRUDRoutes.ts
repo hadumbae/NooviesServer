@@ -11,7 +11,7 @@ import type {GenreSchemaFields} from "@domains/genre/models/genre/Genre.types";
 import isAuth from "@domains/authentication/middleware/isAuth";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import {GenreInputSchema} from "@domains/genre/validation/GenreInputSchema";
-import {create, destroy, find, findById, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
+import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import {GenreQueryOptionsSchema} from "@domains/genre/validation/query/GenreQueryOptionsSchema";
 import {parseQueryOptions} from "shared/_feat/middleware";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
@@ -50,6 +50,12 @@ const routes: CRUDRoute<GenreSchemaFields>[] = [
         method: "get",
         middleware: [isAuth],
         handler: findById
+    },
+    {
+        path: `/item/:slug/slug`,
+        method: "get",
+        middleware: [isAuth],
+        handler: findBySlug
     },
     {
         path: `/item/:_id`,
