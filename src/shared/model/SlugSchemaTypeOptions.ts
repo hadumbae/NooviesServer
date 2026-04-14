@@ -1,21 +1,17 @@
+/**
+ * @fileoverview Reusable Mongoose schema options for slug fields.
+ * Standardizes validation for unique, URL-safe identifiers across schemas.
+ */
+
 import type { SchemaTypeOptions } from "mongoose";
 
 /**
- * @file SlugSchemaTypeOptions.ts
- *
- * @summary
- * Reusable Mongoose schema options for `slug` fields.
- *
- * @description
- * Defines a standardized schema configuration for slug fields that:
- * - Enforces string type
- * - Requires uniqueness at the database level
- * - Marks the field as required with a validation message
- *
- * Intended to be shared across schemas that expose a public or URL-safe slug.
+ * Common configuration for string-based slugs.
  */
 const SlugSchemaTypeOptions: SchemaTypeOptions<string> = {
     type: String,
+    minlength: [1, "Slug must not be an empty string."],
+    maxlength: [50, "Slug must not be more than 50 characters."],
     unique: [true, "Slug must be unique."],
     required: [true, "Slug is required."],
 };

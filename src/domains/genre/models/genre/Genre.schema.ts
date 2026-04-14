@@ -5,13 +5,14 @@
 
 import {Schema} from "mongoose";
 import type {GenreSchemaFields} from "./Genre.types.js";
-import {CloudinaryImageSchema} from "../../../../shared/model/cloudinary-image/CloudinaryImage.js";
+import {CloudinaryImageSchema} from "@shared/model/cloudinary-image/CloudinaryImage";
+import SlugSchemaTypeOptions from "@shared/model/SlugSchemaTypeOptions";
 
 /**
  * Mongoose schema for persistent Genre documents.
  * @remarks Enforces uniqueness on names and slugs, includes timestamps, and validates movie metrics.
  */
-const GenreSchema = new Schema<GenreSchemaFields>({
+export const GenreSchema = new Schema<GenreSchemaFields>({
     /** Unique display name of the genre (max 150 characters). */
     name: {
         type: String,
@@ -19,13 +20,16 @@ const GenreSchema = new Schema<GenreSchemaFields>({
         unique: [true, "Name must be unique."],
         minlength: [1, "Must not be an empty string."],
         maxlength: [150, "Must be 150 characters or less."],
+        trim: true,
     },
 
     /** Detailed description of the genre (max 1000 characters). */
     description: {
         type: String,
         required: [true, "Description is required."],
+        minlength: [1, "Description must not be an empty string."],
         maxlength: [1000, "Description must be 1000 characters or less."],
+        trim: true,
     },
 
     /** Primary representative image asset via Cloudinary. */
@@ -45,11 +49,5 @@ const GenreSchema = new Schema<GenreSchemaFields>({
     },
 
     /** Unique URL-friendly string used for routing. */
-    slug: {
-        type: String,
-        unique: [true, "Slug must be unique."],
-        required: [true, "Slug is required."],
-    },
+    slug: SlugSchemaTypeOptions,
 }, {timestamps: true});
-
-export default GenreSchema;

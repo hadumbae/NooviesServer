@@ -1,41 +1,38 @@
 /**
- * @file Mongoose middleware hooks for the Movie model.
- * @filename Movie.hooks.ts
+ * @fileoverview Mongoose middleware for the Movie model.
+ * Handles slug generation, genre count synchronization, and cascade deletions.
  */
 
 import {MovieSchema} from "./Movie.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import Showing from "../../showing/models/showing/Showing.model.js";
+import Showing from "@domains/showing/models/showing/Showing.model.js";
 import type {MovieSchemaFields} from "./Movie.types.js";
-import generateSlug from "../../../shared/utility/generateSlug.js";
-import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
+import generateSlug from "@shared/utility/generateSlug.js";
+import MovieCredit from "@domains/movieCredit/models/MovieCredit.model.js";
 import MovieModel from "./Movie.model.js";
-import Genre from "../../genre/models/genre/Genre.model.js";
+import {Genre} from "@domains/genre/models/genre";
 
 /**
- * Middleware to synchronize the URL slug with the movie title.
- * @remarks Triggers during validation when the 'title' field is modified.
+ * Synchronizes the URL slug whenever the title is modified.
  */
 MovieSchema.pre(
     "validate",
     {document: true},
-    function (this: HydratedDocument<MovieSchemaFields>, next: () => void): void {
+    function (this: HydratedDocument<MovieSchemaFields>, next) {
         if (this.isModified("title")) {
             this.slug = generateSlug(this.title);
         }
-
         next();
     }
 );
 
 /**
- * Capture previous genre state before saving to handle movie count synchronization.
- * @remarks Identifies genres that need to be decremented by storing them in a temporary `_genresToRemove` property.
+ * Captures previous genre state to facilitate movie count synchronization.
  */
 MovieSchema.pre(
     "save",
     {document: true},
-    async function (this: HydratedDocument<MovieSchemaFields>): Promise<void> {
+    async function (this: HydratedDocument<MovieSchemaFields>) {
         if (!this.isNew || this.isModified("genres")) {
             const oldDoc = await MovieModel.findById(this._id).select("genres");
             (this as any)._genresToRemove = oldDoc?.genres ?? [];
@@ -44,13 +41,12 @@ MovieSchema.pre(
 );
 
 /**
- * Synchronizes genre movie counts after a movie is saved or updated.
- * @remarks Performs atomical `$inc` operations to keep {@link Genre} movie counts in sync with current associations.
+ * Atomic update of Genre movie counts after saving a movie.
  */
 MovieSchema.post(
     "save",
     {document: true},
-    async function (this: HydratedDocument<MovieSchemaFields>): Promise<void> {
+    async function (this: HydratedDocument<MovieSchemaFields>) {
         if ((this as any)._genresToRemove) {
             await Genre.updateMany(
                 {_id: {$in: (this as any)._genresToRemove}},
@@ -66,36 +62,32 @@ MovieSchema.post(
 );
 
 /**
- * Document-level cleanup middleware to remove associated data upon movie deletion.
- * @remarks Cascade deletes {@link Showing} and {@link MovieCredit} records linked to the specific document.
+ * Cascade deletes associated data (Showings, Credits) when a movie document is deleted.
  */
 MovieSchema.pre(
     "deleteOne",
     {document: true},
-    async function (this: HydratedDocument<MovieSchemaFields>): Promise<void> {
-        const {_id} = this;
-        (this as any)._wasUpdated = true;
-
+    async function (this: HydratedDocument<MovieSchemaFields>) {
         await Promise.all([
-            Showing.deleteMany({movie: _id}),
-            MovieCredit.deleteMany({movie: _id}),
+            Showing.deleteMany({movie: this._id}),
+            MovieCredit.deleteMany({movie: this._id}),
         ]);
     }
 );
 
 /**
- * Query-level cleanup middleware for bulk or static movie deletions.
- * @remarks Ensures data integrity by removing associated records when movies are deleted via query filters.
+ * Cascade deletes associated data for query-based bulk deletions.
  */
 MovieSchema.pre(
     ["deleteOne", "deleteMany"],
-    {document: false, query: true}, async function (this: Query<any, MovieSchemaFields>): Promise<void> {
+    {document: false, query: true},
+    async function (this: Query<any, MovieSchemaFields>) {
         const {_id} = this.getFilter();
-        if (!_id) return;
-
-        await Promise.all([
-            Showing.deleteMany({movie: _id}),
-            MovieCredit.deleteMany({movie: _id}),
-        ]);
+        if (_id) {
+            await Promise.all([
+                Showing.deleteMany({movie: _id}),
+                MovieCredit.deleteMany({movie: _id}),
+            ]);
+        }
     }
 );

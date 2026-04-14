@@ -4,8 +4,8 @@
  * Mongoose-ready $match and $sort aggregation stages.
  */
 
-import {GenreQueryMatchFiltersSchema} from "@domains/genre/validation/query/GenreQueryMatchFiltersSchema";
-import {GenreQueryMatchSortsSchema} from "@domains/genre/validation/query/GenreQueryMatchSortsSchema";
+import {GenreQueryMatchFiltersSchema} from "@domains/genre/_feat/validate-query/GenreQueryMatchFiltersSchema";
+import {GenreQueryMatchSortsSchema} from "@domains/genre/_feat/validate-query/GenreQueryMatchSortsSchema";
 import {z} from "zod";
 import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
 import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate/optionTypes";

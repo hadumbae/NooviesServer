@@ -1,35 +1,32 @@
 /**
- * @file Type definition for the Genre persistence model.
- * @filename Genre.types.ts
+ * @fileoverview Type definitions for the Genre persistence model.
+ * Defines the database shape, including assets, metrics, and identity.
  */
 
-import type {CloudinaryImageObject} from "../../../../shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
+import type {CloudinaryImageObject} from "@shared/schema/cloudinary/CloudinaryImageObjectSchema";
 import {Types} from "mongoose";
-import type {BaseModel} from "../../../../shared/types/schema/BaseModel.js";
-import type {ModelTimestamps} from "../../../../shared/types/schema/ModelTimestamps.js";
+import type {BaseModel} from "@shared/types/schema/BaseModel";
+import type {ModelTimestamps} from "@shared/types/schema/ModelTimestamps";
 
 /**
- * Represents the comprehensive shape of a Genre document in the database.
- * * * **Composition:** Combines {@link BaseModel} and {@link ModelTimestamps} for lifecycle and identity tracking.
- * * **Assets:** Includes both a primary `image` (thumbnail/card) and an optional `bannerImage` for hero sections.
- * * **Metrics:** Maintains a `movieCount` to support category-level analytics and UI badges.
+ * Shape of a Genre document within MongoDB.
  */
 export type GenreSchemaFields = BaseModel & ModelTimestamps & {
-    /** The unique MongoDB identifier for the genre. */
+    /** The unique MongoDB identifier. */
     readonly _id: Types.ObjectId;
 
-    /** Public-facing name of the genre (e.g., "Sci-Fi", "Horror"). */
+    /** Public-facing display name. */
     name: string;
 
-    /** A brief summary of the genre's characteristics and themes. */
+    /** Summary of genre characteristics and themes. */
     description: string;
 
-    /** URL-safe unique string used for category-based routing. */
+    /** URL-safe unique identifier for routing. */
     slug: string;
 
-    /** Metadata for the genre's primary representative image. */
+    /** Primary representative image metadata. */
     image?: CloudinaryImageObject | null;
 
-    /** Total number of movies currently associated with this genre. */
+    /** Aggregated count of associated movies. */
     movieCount: number;
-}
+};

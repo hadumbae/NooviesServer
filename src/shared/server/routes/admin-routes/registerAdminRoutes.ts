@@ -7,7 +7,6 @@ import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
 import PersonRoutes from "@domains/person/routing/PersonRoutes.js";
 import RoleTypeRoutes from "@domains/roleType/routing/RoleTypeRoutes.js";
-import GenreRoutes from "@domains/genre/routing/GenreRoutes.js";
 import SeatRoutes from "@domains/seat/routing/SeatRoutes.js";
 import ScreenRoutes from "@domains/screen/routing/ScreenRoutes.js";
 import TheatreRoutes from "@domains/theatre/routing/TheatreRoutes.js";
@@ -19,9 +18,9 @@ import SeatMapRoutes from "@domains/seatmap/routing/SeatMapRoutes.js";
 import {ReservationRoutes} from "@domains/reservation/routes/ReservationRoutes.js";
 import {FetchRoutes as FetchAdminReservationRoutes} from "@domains/reservation/features/fetch-reservations/admin";
 import {ReservationUpdateRoutes} from "@domains/reservation/features/update-reservations/routes";
-import {GenreCRUDRoutes} from "@domains/genre/routing/GenreCRUDRoutes";
 import {CustomerViewDataRoutes} from "@domains/customer/features/customer-details/routing";
 import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer-review-actions/routing";
+import {GenreCRUDRoutes} from "@domains/genre/_feat/crud";
 
 /**
  * Core metadata and foundational data configuration routes.
@@ -30,7 +29,6 @@ import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer
 const setupRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/persons", router: PersonRoutes},
     {path: "/api/v1/admin/roletypes", router: RoleTypeRoutes},
-    {path: "/api/v1/admin/genres", router: GenreRoutes},
     {path: "/api/v1/admin/genres/crud", router: GenreCRUDRoutes},
 ];
 

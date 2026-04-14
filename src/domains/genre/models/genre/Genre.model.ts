@@ -1,21 +1,14 @@
 /**
- * @file Compiles and exports the Genre Mongoose model.
- * @filename Genre.model.ts
+ * @fileoverview Compiles and exports the Genre Mongoose model.
+ * Ensures middleware hooks are registered before model instantiation.
  */
 
 import {Model, model} from "mongoose";
-import GenreSchema from "./Genre.schema.js";
 import type {GenreSchemaFields} from "./Genre.types.js";
-
-/**
- * Static import of hooks to ensure middleware is registered before model instantiation.
- */
+import {GenreSchema} from "@domains/genre/models/genre/Genre.schema";
 import "./Genre.hooks.js";
 
 /**
- * The compiled Mongoose model for Genre documents.
- * @remarks Integrates {@link GenreSchema}, its associated hooks, and TypeScript fields.
+ * Compiled Mongoose model for Genre documents.
  */
-const Genre: Model<GenreSchemaFields> = model<GenreSchemaFields>("Genre", GenreSchema);
-
-export default Genre;
+export const Genre: Model<GenreSchemaFields> = model<GenreSchemaFields>("Genre", GenreSchema);

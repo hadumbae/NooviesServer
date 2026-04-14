@@ -32,7 +32,7 @@ export type UpdateDocumentConfig<
     options?: Pick<RequestOptions, "populate" | "virtuals">;
 
     /** Optional callback triggered if the update violates a unique database index. */
-    onDuplicateIndex?: (indexString: string) => never;
+    onDuplicateIndex?: (indexString: string) => void | never;
 
     /**
      * The number of times the update should be re-attempted if a

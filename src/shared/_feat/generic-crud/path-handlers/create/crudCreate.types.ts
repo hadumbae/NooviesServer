@@ -26,5 +26,5 @@ export type CreateDocumentConfig<TModel extends BaseModel, TInput = unknown> = O
     options?: Pick<RequestOptions, "populate" | "virtuals">;
 
     /** Optional handler invoked when a unique index violation occurs. */
-    onDuplicateIndex?: (indexString: string) => never;
+    onDuplicateIndex?: (indexString: string) => void | never;
 };

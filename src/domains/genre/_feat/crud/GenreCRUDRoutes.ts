@@ -6,16 +6,17 @@
 
 import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import Genre from "@domains/genre/models/genre/Genre.model";
 import type {GenreSchemaFields} from "@domains/genre/models/genre/Genre.types";
 import isAuth from "@domains/authentication/middleware/isAuth";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import {GenreInputSchema} from "@domains/genre/validation/GenreInputSchema";
-import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import {GenreQueryOptionsSchema} from "@domains/genre/validation/query/GenreQueryOptionsSchema";
-import {parseQueryOptions} from "shared/_feat/middleware";
+import {parseQueryOptions} from "@shared/_feat/middleware";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
+import {Genre} from "@domains/genre/models/genre";
+import {genreCreate, genreUpdate} from "@domains/genre/_feat/crud/index";
+import {destroy, find, findById, findBySlug, paginated} from "@shared/_feat/generic-crud/path-handlers";
+import {GenreInputSchema} from "@domains/genre/_feat/validate-submit";
+import {GenreQueryOptionsSchema} from "@domains/genre/_feat/validate-query";
 
 /**
  * Standard CRUD route definitions for the Genre domain.
@@ -43,7 +44,7 @@ const routes: CRUDRoute<GenreSchemaFields>[] = [
         path: `/item`,
         method: "post",
         middleware: [isAuth, validateZodSchema(GenreInputSchema)],
-        handler: create
+        handler: genreCreate
     },
     {
         path: `/item/:_id`,
@@ -61,7 +62,7 @@ const routes: CRUDRoute<GenreSchemaFields>[] = [
         path: `/item/:_id`,
         method: "patch",
         middleware: [isAuth, validateZodSchema(GenreInputSchema)],
-        handler: update
+        handler: genreUpdate
     },
     {
         path: `/item/:_id`,

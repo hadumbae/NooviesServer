@@ -1,20 +1,16 @@
 /**
- * @file Migration script to synchronize genre movie counts with the current database state.
- * @filename 20260322-update-genre-schema.migration.ts
+ * @fileoverview Data migration script to synchronize genre movie counts.
+ * Iterates through all genres and recalculates movie associations for accuracy.
  */
 
 import "dotenv/config";
 import connect from "@config/database.js";
 import mongoose from "mongoose";
-import Genre from "../domains/genre/models/genre/Genre.model.js";
 import MovieModel from "../domains/movie/model/Movie.model.js";
+import {Genre} from "@domains/genre/models/genre";
 
 /**
- * Performs a deep synchronization of the `movieCount` field for all existing genres.
- * @remarks
- * - Uses a cursor to iterate through genres to avoid memory overhead on large datasets.
- * - Queries {@link MovieModel} to calculate the true document count per genre.
- * - Updates each genre document with the accurate count, ensuring UI consistency.
+ * Executes the synchronization process.
  */
 connect().then(async () => {
     const cursor = Genre.find().cursor();
@@ -24,19 +20,19 @@ connect().then(async () => {
         genre !== null;
         genre = await cursor.next()
     ) {
-        /** Calculate actual movie associations for the current genre. */
+        /** Recalculate actual count from the Movie collection. */
         const count = await MovieModel.countDocuments({genres: genre._id});
 
-        console.log(`Updating: ${genre.name} / ${count} movies`);
+        console.log(`Updating: ${genre.name} | Found: ${count} movies`);
 
         genre.movieCount = count ?? 0;
         await genre.save();
     }
 
-    console.log("Done updating genres.");
+    console.log("Migration completed successfully.");
 }).catch((error: unknown) => {
-    console.error("[ERROR] ", error);
+    console.error("[MIGRATION ERROR] ", error);
 }).finally(async () => {
-    console.log("Disconnecting...");
+    console.log("Closing database connection...");
     await mongoose.disconnect();
-})
+});

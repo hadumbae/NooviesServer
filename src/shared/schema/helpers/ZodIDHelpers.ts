@@ -1,10 +1,10 @@
-import Genre from "../../../domains/genre/models/genre/Genre.model.js";
 import PersonModel from "../../../domains/person/model/Person.model.js";
 import Screen from "../../../domains/screen/model/Screen.model.js";
 import Showing from "../../../domains/showing/models/showing/Showing.model.js";
 import {ObjectIdStringSchema} from "../mongoose/ObjectIdStringSchema.js";
 import Seat from "../../../domains/seat/model/Seat.model.js";
 import Theatre from "../../../domains/theatre/model/Theatre.model.js";
+import {Genre} from "@domains/genre/models/genre";
 
 export const GenreAsyncIDString = ObjectIdStringSchema
     .refine(
