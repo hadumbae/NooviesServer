@@ -1,9 +1,8 @@
 import {BaseRepository} from "@shared/repository/BaseRepository";
 import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
-import type { PopulatePath } from "@shared/types/mongoose/PopulatePath";
+import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import PersonImageService from "../services/image-service/PersonImageService.js";
 import {Person} from "@domains/person/model";
 
 /**
@@ -39,20 +38,16 @@ export default class PersonServiceProvider {
         const queryUtils = QueryUtils;
 
         // Repository for Person with CRUD operations and population options
-        const repository = new BaseRepository({ model, populateRefs });
-
-        // Service for handling Person images via Cloudinary
-        const imageService = new PersonImageService();
+        const repository = new BaseRepository({model, populateRefs});
 
         // Service for aggregate queries for Person
-        const aggregateService = new AggregateQueryService({ model });
+        const aggregateService = new AggregateQueryService({model});
 
         // Controller handling HTTP requests for Person
         const controller = new PersonController({
             repository,
             queryUtils,
             aggregateService,
-            imageService,
         });
 
         return {

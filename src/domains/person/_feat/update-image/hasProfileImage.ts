@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { PersonProfileImageFileSchema } from "../schema/files/PersonProfileImageFileSchema.js";
-import handleZodError from "../../../shared/utility/schema/handlers/handleZodError.js";
+import { PersonProfileImageFileSchema } from "../../schema/files/PersonProfileImageFileSchema";
+import handleZodError from "@shared/utility/schema/handlers/handleZodError";
 
 /**
  * Express middleware that validates a profile image upload in the request.
@@ -24,7 +24,7 @@ import handleZodError from "../../../shared/utility/schema/handlers/handleZodErr
  * });
  * ```
  */
-export default function hasProfileImage(req: Request, res: Response, next: NextFunction): void {
+export function hasProfileImage(req: Request, res: Response, next: NextFunction): void {
     try {
         req.validatedBody = PersonProfileImageFileSchema.parse(req);
         next();

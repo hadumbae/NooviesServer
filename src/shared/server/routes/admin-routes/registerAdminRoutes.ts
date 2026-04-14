@@ -21,6 +21,7 @@ import {ReservationUpdateRoutes} from "@domains/reservation/features/update-rese
 import {CustomerViewDataRoutes} from "@domains/customer/features/customer-details/routing";
 import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer-review-actions/routing";
 import {GenreCRUDRoutes} from "@domains/genre/_feat/crud";
+import {PersonImageRoutes} from "@domains/person/_feat/update-image";
 
 /**
  * Core metadata and foundational data configuration routes.
@@ -28,6 +29,7 @@ import {GenreCRUDRoutes} from "@domains/genre/_feat/crud";
  */
 const setupRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/persons", router: PersonRoutes},
+    {path: "/api/v1/admin/persons/feat", router: PersonImageRoutes},
     {path: "/api/v1/admin/roletypes", router: RoleTypeRoutes},
     {path: "/api/v1/admin/genres/crud", router: GenreCRUDRoutes},
 ];
