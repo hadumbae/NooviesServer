@@ -1,12 +1,9 @@
 import createHttpError from "http-errors";
 import {type Document, Types} from "mongoose";
-
-import PersonModel from "../../model/Person.model.js";
-import type {PersonSchemaFields} from "../../interfaces/PersonSchemaFields.js";
-
 import type {IPersonImageService} from "./IPersonImageService.js";
 import type {RemovePersonProfileImageParams, UploadPersonProfileImageParams} from "./PersonImageTypes.js";
 import CloudinaryUtils from "../../../../shared/utility/cloudinary/CloudinaryUtils.js";
+import {Person, type PersonSchemaFields} from "@domains/person/model";
 
 /**
  * Service for managing a person's profile image.
@@ -21,7 +18,7 @@ export default class PersonImageService implements IPersonImageService {
      * @returns The person document.
      */
     async fetchPerson(_id: Types.ObjectId): Promise<PersonSchemaFields & Document> {
-        const person = await PersonModel.findById(_id);
+        const person = await Person.findById(_id);
         if (!person) throw createHttpError(404, `Person with ID (${_id}) not found.`);
         return person;
     }

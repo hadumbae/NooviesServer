@@ -1,9 +1,9 @@
 import {type Document, Types} from "mongoose";
-import type {PersonSchemaFields} from "../../interfaces/PersonSchemaFields.js";
 import type {
     RemovePersonProfileImageParams,
     UploadPersonProfileImageParams
 } from "./PersonImageTypes.js";
+import type {PersonSchemaFields} from "@domains/person/model";
 
 /**
  * Interface for services that manage a person's profile image.

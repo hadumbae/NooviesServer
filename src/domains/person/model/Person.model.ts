@@ -1,37 +1,16 @@
-import { model, type Model } from "mongoose";
-import type { PersonSchemaFields } from "../interfaces/PersonSchemaFields.js";
-import { PersonSchema } from "./Person.schema.js";
+/**
+ * @fileoverview Compiles and exports the Person Mongoose model.
+ * Integrates schema, middleware, and TypeScript fields for the Person domain.
+ */
 
+import {model, type Model} from "mongoose";
+import {PersonSchema} from "./Person.schema.js";
 import "./Person.middleware.js";
+import "./Person.indexes.js";
+import type {PersonSchemaFields} from "@domains/person/model/Person.types";
 
 /**
- * Mongoose model for the `Person` collection.
- *
- * @remarks
- * - Uses {@link PersonSchema} for schema definition.
- * - Automatically includes virtuals and middleware from
- * - Provides full CRUD operations and query helpers for `IPerson` documents.
- *
- * @example
- * ```ts
- * import PersonModel from './models/Person.model.js';
- *
- * // Creating a new person
- * const person = await PersonModel.create({
- *   name: "John Doe",
- *   biography: "An actor and director",
- *   dob: new Date("1980-05-12"),
- *   nationality: "US"
- * });
- *
- * // Finding a person by ID
- * const foundPerson = await PersonModel.findById(person._id).lean({ virtuals: true });
- *
- * // Accessing virtuals
- * console.log(foundPerson.creditCount);
- * console.log(foundPerson.movieCount);
- * ```
+ * Mongoose model for the Person collection.
+ * Provides CRUD operations and identity tracking for actor/director documents.
  */
-const PersonModel: Model<PersonSchemaFields> = model<PersonSchemaFields>("Person", PersonSchema);
-
-export default PersonModel;
+export const Person: Model<PersonSchemaFields> = model<PersonSchemaFields>("Person", PersonSchema);

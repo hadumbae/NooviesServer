@@ -1,11 +1,11 @@
-import PersonModel from "../model/Person.model.js";
-import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {BaseRepository} from "@shared/repository/BaseRepository";
 import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
-import type { PopulatePath } from "../../../shared/types/mongoose/PopulatePath.js";
+import type { PopulatePath } from "@shared/types/mongoose/PopulatePath";
 import PersonQueryOptionService from "../services/PersonQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import PersonImageService from "../services/image-service/PersonImageService.js";
+import {Person} from "@domains/person/model";
 
 /**
  * @class PersonServiceProvider
@@ -31,7 +31,7 @@ export default class PersonServiceProvider {
      */
     static register() {
         // Model representing Person
-        const model = PersonModel;
+        const model = Person;
 
         // Paths to populate for queries (empty here)
         const populateRefs: PopulatePath[] = [];

@@ -8,9 +8,9 @@
 
 import {PersonSchema} from "./Person.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import type {PersonSchemaFields} from "../interfaces/PersonSchemaFields.js";
 import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
+import type {PersonSchemaFields} from "@domains/person/model/Person.types";
 
 /**
  * Pre-validation middleware.

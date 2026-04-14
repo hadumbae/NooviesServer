@@ -6,8 +6,8 @@
 
 import {Types} from "mongoose";
 import type {MovieSchemaFields} from "../../movie/model/Movie.types.js";
-import type {PersonSchemaFields} from "../../person/interfaces/PersonSchemaFields.js";
 import type IRoleType from "../../roleType/model/RoleType.interface.js";
+import type {PersonSchemaFields} from "@domains/person/model";
 
 /**
  * Represents a single credit for a person in a movie.

@@ -1,5 +1,5 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type { PersonSchemaFields } from "../interfaces/PersonSchemaFields.js";
+import type { PersonSchemaFields } from "../model/Person.types";
 import type PersonQueryOptionService from "../services/PersonQueryOptionService.js";
 import type { Request, Response } from "express";
 import type PersonImageService from "../services/image-service/PersonImageService.js";
@@ -8,8 +8,8 @@ import type { PersonQueryMatchFilters } from "../schema/query/PersonQueryOption.
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
 
 /**
  * Constructor parameters for {@link PersonController}.
