@@ -2,7 +2,6 @@ import {BaseRepository} from "@shared/repository/BaseRepository";
 import PersonController from "../controller/PersonController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import type { PopulatePath } from "@shared/types/mongoose/PopulatePath";
-import PersonQueryOptionService from "../services/PersonQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import PersonImageService from "../services/image-service/PersonImageService.js";
 import {Person} from "@domains/person/model";
@@ -42,9 +41,6 @@ export default class PersonServiceProvider {
         // Repository for Person with CRUD operations and population options
         const repository = new BaseRepository({ model, populateRefs });
 
-        // Service for handling advanced queries specific to Person
-        const optionService = new PersonQueryOptionService();
-
         // Service for handling Person images via Cloudinary
         const imageService = new PersonImageService();
 
@@ -55,7 +51,6 @@ export default class PersonServiceProvider {
         const controller = new PersonController({
             repository,
             queryUtils,
-            optionService,
             aggregateService,
             imageService,
         });

@@ -1,26 +1,14 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type { PersonSchemaFields } from "../model/Person.types";
-import type PersonQueryOptionService from "../services/PersonQueryOptionService.js";
-import type { Request, Response } from "express";
+import type {PersonSchemaFields} from "../model/Person.types";
+import type {Request, Response} from "express";
 import type PersonImageService from "../services/image-service/PersonImageService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
-import type { PersonQueryMatchFilters } from "../schema/query/PersonQueryOption.types.js";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
 } from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
-import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
 
-/**
- * Constructor parameters for {@link PersonController}.
- *
- * Extends the base CRUD controller constructor with:
- * - {@link PersonQueryOptionService} for query parsing/filter generation
- * - {@link PersonImageService} for profile image management
- */
 interface IPersonControllerConstructor extends BaseCRUDControllerConstructorParams<PersonSchemaFields> {
-    /** Service for parsing query parameters and generating filters/sorts. */
-    optionService: PersonQueryOptionService;
 
     /** Service for managing profile images. */
     imageService: PersonImageService;
@@ -68,9 +56,6 @@ export interface IPersonController extends BaseControllerCRUDMethods {
  * // DELETE /people/:id/profile-image
  */
 export default class PersonController extends BaseCRUDController<PersonSchemaFields> implements IPersonController {
-    /** Service for parsing query parameters and generating filters/sorts. */
-    protected optionService: PersonQueryOptionService;
-
     /** Service for managing profile images. */
     protected imageService: PersonImageService;
 
@@ -80,22 +65,10 @@ export default class PersonController extends BaseCRUDController<PersonSchemaFie
      * @param params - Constructor parameters including services and base CRUD options
      */
     constructor(params: IPersonControllerConstructor) {
-        const { optionService, imageService, ...superParams } = params;
+        const {imageService, ...superParams} = params;
         super(superParams);
 
-        this.optionService = optionService;
         this.imageService = imageService;
-    }
-
-    /**
-     * Fetches and generates query options (filters and sorting) for Person documents.
-     *
-     * @param req - Express request containing query parameters
-     * @returns Query options suitable for Mongoose queries
-     */
-    fetchQueryOptions(req: Request): QueryOptionTypes<PersonSchemaFields, PersonQueryMatchFilters> {
-        const params = this.optionService.fetchQueryParams(req);
-        return this.optionService.generateQueryOptions(params);
     }
 
     /**
@@ -110,14 +83,14 @@ export default class PersonController extends BaseCRUDController<PersonSchemaFie
      * // Response: { _id: "123", firstName: "John", profileImage: "..." }
      */
     async updateProfileImage(req: Request, res: Response): Promise<Response> {
-        const { _id } = req.params;
-        const { populate, virtuals } = this.queryUtils.fetchOptionsFromQuery(req);
+        const {_id} = req.params;
+        const {populate, virtuals} = this.queryUtils.fetchOptionsFromQuery(req);
 
         const personId = isValidObjectId(_id);
         const profileImage = req.file as Express.Multer.File;
 
-        await this.imageService.updateProfileImage({ personId, image: profileImage });
-        const person = await this.repository.findById({ _id: personId, options: {populate, virtuals} });
+        await this.imageService.updateProfileImage({personId, image: profileImage});
+        const person = await this.repository.findById({_id: personId, options: {populate, virtuals}});
 
         return res.status(200).json(person);
     }
@@ -134,10 +107,10 @@ export default class PersonController extends BaseCRUDController<PersonSchemaFie
      * // Response: { message: "Image Removed." }
      */
     async deleteProfileImage(req: Request, res: Response): Promise<Response> {
-        const { _id } = req.params;
+        const {_id} = req.params;
         const personId = isValidObjectId(_id);
 
-        await this.imageService.deleteProfileImage({ personId });
-        return res.status(200).json({ message: "Image Removed." });
+        await this.imageService.deleteProfileImage({personId});
+        return res.status(200).json({message: "Image Removed."});
     }
 }
