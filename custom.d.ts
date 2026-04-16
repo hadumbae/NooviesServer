@@ -15,5 +15,6 @@ declare module "express" {
 
         queryOptions?: AggregateQueryOptions;
         parsedParams?: unknown;
+        parsedConfig?: unknown;
     }
 }
