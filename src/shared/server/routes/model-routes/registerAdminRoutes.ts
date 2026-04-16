@@ -1,6 +1,8 @@
 /**
- * @file Centralized registration for primary administrative CRUD API routes.
- * @filename registerAdminRoutes.ts
+ * @fileoverview Orchestrates the mounting of standard administrative CRUD routes
+ * across all functional domains. This centralized registry categorizes routes
+ * into logical groups (Setup, Theatre, Movie, etc.) to maintain a scalable
+ * API architecture.
  */
 
 import type {Express} from "express";
@@ -15,28 +17,17 @@ import {MovieReviewCRUDRoutes} from "@domains/movieReview/routes/MovieReviewCRUD
 import ShowingRoutes from "@domains/showing/routing/ShowingRoutes.js";
 import SeatMapRoutes from "@domains/seatmap/routing/SeatMapRoutes.js";
 import {ReservationRoutes} from "@domains/reservation/routes/ReservationRoutes.js";
-import {FetchRoutes as FetchAdminReservationRoutes} from "@domains/reservation/features/fetch-reservations/admin";
-import {ReservationUpdateRoutes} from "@domains/reservation/features/update-reservations/routes";
 import {CustomerViewDataRoutes} from "@domains/customer/features/customer-details/routing";
-import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer-review-actions/routing";
-import {GenreCRUDRoutes} from "@domains/genre/_feat/crud";
-import {PersonImageRoutes} from "@domains/person/_feat/update-image";
-import {PersonCRUDRoutes} from "@domains/person/_feat/crud";
 
 /**
  * Core metadata and foundational data configuration routes.
- * ---
  */
 const setupRoutes: RouteRegistration[] = [
-    {path: "/api/v1/admin/persons/crud", router: PersonCRUDRoutes},
-    {path: "/api/v1/admin/persons/feat", router: PersonImageRoutes},
     {path: "/api/v1/admin/roletypes", router: RoleTypeRoutes},
-    {path: "/api/v1/admin/genres/crud", router: GenreCRUDRoutes},
 ];
 
 /**
  * Physical infrastructure routes including venues and seating arrangements.
- * ---
  */
 const theatreRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/seats", router: SeatRoutes},
@@ -46,7 +37,6 @@ const theatreRoutes: RouteRegistration[] = [
 
 /**
  * Content management routes for movies, cast/crew credits, and reviews.
- * ---
  */
 const movieRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/movies", router: MovieRoutes},
@@ -56,7 +46,6 @@ const movieRoutes: RouteRegistration[] = [
 
 /**
  * Scheduling and layout routes for cinema showtimes.
- * ---
  */
 const showingRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/showings", router: ShowingRoutes},
@@ -65,26 +54,22 @@ const showingRoutes: RouteRegistration[] = [
 
 /**
  * Transactional and feature-specific routes for admin-level reservation management.
- * ---
  */
 const reservationRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/reservations", router: ReservationRoutes},
-    {path: "/api/v1/admin/reservations/feat", router: ReservationUpdateRoutes},
-    {path: "/api/v1/admin/reservations/feat", router: FetchAdminReservationRoutes},
 ];
 
+/**
+ * CRM-specific routes for administrative customer management.
+ */
 const customerRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/customers/view-data", router: CustomerViewDataRoutes},
-    {path: "/api/v1/admin/customers/feat/review-actions", router: CustomerMovieReviewActions},
-]
+];
 
 /**
- * Orchestrates the mounting of standard administrative CRUD routes across all functional domains.
- * ---
- * @param app - The primary Express application instance.
+ * Mounts all categorized administrative routes onto the Express application.
  */
-export function registerAdminRoutes(app: Express) {
-
+export function registerAdminRoutes(app: Express): void {
     const routeGroups: RouteRegistration[][] = [
         setupRoutes,
         theatreRoutes,

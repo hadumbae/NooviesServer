@@ -24,5 +24,5 @@ routes.get(
 
 export {
     /** Exported as FetchRoutes to be mounted under the main reservation admin router. */
-        routes as FetchRoutes,
+        routes as FetchAdminReservationRoutes,
 }

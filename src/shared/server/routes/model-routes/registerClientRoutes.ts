@@ -4,13 +4,13 @@
  */
 
 import type {Express} from "express";
-import type {RouteRegistration} from "../registerRoutes.js";
-import {MovieBrowseRoutes} from "../../../domains/movie/routing/client/MovieBrowseRoutes.js";
-import {TheatreBrowseRoutes} from "../../../domains/theatre/routing/TheatreBrowseRoutes.js";
-import {ScreenBrowseRoutes} from "../../../domains/screen/routing/ScreenBrowseRoutes.js";
+import type {RouteRegistration} from "../../registerRoutes";
+import {MovieBrowseRoutes} from "@domains/movie/routing/client/MovieBrowseRoutes";
+import {TheatreBrowseRoutes} from "@domains/theatre/routing/TheatreBrowseRoutes";
+import {ScreenBrowseRoutes} from "@domains/screen/routing/ScreenBrowseRoutes";
 import {ReserveTicketsRoutes} from "@domains/reservation/features/reserve-tickets/routes/routes";
-import {UserProfileRoutes} from "../../../domains/users/routing/UserProfileRoutes.js";
-import {MyMovieReviewsRoutes} from "../../../domains/movieReview/routes/MyMovieReviewsRoutes.js";
+import {UserProfileRoutes} from "@domains/users/routing/UserProfileRoutes";
+import {MyMovieReviewsRoutes} from "@domains/movieReview/routes/MyMovieReviewsRoutes";
 import {FetchClientReservationRoutes} from "@domains/reservation/features/fetch-client-reservations/routes";
 import {UpdateClientReservationRoutes} from "@domains/reservation/features/update-client-reservations/routes";
 
