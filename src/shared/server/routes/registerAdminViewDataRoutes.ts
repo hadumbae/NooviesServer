@@ -5,7 +5,7 @@
 
 import type {Express} from "express";
 import type {RouteRegistration} from "../registerRoutes.js";
-import {GenreViewDataRoutes} from "@domains/genre/_feat/view-data";
+import {GenreViewDataRoutes} from "domains/genre/_feat/admin-view-data";
 
 /**
  * Mounts specialized administrative routes used for aggregating complex view data.
