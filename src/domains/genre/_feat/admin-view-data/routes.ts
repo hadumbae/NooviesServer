@@ -10,11 +10,11 @@ import asyncHandler from "@shared/utility/handlers/asyncHandler";
 const router = Router();
 
 /**
- * GET /view-data/item/:slug/details
+ * GET /item/:slug/details
  * Aggregates genre metadata and associated movie pagination for admin views.
  */
 router.get(
-    "/view-data/item/:slug/details",
+    "/item/:slug/details",
     [isAuth],
     asyncHandler(GenreAdminViewDataController.getFetchGenreDetailsVeiwData),
 );

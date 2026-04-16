@@ -6,10 +6,9 @@
 import type {Express, Router} from "express";
 import {registerAuthRoutes} from "./routes/registerAuthRoutes.js";
 import {registerAdminRoutes} from "./routes/admin-routes/registerAdminRoutes.js";
-import {registerAdminViewDataRoutes} from "./routes/registerAdminViewDataRoutes.js";
 import {registerClientRoutes} from "./routes/registerClientRoutes.js";
 import {registerExternalRoutes} from "./routes/registerExternalRoutes.js";
-import {registerClientViewDataRoutes} from "@shared/server/routes/view-data";
+import {registerAdminViewDataRoutes, registerClientViewDataRoutes} from "@shared/server/routes/view-data";
 
 /**
  * Standard descriptor for mapping a URL segment to an Express router.
@@ -30,9 +29,9 @@ export default function registerRoutes(app: Express) {
     registerAuthRoutes(app);
 
     registerAdminRoutes(app);
-    registerAdminViewDataRoutes(app);
-
     registerClientRoutes(app);
+
+    registerAdminViewDataRoutes(app);
     registerClientViewDataRoutes(app);
 
     registerExternalRoutes(app);
