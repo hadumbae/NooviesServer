@@ -32,6 +32,6 @@ export async function fetchGenreWithMovies(
 
     return {
         genre,
-        movie: {totalItems, items}
+        movies: {totalItems, items}
     };
 }

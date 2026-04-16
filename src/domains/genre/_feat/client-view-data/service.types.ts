@@ -24,5 +24,5 @@ export type FetchGenreWithMoviesConfig = {
  */
 export type GenreWithMoviesReturns = {
     genre: GenreSchemaFields;
-    movie: PaginationReturns<MovieWithGenres>;
+    movies: PaginationReturns<MovieWithGenres>;
 }
