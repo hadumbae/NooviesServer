@@ -20,11 +20,13 @@ export type BuildBaseStagesConfig = Pick<AggregateBaseConfig<any>, "match" | "re
 export function buildBaseStages(
     {stages = [], reference, match}: BuildBaseStagesConfig
 ): PipelineStage[] {
-    if (match?.filters && Object.keys(match.filters.$match).length > 0) {
+    if (match?.filters?.$match && Object.keys(match.filters.$match).length > 0) {
         stages.push(match.filters);
+    } else {
+        stages?.push({$match: {}});
     }
 
-    if (match?.sorts && Object.keys(match.sorts.$sort).length > 0) {
+    if (match?.sorts?.$sort && Object.keys(match.sorts.$sort).length > 0) {
         stages.push(match.sorts);
     }
 
