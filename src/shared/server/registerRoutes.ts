@@ -8,8 +8,8 @@ import {registerAuthRoutes} from "./routes/registerAuthRoutes.js";
 import {registerAdminRoutes} from "./routes/admin-routes/registerAdminRoutes.js";
 import {registerAdminViewDataRoutes} from "./routes/registerAdminViewDataRoutes.js";
 import {registerClientRoutes} from "./routes/registerClientRoutes.js";
-import {registerClientViewDataRoutes} from "./routes/registerClientViewDataRoutes.js";
 import {registerExternalRoutes} from "./routes/registerExternalRoutes.js";
+import {registerClientViewDataRoutes} from "@shared/server/routes/view-data";
 
 /**
  * Standard descriptor for mapping a URL segment to an Express router.

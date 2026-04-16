@@ -27,5 +27,5 @@ router.get(
 );
 
 export {
-    router as MovieViewDataRoutes,
+    router as MovieClientViewDataRoutes,
 };
