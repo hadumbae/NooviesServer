@@ -1,6 +1,7 @@
 /**
- * @file Registers routes for movie view data endpoints.
- * @filename MovieViewDataRoutes.ts
+ * @fileoverview Express routing definitions for movie-related view data.
+ * Maps incoming client requests for aggregated movie information (credits and showings)
+ * to their respective controllers, secured by authentication middleware.
  */
 
 import {Router} from "express";
@@ -12,16 +13,19 @@ import * as BrowseShowingsController from "../../../showing/controllers/client/B
 const router = Router();
 
 /**
- * Routes for retrieving movie-related view data.
+ * GET /item/:slug/credits
  */
 router.get(
-    "/:slug/credits",
+    "/item/:slug/credits",
     [isAuth],
     asyncHandler(BrowseMovieCreditsController.getFetchGroupedCreditsWithMovie)
 );
 
+/**
+ * GET /item/:slug/showings
+ */
 router.get(
-    "/:slug/showings",
+    "/item/:slug/showings",
     [isAuth],
     asyncHandler(BrowseShowingsController.getFetchShowingsWithMovie)
 );

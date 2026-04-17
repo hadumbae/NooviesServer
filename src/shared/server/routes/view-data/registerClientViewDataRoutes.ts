@@ -24,7 +24,7 @@ const genreRouteGroups: RouteRegistration[] = [
  */
 const movieRouteGroups: RouteRegistration[] = [
     {
-        path: "/api/v1/views/desktop/client/movies",
+        path: "/api/v1/views/desktop/movies/client",
         router: MovieClientViewDataRoutes
     },
 ];
