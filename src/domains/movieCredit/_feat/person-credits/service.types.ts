@@ -2,10 +2,25 @@
  * @fileoverview Type definitions for person filmography retrieval.
  */
 
-import { Types } from "mongoose";
-import type { IMovieCredit } from "@domains/movieCredit/models/MovieCredit.interface";
-import type { RoleTypeDepartmentEnum } from "@domains/roleType/schemas/RoleTypeDepartment.enum";
+import {Types} from "mongoose";
+import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interface";
+import type {RoleTypeDepartmentEnum} from "@domains/roleType/schemas/RoleTypeDepartment.enum";
 import type IRoleType from "@domains/roleType/model/RoleType.interface";
+
+/**
+ * Configuration for fetching statistical credit data.
+ */
+export type FetchPersonCreditStatsConfig = {
+    personID: Types.ObjectId;
+};
+
+/**
+ * Aggregated summary of a person's career footprint.
+ */
+export type PersonCreditStats = {
+    creditCount: number;
+    movieCount: number;
+};
 
 /**
  * Configuration for fetching a person's filmography.
