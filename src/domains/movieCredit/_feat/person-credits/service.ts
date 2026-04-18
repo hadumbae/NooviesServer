@@ -20,7 +20,7 @@ export async function fetchPersonCreditStats(
         {
             $group: {
                 _id: "$person._id",
-                creditCount: {$sum: 1},
+                totalCredits: {$sum: 1},
                 uniqueMovies: {$addToSet: "$movie"},
             },
         },
