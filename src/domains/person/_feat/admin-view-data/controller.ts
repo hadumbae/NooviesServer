@@ -13,7 +13,7 @@ import {fetchPersonDetailsViewData} from "@domains/person/_feat/admin-view-data/
 export async function getFetchPersonDetailsViewData(
     req: Request, res: Response,
 ): Promise<Response> {
-    const {_id, limit} = req.parsedConfig as PersonDetailsViewRouteConfig;
-    const data = await fetchPersonDetailsViewData({_id, limit});
+    const {slug, limit} = req.parsedConfig as PersonDetailsViewRouteConfig;
+    const data = await fetchPersonDetailsViewData({slug, limit});
     return res.status(200).json(data);
 }

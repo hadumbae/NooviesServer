@@ -16,7 +16,7 @@ import {getFetchPersonDetailsViewData} from "@domains/person/_feat/admin-view-da
 const router = Router();
 
 router.get(
-    '/item/:_id/person-details',
+    '/item/:slug/person-details',
     [isAuth, validateRequestConfig({schema: PersonDetailsViewRouteConfigSchema})],
     asyncHandler(getFetchPersonDetailsViewData),
 );

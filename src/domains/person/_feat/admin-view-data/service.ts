@@ -14,11 +14,11 @@ import {fetchPersonCreditStats, fetchPersonFilmography} from "@domains/movieCred
  * Orchestrates parallel data fetching for a comprehensive Person profile.
  */
 export async function fetchPersonDetailsViewData(
-    {_id, limit}: FetchPersonDetailsViewDataConfig
+    {slug, limit}: FetchPersonDetailsViewDataConfig
 ): Promise<FetchPersonDetailsViewData> {
-    const person = await Person.findById(_id).orFail();
-    const filmography = await fetchPersonFilmography({personID: _id, limit});
-    const stats = await fetchPersonCreditStats({personID: _id});
+    const person = await Person.findOne({slug}).orFail();
+    const filmography = await fetchPersonFilmography({personID: person._id, limit});
+    const stats = await fetchPersonCreditStats({personID: person._id});
 
     return {
         person,

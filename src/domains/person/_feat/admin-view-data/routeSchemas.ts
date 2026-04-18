@@ -4,14 +4,14 @@
  */
 
 import {z} from "zod";
-import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
 import {CoercedNonNegativeNumberSchema} from "@shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
+import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
 
 /**
  * Validation schema for the Person details route.
  */
 export const PersonDetailsViewRouteConfigSchema = z.object({
-    _id: ObjectIdSchema,
+    slug: SlugStringSchema,
     limit: CoercedNonNegativeNumberSchema.optional(),
 });
 
