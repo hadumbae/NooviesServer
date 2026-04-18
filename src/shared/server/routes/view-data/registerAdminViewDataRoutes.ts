@@ -7,6 +7,7 @@
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes";
 import {GenreViewDataRoutes} from "@domains/genre/_feat/admin-view-data";
+import {PersonAdminViewDataRoutes} from "@domains/person/_feat/admin-view-data";
 
 /**
  * Collection of route groups related to Genre administrative views.
@@ -19,11 +20,22 @@ const genreRouteGroups: RouteRegistration[] = [
 ];
 
 /**
+ * Collection of route groups related to Person administrative views.
+ */
+const personRouteGroups: RouteRegistration[] = [
+    {
+        path: "/api/v1/views/desktop/admin/persons",
+        router: PersonAdminViewDataRoutes,
+    },
+];
+
+/**
  * Registers all administrative view data routes into the main Express application.
  */
 export function registerAdminViewDataRoutes(app: Express) {
     const routeGroups: RouteRegistration[][] = [
         genreRouteGroups,
+        personRouteGroups,
     ];
 
     for (const routeGroup of routeGroups) {
