@@ -33,7 +33,7 @@ export async function fetchPersonCreditStats(
         },
     ]);
 
-    return data;
+    return data ?? { creditCount: 0, movieCount: 0 };
 }
 
 /**
