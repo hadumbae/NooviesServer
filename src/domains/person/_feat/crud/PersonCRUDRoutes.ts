@@ -8,9 +8,8 @@ import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
 import {parseQueryOptions} from "@shared/_feat/middleware";
-import {destroy, find, findById, findBySlug, paginated} from "@shared/_feat/generic-crud/path-handlers";
+import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import {genreCreate, genreUpdate} from "@domains/genre/_feat/crud"; // Note: Consider renaming if these are generic
 import {Person, type PersonSchemaFields} from "@domains/person/model";
 import {PersonQueryOptionsSchema} from "@domains/person/_feat/validate-query";
 import {PersonInputSchema} from "@domains/person/_feat/validate-submit";
@@ -46,7 +45,7 @@ const routes: CRUDRoute<PersonSchemaFields>[] = [
         path: `/item`,
         method: "post",
         middleware: [isAuth, validateZodSchema(PersonInputSchema)],
-        handler: genreCreate
+        handler: create
     },
     {
         /** Retrieval of a specific Person by their database Object ID. */
@@ -67,7 +66,7 @@ const routes: CRUDRoute<PersonSchemaFields>[] = [
         path: `/item/:_id`,
         method: "patch",
         middleware: [isAuth, validateZodSchema(PersonInputSchema)],
-        handler: genreUpdate
+        handler: update
     },
     {
         /** Permanent deletion of a Person record. */
