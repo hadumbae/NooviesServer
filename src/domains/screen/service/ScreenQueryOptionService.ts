@@ -1,16 +1,16 @@
 import type {Request} from "express";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
-import {RequestValidationError} from "../../../shared/errors/RequestValidationError.js";
+import {RequestValidationError} from "@shared/errors/RequestValidationError";
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type {ScreenSchemaFields} from "@domains/screen/models/screen/Screen.types";
 import {
-    type ScreenQueryMatchFilters,
-    type ScreenQueryParams,
-    type ScreenQueryOptions
-} from "../schema/query/ScreenQueryOption.types.js";
-import {ScreenQueryOptionsSchema} from "../schema/query/ScreenQueryOption.schema.js";
+    type ScreenQueryOptions,
+    ScreenQueryOptionsSchema
+} from "@domains/screen/_feat/validate-query";
 import type {FilterQuery, SortOrder} from "mongoose";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
+import type {ScreenQueryMatchFilters} from "@domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
+import type {ScreenQueryParams} from "@domains/screen/_feat/validate-query/ScreenQueryParamSchema";
 
 /**
  * Service for parsing, validating, and generating query options for {@link ScreenSchemaFields} documents.

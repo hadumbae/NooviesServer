@@ -8,9 +8,11 @@ import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type {ScreenQueryMatchFilters} from "../schema/query/ScreenQueryOption.types.js";
+} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
+
+
+import type {ScreenQueryMatchFilters} from "@domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
 
 /**
  * Public interface for a ScreenController.
