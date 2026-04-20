@@ -14,9 +14,9 @@ import SeatQueryOptionService from "../service/SeatQueryOptionService.js";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams,
-} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type {SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
+} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
+import type {SeatQueryMatchFilters} from "@domains/seat/_feat/validate-query";
 
 /**
  * Constructor parameters for {@link SeatController}.

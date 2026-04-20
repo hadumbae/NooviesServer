@@ -9,6 +9,7 @@ import type {RouteRegistration} from "../../registerRoutes.js";
 import {GenreCRUDRoutes} from "@domains/genre/_feat/crud";
 import {PersonCRUDRoutes} from "@domains/person/_feat/crud";
 import {ScreenCRUDRoutes} from "@domains/screen/_feat/crud";
+import {SeatCRUDRoutes} from "@domains/seat/_feat/crud";
 
 /**
  * Core metadata and foundational data configuration routes.
@@ -17,6 +18,7 @@ const setupRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/persons/crud", router: PersonCRUDRoutes},
     {path: "/api/v1/admin/genres/crud", router: GenreCRUDRoutes},
     {path: "/api/v1/admin/screens/crud", router: ScreenCRUDRoutes},
+    {path: "/api/v1/admin/seats/crud", router: SeatCRUDRoutes},
 ];
 
 /**

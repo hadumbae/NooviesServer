@@ -23,17 +23,17 @@ import type { Request } from "express";
 import type { FilterQuery, SortOrder } from "mongoose";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type {SeatSchemaFields} from "../model/Seat.types.js";
-import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
 import type {
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages,
-} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+} from "@shared/types/mongoose/AggregatePipelineStages";
 import type IReferenceQueryOptionService from "../../../shared/types/query-options/IReferenceQueryOptionService.js";
-import {type SeatQueryMatchFilters} from "../schema/query/SeatMatchParams.js";
-import type {LookupMatchStageOptions} from "../../../shared/types/mongoose/LookupMatchStage.types.js";
+import {type SeatQueryMatchFilters} from "@domains/seat/_feat/validate-query";
+import type {LookupMatchStageOptions} from "@shared/types/mongoose/LookupMatchStage.types";
 import generateReferenceFilterPipelineStages
     from "../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
-import {type SeatQueryOptions, SeatQueryOptionsSchema} from "../schema/query/SeatQueryOptions.js";
+import {type SeatQueryOptions, SeatQueryOptionsSchema} from "@domains/seat/_feat/validate-query";
 
 /**
  * Service class for managing query options for Seat documents, including reference pipelines.
