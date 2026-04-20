@@ -11,14 +11,14 @@
  * - Cascading cleanup of dependent entities on deletion
  */
 
-import { ScreenSchema } from "./Screen.schema.js";
+import { ScreenSchema } from "./Screen.schema";
 import type { HydratedDocument, Query } from "mongoose";
-import type { ScreenSchemaFields } from "./Screen.types.js";
+import type { ScreenSchemaFields } from "./Screen.types";
 
-import Theatre from "../../theatre/model/Theatre.model.js";
-import Seat from "../../seat/model/Seat.model.js";
-import Showing from "../../showing/models/showing/Showing.model.js";
-import generateSlug from "../../../shared/utility/generateSlug.js";
+import Theatre from "../../../theatre/model/Theatre.model";
+import Seat from "../../../seat/model/Seat.model";
+import Showing from "../../../showing/models/showing/Showing.model";
+import generateSlug from "@shared/utility/generateSlug";
 
 /**
  * Document-level validation hook.

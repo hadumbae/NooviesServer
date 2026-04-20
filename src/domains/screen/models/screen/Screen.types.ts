@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
-import type { ScreenTypeEnumType } from "../schema/enum/ScreenTypeEnum.js";
-import type { TheatreSchemaFields } from "../../theatre/model/Theatre.types.js";
+import type { ScreenTypeEnumType } from "../../schema/enum/ScreenTypeEnum";
+import type { TheatreSchemaFields } from "../../../theatre/model/Theatre.types";
 
 /**
  * @summary

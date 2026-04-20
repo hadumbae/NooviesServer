@@ -1,5 +1,5 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type {ScreenSchemaFields} from "../model/Screen.types.js";
+import type {ScreenSchemaFields} from "@domains/screen/models/screen/Screen.types";
 import type {Request, Response} from "express";
 import ScreenQueryOptionService from "../service/ScreenQueryOptionService.js";
 import ScreenService from "../service/ScreenService.js";

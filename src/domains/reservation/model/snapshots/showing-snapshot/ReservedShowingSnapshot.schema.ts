@@ -28,7 +28,7 @@ import {ReservationTypeConstant} from "@domains/reservation/constants";
 import ISO6391CodeConstant from "@shared/constants/language/ISO6391CodeConstant";
 import {MovieSnapshotSchema} from "@domains/movie/model/movie-snapshot/MovieSnapshot.schema";
 import {TheatreSnapshotSchema} from "@domains/theatre/model/theatre-snapshot/TheatreSnapshot.schema";
-import {ScreenSnapshotSchema} from "@domains/screen/model/screen-snapshot/ScreenSnapshot.schema";
+import {ScreenSnapshotSchema} from "@domains/screen/models/screen-snapshot/ScreenSnapshot.schema";
 import {ReservedSeatSnapshotSchema} from "@domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.schema";
 
 /**

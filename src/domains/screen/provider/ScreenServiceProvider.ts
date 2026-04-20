@@ -1,4 +1,4 @@
-import Screen from "../model/Screen.model.js";
+import Screen from "@domains/screen/models/screen/Screen.model";
 
 import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
 import ScreenController from "../controller/ScreenController.js";

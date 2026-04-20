@@ -14,7 +14,7 @@ import 'dotenv/config';
 
 import mongoose from "mongoose";
 import connect from "@config/database.js";
-import Screen from "../domains/screen/model/Screen.model.js";
+import Screen from "@domains/screen/models/screen/Screen.model";
 import generateSlug from "../shared/utility/generateSlug.js";
 
 connect().then(async () => {

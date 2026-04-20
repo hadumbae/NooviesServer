@@ -9,7 +9,7 @@
  * enables lean query support for virtual population.
  */
 
-import { ScreenSchema } from "./Screen.schema.js";
+import { ScreenSchema } from "./Screen.schema";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 /**

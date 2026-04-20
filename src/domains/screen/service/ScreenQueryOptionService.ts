@@ -2,7 +2,7 @@ import type {Request} from "express";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import {RequestValidationError} from "../../../shared/errors/RequestValidationError.js";
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
-import type {ScreenSchemaFields} from "../model/Screen.types.js";
+import type {ScreenSchemaFields} from "@domains/screen/models/screen/Screen.types";
 import {
     type ScreenQueryMatchFilters,
     type ScreenQueryParams,

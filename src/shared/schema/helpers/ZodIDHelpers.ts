@@ -1,4 +1,4 @@
-import Screen from "../../../domains/screen/model/Screen.model.js";
+import Screen from "@domains/screen/models/screen/Screen.model";
 import Showing from "../../../domains/showing/models/showing/Showing.model.js";
 import {ObjectIdStringSchema} from "../mongoose/ObjectIdStringSchema.js";
 import Seat from "../../../domains/seat/model/Seat.model.js";

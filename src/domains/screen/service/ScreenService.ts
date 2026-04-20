@@ -1,7 +1,7 @@
 import {Types} from "mongoose";
-import Screen from "../model/Screen.model.js";
+import Screen from "@domains/screen/models/screen/Screen.model";
 import type {PaginationReturns} from "../../../shared/types/PaginationReturns.js";
-import type {ScreenSchemaFields} from "../model/Screen.types.js";
+import type {ScreenSchemaFields} from "@domains/screen/models/screen/Screen.types";
 
 export interface IScreenService {
     fetchPaginatedScreensByTheatre(

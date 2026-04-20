@@ -14,11 +14,11 @@
  */
 
 import { Types } from "mongoose";
-import type { ScreenSnapshotSchemaFields } from "../../model/screen-snapshot/ScreenSnapshot.types.js";
-import Screen from "../../model/Screen.model.js";
+import type { ScreenSnapshotSchemaFields } from "@domains/screen/models/screen-snapshot/ScreenSnapshot.types.js";
+import Screen from "@domains/screen/models/screen/Screen.model";
 import { DocumentNotFoundError } from "../../../../shared/errors/DocumentNotFoundError.js";
 import { ScreenSnapshotInputSchema } from "../../schema/ScreenSnapshotInputSchema.js";
-import { ScreenSnapshot } from "../../model/screen-snapshot/ScreenSnapshot.model.js";
+import { ScreenSnapshot } from "@domains/screen/models/screen-snapshot/ScreenSnapshot.model.js";
 import { InconsistentDataError } from "../../../../shared/errors/InconsistentDataError.js";
 
 /**

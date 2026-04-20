@@ -15,7 +15,7 @@ import type {
     ShowingsByScreensParams,
 } from "./ScreenSearchService.types.js";
 import {type PipelineStage} from "mongoose";
-import Screen from "../../model/Screen.model.js";
+import Screen from "@domains/screen/models/screen/Screen.model";
 import Theatre from "../../../theatre/model/Theatre.model.js";
 import {ShowingPopulationPipelines} from "../../../showing/queries/ShowingPopulationPipelines.js";
 import {ShowingSeatMapVirtualPipelines} from "../../../showing/queries/ShowingSeatMapVirtualPipelines.js";

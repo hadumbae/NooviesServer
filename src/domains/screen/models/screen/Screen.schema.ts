@@ -11,9 +11,9 @@
  */
 
 import { Schema } from "mongoose";
-import type { ScreenSchemaFields } from "./Screen.types.js";
-import ScreenTypeConstant from "../constant/ScreenTypeConstant.js";
-import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
+import type { ScreenSchemaFields } from "./Screen.types";
+import ScreenTypeConstant from "../../constant/ScreenTypeConstant";
+import SlugSchemaTypeOptions from "@shared/model/SlugSchemaTypeOptions";
 
 /**
  * @summary

@@ -11,11 +11,11 @@
 
 import { Model, model } from "mongoose";
 
-import type { ScreenSchemaFields } from "./Screen.types.js";
-import { ScreenSchema } from "./Screen.schema.js";
+import type { ScreenSchemaFields } from "./Screen.types";
+import { ScreenSchema } from "./Screen.schema";
 
-import "./Screen.virtuals.js";
-import "./Screen.middleware.js";
+import "./Screen.virtuals";
+import "./Screen.middleware";
 
 /**
  * @summary
