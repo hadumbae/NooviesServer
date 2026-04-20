@@ -1,14 +1,14 @@
 import type { Request } from "express";
-import type {
-    TheatreQueryMatchFilters,
-    TheatreQueryOptions,
-} from "../../schema/query/TheatreQueryOption.types.js";
-import { TheatreQueryOptionSchema } from "../../schema/query/TheatreQueryOption.schema.js";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type { FilterQuery, SortOrder } from "mongoose";
 import type IQueryOptionService from "../../../../shared/types/query-options/IQueryOptionService.js";
-import type { QueryOptionTypes } from "../../../../shared/types/query-options/QueryOptionService.types.js";
+import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
 import type {TheatreSchemaFields} from "../../model/Theatre.types.js";
+import type {TheatreQueryMatchFilters} from "@domains/theatre/_feat/validate-query/TheatreQueryMatchFilterSchema";
+import {
+    type TheatreQueryOptions,
+    TheatreQueryOptionSchema
+} from "@domains/theatre/_feat/validate-query/TheatreQueryOptionSchema";
 
 /**
  * Service responsible for parsing request query parameters and generating

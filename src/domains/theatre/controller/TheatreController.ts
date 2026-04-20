@@ -1,13 +1,14 @@
 import type { Request } from "express";
-import type { TheatreQueryMatchFilters } from "../schema/query/TheatreQueryOption.types.js";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
+} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
 import type TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 import type {TheatreSchemaFields} from "../model/Theatre.types.js";
+
+import type {TheatreQueryMatchFilters} from "@domains/theatre/_feat/validate-query/TheatreQueryMatchFilterSchema";
 
 /**
  * Interface representing the public contract for {@link TheatreController}.
