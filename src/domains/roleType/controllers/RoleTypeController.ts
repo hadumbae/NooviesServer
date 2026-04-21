@@ -5,9 +5,11 @@ import type { Request } from "express";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
-import type { QueryOptionTypes } from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type { RoleTypeQueryMatchFilters } from "../schemas/filters/RoleTypeOption.types.js";
+} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
+
+
+import type {RoleTypeQueryMatchFilters} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
 
 /**
  * Constructor parameters for {@link RoleTypeController}.
