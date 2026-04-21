@@ -3,10 +3,8 @@ import {
     type BaseRouteMiddleware,
     createBaseRoutes,
     type BaseRouteConfig
-} from "../../../shared/routing/BaseRoutes.js";
+} from "@shared/routing/BaseRoutes";
 import type {ITheatreController} from "../controller/TheatreController.js";
-import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
-import ScreenServiceProvider from "../../screen/provider/ScreenServiceProvider.js";
 import {TheatreInputSchema} from "../schema/TheatreSchema.js";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
@@ -15,12 +13,6 @@ import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFor
  * Extract the Theatre model and controller from the service provider.
  */
 const { model, controllers: {controller: theatreController} } = TheatreServiceProvider.register();
-
-/**
- * Extract the Screen controller from the Screen service provider
- * to support Theatre-related routes that also expose Screen data.
- */
-const { controllers: {controller: screenController} } = ScreenServiceProvider.register();
 
 /**
  * Middleware that removes unset/undefined fields before Theatre documents
@@ -72,15 +64,5 @@ const baseConfig: BaseRouteConfig<ITheatreController> = {
  * @returns An Express router with Theatre CRUD and custom routes.
  */
 const routes = createBaseRoutes<ITheatreController>(baseConfig);
-
-/**
- * GET /get/:_id/screens
- *
- * @description Retrieves all Screens belonging to a specific Theatre (by `_id`).
- *
- * @middleware
- * - {@link asyncHandler}: Ensures async errors are properly caught and handled.
- */
-routes.get('/get/:_id/screens', asyncHandler(screenController.getScreensByTheatre.bind(screenController)));
 
 export default routes;

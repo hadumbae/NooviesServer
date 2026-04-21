@@ -4,7 +4,7 @@
  * middleware hooks, and database indexes.
  */
 
-import {Model, model, models} from "mongoose";
+import {Model, model} from "mongoose";
 import type {ScreenSchemaFields} from "./Screen.types";
 import {ScreenSchema} from "./Screen.schema";
 
@@ -15,4 +15,4 @@ import "./Screen.indexes";
 /**
  * The Screen Model.
  */
-export const Screen: Model<ScreenSchemaFields> = models.Screen || model<ScreenSchemaFields>("Screen", ScreenSchema);
+export const Screen: Model<ScreenSchemaFields> = model<ScreenSchemaFields>("Screen", ScreenSchema);
