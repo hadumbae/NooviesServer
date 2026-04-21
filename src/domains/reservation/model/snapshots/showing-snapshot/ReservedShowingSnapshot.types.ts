@@ -15,8 +15,8 @@ import type {
     ReservedSeatSnapshotSchemaFields
 } from "@domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.types";
 import type {MovieSnapshotSchemaFields} from "@domains/movie/model/movie-snapshot/MovieSnapshot.types";
-import type {ScreenSnapshotSchemaFields} from "@domains/screen/models/screen-snapshot/ScreenSnapshot.types";
 import type {TheatreSnapshotSchemaFields} from "@domains/theatre/model/theatre-snapshot/TheatreSnapshot.types";
+import type {ScreenSnapshotSchemaFields} from "@domains/screen/models/screen-snapshot";
 
 /**
  * Immutable snapshot of a reserved showing.

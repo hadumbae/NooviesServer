@@ -7,9 +7,9 @@ import {Types} from "mongoose";
 import type {ScreenSnapshotSchemaFields} from "@domains/screen/models/screen-snapshot/ScreenSnapshot.types";
 import {Screen} from "@domains/screen/models/screen";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
-import {ScreenSnapshot} from "@domains/screen/models/screen-snapshot/ScreenSnapshot.model";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
 import {ScreenSnapshotInputSchema} from "@domains/screen/_feat/validate-submit";
+import {ScreenSnapshot} from "@domains/screen/models/screen-snapshot";
 
 /**
  * Generates a validated snapshot payload from a live Screen document.

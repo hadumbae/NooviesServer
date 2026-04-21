@@ -1,83 +1,55 @@
 /**
- * @file ReservedShowingSnapshot.schema.ts
- *
- * Mongoose schema for an immutable reserved showing snapshot.
- *
- * Captures the fully resolved state of a showing at the moment a
- * reservation is created, embedding snapshots of:
- * - Movie
- * - Theatre
- * - Screen
- * - Selected seats (if applicable)
- *
- * @remarks
- * This snapshot is designed to be write-once and never mutated.
- * It guarantees historical, operational, and financial integrity
- * even if upstream source data changes after booking.
- *
- * Intended for embedding in:
- * - Reservations
- * - Tickets
- * - Booking records
- * - Audit and history documents
+ * @fileoverview Mongoose schema definition for Reserved Showing snapshots.
+ * Implements a "Deep Snapshot" pattern to lock in all showing variables—from movie
+ * metadata to specific seat geometry—ensuring transaction records remain
+ * immutable and historically accurate.
  */
 
 import { Schema, type SchemaDefinitionProperty } from "mongoose";
 import type { ReservedShowingSnapshotSchemaFields } from "./ReservedShowingSnapshot.types.js";
-import {ReservationTypeConstant} from "@domains/reservation/constants";
+import { ReservationTypeConstant } from "@domains/reservation/constants";
 import ISO6391CodeConstant from "@shared/constants/language/ISO6391CodeConstant";
-import {MovieSnapshotSchema} from "@domains/movie/model/movie-snapshot/MovieSnapshot.schema";
-import {TheatreSnapshotSchema} from "@domains/theatre/model/theatre-snapshot/TheatreSnapshot.schema";
-import {ScreenSnapshotSchema} from "@domains/screen/models/screen-snapshot/ScreenSnapshot.schema";
-import {ReservedSeatSnapshotSchema} from "@domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.schema";
+import { MovieSnapshotSchema } from "@domains/movie/model/movie-snapshot/MovieSnapshot.schema";
+import { TheatreSnapshotSchema } from "@domains/theatre/model/theatre-snapshot/TheatreSnapshot.schema";
+import { ReservedSeatSnapshotSchema } from "@domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.schema";
+import { ScreenSnapshotSchema } from "@domains/screen/models/screen-snapshot";
 
 /**
  * Reusable ISO 639-1 language field definition.
  */
 const LanguageDefinition: SchemaDefinitionProperty = {
     type: String,
-    enum: { values: ISO6391CodeConstant, message: "Invalid ISO-639-1 code." },
-    required: [true, "Required."],
+    enum: {
+        values: ISO6391CodeConstant,
+        message: "{VALUE} is not a valid ISO-639-1 language code."
+    },
+    required: [true, "Language code is required."],
 };
 
 /**
- * Reserved showing snapshot schema.
- *
- * @remarks
- * All fields represent a point-in-time snapshot of the showing
- * and must remain immutable once persisted.
+ * Reserved Showing Snapshot Schema.
  */
 export const ReservedShowingSnapshotSchema =
     new Schema<ReservedShowingSnapshotSchemaFields>({
-        /** Embedded movie snapshot at reservation time. */
         movie: {
             type: MovieSnapshotSchema,
-            required: [true, "Movie is required."],
+            required: [true, "Movie snapshot is required."],
         },
 
-        /** Embedded theatre snapshot at reservation time. */
         theatre: {
             type: TheatreSnapshotSchema,
-            required: [true, "Theatre is required."],
+            required: [true, "Theatre snapshot is required."],
         },
 
-        /** Embedded screen snapshot at reservation time. */
         screen: {
             type: ScreenSnapshotSchema,
-            required: [true, "Screen is required."],
+            required: [true, "Screen snapshot is required."],
         },
 
-        /**
-         * Selected seat snapshots at reservation time.
-         *
-         * @remarks
-         * Present only for {@link ReservationTypeConstant.RESERVED_SEATS}
-         * reservations. Must be omitted for general admission.
-         */
         selectedSeats: {
             type: [ReservedSeatSnapshotSchema],
             validate: {
-                message: "Must be a non-empty array of seats.",
+                message: "Seating array must be non-empty when provided.",
                 validator: (arr: unknown) =>
                     arr === null ||
                     arr === undefined ||
@@ -85,18 +57,11 @@ export const ReservedShowingSnapshotSchema =
             },
         },
 
-        /** Scheduled start time of the showing. */
         startTime: {
             type: Date,
             required: [true, "Start time is required."],
         },
 
-        /**
-         * Optional scheduled end time.
-         *
-         * @remarks
-         * If present, must be later than {@link startTime}.
-         */
         endTime: {
             type: Date,
             default: null,
@@ -108,53 +73,44 @@ export const ReservedShowingSnapshotSchema =
             },
         },
 
-        /** Primary spoken language of the showing (ISO 639-1). */
         language: LanguageDefinition,
 
-        /**
-         * Subtitle languages available for the showing (ISO 639-1).
-         */
         subtitleLanguages: {
             type: [LanguageDefinition],
             validate: {
                 validator: (langs: unknown) =>
                     Array.isArray(langs) && langs.length > 0,
-                message: "Must be a non-empty array of ISO 639-1 codes.",
+                message: "At least one subtitle language (or 'None') must be specified.",
             },
             required: [true, "Subtitle languages are required."],
         },
 
-        /** Number of tickets included in the reservation. */
         ticketCount: {
             type: Number,
-            min: [1, "Must be 1 or more."],
+            min: [1, "Ticket count must be at least 1."],
             required: [true, "Ticket count is required."],
         },
 
-        /** Indicates whether the showing is a special event screening. */
         isSpecialEvent: {
             type: Boolean,
+            default: false,
         },
 
-        /** Total price paid for the reservation at booking time. */
         pricePaid: {
             type: Number,
-            min: [0.01, "Price paid must be greater than 0."],
-            required: true,
+            min: [0.01, "Price paid must be a positive value."],
+            required: [true, "Final price paid is required for audit integrity."],
         },
 
-        /**
-         * Reservation type applied at booking time.
-         *
-         * @remarks
-         * Determines whether seat snapshots are expected or forbidden.
-         */
         reservationType: {
             type: String,
             enum: {
                 values: ReservationTypeConstant,
-                message: "Invalid type value.",
+                message: "{VALUE} is not a valid reservation type.",
             },
-            required: [true, "Type is required for reservation snapshots."],
+            required: [true, "Reservation type is required."],
         },
+    }, {
+        _id: false,
+        timestamps: false
     });
