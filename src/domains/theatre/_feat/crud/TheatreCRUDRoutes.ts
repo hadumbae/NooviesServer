@@ -14,6 +14,7 @@ import {aggregate} from "@shared/_feat/generic-aggregate";
 import {TheatreQueryOptionSchema} from "@domains/theatre/_feat/validate-query";
 import {TheatreInputSchema} from "@domains/theatre/schema/TheatreSchema";
 import {Theatre, type TheatreSchemaFields} from "@domains/theatre/model/theatre";
+import {TheatreVirtualPipelines} from "@domains/theatre/_feat/aggregate";
 
 /**
  * CRUD route definitions for the Theatre entity.
@@ -90,7 +91,7 @@ const router: Router = buildCRUDRoutes<TheatreSchemaFields>({
 router.get(
     "/query",
     [isAuth, parseQueryOptions({schema: TheatreQueryOptionSchema, modelName: Theatre.modelName})],
-    asyncHandler(aggregate({model: Theatre})),
+    asyncHandler(aggregate({model: Theatre, virtualsPipelines: TheatreVirtualPipelines})),
 );
 
 export {
