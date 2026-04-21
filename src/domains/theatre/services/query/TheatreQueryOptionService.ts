@@ -3,7 +3,7 @@ import filterNullishAttributes from "../../../../shared/utility/filterNullishAtt
 import type { FilterQuery, SortOrder } from "mongoose";
 import type IQueryOptionService from "../../../../shared/types/query-options/IQueryOptionService.js";
 import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
-import type {TheatreSchemaFields} from "../../model/Theatre.types.js";
+import type {TheatreSchemaFields} from "@domains/theatre/model/theatre";
 import type {TheatreQueryMatchFilters} from "@domains/theatre/_feat/validate-query/TheatreQueryMatchFilterSchema";
 import {
     type TheatreQueryOptions,

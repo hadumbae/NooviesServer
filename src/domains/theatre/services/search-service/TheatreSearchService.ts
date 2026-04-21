@@ -16,9 +16,9 @@ import type {
     TheatreSearchMethods,
 } from "./TheatreSearchService.types.js";
 import type {PipelineStage} from "mongoose";
-import Theatre from "../../model/Theatre.model.js";
 import {ShowingSeatMapVirtualPipelines} from "../../../showing/queries/ShowingSeatMapVirtualPipelines.js";
 import {ShowingPopulationPipelines} from "../../../showing/queries/ShowingPopulationPipelines.js";
+import {Theatre} from "@domains/theatre/model/theatre";
 
 /**
  * Executes aggregation-driven theatre search queries involving showings.

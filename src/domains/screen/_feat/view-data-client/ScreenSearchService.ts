@@ -16,10 +16,10 @@ import type {
 } from "./ScreenSearchService.types";
 import {type PipelineStage} from "mongoose";
 import {Screen} from "@domains/screen/models/screen";
-import Theatre from "../../../theatre/model/Theatre.model";
 import {ShowingPopulationPipelines} from "../../../showing/queries/ShowingPopulationPipelines";
 import {ShowingSeatMapVirtualPipelines} from "../../../showing/queries/ShowingSeatMapVirtualPipelines";
 import {getIdentifierFilter} from "@shared/utility/getIdentifierFilter";
+import {Theatre} from "@domains/theatre/model/theatre";
 
 /**
  * Service for screen-based showing search operations.

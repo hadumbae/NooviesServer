@@ -11,10 +11,9 @@ import {create, destroy, find, findById, findBySlug, paginated, update} from "@s
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
-import type {TheatreSchemaFields} from "@domains/theatre/model/Theatre.types";
 import {TheatreQueryOptionSchema} from "@domains/theatre/_feat/validate-query";
-import Theatre from "@domains/theatre/model/Theatre.model";
 import {TheatreInputSchema} from "@domains/theatre/schema/TheatreSchema";
+import {Theatre, type TheatreSchemaFields} from "@domains/theatre/model/theatre";
 
 /**
  * CRUD route definitions for the Theatre entity.

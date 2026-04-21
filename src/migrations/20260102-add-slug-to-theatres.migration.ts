@@ -14,8 +14,8 @@ import 'dotenv/config';
 
 import mongoose from "mongoose";
 import connect from "@config/database.js";
-import Theatre from "../domains/theatre/model/Theatre.model.js";
 import generateSlug from "../shared/utility/generateSlug.js";
+import {Theatre} from "@domains/theatre/model/theatre";
 
 connect().then(async () => {
     const cursor = Theatre.find().cursor();

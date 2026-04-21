@@ -4,11 +4,11 @@
  * Public contracts for theatre search operations involving showings.
  */
 
-import type {TheatreSchemaFields} from "../../model/Theatre.types.js";
+import type {TheatreSchemaFields} from "@domains/theatre/model/theatre";
 import type {ShowingSchemaFields} from "../../../showing/models/showing/Showing.types.js";
 import type {
     LocationTarget
-} from "../../../../shared/schema/features/location-query-options/LocationQueryOptions.types.js";
+} from "@shared/schema/features/location-query-options/LocationQueryOptions.types";
 
 /**
  * Theatre entity augmented with populated showings.

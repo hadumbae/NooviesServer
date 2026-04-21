@@ -9,15 +9,15 @@ import type {ScreenSchemaFields}
 import type {ShowingStatusCode}
     from "../../validation/ShowingStatusEnumSchema.js";
 import type {TheatreSchemaFields}
-    from "../../../theatre/model/Theatre.types.js";
+    from "@domains/theatre/model/theatre";
 import type {ISO6391LanguageCode}
-    from "../../../../shared/schema/enums/ISO6391LanguageCodeSchema.js";
+    from "@shared/schema/enums/ISO6391LanguageCodeSchema";
 import type {MovieSchemaFields, MovieWithGenres}
     from "../../../movie/model/Movie.types.js";
 import type {ShowingConfigSchemaFields}
     from "../showing-config/ShowingConfig.types.js";
-import type {LocationSchemaFields} from "../../../../shared/model/location/LocationSchemaFields.js";
-import type {BaseSoftDeleteModel} from "../../../../shared/types/schema/BaseModel.js";
+import type {LocationSchemaFields} from "@shared/model/location/LocationSchemaFields";
+import type {BaseSoftDeleteModel} from "@shared/types/schema/BaseModel";
 
 /**
  * Core schema fields for a theatre showing; inherits {@link BaseSoftDeleteModel}.

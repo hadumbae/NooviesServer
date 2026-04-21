@@ -19,15 +19,15 @@
  * ```
  */
 
-import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {BaseRepository} from "@shared/repository/BaseRepository";
 import TheatreController from "../controller/TheatreController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
 import TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";
-import Theatre from "../model/Theatre.model.js";
 import {TheatreSearchService} from "../services/search-service/TheatreSearchService.js";
 import {TheatreBrowseController} from "../controller/browse-controller/TheatreBrowseController.js";
+import {Theatre} from "@domains/theatre/model/theatre";
 
 export default class TheatreServiceProvider {
 

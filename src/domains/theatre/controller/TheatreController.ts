@@ -6,9 +6,9 @@ import type {
 import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
 import type TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type {TheatreSchemaFields} from "../model/Theatre.types.js";
 
 import type {TheatreQueryMatchFilters} from "@domains/theatre/_feat/validate-query/TheatreQueryMatchFilterSchema";
+import type {TheatreSchemaFields} from "@domains/theatre/model/theatre";
 
 /**
  * Interface representing the public contract for {@link TheatreController}.

@@ -6,8 +6,8 @@
 import {ShowingSchema} from "./Showing.schema.js";
 import {type HydratedDocument} from "mongoose";
 import type {ShowingSchemaFields} from "./Showing.types.js";
-import {fetchRequiredModelDocument} from "../../../../shared/utility/fetch/fetchRequiredModelDocument.js";
-import Theatre from "../../../theatre/model/Theatre.model.js";
+import {fetchRequiredModelDocument} from "@shared/utility/fetch/fetchRequiredModelDocument";
+import {Theatre} from "@domains/theatre/model/theatre";
 
 /**
  * Syncs `location` from {@link Theatre} before validation.
