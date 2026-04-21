@@ -13,21 +13,22 @@ import type {Request} from "express";
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import {
     type SeatMapQueryOptions,
-    SeatMapQueryOptionSchema
-} from "../../schema/query-option/SeatMapQueryOption.schema.js";
-import {RequestValidationError} from "../../../../shared/errors/RequestValidationError.js";
+    SeatMapQueryOptionsSchema
+} from "@domains/seatmap/_feat/validate-query";
+import {RequestValidationError} from "@shared/errors/RequestValidationError";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {FilterQuery} from "mongoose";
-import type {QueryOptionTypes, SortQuery} from "../../../../shared/types/query-options/QueryOptionService.types.js";
+import type {QueryOptionTypes, SortQuery} from "@shared/types/query-options/QueryOptionService.types";
 import type {
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages
-} from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
+} from "@shared/types/mongoose/AggregatePipelineStages";
 import type {SeatMapSchemaFields} from "../../model/SeatMap.types.js";
-import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/LookupMatchStage.types.js";
+import type {LookupMatchStageOptions} from "@shared/types/mongoose/LookupMatchStage.types";
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
-import type {SeatMapMatchFilters} from "../../schema/query-option/SeatMapMatchParam.schema.js";
+
+import type {SeatMapQueryMatchFilters} from "@domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
 
 /**
  * Query option service for SeatMap list and search endpoints.
@@ -36,7 +37,7 @@ export default class SeatMapQueryOptionService
     implements IReferenceQueryOptionService<
         SeatMapSchemaFields,
         SeatMapQueryOptions,
-        SeatMapMatchFilters
+        SeatMapQueryMatchFilters
     > {
 
     /**
@@ -48,7 +49,7 @@ export default class SeatMapQueryOptionService
      * @throws {RequestValidationError}
      */
     fetchQueryParams(req: Request): SeatMapQueryOptions {
-        const {success, data, error} = SeatMapQueryOptionSchema.safeParse(req.query);
+        const {success, data, error} = SeatMapQueryOptionsSchema.safeParse(req.query);
 
         if (!success) {
             throw new RequestValidationError({
@@ -63,7 +64,7 @@ export default class SeatMapQueryOptionService
     /**
      * Builds `$match` filters for native SeatMap fields.
      */
-    generateMatchFilters(options: SeatMapQueryOptions): FilterQuery<SeatMapMatchFilters> {
+    generateMatchFilters(options: SeatMapQueryOptions): FilterQuery<SeatMapQueryMatchFilters> {
         const {showing, seat, price, status} = options;
         return filterNullishAttributes({showing, seat, price, status});
     }
@@ -124,7 +125,7 @@ export default class SeatMapQueryOptionService
      */
     generateQueryOptions(
         options: SeatMapQueryOptions
-    ): QueryOptionTypes<SeatMapSchemaFields, SeatMapMatchFilters> {
+    ): QueryOptionTypes<SeatMapSchemaFields, SeatMapQueryMatchFilters> {
         return {
             match: {
                 filters: this.generateMatchFilters(options),

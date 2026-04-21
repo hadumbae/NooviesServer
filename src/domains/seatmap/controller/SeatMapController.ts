@@ -15,9 +15,9 @@ import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptio
 import type SeatMapService from "../service/seat-map-service/SeatMapService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {SeatMapSchemaFields} from "../model/SeatMap.types.js";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type {SeatMapMatchFilters} from "../schema/query-option/SeatMapMatchParam.schema.js";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 import type {ISeatMapController, ISeatMapControllerConstructor} from "./SeatMapController.types.js";
+import type {SeatMapQueryMatchFilters} from "@domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
 
 /**
  * SeatMap HTTP controller.
@@ -53,7 +53,7 @@ export default class SeatMapController
      */
     fetchQueryOptions(
         req: Request
-    ): QueryOptionTypes<SeatMapSchemaFields, SeatMapMatchFilters> {
+    ): QueryOptionTypes<SeatMapSchemaFields, SeatMapQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }
