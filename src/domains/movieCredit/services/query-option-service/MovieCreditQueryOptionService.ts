@@ -20,23 +20,25 @@
  */
 
 import type {Request} from "express";
-import {RequestValidationError} from "../../../../shared/errors/RequestValidationError.js";
+import {RequestValidationError} from "@shared/errors/RequestValidationError";
 import {type FilterQuery, type SortOrder} from "mongoose";
 import type {
     ReferenceFilterPipelineStages
-} from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
+} from "@shared/types/mongoose/AggregatePipelineStages";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {IMovieCredit} from "../../models/MovieCredit.interface.js";
-import {MovieCreditQueryOptionsSchema} from "../../schemas/query/MovieCreditQueryOption.schema.js";
-import type {
-    MovieCreditQueryMatchFilters,
-    MovieCreditQueryOptions
-} from "../../schemas/query/MovieCreditQueryOption.types.js";
-import type {QueryOptionTypes} from "../../../../shared/types/query-options/QueryOptionService.types.js";
-import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/LookupMatchStage.types.js";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
+import type {LookupMatchStageOptions} from "@shared/types/mongoose/LookupMatchStage.types";
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {MovieCreditQueryOptionMethods} from "./MovieCreditQueryOptionService.types.js";
+import type {
+    MovieCreditQueryMatchFilters
+} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryMatchFiltersSchema";
+import {
+    type MovieCreditQueryOptions,
+    MovieCreditQueryOptionsSchema
+} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryOptionsSchema";
 
 /**
  * Service responsible for constructing MovieCredit query options.

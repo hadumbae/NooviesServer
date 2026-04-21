@@ -1,12 +1,12 @@
 import type IQueryOptionService from "../../../../shared/types/query-options/IQueryOptionService.js";
 import type {IMovieCredit} from "../../models/MovieCredit.interface.js";
 import type {
-    MovieCreditQueryMatchFilters,
-    MovieCreditQueryOptions
-} from "../../schemas/query/MovieCreditQueryOption.types.js";
-import type {
     ReferenceFilterPipelineStages
-} from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
+} from "@shared/types/mongoose/AggregatePipelineStages";
+import type {
+    MovieCreditQueryMatchFilters
+} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryMatchFiltersSchema";
+import type {MovieCreditQueryOptions} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryOptionsSchema";
 
 /**
  * MovieCredit-specific query option service contract.

@@ -6,10 +6,14 @@ import type MovieCreditService from "../services/movie-credit-service/MovieCredi
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
+} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type {MovieCreditQueryMatchFilters} from "../schemas/query/MovieCreditQueryOption.types.js";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
+
+
+import type {
+    MovieCreditQueryMatchFilters
+} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryMatchFiltersSchema";
 
 /**
  * Constructor parameters for {@link MovieCreditController}.
