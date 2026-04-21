@@ -13,7 +13,7 @@
 
 import { TheatreSchema } from "./Theatre.schema.js";
 import type { HydratedDocument, Query } from "mongoose";
-import Screen from "@domains/screen/models/screen/Screen.model";
+import {Screen} from "@domains/screen/models/screen";
 import Seat from "../../seat/model/Seat.model.js";
 import Showing from "../../showing/models/showing/Showing.model.js";
 import type { TheatreSchemaFields } from "./Theatre.types.js";

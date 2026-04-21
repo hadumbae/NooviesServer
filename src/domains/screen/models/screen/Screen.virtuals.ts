@@ -1,24 +1,14 @@
 /**
- * @file Screen.virtuals.ts
- *
- * @summary
- * Virtual fields and plugins for the Screen schema.
- *
- * @description
- * Defines computed, non-persistent fields for screens and
- * enables lean query support for virtual population.
+ * @fileoverview Virtual field definitions and plugin configurations for the Screen schema.
+ * Provides computed relationships for inventory and scheduling without persisting
+ * redundant data in MongoDB.
  */
 
 import { ScreenSchema } from "./Screen.schema";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 /**
- * @summary
- * Count of future showings for the screen.
- *
- * @description
- * Computed virtual that counts showings associated with the screen.
- * Typically filtered at query time to include only future showings.
+ * Virtual: futureShowingCount
  */
 ScreenSchema.virtual("futureShowingCount", {
     ref: "Showing",
@@ -28,11 +18,7 @@ ScreenSchema.virtual("futureShowingCount", {
 });
 
 /**
- * @summary
- * Total seat count for the screen.
- *
- * @description
- * Computed virtual that counts all seats assigned to the screen.
+ * Virtual: seatCount
  */
 ScreenSchema.virtual("seatCount", {
     ref: "Seat",
@@ -42,7 +28,6 @@ ScreenSchema.virtual("seatCount", {
 });
 
 /**
- * @summary
- * Enables lean query support for virtual fields.
+ * Plugin: mongoose-lean-virtuals
  */
 ScreenSchema.plugin(mongooseLeanVirtuals);

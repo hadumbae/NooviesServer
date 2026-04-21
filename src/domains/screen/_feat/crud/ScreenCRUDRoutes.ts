@@ -11,8 +11,7 @@ import {create, destroy, find, findById, findBySlug, paginated, update} from "@s
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
-import type {ScreenSchemaFields} from "@domains/screen/models/screen/Screen.types";
-import Screen from "@domains/screen/models/screen/Screen.model";
+import {Screen, type ScreenSchemaFields} from "@domains/screen/models/screen";
 import {ScreenPopulationPipelines, ScreenVirtualPipelines} from "@domains/screen/_feat/aggregate";
 import {ScreenInputSchema} from "@domains/screen/_feat/validate-submit";
 import {ScreenQueryOptionsSchema} from "@domains/screen/_feat/validate-query";

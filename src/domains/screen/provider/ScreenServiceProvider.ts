@@ -1,5 +1,4 @@
-import Screen from "@domains/screen/models/screen/Screen.model";
-
+import {Screen} from "@domains/screen/models/screen";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import {ScreenSearchService} from "../_feat/view-data-client/ScreenSearchService";
 import {ScreenBrowseController} from "../_feat/view-data-client/ScreenBrowseController";

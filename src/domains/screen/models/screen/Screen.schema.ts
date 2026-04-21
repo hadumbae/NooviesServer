@@ -24,7 +24,7 @@ export const ScreenSchema = new Schema<ScreenSchemaFields>(
             type: Schema.Types.ObjectId,
             ref: "Theatre",
             required: [true, "Theatre is required."],
-            index: true, // Optimized for filtering screens by theatre
+            index: true,
         },
 
         capacity: {
@@ -49,5 +49,3 @@ export const ScreenSchema = new Schema<ScreenSchemaFields>(
         timestamps: true,
     },
 );
-
-ScreenSchema.index({theatre: 1, slug: 1}, {unique: true});

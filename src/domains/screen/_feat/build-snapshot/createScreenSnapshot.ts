@@ -5,7 +5,7 @@
 
 import {Types} from "mongoose";
 import type {ScreenSnapshotSchemaFields} from "@domains/screen/models/screen-snapshot/ScreenSnapshot.types";
-import Screen from "@domains/screen/models/screen/Screen.model";
+import {Screen} from "@domains/screen/models/screen";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {ScreenSnapshot} from "@domains/screen/models/screen-snapshot/ScreenSnapshot.model";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
