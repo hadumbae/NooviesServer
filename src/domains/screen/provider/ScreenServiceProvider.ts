@@ -1,17 +1,8 @@
 import Screen from "@domains/screen/models/screen/Screen.model";
 
-import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
-import ScreenController from "../controller/ScreenController.js";
-
-import ScreenQueryOptionService from "../service/ScreenQueryOptionService.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
-import ScreenService from "../service/ScreenService.js";
-import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import ScreenSeatService from "../service/screen-seat-service/ScreenSeatService.js";
-import {ScreenSearchService} from "../service/screen-search-service/ScreenSearchService.js";
-import {ScreenBrowseController} from "../controller/screen-browse/ScreenBrowseController.js";
-import {ScreenPopulationPipelines} from "../queries/ScreenPopulationPipelines.js";
-import {ScreenVirtualPipelines} from "../queries/ScreenVirtualPipelines.js";
+import {ScreenSearchService} from "../_feat/view-data-client/ScreenSearchService";
+import {ScreenBrowseController} from "../_feat/view-data-client/ScreenBrowseController";
 
 /**
  * @file ScreenServiceProvider.ts
@@ -34,56 +25,16 @@ export default class ScreenServiceProvider {
      */
     static register() {
         const model = Screen;
-        const populateRefs = ["theatre"];
-
-        const repository = new BaseRepository({ model, populateRefs });
         const queryUtils = QueryUtils;
-
-        const service = new ScreenService();
-        const optionService = new ScreenQueryOptionService();
-        const seatService = new ScreenSeatService();
         const searchService = new ScreenSearchService();
-        const aggregateService = new AggregateQueryService({
-            model,
-            populationPipelines: ScreenPopulationPipelines,
-            virtualsPipelines: ScreenVirtualPipelines,
-        });
-
-        const controller = new ScreenController({
-            repository,
-            queryUtils,
-            service,
-            seatService,
-            optionService,
-            aggregateService,
-        });
-
         const browseController = new ScreenBrowseController({
             searchService,
             queryUtils,
         });
 
         return {
-            /** Screen Mongoose model */
             model,
-
-            /** Base CRUD repository */
-            repository,
-
-            /** Domain and query services */
-            services: {
-                service,
-                seatService,
-                optionService,
-                aggregateService,
-                searchService,
-            },
-
-            /** HTTP controllers */
-            controllers: {
-                controller,
-                browseController,
-            },
+            controllers: {browseController},
         };
     }
 }

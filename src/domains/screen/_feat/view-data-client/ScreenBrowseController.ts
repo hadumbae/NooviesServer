@@ -4,11 +4,11 @@ import type {Request, Response} from "express";
 //      fetchPaginatedScreensWithShowings
 //          - optional limit
 
-import type {ScreenBrowseConstructor, ScreenBrowseControllerMethods} from "./ScreenBrowseController.types.js";
-import BaseController from "../../../../shared/controller/BaseController.js";
-import type {ScreenSearchService} from "../../service/screen-search-service/ScreenSearchService.js";
-import {validateRequestParameters} from "../../../../shared/utility/schema/validateRequestParameters.js";
-import {ShowingsByScreenQuerySchema} from "../../schema/browse/query/ShowingsByScreenQuerySchema.js";
+import type {ScreenBrowseConstructor, ScreenBrowseControllerMethods} from "./ScreenBrowseController.types";
+import BaseController from "@shared/controller/BaseController";
+import type {ScreenSearchService} from "./ScreenSearchService";
+import {validateRequestParameters} from "@shared/utility/schema/validateRequestParameters";
+import {ShowingsByScreenQuerySchema} from "./ShowingsByScreenQuerySchema";
 
 export class ScreenBrowseController extends BaseController implements ScreenBrowseControllerMethods {
     protected searchService: ScreenSearchService

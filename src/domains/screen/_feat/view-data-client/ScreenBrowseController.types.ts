@@ -1,6 +1,6 @@
 import type {Request, Response} from "express";
-import type {ScreenSearchService} from "../../service/screen-search-service/ScreenSearchService.js";
-import type {BaseConstructorParams} from "../../../../shared/controller/BaseController.js";
+import type {ScreenSearchService} from "./ScreenSearchService";
+import type {BaseConstructorParams} from "@shared/controller/BaseController";
 
 export type ScreenBrowseConstructor = BaseConstructorParams & {
     searchService: ScreenSearchService;

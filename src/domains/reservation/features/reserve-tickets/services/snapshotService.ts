@@ -1,6 +1,6 @@
 /**
- * @file Service for generating immutable data snapshots for reservations.
- * @filename snapshotService.ts
+ * @fileoverview Service for generating immutable data snapshots for reservations.
+ * Preserves the exact state of a Showing, Movie, Theatre, and Seating at the point of purchase.
  */
 
 import {Types} from "mongoose";
@@ -8,35 +8,32 @@ import type {
     ReservedShowingSnapshotSchemaFields
 } from "@domains/reservation/model/snapshots/showing-snapshot/ReservedShowingSnapshot.types";
 import Showing from "@domains/showing/models/showing/Showing.model";
-import ShowingModel from "@domains/showing/models/showing/Showing.model";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
 import {createMovieSnapshot} from "@domains/movie/utilities/snapshots/createMovieSnapshot";
 import {createTheatreSnapshot} from "@domains/theatre/utilities/snapshots/createTheatreSnapshot";
-import {createScreenSnapshot} from "@domains/screen/utilities/snapshot/createScreenSnapshot";
 import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
 import {createReservedSeatSnapshot} from "@domains/seatmap/utilities/snapshots/createReservedSeatSnapshot";
 import type {
     CreateReservedShowingSnapshotParams
 } from "@domains/reservation/features/reserve-tickets/services/snapshotService.types";
 import {ReservedShowingSnapshotInputSchema} from "@domains/reservation/features/reserve-tickets/schemas";
+import {createScreenSnapshot} from "@domains/screen/_feat/build-snapshot";
 
 /**
  * Internal interface representing a Showing document with unresolved ObjectIDs.
- * Used to safely access reference IDs for downstream snapshot sub-services.
  */
-interface ShowingWithReferences extends ShowingSchemaFields {
+type ShowingWithReferences = Omit<ShowingSchemaFields, "movie" | "theatre" | "screen"> & {
     movie: Types.ObjectId;
     theatre: Types.ObjectId;
     screen: Types.ObjectId;
 }
 
 /**
- * Generates a comprehensive, immutable snapshot of a showing's state at booking time.
- * @param params - Contextual data including price, count, and IDs.
- * @returns A validated, persistence-ready snapshot object.
- * @throws {DocumentNotFoundError} 404 - If the source showing is missing.
- * @throws {InconsistentDataError} 422 - If sub-snapshots fail validation (e.g., missing movie data).
+ * Orchestrates the creation of a deep, immutable snapshot for a specific reservation.
+ * @returns A validated snapshot object conforming to {@link ReservedShowingSnapshotSchemaFields}.
+ * @throws {DocumentNotFoundError} If the source `showingID` is invalid or missing.
+ * @throws {InconsistentDataError} If any sub-factory fails or the combined schema is invalid.
  */
 export async function createReservedShowingSnapshot(
     {showingID, selectedSeating, pricePaid, ticketCount, reservationType}: CreateReservedShowingSnapshotParams
@@ -66,8 +63,8 @@ export async function createReservedShowingSnapshot(
 
     if (!success) {
         throw new InconsistentDataError({
-            modelName: ShowingModel.name,
-            message: "Inconsistent data, unable to create snapshot.",
+            modelName: Showing.name,
+            message: "Inconsistent source data: unable to finalize reservation snapshot.",
             errors: error?.errors,
         });
     }

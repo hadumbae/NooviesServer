@@ -1,27 +1,16 @@
 /**
- * @file ScreenSnapshot.types.ts
- *
- * @description
- * Immutable snapshot field definitions for a cinema screen.
- *
- * Captures the essential identity and configuration of a screen at a specific
- * point in time. Intended for embedding in snapshot-based documents to prevent
- * historical drift when the source screen changes.
+ * @fileoverview Immutable field definitions for Screen snapshots.
+ * Represents the persistent state of an auditorium used in historical records.
  */
 
-import { Types } from "mongoose";
-import type { ScreenTypeEnumType } from "../../schema/enum/ScreenTypeEnum.js";
+import {Types} from "mongoose";
+import type {ScreenType} from "@domains/screen/validation";
 
 /**
- * Screen snapshot schema fields.
+ * Type representing the structure of a Screen snapshot.
  */
-export interface ScreenSnapshotSchemaFields {
-    /** Owning theatre reference at snapshot time. */
+export type ScreenSnapshotSchemaFields = {
     theatre: Types.ObjectId;
-
-    /** Human-readable screen name (e.g. "Screen 1"). */
     name: string;
-
-    /** Screen classification (e.g. Standard, IMAX, 4DX). */
-    screenType: ScreenTypeEnumType;
+    screenType: ScreenType;
 }

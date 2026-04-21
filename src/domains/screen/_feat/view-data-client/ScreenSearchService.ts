@@ -13,13 +13,13 @@ import type {
     ScreenSearchMethods,
     ScreenWithShowings,
     ShowingsByScreensParams,
-} from "./ScreenSearchService.types.js";
+} from "./ScreenSearchService.types";
 import {type PipelineStage} from "mongoose";
 import Screen from "@domains/screen/models/screen/Screen.model";
-import Theatre from "../../../theatre/model/Theatre.model.js";
-import {ShowingPopulationPipelines} from "../../../showing/queries/ShowingPopulationPipelines.js";
-import {ShowingSeatMapVirtualPipelines} from "../../../showing/queries/ShowingSeatMapVirtualPipelines.js";
-import {getIdentifierFilter} from "../../../../shared/utility/getIdentifierFilter.js";
+import Theatre from "../../../theatre/model/Theatre.model";
+import {ShowingPopulationPipelines} from "../../../showing/queries/ShowingPopulationPipelines";
+import {ShowingSeatMapVirtualPipelines} from "../../../showing/queries/ShowingSeatMapVirtualPipelines";
+import {getIdentifierFilter} from "@shared/utility/getIdentifierFilter";
 
 /**
  * Service for screen-based showing search operations.

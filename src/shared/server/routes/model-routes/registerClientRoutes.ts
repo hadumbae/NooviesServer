@@ -7,7 +7,7 @@ import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes";
 import {MovieBrowseRoutes} from "@domains/movie/routing/client/MovieBrowseRoutes";
 import {TheatreBrowseRoutes} from "@domains/theatre/routing/TheatreBrowseRoutes";
-import {ScreenBrowseRoutes} from "@domains/screen/routing/ScreenBrowseRoutes";
+import {ScreenBrowseRoutes} from "@domains/screen/_feat/view-data-client/ScreenBrowseRoutes";
 import {ReserveTicketsRoutes} from "@domains/reservation/features/reserve-tickets/routes/routes";
 import {UserProfileRoutes} from "@domains/users/routing/UserProfileRoutes";
 import {MyMovieReviewsRoutes} from "@domains/movieReview/routes/MyMovieReviewsRoutes";

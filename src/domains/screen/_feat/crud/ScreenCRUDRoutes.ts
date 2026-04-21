@@ -12,9 +12,10 @@ import validateZodSchema from "@shared/utility/schema/validators/validateZodSche
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
 import type {ScreenSchemaFields} from "@domains/screen/models/screen/Screen.types";
-import {ScreenQueryOptionsSchema} from "@domains/screen/_feat/validate-query/ScreenQueryOption.schema";
-import {ScreenInputSchema} from "@domains/screen/schema/ScreenInputSchema";
 import Screen from "@domains/screen/models/screen/Screen.model";
+import {ScreenPopulationPipelines, ScreenVirtualPipelines} from "@domains/screen/_feat/aggregate";
+import {ScreenInputSchema} from "@domains/screen/_feat/validate-submit";
+import {ScreenQueryOptionsSchema} from "@domains/screen/_feat/validate-query";
 
 /**
  * CRUD route definitions for the Screen entity.
@@ -91,7 +92,11 @@ const router: Router = buildCRUDRoutes<ScreenSchemaFields>({
 router.get(
     "/query",
     [isAuth, parseQueryOptions({schema: ScreenQueryOptionsSchema, modelName: Screen.modelName})],
-    asyncHandler(aggregate({model: Screen})),
+    asyncHandler(aggregate({
+        model: Screen,
+        virtualsPipelines: ScreenVirtualPipelines,
+        populationPipelines: ScreenPopulationPipelines,
+    })),
 );
 
 export {

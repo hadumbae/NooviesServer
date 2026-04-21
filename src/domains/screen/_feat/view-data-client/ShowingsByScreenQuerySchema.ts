@@ -1,8 +1,8 @@
 import {z} from "zod";
-import {ObjectIdSchema} from "../../../../../shared/schema/mongoose/ObjectIdSchema.js";
-import {SimpleDateStringSchema} from "../../../../../shared/schema/date-time/SimpleDateStringSchema.js";
-import {NonNegativeNumberSchema} from "../../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
-import {SlugStringSchema} from "../../../../../shared/schema/strings/SlugStringSchema.js";
+import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
+import {SimpleDateStringSchema} from "@shared/schema/date-time/SimpleDateStringSchema";
+import {NonNegativeNumberSchema} from "@shared/schema/numbers/NonNegativeNumberSchema";
+import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
 
 /**
  * @file ShowingsByScreenQuery.schema.ts
