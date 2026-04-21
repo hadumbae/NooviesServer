@@ -5,13 +5,14 @@ import type IMovieService from "../service/movie/IMovieService.js";
 import type MovieService from "../service/movie/MovieService.js";
 import type MovieQueryOptionService from "../service/MovieQueryOptionService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
-import type {MovieQueryMatchFilters} from "../schema/query/MovieQueryOption.types.js";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 import type {MovieSchemaFields} from "../model/Movie.types.js";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "../../../shared/controller/base-crud-controller/BaseControllerCRUDMethods.js";
+} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+
+import type {MovieQueryMatchFilters} from "@domains/movie/_feat/validate-query/MovieQueryMatchFiltersSchema";
 
 /**
  * Constructor parameters for {@link MovieController}.

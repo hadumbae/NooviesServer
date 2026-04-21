@@ -1,11 +1,14 @@
 import type {Request} from 'express';
 import {type FilterQuery, type SortOrder} from "mongoose";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
-import {MovieQueryOptionsSchema} from "../schema/query/MovieQueryOption.schema.js";
+import {
+    type MovieQueryOptions,
+    MovieQueryOptionsSchema
+} from "@domains/movie/_feat/validate-query";
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
-import type {MovieQueryMatchFilters, MovieQueryOptions} from "../schema/query/MovieQueryOption.types.js";
-import type {QueryOptionTypes} from "../../../shared/types/query-options/QueryOptionService.types.js";
+import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 import type {MovieSchemaFields} from "../model/Movie.types.js";
+import type {MovieQueryMatchFilters} from "@domains/movie/_feat/validate-query/MovieQueryMatchFiltersSchema";
 
 /**
  * Service for parsing, validating, and converting query parameters
