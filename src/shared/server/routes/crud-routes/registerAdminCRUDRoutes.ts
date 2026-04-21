@@ -14,6 +14,7 @@ import {TheatreCRUDRoutes} from "@domains/theatre/_feat/crud";
 import {MovieCRUDRoutes} from "@domains/movie/_feat/crud/MovieCRUDRoutes";
 import {RoleTypeCRUDRoutes} from "@domains/roleType/_feat/crud";
 import {MovieCreditCRUDRoutes} from "@domains/movieCredit/_feat/crud";
+import {ShowingCRUDRoutes} from "@domains/showing/_feat/crud";
 
 /**
  * Core metadata and foundational data configuration routes.
@@ -29,6 +30,8 @@ const setupRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/movies/crud", router: MovieCRUDRoutes},
     {path: "/api/v1/admin/role-types/crud", router: RoleTypeCRUDRoutes},
     {path: "/api/v1/admin/movie-credits/crud", router: MovieCreditCRUDRoutes},
+
+    {path: "/api/v1/admin/showings/crud", router: ShowingCRUDRoutes},
 ];
 
 /**

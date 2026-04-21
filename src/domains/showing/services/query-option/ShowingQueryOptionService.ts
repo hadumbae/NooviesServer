@@ -16,23 +16,24 @@
 
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import type {Request} from "express";
-import {type ShowingQueryOptions, ShowingQueryOptionSchema} from "../../validation/query/ShowingQueryOptions.js";
-import {RequestValidationError} from "../../../../shared/errors/RequestValidationError.js";
+import {type ShowingQueryOptions, ShowingQueryOptionSchema} from "@domains/showing/_feat/validate-query";
+import {RequestValidationError} from "@shared/errors/RequestValidationError";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {
     QueryOptionTypes,
     SortQuery
-} from "../../../../shared/types/query-options/QueryOptionService.types.js";
+} from "@shared/types/query-options/QueryOptionService.types";
 import type {
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages
-} from "../../../../shared/types/mongoose/AggregatePipelineStages.js";
-import type {LookupMatchStageOptions} from "../../../../shared/types/mongoose/LookupMatchStage.types.js";
+} from "@shared/types/mongoose/AggregatePipelineStages";
+import type {LookupMatchStageOptions} from "@shared/types/mongoose/LookupMatchStage.types";
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {ShowingSchemaFields} from "../../models/showing/Showing.types.js";
-import type {ShowingQueryMatchFilters} from "../../validation/query/ShowingMatchParams.js";
+
+import type {ShowingQueryMatchFilters} from "@domains/showing/_feat/validate-query/ShowingQueryMatchFilterSchema";
 
 /**
  * Builds query options and aggregation pipelines for
