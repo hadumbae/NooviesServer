@@ -1,45 +1,41 @@
 /**
- * @fileoverview Centralized registration for administrative "View Data" routes.
- * Handles the mounting of specialized admin-facing endpoints used for
- * dashboards, complex tables, and management interfaces.
+ * @fileoverview Centralized registration for administrative view-data routes.
  */
 
-import type {Express} from "express";
-import type {RouteRegistration} from "../../registerRoutes";
-import {GenreViewDataRoutes} from "@domains/genre/_feat/admin-view-data";
-import {PersonAdminViewDataRoutes} from "@domains/person/_feat/admin-view-data";
+import type { Express } from "express";
+import type { RouteRegistration } from "../../registerRoutes";
+import { GenreViewDataRoutes } from "@domains/genre/_feat/admin-view-data";
+import { PersonAdminViewDataRoutes } from "@domains/person/_feat/admin-view-data";
+import { TheatreAdminViewDataRoutes } from "@domains/theatre/_feat/admin-view-data";
 
 /**
- * Collection of route groups related to Genre administrative views.
+ * Mapping of administrative feature paths to their respective Express routers.
  */
-const genreRouteGroups: RouteRegistration[] = [
+const setupRouteGroups: RouteRegistration[] = [
     {
         path: "/api/v1/views/desktop/admin/genres",
         router: GenreViewDataRoutes
     },
-];
-
-/**
- * Collection of route groups related to Person administrative views.
- */
-const personRouteGroups: RouteRegistration[] = [
     {
         path: "/api/v1/views/desktop/admin/persons",
         router: PersonAdminViewDataRoutes,
     },
+    {
+        path: "/api/v1/views/desktop/admin/theatres",
+        router: TheatreAdminViewDataRoutes,
+    },
 ];
 
 /**
- * Registers all administrative view data routes into the main Express application.
+ * Mounts versioned administrative view-data route groups onto the main Express application.
  */
 export function registerAdminViewDataRoutes(app: Express) {
     const routeGroups: RouteRegistration[][] = [
-        genreRouteGroups,
-        personRouteGroups,
+        setupRouteGroups,
     ];
 
     for (const routeGroup of routeGroups) {
-        for (const {path, router} of routeGroup) {
+        for (const { path, router } of routeGroup) {
             app.use(path, router);
         }
     }
