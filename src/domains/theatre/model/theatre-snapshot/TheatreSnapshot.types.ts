@@ -1,37 +1,18 @@
 /**
- * @file TheatreSnapshotSchemaFields.ts
- *
- * @summary
- * Defines the snapshot structure of a theatre for storage in other entities.
+ * @fileoverview Data structure definitions for the TheatreSnapshot entity.
  */
 
-import type { IANATimezone } from "../../../../shared/schema/date-time/IANATimezoneSchema.js";
+import type { IANATimezone } from "@shared/schema/date-time/IANATimezoneSchema";
 
 /**
- * Fields representing a theatre snapshot.
- *
- * Used for storing a theatre’s state at a specific point in time
- * (e.g., in showings or reservations).
+ * Properties of a theatre captured at a specific point in time for historical record-keeping.
  */
-export interface TheatreSnapshotSchemaFields {
-    /** Name of the theatre */
+export type TheatreSnapshotSchemaFields = {
     name: string;
-
-    /** Optional street address */
     street?: string;
-
-    /** City where the theatre is located */
     city: string;
-
-    /** Optional state or province */
     state?: string;
-
-    /** Country code or name */
     country: string;
-
-    /** Optional postal or ZIP code */
     postalCode?: string;
-
-    /** Timezone of the theatre (IANA format) */
     timezone: IANATimezone;
 }

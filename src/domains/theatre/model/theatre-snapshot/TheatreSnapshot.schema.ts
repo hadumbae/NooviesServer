@@ -1,17 +1,5 @@
 /**
- * @file TheatreSnapshotSchema.ts
- *
- * @summary
- * Mongoose schema for a theatre snapshot, representing the state of a theatre
- * at a specific point in time (e.g., for showings or reservations).
- *
- * @description
- * This schema ensures validation of all theatre fields, including:
- * - Name, address (street, city, state, postal code)
- * - Country code (ISO 3166-1 alpha-2)
- * - Timezone (IANA format)
- *
- * Used as an embedded schema in other entities rather than as a top-level collection.
+ * @fileoverview Mongoose schema for capturing a theatre's state at a specific point in time.
  */
 
 import { Schema } from "mongoose";
@@ -20,17 +8,7 @@ import ISO3166Alpha2CodeConstant from "../../../../shared/constants/country/ISO3
 import { IANAZone } from "luxon";
 
 /**
- * Mongoose schema defining a theatre snapshot with validation rules.
- *
- * @example
- * ```ts
- * const exampleTheatre: TheatreSnapshotSchemaFields = {
- *   name: "Grand Cinema",
- *   city: "Bangkok",
- *   country: "TH",
- *   timezone: "Asia/Bangkok",
- * };
- * ```
+ * Defines validation and structure for theatre data embedded within historical records like showings and reservations.
  */
 export const TheatreSnapshotSchema = new Schema<TheatreSnapshotSchemaFields>({
     name: {

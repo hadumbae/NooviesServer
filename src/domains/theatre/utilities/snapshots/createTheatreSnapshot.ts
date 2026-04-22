@@ -12,11 +12,10 @@
 
 import {Types} from "mongoose";
 import {TheatreSnapshotInputSchema} from "../../schema/TheatreSnapshotInputSchema.js";
-import type {TheatreSnapshotSchemaFields} from "../../model/theatre-snapshot/TheatreSnapshot.types.js";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
-import {TheatreSnapshot} from "../../model/theatre-snapshot/TheatreSnapshot.model.js";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {Theatre} from "@domains/theatre/model/theatre";
+import {TheatreSnapshot, type TheatreSnapshotSchemaFields} from "@domains/theatre/model/theatre-snapshot";
 
 /**
  * Create an immutable snapshot of a theatre at a specific point in time.
