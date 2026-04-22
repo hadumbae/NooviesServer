@@ -83,6 +83,11 @@ const routes: CRUDRoute<TheatreSchemaFields>[] = [
 const router: Router = buildCRUDRoutes<TheatreSchemaFields>({
     model: Theatre,
     routes: routes,
+    populatePaths: [
+        "screenCount",
+        "seatCount",
+        "futureShowingCount",
+    ]
 });
 
 /**
