@@ -25,8 +25,6 @@ import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
 import TheatreQueryOptionService from "../services/query/TheatreQueryOptionService.js";
-import {TheatreSearchService} from "../services/search-service/TheatreSearchService.js";
-import {TheatreBrowseController} from "../controller/browse-controller/TheatreBrowseController.js";
 import {Theatre} from "@domains/theatre/model/theatre";
 
 export default class TheatreServiceProvider {
@@ -55,9 +53,6 @@ export default class TheatreServiceProvider {
         /** Theatre-specific query option parser */
         const optionService = new TheatreQueryOptionService();
 
-        /** Aggregation-driven search service for browse endpoints */
-        const searchService = new TheatreSearchService();
-
         /** Admin CRUD controller */
         const controller = new TheatreController({
             repository,
@@ -66,22 +61,15 @@ export default class TheatreServiceProvider {
             optionService,
         });
 
-        /** Public browse controller */
-        const browseController = new TheatreBrowseController({
-            searchService,
-        });
-
         return {
             model,
             repository,
             services: {
                 optionService,
                 aggregateService,
-                searchService,
             },
             controllers: {
                 controller,
-                browseController,
             },
         };
     }
