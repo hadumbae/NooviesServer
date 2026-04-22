@@ -15,6 +15,7 @@ import {TheatreQueryOptionSchema} from "@domains/theatre/_feat/validate-query";
 import {TheatreInputSchema} from "@domains/theatre/schema/TheatreSchema";
 import {Theatre, type TheatreSchemaFields} from "@domains/theatre/model/theatre";
 import {TheatreVirtualPipelines} from "@domains/theatre/_feat/aggregate";
+import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud/options/TheatreVirtualPopulationPaths";
 
 /**
  * CRUD route definitions for the Theatre entity.
@@ -83,11 +84,7 @@ const routes: CRUDRoute<TheatreSchemaFields>[] = [
 const router: Router = buildCRUDRoutes<TheatreSchemaFields>({
     model: Theatre,
     routes: routes,
-    populatePaths: [
-        "screenCount",
-        "seatCount",
-        "futureShowingCount",
-    ]
+    populatePaths: TheatreVirtualPopulationPaths,
 });
 
 /**
