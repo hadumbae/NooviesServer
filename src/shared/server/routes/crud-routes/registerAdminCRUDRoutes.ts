@@ -26,14 +26,14 @@ const setupRoutes: RouteRegistration[] = [
 
     {path: "/api/v1/admin/screens/crud", router: ScreenCRUDRoutes},
     {path: "/api/v1/admin/seats/crud", router: SeatCRUDRoutes},
-    {path: "/api/v1/admin/theatre/crud", router: TheatreCRUDRoutes},
+    {path: "/api/v1/admin/theatres/crud", router: TheatreCRUDRoutes},
 
     {path: "/api/v1/admin/movies/crud", router: MovieCRUDRoutes},
     {path: "/api/v1/admin/role-types/crud", router: RoleTypeCRUDRoutes},
     {path: "/api/v1/admin/movie-credits/crud", router: MovieCreditCRUDRoutes},
 
     {path: "/api/v1/admin/showings/crud", router: ShowingCRUDRoutes},
-    {path: "/api/v1/admin/seat-map/crud", router: SeatMapCRUDRoutes},
+    {path: "/api/v1/admin/seat-maps/crud", router: SeatMapCRUDRoutes},
 ];
 
 /**
