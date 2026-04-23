@@ -15,7 +15,7 @@
  */
 
 import {z} from "zod";
-import {SeatTypeSchema} from "@domains/seat/schema";
+import {SeatTypeSchema} from "domains/seat/validation";
 import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
 import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
 import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";

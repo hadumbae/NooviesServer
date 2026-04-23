@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {SeatLayoutTypeConstant} from "@domains/seat/schema/SeatLayoutTypeConstant";
+import {SeatLayoutTypeConstant} from "@domains/seat/validation/SeatLayoutTypeConstant";
 
 /**
  * Zod enum schema for validating the layout classification of a grid cell.

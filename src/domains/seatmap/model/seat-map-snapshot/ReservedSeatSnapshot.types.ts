@@ -10,7 +10,7 @@
  * map, pricing rules, or seat metadata change after reservation.
  */
 
-import type { SeatType } from "@domains/seat/schema";
+import type { SeatType } from "domains/seat/validation";
 import { Types } from "mongoose";
 
 /**

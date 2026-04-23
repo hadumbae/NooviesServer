@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {SeatTypeConstant} from "@domains/seat/schema/SeatTypeConstant";
+import {SeatTypeConstant} from "@domains/seat/validation/SeatTypeConstant";
 
 /**
  * Zod enum schema for validating a seat's category against the predefined constant list.

@@ -4,7 +4,7 @@
 
 import { Schema } from "mongoose";
 import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
-import { SeatLayoutTypeConstant, SeatTypeConstant } from "@domains/seat/schema";
+import { SeatLayoutTypeConstant, SeatTypeConstant } from "domains/seat/validation";
 import type {SeatSchemaFields} from "@domains/seat/model/Seat.types";
 
 /**
