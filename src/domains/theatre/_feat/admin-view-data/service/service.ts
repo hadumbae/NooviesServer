@@ -10,7 +10,7 @@ import {Theatre, type TheatreWithVirtuals} from "@domains/theatre/model/theatre"
 import {Screen} from "@domains/screen/models/screen";
 import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
-import Seat from "@domains/seat/model/Seat.model";
+import {Seat} from "@domains/seat/model";
 
 /**
  * Retrieves a theatre, a specific screen, and all associated seats based on provided slugs.

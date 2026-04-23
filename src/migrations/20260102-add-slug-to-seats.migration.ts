@@ -14,8 +14,8 @@ import 'dotenv/config';
 
 import mongoose from "mongoose";
 import connect from "@config/database.js";
-import Seat from "../domains/seat/model/Seat.model.js";
 import generateSlug from "../shared/utility/generateSlug.js";
+import {Seat} from "@domains/seat/model";
 
 connect().then(async () => {
     const cursor = Seat.find().cursor();

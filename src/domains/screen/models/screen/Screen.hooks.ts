@@ -15,10 +15,10 @@ import { ScreenSchema } from "./Screen.schema";
 import type { HydratedDocument, Query } from "mongoose";
 import type { ScreenSchemaFields } from "./Screen.types";
 
-import Seat from "../../../seat/model/Seat.model";
 import Showing from "../../../showing/models/showing/Showing.model";
 import generateSlug from "@shared/utility/generateSlug";
 import {Theatre} from "@domains/theatre/model/theatre";
+import {Seat} from "@domains/seat/model";
 
 /**
  * Document-level validation hook.

@@ -5,7 +5,7 @@
 import type { SlugString } from "@shared/schema/strings/SlugStringSchema";
 import type { TheatreWithVirtuals } from "@domains/theatre/model/theatre/Theatre.types";
 import type { ScreenSchemaFields } from "@domains/screen/models/screen";
-import type { SeatSchemaFields } from "@domains/seat/model/Seat.types";
+import type {SeatSchemaFields} from "@domains/seat/model";
 
 /** Props for the fetchTheatreScreenData service function. */
 export type FetchTheatreScreenDataConfig = {

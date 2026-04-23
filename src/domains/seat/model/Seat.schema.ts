@@ -1,64 +1,32 @@
 /**
- * @file Seat.schema.ts
- *
- * @summary
- * Mongoose schema definition for theatre seats.
- *
- * @description
- * Represents a single seat or layout element within a theatre screen.
- * Supports multiple seat types, layout types, positional coordinates,
- * pricing rules, and availability state.
- *
- * Enforces:
- * - Layout-aware validation rules
- * - Coordinate uniqueness
- * - Seat identity constraints within a screen
+ * @fileoverview Mongoose schema definition for theatre seats and layout elements.
  */
 
 import { Schema } from "mongoose";
-import type {SeatSchemaFields} from "./Seat.types.js";
 import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
-import {SeatLayoutTypeConstant, SeatTypeConstant} from "@domains/seat/schema";
+import { SeatLayoutTypeConstant, SeatTypeConstant } from "@domains/seat/schema";
+import type {SeatSchemaFields} from "@domains/seat/model/Seat.types";
 
 /**
- * @summary
- * Seat persistence schema.
- *
- * @description
- * Defines seating layout data for a theatre screen, including:
- * - Row/seat identifiers
- * - Grid positioning
- * - Seat classification
- * - Pricing modifiers
- *
- * Automatically manages `createdAt` and `updatedAt` timestamps.
+ * Defines the persistence layer for seats, aisles, and stairs within a theatre screen.
  */
 export const SeatSchema = new Schema<SeatSchemaFields>(
     {
-        /**
-         * Theatre this seat belongs to.
-         */
+        /** Reference to the parent theatre. */
         theatre: {
             type: Schema.Types.ObjectId,
             ref: "Theatre",
             required: [true, "Theatre is required."],
         },
 
-        /**
-         * Screen this seat belongs to.
-         */
+        /** Reference to the parent screen. */
         screen: {
             type: Schema.Types.ObjectId,
             ref: "Screen",
             required: [true, "Screen is required."],
         },
 
-        /**
-         * Row identifier for the seat.
-         *
-         * @example "A"
-         * @example "AA"
-         */
+        /** Row identifier (e.g., 'A', 'B', 'C'). */
         row: {
             type: String,
             minlength: [1, "Row must not be an empty string."],
@@ -66,31 +34,21 @@ export const SeatSchema = new Schema<SeatSchemaFields>(
             required: [true, "Row is required."],
         },
 
-        /**
-         * Numeric seat position within the row.
-         *
-         * @remarks
-         * - Required only when `layoutType === "SEAT"`
-         * - Must be ≥ 1
+        /** * Numeric seat identifier within the row.
+         * Conditionally required only for functional 'SEAT' types.
          */
         seatNumber: {
             type: Number,
             min: [1, "Seat Number must be 1 or more."],
             required: [
-                function () {
+                function (this: SeatSchemaFields) {
                     return this.layoutType === "SEAT";
                 },
                 "Seat Number is required for seat.",
             ],
         },
 
-        /**
-         * Optional display label for the seat.
-         *
-         * @remarks
-         * - Only allowed for `SEAT` layout types
-         * - Must be empty for non-seat layout entries
-         */
+        /** Optional display label; strictly constrained to 'SEAT' layout types. */
         seatLabel: {
             type: String,
             minlength: [1, "Seat Label must not be empty strings."],
@@ -98,38 +56,27 @@ export const SeatSchema = new Schema<SeatSchemaFields>(
             trim: true,
             validate: {
                 message: "Seat Label must be empty for non-seat entries.",
-                validator: function (value) {
+                validator: function (this: SeatSchemaFields, value: string) {
                     if (this.layoutType === "SEAT") return true;
                     return value === undefined || value === null;
                 },
             },
         },
 
-        /**
-         * Seat classification.
-         *
-         * @example "REGULAR"
-         * @example "VIP"
-         */
+        /** Category of seat determining luxury or accessibility levels. */
         seatType: {
             type: String,
             enum: SeatTypeConstant,
             default: SeatTypeConstant[0],
             required: [
-                function () {
+                function (this: SeatSchemaFields) {
                     return this.layoutType === "SEAT";
                 },
                 "Seat Type is required.",
             ],
         },
 
-        /**
-         * Layout role of this entry in the screen grid.
-         *
-         * @example "SEAT"
-         * @example "AISLE"
-         * @example "STAIR"
-         */
+        /** Grid classification: determines if the cell is a seat, aisle, or stair. */
         layoutType: {
             type: String,
             enum: SeatLayoutTypeConstant,
@@ -137,25 +84,19 @@ export const SeatSchema = new Schema<SeatSchemaFields>(
             required: [true, "Layout Type is required."],
         },
 
-        /**
-         * Indicates whether the seat is currently bookable.
-         *
-         * Only applicable to `SEAT` layout types.
-         */
+        /** Booking status; only relevant for 'SEAT' types. */
         isAvailable: {
             type: Boolean,
             default: true,
             required: [
-                function () {
+                function (this: SeatSchemaFields) {
                     return this.layoutType === "SEAT";
                 },
                 "Is Available is required.",
             ],
         },
 
-        /**
-         * Horizontal grid coordinate of the seat.
-         */
+        /** Horizontal grid coordinate. */
         x: {
             type: Number,
             min: [1, "X must be 1 or more."],
@@ -166,9 +107,7 @@ export const SeatSchema = new Schema<SeatSchemaFields>(
             },
         },
 
-        /**
-         * Vertical grid coordinate of the seat.
-         */
+        /** Vertical grid coordinate. */
         y: {
             type: Number,
             min: [1, "Y must be 1 or more."],
@@ -179,53 +118,23 @@ export const SeatSchema = new Schema<SeatSchemaFields>(
             },
         },
 
-        /**
-         * Price multiplier applied to the base ticket price.
-         *
-         * @remarks
-         * - Defaults to `1.0`
-         * - Only applicable to `SEAT` layout types
-         */
+        /** Percentage-based multiplier for the base ticket price. */
         priceMultiplier: {
             type: Number,
             default: 1.0,
             min: [0, "Price Multiplier must be 0 or more."],
             required: [
-                function () {
+                function (this: SeatSchemaFields) {
                     return this.layoutType === "SEAT";
                 },
                 "Price Multiplier is required.",
             ],
         },
 
-        /**
-         * URL-safe unique identifier for the seat.
-         */
+        /** Generated URL identifier. */
         slug: SlugSchemaTypeOptions,
     },
     {
-        /**
-         * Automatically manages timestamp fields.
-         */
-        timestamps: {
-            createdAt: "createdAt",
-            updatedAt: "updatedAt",
-        },
+        timestamps: true,
     },
-);
-
-/**
- * Ensures seat uniqueness within a screen by row + seat number.
- */
-SeatSchema.index(
-    { theatre: 1, screen: 1, row: 1, seatNumber: 1 },
-    { unique: true, partialFilterExpression: { seatNumber: { $exists: true } } },
-);
-
-/**
- * Ensures unique seat coordinates within a screen layout.
- */
-SeatSchema.index(
-    { theatre: 1, screen: 1, x: 1, y: 1 },
-    { unique: true },
 );

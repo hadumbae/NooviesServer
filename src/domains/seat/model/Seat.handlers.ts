@@ -4,7 +4,7 @@
 
 import type { ZodIssue } from "zod";
 import { ZodDuplicateIndexError } from "@shared/errors/zod/ZodDuplicateIndexError";
-import Seat from "@domains/seat/model/Seat.model";
+import {Seat} from "@domains/seat/model/Seat.model";
 
 /**
  * Intercepts MongoDB duplicate key errors for Seat indexes and transforms them

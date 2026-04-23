@@ -8,7 +8,6 @@ import {calculateFutureDate} from "@shared/utility/date/LuxonDateUtils";
 import {fetchPopulatedShowing} from "@domains/showing/utilities/fetchPopulatedShowing";
 import {BookingError} from "@shared/errors/reservations/BookingError";
 import type {ReserveGeneralTicketData, ReserveSeatTicketData, ReserveTicketsParams} from "./service.types";
-import Seat from "@domains/seat/model/Seat.model";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import SeatMap from "@domains/seatmap/model/SeatMap.model";
 import type {SeatMapSchemaFields} from "@domains/seatmap/model/SeatMap.types";
@@ -18,6 +17,7 @@ import {
     ReserveTicketPersistenceSchema
 } from "@domains/reservation/features/reserve-tickets/schemas";
 import {ReservationPopulateRefs} from "@domains/reservation/constants";
+import {Seat} from "@domains/seat/model";
 
 /**
  * Main entry point for initiating a ticket reservation hold.

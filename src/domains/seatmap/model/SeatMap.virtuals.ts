@@ -9,7 +9,7 @@
 
 import {SeatMapSchema} from "./SeatMap.schema.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
-import type {SeatSchemaFields} from "../../seat/model/Seat.types.js";
+import type {SeatSchemaFields} from "@domains/seat/model";
 
 /**
  * Computes the effective price for a seat map entry.

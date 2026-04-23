@@ -11,10 +11,9 @@ import {create, destroy, find, findById, findBySlug, paginated, update} from "@s
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
-import type {SeatSchemaFields} from "@domains/seat/model/Seat.types";
 import {SeatQueryOptionsSchema} from "@domains/seat/_feat/validate-query";
 import {SeatInputSchema} from "@domains/seat/_feat/validate-submit";
-import Seat from "@domains/seat/model/Seat.model";
+import {Seat, type SeatSchemaFields} from "@domains/seat/model";
 
 /**
  * CRUD route definitions for the Screen entity.

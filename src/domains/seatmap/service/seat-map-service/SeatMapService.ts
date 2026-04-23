@@ -1,11 +1,11 @@
 import createHttpError from "http-errors";
 import SeatMap from "../../model/SeatMap.model.js";
 import Showing from "../../../showing/models/showing/Showing.model.js";
-import Seat from "../../../seat/model/Seat.model.js";
 import type {AnyBulkWriteOperation} from "mongoose";
-import type {PopulatePath} from "../../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
 import type {BySeatMapIDParams, ByShowingIDParams, SeatMapServiceMethods} from "./SeatMapService.types.js";
 import type {SeatMapInputData, SeatMapSchemaFields} from "../../model/SeatMap.types.js";
+import {Seat} from "@domains/seat/model";
 
 /**
  * Constructor parameters for `SeatMapService`.

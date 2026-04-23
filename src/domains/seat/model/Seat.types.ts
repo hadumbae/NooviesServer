@@ -1,107 +1,49 @@
+/**
+ * @fileoverview TypeScript type definitions for the Seat schema fields.
+ */
+
 import { Types } from "mongoose";
-import type {SeatLayoutType, SeatType} from "@domains/seat/schema";
+import type { SeatLayoutType, SeatType } from "@domains/seat/schema";
+import type {BaseModel} from "@shared/types/schema/BaseModel";
+import type {ModelTimestamps} from "@shared/types/schema/ModelTimestamps";
 
 /**
- * @summary
- * Interface representing a single seat within a cinema screen.
- *
- * @description
- * Defines positional, relational, and pricing metadata for a seat,
- * including layout coordinates, seat classification, availability,
- * and theatre/screen ownership.
- *
- * Coordinates (`x`, `y`) correspond to the seat’s position
- * within the screen layout grid.
- *
- * @example
- * ```ts
- * const seat: ISeat = {
- *   _id: new Types.ObjectId(),
- *   theatre: new Types.ObjectId(),
- *   screen: new Types.ObjectId(),
- *   row: "A",
- *   seatNumber: 1,
- *   seatLabel: "VIP-1",
- *   seatType: "VIP",
- *   layoutType: "Seat",
- *   isAvailable: true,
- *   priceMultiplier: 1.5,
- *   x: 1,
- *   y: 1,
- *   slug: "a-1",
- * };
- * ```
+ * Type representing the persistence structure of a Seat document in MongoDB.
  */
-export interface SeatSchemaFields {
-    /**
-     * Unique MongoDB identifier for the seat.
-     */
-    readonly _id: Types.ObjectId;
-
-    /**
-     * Screen this seat belongs to.
-     */
+export type SeatSchemaFields = BaseModel & ModelTimestamps & {
+    /** Reference to the parent Screen. */
     screen: Types.ObjectId;
 
-    /**
-     * Theatre this seat belongs to.
-     */
+    /** Reference to the parent Theatre. */
     theatre: Types.ObjectId;
 
-    /**
-     * Row identifier for the seat (e.g., "A", "B").
-     */
+    /** Row identifier (e.g., "A", "B"). */
     row: string;
 
-    /**
-     * Numeric position of the seat within the row.
-     */
+    /** Numeric position within the row; typically unique per row. */
     seatNumber: number;
 
-    /**
-     * Optional human-friendly seat label.
-     *
-     * @example "A5"
-     * @example "VIP-1"
-     */
+    /** Optional display label (e.g., "A5", "VIP-1"). */
     seatLabel?: string;
 
-    /**
-     * Classification of the seat.
-     */
+    /** Category of seat (e.g., REGULAR, VIP, ACCESSIBLE). */
     seatType: SeatType;
 
-    /**
-     * Layout role of the seat within the screen grid.
-     *
-     * @example "Seat"
-     * @example "Aisle"
-     * @example "Stair"
-     */
+    /** grid role: "SEAT", "AISLE", or "STAIR". */
     layoutType: SeatLayoutType;
 
-    /**
-     * Indicates whether the seat can currently be booked.
-     */
+    /** Boolean flag indicating if the seat is functional and bookable. */
     isAvailable: boolean;
 
-    /**
-     * Multiplier applied to the base ticket price.
-     */
+    /** Multiplier used to adjust the base ticket price for specific seat types. */
     priceMultiplier: number;
 
-    /**
-     * Horizontal position in the seat layout grid.
-     */
+    /** Horizontal coordinate in the screen's layout grid. */
     x: number;
 
-    /**
-     * Vertical position in the seat layout grid.
-     */
+    /** Vertical coordinate in the screen's layout grid. */
     y: number;
 
-    /**
-     * URL-safe unique identifier for the seat.
-     */
+    /** URL-safe unique identifier for the seat. */
     slug: string;
-}
+};
