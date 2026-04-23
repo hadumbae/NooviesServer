@@ -11,7 +11,6 @@ import Showing from "@domains/showing/models/showing/Showing.model";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
 import {createMovieSnapshot} from "@domains/movie/utilities/snapshots/createMovieSnapshot";
-import {createTheatreSnapshot} from "@domains/theatre/utilities/snapshots/createTheatreSnapshot";
 import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
 import {createReservedSeatSnapshot} from "@domains/seatmap/utilities/snapshots/createReservedSeatSnapshot";
 import type {
@@ -19,9 +18,10 @@ import type {
 } from "@domains/reservation/features/reserve-tickets/services/snapshotService.types";
 import {ReservedShowingSnapshotInputSchema} from "@domains/reservation/features/reserve-tickets/schemas";
 import {createScreenSnapshot} from "@domains/screen/_feat/build-snapshot";
+import {createTheatreSnapshot} from "@domains/theatre/utilities";
 
 /**
- * Internal interface representing a Showing document with unresolved ObjectIDs.
+ * Internal type representing a Showing document with unresolved ObjectIDs.
  */
 type ShowingWithReferences = Omit<ShowingSchemaFields, "movie" | "theatre" | "screen"> & {
     movie: Types.ObjectId;
