@@ -15,7 +15,7 @@
  */
 
 import {z} from "zod";
-import {SeatTypeEnum} from "../../seat/schema/SeatTypeEnum";
+import {SeatTypeSchema} from "@domains/seat/schema";
 import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
 import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
 import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
@@ -47,7 +47,7 @@ export const ReservedSeatSnapshotInputSchema = z.object({
      * Logical seat classification at the time of reservation
      * (e.g. regular, VIP, disabled).
      */
-    seatType: SeatTypeEnum,
+    seatType: SeatTypeSchema,
 
     /**
      * Final price paid for this seat.

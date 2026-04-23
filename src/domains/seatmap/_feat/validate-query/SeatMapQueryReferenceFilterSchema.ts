@@ -8,7 +8,7 @@ import {URLParamObjectIDSchema} from "@shared/schema/url/URLParamObjectIDSchema"
 import {ShowingStatusEnumSchema} from "@domains/showing/validation/ShowingStatusEnumSchema";
 import {URLParamStringSchema} from "@shared/schema/url/URLParamStringSchema";
 import {URLParamPositiveNumberSchema} from "@shared/schema/url/URLParamPositiveNumberSchema";
-import {SeatTypeEnum} from "@domains/seat/schema/SeatTypeEnum";
+import {SeatTypeSchema} from "@domains/seat/schema/SeatTypeSchema";
 import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
 
 /**
@@ -20,7 +20,7 @@ export const SeatMapQueryReferenceFilterSchema = z.object({
     showingStatus: ShowingStatusEnumSchema.optional(),
     seatRow: URLParamStringSchema,
     seatNumber: URLParamPositiveNumberSchema,
-    seatType: SeatTypeEnum.optional(),
+    seatType: SeatTypeSchema.optional(),
 });
 
 /**
