@@ -1,38 +1,13 @@
+/**
+ * @fileoverview Defines virtual population fields for the Showing schema to track seat metrics.
+ * Uses Mongoose virtuals to derive real-time statistics from the SeatMap collection.
+ */
+
 import { ShowingSchema } from "./Showing.schema.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 /**
- * @file ShowingSeatMapVirtuals.ts
- *
- * Declares seat-count virtual population fields for the `Showing` schema.
- *
- * @remarks
- * These virtuals expose **derived seat statistics** from related `SeatMap`
- * documents without duplicating data.
- *
- * All virtuals use Mongoose virtual population with `count: true`,
- * returning only document counts for efficient querying.
- *
- * ---
- * ### Virtual Field Summary
- * | Virtual Name | Description | Status Match |
- * |--------------|-------------|--------------|
- * | `seatMapCount` | Total number of seats for the showing | — |
- * | `availableSeatsCount` | Seats currently available | `AVAILABLE` |
- * | `unavailableSeatsCount` | Seats marked unavailable | `UNAVAILABLE` |
- * | `reservedSeatsCount` | Seats reserved but not sold | `RESERVED` |
- * | `soldSeatsCount` | Seats that have been sold | `SOLD` |
- *
- * ---
- * @example
- * ```ts
- * const showings = await Showing.find().lean({ virtuals: true });
- * console.log(showings[0].availableSeatsCount);
- * ```
- */
-
-/**
- * Total number of seat map entries associated with this showing.
+ * Total entries in the seat map for this showing.
  */
 ShowingSchema.virtual("seatMapCount", {
     ref: "SeatMap",
@@ -42,7 +17,7 @@ ShowingSchema.virtual("seatMapCount", {
 });
 
 /**
- * Number of seats currently available for booking.
+ * Count of seats with the 'AVAILABLE' status.
  */
 ShowingSchema.virtual("availableSeatsCount", {
     ref: "SeatMap",
@@ -53,7 +28,7 @@ ShowingSchema.virtual("availableSeatsCount", {
 });
 
 /**
- * Number of seats that are unavailable.
+ * Count of seats with the 'UNAVAILABLE' status (e.g., broken or blocked).
  */
 ShowingSchema.virtual("unavailableSeatsCount", {
     ref: "SeatMap",
@@ -64,7 +39,7 @@ ShowingSchema.virtual("unavailableSeatsCount", {
 });
 
 /**
- * Number of seats that have been reserved.
+ * Count of seats with the 'RESERVED' status (pending payment).
  */
 ShowingSchema.virtual("reservedSeatsCount", {
     ref: "SeatMap",
@@ -75,7 +50,7 @@ ShowingSchema.virtual("reservedSeatsCount", {
 });
 
 /**
- * Number of seats that have been sold.
+ * Count of seats with the 'SOLD' status.
  */
 ShowingSchema.virtual("soldSeatsCount", {
     ref: "SeatMap",
@@ -86,9 +61,6 @@ ShowingSchema.virtual("soldSeatsCount", {
 });
 
 /**
- * Enables support for `.lean({ virtuals: true })`.
- *
- * @remarks
- * Required for virtual fields to appear in lean query results.
+ * Plugin to ensure virtuals are included when using `.lean()` queries.
  */
 ShowingSchema.plugin(mongooseLeanVirtuals);

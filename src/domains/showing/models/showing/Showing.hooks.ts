@@ -1,18 +1,18 @@
 /**
- * @file Mongoose middleware for the Showing model.
- * @filename Showing.hooks.ts
+ * @fileoverview Mongoose middleware for the Showing model lifecycle.
+ * Handles data synchronization, soft-delete filtering, and conditional population.
  */
 
 import {ShowingSchema} from "./Showing.schema.js";
-import {type HydratedDocument} from "mongoose";
+import {type HydratedDocument, type Query} from "mongoose";
 import type {ShowingSchemaFields} from "./Showing.types.js";
 import {fetchRequiredModelDocument} from "@shared/utility/fetch/fetchRequiredModelDocument";
 import {Theatre} from "@domains/theatre/model/theatre";
+import type {ScreenSchemaFields} from "@domains/screen/models/screen";
+import {ShowingVirtualPopulationPaths} from "@domains/showing/_feat/query-population";
 
 /**
- * Syncs `location` from {@link Theatre} before validation.
- * Ensures the document contains a snapshot of the theatre's physical location.
- * @throws {HttpResponseError} If the referenced theatre is missing.
+ * Pre-validation hook to synchronize theatre location.
  */
 ShowingSchema.pre("validate", {document: true}, async function (this: HydratedDocument<ShowingSchemaFields>) {
     const theatre = await fetchRequiredModelDocument({
@@ -25,10 +25,7 @@ ShowingSchema.pre("validate", {document: true}, async function (this: HydratedDo
 });
 
 /**
- * Automatically filters out records where {@link ModelSoftDelete} fields are active.
- * * @remarks
- * This filter can be bypassed by passing `{ getSoftDeleted: true }` in the query options.
- * Useful for administrative views or restoration logic.
+ * Global query middleware for soft-delete enforcement.
  */
 ShowingSchema.pre("find", {query: true}, async function (next: () => void) {
     if (this.getOptions().getSoftDeleted) {
@@ -38,3 +35,19 @@ ShowingSchema.pre("find", {query: true}, async function (next: () => void) {
     this.where({isDeleted: false, deletedAt: null});
     return next();
 });
+
+/**
+ * Conditional virtual population middleware.
+ */
+ShowingSchema.pre(
+    ["find", "findOne", "findOneAndUpdate"],
+    {document: false, query: true},
+    function (this: Query<any, ScreenSchemaFields>, next: () => void) {
+        const leanOption = this._mongooseOptions.lean;
+        const hasVirtuals = (typeof leanOption === "object" && leanOption.virtuals === true) || leanOption === true;
+
+        if (hasVirtuals) this.populate(ShowingVirtualPopulationPaths);
+
+        next();
+    },
+);
