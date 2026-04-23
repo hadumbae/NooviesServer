@@ -16,8 +16,8 @@ import type {
 } from "./ScreenSearchService.types";
 import {type PipelineStage} from "mongoose";
 import {Screen} from "@domains/screen/models/screen";
-import {ShowingPopulationPipelines} from "../../../showing/queries/ShowingPopulationPipelines";
-import {ShowingSeatMapVirtualPipelines} from "../../../showing/queries/ShowingSeatMapVirtualPipelines";
+import {ShowingPopulationPipelines} from "@domains/showing/queries/ShowingPopulationPipelines";
+import {ShowingSeatMapVirtualPipelines} from "@domains/showing/queries/ShowingSeatMapVirtualPipelines";
 import {getIdentifierFilter} from "@shared/utility/getIdentifierFilter";
 import {Theatre} from "@domains/theatre/model/theatre";
 

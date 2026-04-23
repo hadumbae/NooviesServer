@@ -6,9 +6,9 @@ import type {Request, Response} from "express";
 
 import type {ScreenBrowseConstructor, ScreenBrowseControllerMethods} from "./ScreenBrowseController.types";
 import BaseController from "@shared/controller/BaseController";
-import type {ScreenSearchService} from "./ScreenSearchService";
+import type {ScreenSearchService} from "../service/ScreenSearchService";
 import {validateRequestParameters} from "@shared/utility/schema/validateRequestParameters";
-import {ShowingsByScreenQuerySchema} from "./ShowingsByScreenQuerySchema";
+import {ShowingsByScreenQuerySchema} from "../schema/ShowingsByScreenQuerySchema";
 
 export class ScreenBrowseController extends BaseController implements ScreenBrowseControllerMethods {
     protected searchService: ScreenSearchService

@@ -1,7 +1,7 @@
 import {Screen} from "@domains/screen/models/screen";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
-import {ScreenSearchService} from "../_feat/view-data-client/ScreenSearchService";
-import {ScreenBrowseController} from "../_feat/view-data-client/ScreenBrowseController";
+import {ScreenSearchService} from "../_feat/view-data-client/service/ScreenSearchService";
+import {ScreenBrowseController} from "../_feat/view-data-client/controller/ScreenBrowseController";
 
 /**
  * @file ScreenServiceProvider.ts

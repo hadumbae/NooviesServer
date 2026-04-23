@@ -5,7 +5,7 @@
  */
 
 import {Types} from "mongoose";
-import type {ShowingSchemaFields} from "../../../showing/models/showing/Showing.types";
+import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
 import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 import type {ScreenSchemaFields} from "@domains/screen/models/screen";
 

@@ -1,5 +1,5 @@
 import {Router} from "express";
-import ScreenServiceProvider from "../../provider/ScreenServiceProvider";
+import ScreenServiceProvider from "../../../provider/ScreenServiceProvider";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 
 const {controllers: {browseController}} = ScreenServiceProvider.register();

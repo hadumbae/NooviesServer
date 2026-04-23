@@ -1,5 +1,5 @@
 import type {Request, Response} from "express";
-import type {ScreenSearchService} from "./ScreenSearchService";
+import type {ScreenSearchService} from "../service/ScreenSearchService";
 import type {BaseConstructorParams} from "@shared/controller/BaseController";
 
 export type ScreenBrowseConstructor = BaseConstructorParams & {
