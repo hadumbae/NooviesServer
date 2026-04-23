@@ -15,11 +15,11 @@ import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
 import {Seat} from "@domains/seat/model";
 import {buildPaginationPipelines} from "@shared/_feat/pagination-pipelines";
-import {TheatreVirtualPipelines} from "@domains/theatre/_feat/aggregate";
 import type {PipelineStage} from "mongoose";
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {ShowingPopulationPaths} from "@domains/showing/_feat/query-population";
 import type {PaginationReturns} from "@shared/types/PaginationReturns";
+import {ScreenVirtualPipelines} from "@domains/screen/_feat/aggregate";
 
 /**
  * Aggregates data for a specific screen management view.
@@ -76,7 +76,7 @@ export async function fetchTheatreDetailsViewData(
                 {$sort: {name: 1}},
                 {$skip: (screenPage - 1) * screenPerPage},
                 {$limit: screenPerPage},
-                ...(TheatreVirtualPipelines as PipelineStage.FacetPipelineStage[])
+                ...(ScreenVirtualPipelines as PipelineStage.FacetPipelineStage[])
             ],
         }),
     ]);
