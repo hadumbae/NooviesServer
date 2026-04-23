@@ -27,9 +27,9 @@
  * ```
  */
 
-import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+import type {PopulationPipelineStages} from "@shared/types/mongoose/AggregatePipelineStages";
 import {ShowingPopulationPipelines} from "../../showing/queries/ShowingPopulationPipelines.js";
-import {SeatPopulationPipelines} from "../../seat/queries/SeatPopulationPipelines.js";
+import {SeatPopulationPipelines} from "@domains/seat/_feat/aggregate/SeatPopulationPipelines.js";
 
 /**
  * Aggregation stages for populating `SeatMap` reference fields.

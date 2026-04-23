@@ -6,13 +6,13 @@
 
 
 import {z} from 'zod';
-import {SeatTypeEnum} from "../enum/SeatTypeEnum.js";
-import {NonEmptyStringSchema} from "../../../../shared/schema/strings/NonEmptyStringSchema.js";
-import {BooleanValueSchema} from "../../../../shared/schema/booleans/BooleanValueSchema.js";
-import {PositiveNumberSchema} from "../../../../shared/schema/numbers/PositiveNumberSchema.js";
-import {NonNegativeNumberSchema} from "../../../../shared/schema/numbers/NonNegativeNumberSchema.js";
-import {ObjectIdStringSchema} from "../../../../shared/schema/mongoose/ObjectIdStringSchema.js";
-import {SeatLayoutTypeEnum} from "../enum/SeatLayoutTypeEnum.js";
+import {SeatTypeEnum} from "./SeatTypeEnum";
+import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {BooleanValueSchema} from "@shared/schema/booleans/BooleanValueSchema";
+import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
+import {NonNegativeNumberSchema} from "@shared/schema/numbers/NonNegativeNumberSchema";
+import {ObjectIdStringSchema} from "@shared/schema/mongoose/ObjectIdStringSchema";
+import {SeatLayoutTypeEnum} from "./SeatLayoutTypeEnum";
 
 /**
  * ## SeatInputBaseSchema

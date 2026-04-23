@@ -1,5 +1,5 @@
 import {z} from "zod";
-import SeatTypeConstant from "../../constant/SeatTypeConstant.js";
+import SeatTypeConstant from "./SeatTypeConstant";
 
 /**
  * ## SeatTypeEnum

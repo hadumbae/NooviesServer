@@ -11,7 +11,7 @@
  * further virtual field construction.
  */
 
-import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+import type {PopulationPipelineStages} from "@shared/types/mongoose/AggregatePipelineStages";
 
 /**
  * Population pipeline for `Seat` documents.

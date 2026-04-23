@@ -8,7 +8,7 @@ import {URLParamObjectIDSchema} from "@shared/schema/url/URLParamObjectIDSchema"
 import {ShowingStatusEnumSchema} from "@domains/showing/validation/ShowingStatusEnumSchema";
 import {URLParamStringSchema} from "@shared/schema/url/URLParamStringSchema";
 import {URLParamPositiveNumberSchema} from "@shared/schema/url/URLParamPositiveNumberSchema";
-import {SeatTypeEnum} from "@domains/seat/schema/enum/SeatTypeEnum";
+import {SeatTypeEnum} from "@domains/seat/schema/SeatTypeEnum";
 import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
 
 /**

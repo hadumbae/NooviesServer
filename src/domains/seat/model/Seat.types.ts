@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
-import type { SeatType } from "../schema/enum/SeatTypeEnum.js";
-import type { SeatLayoutType } from "../schema/enum/SeatLayoutTypeEnum.js";
+import type { SeatType } from "../schema/SeatTypeEnum";
+import type { SeatLayoutType } from "../schema/SeatLayoutTypeEnum";
 
 /**
  * @summary

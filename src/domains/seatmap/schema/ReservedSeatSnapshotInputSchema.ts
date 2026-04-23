@@ -15,10 +15,10 @@
  */
 
 import {z} from "zod";
-import {SeatTypeEnum} from "../../seat/schema/enum/SeatTypeEnum.js";
-import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
-import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import {ObjectIdSchema} from "../../../shared/schema/mongoose/ObjectIdSchema.js";
+import {SeatTypeEnum} from "../../seat/schema/SeatTypeEnum";
+import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
+import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
 import generateArraySchema from "../../../shared/utility/schema/generateArraySchema.js";
 
 /**

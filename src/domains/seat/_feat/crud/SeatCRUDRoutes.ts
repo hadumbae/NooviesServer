@@ -14,7 +14,7 @@ import {aggregate} from "@shared/_feat/generic-aggregate";
 import type {SeatSchemaFields} from "@domains/seat/model/Seat.types";
 import {SeatQueryOptionsSchema} from "@domains/seat/_feat/validate-query";
 import Seat from "@domains/seat/model/Seat.model";
-import {SeatInputSchema} from "@domains/seat/schema/seats/SeatInput";
+import {SeatInputSchema} from "@domains/seat/schema/SeatInput";
 
 /**
  * CRUD route definitions for the Screen entity.

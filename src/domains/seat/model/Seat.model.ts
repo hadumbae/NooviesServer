@@ -2,7 +2,7 @@ import {model, Model} from "mongoose";
 import type {SeatSchemaFields} from "./Seat.types.js";
 import {SeatSchema} from "./Seat.schema.js";
 
-import "./Seat.middleware.js";
+import "./Seat.hooks";
 
 /**
  * Mongoose model representing a seat within a theatre.

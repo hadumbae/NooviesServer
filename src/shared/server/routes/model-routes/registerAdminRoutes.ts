@@ -8,7 +8,6 @@
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
 import RoleTypeRoutes from "@domains/roleType/routing/RoleTypeRoutes.js";
-import SeatRoutes from "@domains/seat/routing/SeatRoutes.js";
 import MovieRoutes from "@domains/movie/routing/MovieRoutes.js";
 import MovieCreditRoutes from "@domains/movieCredit/routing/MovieCreditRoutes.js";
 import {MovieReviewCRUDRoutes} from "@domains/movieReview/routes/MovieReviewCRUDRoutes.js";
@@ -22,13 +21,6 @@ import {CustomerViewDataRoutes} from "@domains/customer/features/customer-detail
  */
 const setupRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/roletypes", router: RoleTypeRoutes},
-];
-
-/**
- * Physical infrastructure routes including venues and seating arrangements.
- */
-const theatreRoutes: RouteRegistration[] = [
-    {path: "/api/v1/admin/seats", router: SeatRoutes},
 ];
 
 /**
@@ -68,7 +60,6 @@ const customerRoutes: RouteRegistration[] = [
 export function registerAdminRoutes(app: Express): void {
     const routeGroups: RouteRegistration[][] = [
         setupRoutes,
-        theatreRoutes,
         movieRoutes,
         showingRoutes,
         reservationRoutes,
