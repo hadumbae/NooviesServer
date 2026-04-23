@@ -4,13 +4,13 @@
  */
 
 import { z } from 'zod';
-import { SeatTypeSchema } from "./SeatTypeSchema";
 import { NonEmptyStringSchema } from "@shared/schema/strings/NonEmptyStringSchema";
 import { BooleanValueSchema } from "@shared/schema/booleans/BooleanValueSchema";
 import { PositiveNumberSchema } from "@shared/schema/numbers/PositiveNumberSchema";
 import { NonNegativeNumberSchema } from "@shared/schema/numbers/NonNegativeNumberSchema";
 import { ObjectIdStringSchema } from "@shared/schema/mongoose/ObjectIdStringSchema";
 import { SeatLayoutTypeSchema } from "@domains/seat/schema/SeatLayoutTypeSchema";
+import {SeatTypeSchema} from "@domains/seat/schema";
 
 /**
  * Common properties shared across all grid elements in a theatre screen layout.
