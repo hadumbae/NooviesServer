@@ -12,10 +12,10 @@ import validateZodSchema from "@shared/utility/schema/validators/validateZodSche
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
 import {TheatreQueryOptionSchema} from "@domains/theatre/_feat/validate-query";
-import {TheatreInputSchema} from "@domains/theatre/schema/TheatreSchema";
 import {Theatre, type TheatreSchemaFields} from "@domains/theatre/model/theatre";
 import {TheatreVirtualPipelines} from "@domains/theatre/_feat/aggregate";
 import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud/options/TheatreVirtualPopulationPaths";
+import {TheatreInputSchema} from "@domains/theatre/validation";
 
 /**
  * CRUD route definitions for the Theatre entity.

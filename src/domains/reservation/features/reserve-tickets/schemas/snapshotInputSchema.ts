@@ -15,9 +15,9 @@ import { BooleanValueSchema } from "@shared/schema/booleans/BooleanValueSchema";
 import { ISO6391LanguageCodeSchema } from "@shared/schema/enums/ISO6391LanguageCodeSchema";
 import {ReservationTypeEnumSchema} from "@domains/reservation/validation/enums";
 import {MovieSnapshotInputSchema} from "@domains/movie/schema/MovieSnapshotInputSchema";
-import {TheatreSnapshotInputSchema} from "@domains/theatre/schema/TheatreSnapshotInputSchema";
 import {ReservedSeatSnapshotInputSchema} from "@domains/seatmap/schema/ReservedSeatSnapshotInputSchema";
 import {ScreenSnapshotInputSchema} from "@domains/screen/_feat/validate-submit";
+import {TheatreSnapshotInputSchema} from "@domains/theatre/validation";
 
 /**
  * Input validation schema for reserved showing snapshot creation.

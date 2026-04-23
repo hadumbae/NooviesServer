@@ -9,7 +9,6 @@ import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
 import RoleTypeRoutes from "@domains/roleType/routing/RoleTypeRoutes.js";
 import SeatRoutes from "@domains/seat/routing/SeatRoutes.js";
-import TheatreRoutes from "@domains/theatre/routing/TheatreRoutes.js";
 import MovieRoutes from "@domains/movie/routing/MovieRoutes.js";
 import MovieCreditRoutes from "@domains/movieCredit/routing/MovieCreditRoutes.js";
 import {MovieReviewCRUDRoutes} from "@domains/movieReview/routes/MovieReviewCRUDRoutes.js";
@@ -30,7 +29,6 @@ const setupRoutes: RouteRegistration[] = [
  */
 const theatreRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/seats", router: SeatRoutes},
-    {path: "/api/v1/admin/theatres", router: TheatreRoutes},
 ];
 
 /**
