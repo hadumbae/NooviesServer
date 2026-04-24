@@ -38,7 +38,7 @@ router.get(
  * * Aggregates high-level theatre details, paginated screens, and recent showings.
  */
 router.get(
-    '/item/:theatreSlug/details',
+    '/item/:slug/details',
     [
         isAuth,
         validateRequestConfig({schema: TheatreDetailsViewRouteConfigSchema})
