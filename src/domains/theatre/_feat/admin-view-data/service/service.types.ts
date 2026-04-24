@@ -1,25 +1,22 @@
 /**
- * @fileoverview Type definitions for the theatre and screen data aggregation service.
+ * @fileoverview Type definitions for theatre and screen data aggregation services.
  */
 
-import type { SlugString } from "@shared/schema/strings/SlugStringSchema";
-import type { TheatreSchemaFields, TheatreWithVirtuals } from "@domains/theatre/model/theatre/Theatre.types";
-import type { ScreenSchemaFields } from "@domains/screen/models/screen";
-import type { SeatSchemaFields } from "@domains/seat/model";
-import type { PaginationReturns } from "@shared/types/PaginationReturns";
-import type { ShowingSchemaFields } from "@domains/showing/models/showing/Showing.types";
+import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
+import type {TheatreSchemaFields, TheatreWithVirtuals} from "@domains/theatre/model/theatre/Theatre.types";
+import type {ScreenSchemaFields} from "@domains/screen/models/screen";
+import type {SeatSchemaFields} from "@domains/seat/model";
+import type {PaginationReturns} from "@shared/types/PaginationReturns";
+import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
 
-/**
- * Configuration for fetching specific screen data within the context of a theatre.
- */
+/** Configuration for fetching specific screen data within a theatre context. */
 export type FetchTheatreScreenDataConfig = {
     theatreSlug: SlugString;
     screenSlug: SlugString;
 };
 
 /**
- * Aggregated data structure for a screen view, including
- * its physical layout (seats) and parent theatre context.
+ * Aggregated data structure for a screen view including layout and theatre context.
  */
 export type TheatreScreenData = {
     theatre: TheatreWithVirtuals;
@@ -27,9 +24,7 @@ export type TheatreScreenData = {
     seats: SeatSchemaFields[];
 };
 
-/**
- * Configuration for fetching data to populate the Theatre Details administrative view.
- */
+/** Configuration for fetching data for the Theatre Details administrative view. */
 export type FetchTheatreDetailsViewDataConfig = {
     slug: SlugString;
     screenPage?: number;
@@ -38,11 +33,23 @@ export type FetchTheatreDetailsViewDataConfig = {
 };
 
 /**
- * Full data payload for the Theatre Details view, containing the primary theatre
- * record, associated scheduled showings, and a paginated list of screens.
+ * Data payload for the Theatre Details view containing theatre, showings, and paginated screens.
  */
 export type TheatreDetailsViewData = {
     theatre: TheatreSchemaFields;
     showings: ShowingSchemaFields[];
     screens: PaginationReturns<ScreenSchemaFields>;
+};
+
+/** Configuration for fetching paginated showings for a specific theatre. */
+export type FetchTheatreShowingListViewDataConfig = {
+    slug: SlugString;
+    page?: number;
+    perPage?: number;
+};
+
+/** Paginated showing data and theatre context for the showing list view. */
+export type TheatreShowingListViewData = {
+    theatre: TheatreSchemaFields;
+    showings: PaginationReturns<ShowingSchemaFields>;
 };

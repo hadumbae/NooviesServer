@@ -1,13 +1,12 @@
 /**
  * @fileoverview Data aggregation service for Theatre administrative views.
- * Handles complex fetching logic for theatre details, screen layouts, and scheduled showings.
  */
 
 import type {
     FetchTheatreDetailsViewDataConfig,
-    FetchTheatreScreenDataConfig,
+    FetchTheatreScreenDataConfig, FetchTheatreShowingListViewDataConfig,
     TheatreDetailsViewData,
-    TheatreScreenData
+    TheatreScreenData, TheatreShowingListViewData
 } from "@domains/theatre/_feat/admin-view-data/service/service.types";
 import {Theatre, type TheatreWithVirtuals} from "@domains/theatre/model/theatre";
 import {Screen, type ScreenSchemaFields} from "@domains/screen/models/screen";
@@ -23,9 +22,6 @@ import {ScreenVirtualPipelines} from "@domains/screen/_feat/aggregate";
 
 /**
  * Aggregates data for a specific screen management view.
- * * @param config - Contains theatreSlug and screenSlug.
- * @returns An object containing the theatre metadata, screen details, and the full list of seats.
- * @throws 404 error if the theatre or screen is not found.
  */
 export async function fetchTheatreScreenData(
     {theatreSlug, screenSlug}: FetchTheatreScreenDataConfig
@@ -93,4 +89,36 @@ export async function fetchTheatreDetailsViewData(
         screens,
         showings,
     };
+}
+
+/**
+ * Aggregates paginated showings and theatre context for the showing list view.
+ */
+export async function fetchTheatreShowingListViewData(
+    {slug, page = 1, perPage = 20}: FetchTheatreShowingListViewDataConfig
+): Promise<TheatreShowingListViewData> {
+    const theatre = await Theatre
+        .findOne({slug})
+        .populate(TheatreVirtualPopulationPaths)
+        .lean<TheatreWithVirtuals>({virtuals: true});
+
+    if (!theatre) {
+        throw createHttpError(404, "Theatre not found!");
+    }
+
+    const [totalItems, items] = await Promise.all([
+        Showing.countDocuments({theatre: theatre._id}),
+        Showing
+            .find({theatre: theatre._id})
+            .sort({startTime: -1})
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .populate(ShowingPopulationPaths)
+            .lean({virtuals: true}),
+    ]);
+
+    return {
+        theatre,
+        showings: {totalItems, items},
+    }
 }
