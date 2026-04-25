@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Logic for aggregating data required by the Theatre Screen Details administrative view.
+ * Performs parallel or sequential lookups to build a unified context of Theatre, Screen, and Seats.
+ */
+
 import {Theatre, type TheatreWithVirtuals} from "@domains/theatre/model/theatre";
 import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
@@ -9,7 +14,7 @@ import type {
 } from "@domains/screen/_feat/view-data-admin";
 
 /**
- * Aggregates data for a specific screen management view.
+ * Fetches the complete dataset for managing a specific screen.
  */
 export async function fetchTheatreScreenDetailsViewData(
     {theatreSlug, screenSlug}: FetchTheatreScreenDetailsViewDataConfig

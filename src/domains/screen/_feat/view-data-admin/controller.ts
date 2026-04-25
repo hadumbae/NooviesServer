@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Express controller for the Theatre Screen details administrative view.
+ * Bridges the validated request parameters to the service layer for data aggregation.
+ */
+
 import type {Request, Response} from "express";
 import type {
     TheatreScreenDetailsViewRouteConfig
@@ -5,7 +10,7 @@ import type {
 import {fetchTheatreScreenDetailsViewData} from "@domains/screen/_feat/view-data-admin/service/service";
 
 /**
- * Fetches the physical layout and metadata for a specific theatre screen.
+ * Controller: Handles the retrieval of layout data and metadata for a specific screen.
  */
 export async function getFetchTheatreScreenDetailsViewData(
     req: Request, res: Response
