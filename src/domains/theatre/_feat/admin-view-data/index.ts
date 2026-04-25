@@ -1,20 +1,16 @@
 import {
     fetchTheatreDetailsViewData,
-    fetchTheatreScreenData, fetchTheatreShowingListViewData
+    fetchTheatreShowingListViewData
 } from "@domains/theatre/_feat/admin-view-data/service/service";
 import type {
     FetchTheatreDetailsViewDataConfig,
-    FetchTheatreScreenDataConfig, FetchTheatreShowingListViewDataConfig, TheatreDetailsViewData,
-    TheatreScreenData, TheatreShowingListViewData
+    FetchTheatreShowingListViewDataConfig, TheatreDetailsViewData,
+    TheatreShowingListViewData
 } from "@domains/theatre/_feat/admin-view-data/service/service.types";
 import {
     getFetchTheatreDetailsViewData,
-    getFetchTheatreScreenViewData, getFetchTheatreShowingListViewData
+    getFetchTheatreShowingListViewData
 } from "@domains/theatre/_feat/admin-view-data/controller";
-import {
-    type TheatreScreenViewRouteConfig,
-    TheatreScreenViewRouteConfigSchema
-} from "@domains/theatre/_feat/admin-view-data/schemas/TheatreScreenViewRouteConfigSchema";
 import {TheatreAdminViewDataRoutes} from "@domains/theatre/_feat/admin-view-data/routes";
 import {
     type TheatreDetailsViewRouteConfig,
@@ -26,9 +22,6 @@ import {
 } from "@domains/theatre/_feat/admin-view-data/schemas/TheatreShowingListRouteConfigSchema";
 
 export {
-    fetchTheatreScreenData,
-    getFetchTheatreScreenViewData,
-    TheatreScreenViewRouteConfigSchema,
     TheatreAdminViewDataRoutes,
     TheatreDetailsViewRouteConfigSchema,
     fetchTheatreDetailsViewData,
@@ -39,9 +32,6 @@ export {
 }
 
 export type {
-    FetchTheatreScreenDataConfig,
-    TheatreScreenData,
-    TheatreScreenViewRouteConfig,
     TheatreDetailsViewRouteConfig,
     FetchTheatreDetailsViewDataConfig,
     TheatreDetailsViewData,

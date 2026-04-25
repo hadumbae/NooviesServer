@@ -8,7 +8,7 @@ import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
 /**
  * Validation schema for ensuring both theatre and screen identifiers are present and valid slugs.
  */
-export const TheatreScreenViewRouteConfigSchema = z.object({
+export const TheatreScreenDetailsViewRouteConfigSchema = z.object({
     theatreSlug: SlugStringSchema,
     screenSlug: SlugStringSchema,
 });
@@ -16,4 +16,4 @@ export const TheatreScreenViewRouteConfigSchema = z.object({
 /**
  * Type definition inferred from the theatre screen route configuration schema.
  */
-export type TheatreScreenViewRouteConfig = z.infer<typeof TheatreScreenViewRouteConfigSchema>;
+export type TheatreScreenDetailsViewRouteConfig = z.infer<typeof TheatreScreenDetailsViewRouteConfigSchema>;

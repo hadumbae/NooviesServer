@@ -6,12 +6,12 @@ import {Router} from "express";
 import isAuth from "@domains/authentication/middleware/isAuth";
 import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
 import {
-    TheatreScreenViewRouteConfigSchema
-} from "@domains/theatre/_feat/admin-view-data/schemas/TheatreScreenViewRouteConfigSchema";
+    TheatreScreenDetailsViewRouteConfigSchema
+} from "@domains/screen/_feat/view-data-admin/schemas/TheatreScreenDetailsViewRouteConfigSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {
     getFetchTheatreDetailsViewData,
-    getFetchTheatreScreenViewData, getFetchTheatreShowingListViewData
+    getFetchTheatreShowingListViewData
 } from "@domains/theatre/_feat/admin-view-data/controller";
 import {
     TheatreDetailsViewRouteConfigSchema
@@ -19,13 +19,14 @@ import {
 import {
     TheatreShowingListRouteConfigSchema
 } from "@domains/theatre/_feat/admin-view-data/schemas/TheatreShowingListRouteConfigSchema";
+import {getFetchTheatreScreenDetailsViewData} from "@domains/screen/_feat/view-data-admin/controller";
 
 const router = Router();
 
 router.get(
     '/item/:theatreSlug/screen/:screenSlug/details',
-    [isAuth, validateRequestConfig({schema: TheatreScreenViewRouteConfigSchema})],
-    asyncHandler(getFetchTheatreScreenViewData)
+    [isAuth, validateRequestConfig({schema: TheatreScreenDetailsViewRouteConfigSchema})],
+    asyncHandler(getFetchTheatreScreenDetailsViewData)
 );
 
 router.get(

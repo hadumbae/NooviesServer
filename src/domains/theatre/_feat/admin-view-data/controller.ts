@@ -2,13 +2,10 @@
  * @fileoverview Express controllers for the Theatre Admin View Data domain.
  */
 
-import type {Response, Request} from "express";
-import type {
-    TheatreScreenViewRouteConfig
-} from "@domains/theatre/_feat/admin-view-data/schemas/TheatreScreenViewRouteConfigSchema";
+import type {Request, Response} from "express";
 import {
     fetchTheatreDetailsViewData,
-    fetchTheatreScreenData, fetchTheatreShowingListViewData
+    fetchTheatreShowingListViewData
 } from "@domains/theatre/_feat/admin-view-data/service/service";
 import type {
     TheatreDetailsViewRouteConfig
@@ -16,19 +13,6 @@ import type {
 import type {
     TheatreShowingListRouteConfig
 } from "@domains/theatre/_feat/admin-view-data/schemas/TheatreShowingListRouteConfigSchema";
-
-/**
- * Fetches the physical layout and metadata for a specific theatre screen.
- */
-export async function getFetchTheatreScreenViewData(
-    req: Request, res: Response
-): Promise<Response> {
-    const {theatreSlug, screenSlug} = req.parsedConfig as TheatreScreenViewRouteConfig;
-
-    const data = await fetchTheatreScreenData({theatreSlug, screenSlug});
-
-    return res.status(200).json(data);
-}
 
 /**
  * Fetches high-level theatre details, including paginated screens and recent showings.
