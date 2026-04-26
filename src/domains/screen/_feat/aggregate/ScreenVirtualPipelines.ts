@@ -30,9 +30,8 @@ export const ScreenVirtualPipelines: VirtualPipelineStages = [
             pipeline: [
                 {
                     $match: {
-                        status: {
-                            $in: ["SCHEDULED", "SOLD_OUT"]
-                        }
+                        status: {$in: ["SCHEDULED", "SOLD_OUT"]},
+                        startTime: {$gte: new Date()},
                     }
                 }
             ],

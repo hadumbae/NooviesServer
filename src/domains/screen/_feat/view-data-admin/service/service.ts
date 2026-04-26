@@ -12,6 +12,7 @@ import type {
     FetchTheatreScreenDetailsViewDataConfig,
     TheatreScreenDetailsViewData
 } from "@domains/screen/_feat/view-data-admin";
+import {ScreenVirtualPipelines} from "@domains/screen/_feat/aggregate";
 
 /**
  * Fetches the complete dataset for managing a specific screen.
@@ -28,7 +29,10 @@ export async function fetchTheatreScreenDetailsViewData(
         throw createHttpError(404, "Theatre not found!");
     }
 
-    const screen = await Screen.findOne({slug: screenSlug}).lean();
+    const [screen] = await Screen.aggregate([
+        {$match: {slug: screenSlug}},
+        ...ScreenVirtualPipelines,
+    ]);
 
     if (!screen) {
         throw createHttpError(404, "Screen not found!");
