@@ -5,7 +5,7 @@ import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {FetchLeanDataConfig} from "@domains/ui-inputs/handlers/service.types";
 import {getQueryOptionFilters} from "@shared/_feat/generic-crud/path-handlers";
 import {getQueryOptionSorts} from "@shared/_feat/generic-crud/path-handlers/utils/getQueryOptionSorts";
-import {fetchLeanMovies} from "@domains/ui-inputs/handlers/service";
+import {fetchLeanMovies, fetchLeanPersons, fetchLeanRoleTypes} from "@domains/ui-inputs/handlers/service";
 
 /** Function signature for services that retrieve lean model data based on filters and sorts. */
 export type LeanDataHandler<TModel extends BaseModel> = (config: FetchLeanDataConfig<TModel>) => Promise<TModel[]>;
@@ -23,3 +23,5 @@ export const handleLeanData = <TModel extends BaseModel>(
 
 /** Express handler for retrieving lean movie data. */
 export const getFetchMovieLeanData = handleLeanData(fetchLeanMovies);
+export const getFetchPersonLeanData = handleLeanData(fetchLeanPersons);
+export const getFetchRoleTypeLeanData = handleLeanData(fetchLeanRoleTypes);
