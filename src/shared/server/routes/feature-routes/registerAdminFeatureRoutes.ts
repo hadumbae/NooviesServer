@@ -11,11 +11,13 @@ import {ReservationUpdateRoutes} from "@domains/reservation/features/update-rese
 import {FetchAdminReservationRoutes} from "@domains/reservation/features/fetch-reservations/admin";
 import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer-review-actions/routing";
 import {PersonCreditRoutes} from "@domains/movieCredit/_feat/person-credits";
+import {UIInputDataRoutes} from "@domains/ui-inputs";
 
 /**
  * Foundation feature routes.
  */
 const setupRoutes: RouteRegistration[] = [
+    {path: "/api/v1/admin/inputs/feat", router: UIInputDataRoutes},
     {path: "/api/v1/admin/persons/feat", router: PersonImageRoutes},
 ];
 
