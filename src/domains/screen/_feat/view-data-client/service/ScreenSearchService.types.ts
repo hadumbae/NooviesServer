@@ -5,17 +5,8 @@
  */
 
 import {Types} from "mongoose";
-import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
 import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
-import type {ScreenSchemaFields} from "@domains/screen/models/screen";
-
-/**
- * Screen entity augmented with populated showings.
- */
-export type ScreenWithShowings = ScreenSchemaFields & {
-    /** Showings scheduled for this screen */
-    showings: ShowingSchemaFields;
-};
+import type {ScreenWithShowings} from "@domains/screen/models/screen/Screen.types";
 
 /**
  * Parameters for fetching showings grouped by screens.

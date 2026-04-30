@@ -11,7 +11,6 @@
 
 import type {
     ScreenSearchMethods,
-    ScreenWithShowings,
     ShowingsByScreensParams,
 } from "./ScreenSearchService.types";
 import {type PipelineStage} from "mongoose";
@@ -20,6 +19,7 @@ import {ShowingPopulationPipelines} from "@domains/showing/queries/ShowingPopula
 import {ShowingSeatMapVirtualPipelines} from "@domains/showing/queries/ShowingSeatMapVirtualPipelines";
 import {getIdentifierFilter} from "@shared/utility/getIdentifierFilter";
 import {Theatre} from "@domains/theatre/model/theatre";
+import type {ScreenWithShowings} from "@domains/screen/models/screen/Screen.types";
 
 /**
  * Service for screen-based showing search operations.
