@@ -38,7 +38,10 @@ export async function fetchTheatreScreenDetailsViewData(
         throw createHttpError(404, "Screen not found!");
     }
 
-    const seats = await Seat.find({screen: screen._id}).lean();
+    const seats = await Seat
+        .find({screen: screen._id})
+        .populate(["screen", "theatre"])
+        .lean();
 
     return {
         theatre,
