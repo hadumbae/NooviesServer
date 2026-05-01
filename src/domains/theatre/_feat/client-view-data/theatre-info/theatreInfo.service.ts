@@ -9,6 +9,7 @@ import createHttpError from "http-errors";
 import {buildShowingLookupStage} from "@domains/showing/_feat/aggregation";
 import {buildMovieLookupStage} from "@domains/movie/_feat/aggregation";
 import {Screen} from "@domains/screen/models/screen";
+import {MoviePopulationPipelines} from "@domains/movie/queries/MoviePopulationPipelines";
 
 /**
  * Fetches theatre details and associated screens with showings for client browsing.
@@ -36,7 +37,7 @@ export async function fetchTheatreInfoViewData(
             {$match: {localDate: localDateString}},
             {$sort: {startTime: 1}},
             {$limit: limit},
-            buildMovieLookupStage({as: "movie"}),
+            buildMovieLookupStage({as: "movie", innerStages: MoviePopulationPipelines}),
             {$unwind: "$movie"},
         ],
     });
