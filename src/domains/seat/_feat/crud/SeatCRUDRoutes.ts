@@ -6,7 +6,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
-import {parseQueryOptions} from "@shared/_feat/middleware";
+import {buildUnsetFields, parseQueryOptions} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
@@ -64,7 +64,14 @@ const routes: CRUDRoute<SeatSchemaFields>[] = [
         /** Partial update of an existing Screen record. */
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchema(SeatInputSchema)],
+        middleware: [
+            isAuth,
+            validateZodSchema(SeatInputSchema),
+            buildUnsetFields({
+                model: Seat,
+                excludeKeys: ["row", "x", "y", "layoutType", "theatre", "screen"],
+            }),
+        ],
         handler: update
     },
     {
@@ -82,6 +89,7 @@ const routes: CRUDRoute<SeatSchemaFields>[] = [
 const router: Router = buildCRUDRoutes<SeatSchemaFields>({
     model: Seat,
     routes: routes,
+    populatePaths: ["screen", "theatre"],
 });
 
 /**

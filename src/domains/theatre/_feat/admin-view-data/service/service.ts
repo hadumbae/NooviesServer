@@ -17,7 +17,7 @@ import type {PipelineStage} from "mongoose";
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {ShowingPopulationPaths} from "@domains/showing/_feat/query-population";
 import type {PaginationReturns} from "@shared/types/PaginationReturns";
-import {ScreenVirtualPipelines} from "@domains/screen/_feat/aggregate";
+import {ScreenVirtualPipelines} from "@domains/screen/_feat/query-population";
 
 /**
  * Aggregates data for the comprehensive Theatre Details dashboard.

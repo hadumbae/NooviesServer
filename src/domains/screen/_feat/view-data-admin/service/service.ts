@@ -12,7 +12,7 @@ import type {
     FetchTheatreScreenDetailsViewDataConfig,
     TheatreScreenDetailsViewData
 } from "@domains/screen/_feat/view-data-admin";
-import {ScreenVirtualPipelines} from "@domains/screen/_feat/aggregate";
+import {ScreenVirtualPipelines} from "../../query-population";
 
 /**
  * Fetches the complete dataset for managing a specific screen.

@@ -8,13 +8,13 @@ import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes
 import isAuth from "@domains/authentication/middleware/isAuth";
 import {parseQueryOptions} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
 import {Screen, type ScreenSchemaFields} from "@domains/screen/models/screen";
-import {ScreenPopulationPipelines, ScreenVirtualPipelines} from "@domains/screen/_feat/aggregate";
+import {ScreenPopulationPaths, ScreenPopulationPipelines, ScreenVirtualPipelines} from "../query-population";
 import {ScreenInputSchema} from "@domains/screen/_feat/validate-submit";
 import {ScreenQueryOptionsSchema} from "@domains/screen/_feat/validate-query";
+import validateZodSchemaAsync from "@shared/utility/schema/validators/validateZodSchemaAsync";
 
 /**
  * CRUD route definitions for the Screen entity.
@@ -44,7 +44,7 @@ const routes: CRUDRoute<ScreenSchemaFields>[] = [
         /** Creation of a new Screen instance. */
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchema(ScreenInputSchema)],
+        middleware: [isAuth, validateZodSchemaAsync(ScreenInputSchema)],
         handler: create
     },
     {
@@ -65,7 +65,7 @@ const routes: CRUDRoute<ScreenSchemaFields>[] = [
         /** Partial update of an existing Screen record. */
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchema(ScreenInputSchema)],
+        middleware: [isAuth, validateZodSchemaAsync(ScreenInputSchema)],
         handler: update
     },
     {
@@ -83,6 +83,7 @@ const routes: CRUDRoute<ScreenSchemaFields>[] = [
 const router: Router = buildCRUDRoutes<ScreenSchemaFields>({
     model: Screen,
     routes: routes,
+    populatePaths: ScreenPopulationPaths,
 });
 
 /**
