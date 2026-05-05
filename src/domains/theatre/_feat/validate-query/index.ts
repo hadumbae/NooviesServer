@@ -10,6 +10,14 @@ import {
     type TheatreQueryMatchFilters,
     TheatreQueryMatchFilterSchema
 } from "@domains/theatre/_feat/validate-query/TheatreQueryMatchFilterSchema";
+import {
+    type TheatreQueryMatchStage,
+    TheatreQueryMatchStageSchema
+} from "@domains/theatre/_feat/validate-query/TheatreQueryMatchStageSchema";
+import {
+    type TheatreQuerySortStage,
+    TheatreQuerySortStageSchema
+} from "@domains/theatre/_feat/validate-query/TheatreQuerySortStageSchema";
 
 export {
     TheatreQueryOptionSchema,
@@ -21,4 +29,14 @@ export type {
     TheatreQueryOptions,
     TheatreQueryMatchSorts,
     TheatreQueryMatchFilters,
+}
+
+export {
+    TheatreQueryMatchStageSchema,
+    TheatreQuerySortStageSchema,
+}
+
+export type {
+    TheatreQueryMatchStage,
+    TheatreQuerySortStage,
 }

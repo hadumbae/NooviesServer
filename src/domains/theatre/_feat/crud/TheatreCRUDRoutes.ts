@@ -1,44 +1,39 @@
 /**
  * @fileoverview Express router configuration for the Theatre domain.
- * Provides standard CRUD endpoints and an aggregation query interface for cinema locations.
  */
 
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
-import {parseQueryOptions} from "@shared/_feat/middleware";
+import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
-import {TheatreQueryOptionSchema} from "@domains/theatre/_feat/validate-query";
+import {TheatreQueryMatchStageSchema, TheatreQuerySortStageSchema} from "@domains/theatre/_feat/validate-query";
 import {Theatre, type TheatreSchemaFields} from "@domains/theatre/model/theatre";
 import {TheatreVirtualPipelines} from "@domains/theatre/_feat/aggregate";
 import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud/options/TheatreVirtualPopulationPaths";
 import {TheatreInputSchema} from "@domains/theatre/validation";
 
-/**
- * CRUD route definitions for the Theatre entity.
- */
+const modelName = Theatre.modelName;
+const matchSchema = TheatreQueryMatchStageSchema;
+const sortSchema = TheatreQuerySortStageSchema;
+
+/** CRUD route definitions for the Theatre entity. */
 const routes: CRUDRoute<TheatreSchemaFields>[] = [
     {
         /** Basic retrieval of theatres based on geographical or capacity filters. */
         path: "/find",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: TheatreQueryOptionSchema, modelName: Theatre.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval for the Theatre Management administrative table. */
         path: "/paginated",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: TheatreQueryOptionSchema, modelName: Theatre.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -56,14 +51,14 @@ const routes: CRUDRoute<TheatreSchemaFields>[] = [
         handler: findById
     },
     {
-        /** Retrieval of a specific theatre via its SEO-friendly slug (e.g., /theatre/amc-empire-25/slug). */
+        /** Retrieval of a specific theatre via its SEO-friendly slug. */
         path: `/item/:slug/slug`,
         method: "get",
         middleware: [isAuth],
         handler: findBySlug
     },
     {
-        /** Partial update of theatre details (e.g., updating seating capacity or address). */
+        /** Partial update of theatre details. */
         path: `/item/:_id`,
         method: "patch",
         middleware: [isAuth, validateZodSchema(TheatreInputSchema)],
@@ -78,21 +73,17 @@ const routes: CRUDRoute<TheatreSchemaFields>[] = [
     },
 ];
 
-/**
- * Orchestrates the creation of the router using a generic CRUD factory.
- */
+/** Orchestrates the creation of the router using a generic CRUD factory. */
 const router: Router = buildCRUDRoutes<TheatreSchemaFields>({
     model: Theatre,
     routes: routes,
     populatePaths: TheatreVirtualPopulationPaths,
 });
 
-/**
- * Advanced aggregation endpoint for complex reports or cross-entity data fetching.
- */
+/** Advanced aggregation endpoint for complex reports or cross-entity data fetching. */
 router.get(
     "/query",
-    [isAuth, parseQueryOptions({schema: TheatreQueryOptionSchema, modelName: Theatre.modelName})],
+    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({model: Theatre, virtualsPipelines: TheatreVirtualPipelines})),
 );
 
