@@ -27,13 +27,14 @@ export async function aggregateFind<TSchema extends BaseModel, TReturns = unknow
     const {
         model,
         match,
+        sort,
         reference,
         options: {limit, virtuals, populate},
         virtualsPipelines,
         populationPipelines,
     } = params;
 
-    const stages: PipelineStage[] = buildBaseStages({match, reference});
+    const stages: PipelineStage[] = buildBaseStages({match, sort, reference});
 
     if (typeof limit === "number") stages.push({$limit: limit});
     if (virtuals && virtualsPipelines) stages.push(...virtualsPipelines);

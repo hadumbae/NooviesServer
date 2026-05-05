@@ -1,6 +1,5 @@
 /**
- * @file Generic controller and service for filtering and retrieving documents of a specific model.
- * @filename crudFind.ts
+ * @fileoverview Generic controller and service for filtering and retrieving documents of a specific model.
  */
 
 import populateQuery from "@shared/utility/mongoose/populateQuery";
@@ -9,42 +8,30 @@ import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
 import type {FindDocumentsConfig} from "@shared/_feat/generic-crud/path-handlers/find/crudFind.types";
 import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
-import {getQueryOptionFilters} from "@shared/_feat/generic-crud/path-handlers/utils/getQueryOptionFilters";
 
-/**
- * Executes a filtered database search with support for population and request modifiers.
- * ---
- * @param params - Configuration including model, filter criteria, and population paths.
- * @returns A promise resolving to an array of matching model instances.
- */
+/** Executes a filtered database search with support for population and request modifiers. */
 export const findDocuments = async <TModel extends BaseModel>(
-    {model, populatePaths, filters, options}: FindDocumentsConfig<TModel>
+    {model, populatePaths, filters, options, sorts}: FindDocumentsConfig<TModel>
 ): Promise<TModel[]> => {
     return populateQuery({
-        query: model.find(filters ?? {}),
+        query: model.find(filters ?? {}).sort(sorts ?? {}),
         options: {...options, populatePaths},
     });
-}
+};
 
-/**
- * Factory function that generates an Express controller for performing filtered searches.
- * ---
- * @param params - Configuration including the model, optional population paths, and query schema.
- * @returns An asynchronous Express controller function.
- */
+/** Factory function that generates an Express controller for performing filtered searches. */
 export const find = <TModel extends BaseModel>(
     {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
 ) => {
     return async (req: Request, res: Response) => {
-        const options = fetchRequestOptions(req);
-
-        const items = await findDocuments({
+        const items = await findDocuments<TModel>({
             model,
             populatePaths,
-            options,
-            filters: getQueryOptionFilters(req.queryOptions)
+            options: fetchRequestOptions(req),
+            filters: req.queryMatchStage?.$match,
+            sorts: req.querySortStage?.$sort
         });
 
         return res.status(200).json(items);
-    }
-}
+    };
+};

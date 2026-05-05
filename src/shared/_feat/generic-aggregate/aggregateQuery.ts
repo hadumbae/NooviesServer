@@ -26,11 +26,11 @@ export async function aggregateQuery<TSchema extends BaseModel, TReturns = unkno
     const {page, perPage = 10, ...remOptions} = params.options;
 
     if (page) {
-        return aggregatePaginated({
+        return await aggregatePaginated({
             ...params,
             options: {page, perPage, ...remOptions}
         }) as Promise<TReturns>;
     }
 
-    return aggregateFind(params) as Promise<TReturns>;
+    return await aggregateFind(params) as Promise<TReturns>;
 }

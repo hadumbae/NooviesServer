@@ -28,7 +28,8 @@ export type AggregateReferenceQueries = {
  */
 export type AggregateBaseConfig<TSchema extends BaseModel> = {
     model: Model<TSchema>;
-    match?: AggregateModelQueries;
+    match?: PipelineStage.Match;
+    sort?: PipelineStage.Sort;
     reference?: AggregateReferenceQueries;
     populationPipelines?: PipelineStage[];
     virtualsPipelines?: PipelineStage[];

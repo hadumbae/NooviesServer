@@ -1,21 +1,13 @@
 /**
- * @file Type definitions for the generic "Find" CRUD operation.
- * @filename crudFind.types.ts
+ * @fileoverview Type definitions for the generic "Find" CRUD operation.
  */
 
 import type {BaseModel} from "@shared/types/schema/BaseModel";
 import type {BaseCRUDParams} from "@shared/_feat/generic-crud/types";
-import type {FilterQuery} from "mongoose";
+import type {Expression, FilterQuery} from "mongoose";
 
-/**
- * Specific configuration for the "Find" database operation.
- * ---
- * ### Mechanics
- * * **Data Intersection:** Merges standard CRUD parameters with Mongoose-specific
- * filtering capabilities to enable complex query construction.
- * ---
- */
+/** Specific configuration for the "Find" database operation. */
 export type FindDocumentsConfig<TModel extends BaseModel> = BaseCRUDParams<TModel> & {
-    /** Optional Mongoose filter criteria to restrict the result set. */
     filters?: FilterQuery<TModel>;
+    sorts?: Record<string, 1 | -1 | Expression.Meta>;
 };

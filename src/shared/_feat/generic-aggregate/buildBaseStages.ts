@@ -10,7 +10,7 @@ import type {PipelineStage} from "mongoose";
 /**
  * Configuration for building base aggregation stages.
  */
-export type BuildBaseStagesConfig = Pick<AggregateBaseConfig<any>, "match" | "reference"> & {
+export type BuildBaseStagesConfig = Pick<AggregateBaseConfig<any>, "match" | "sort" | "reference"> & {
     stages?: PipelineStage[];
 };
 
@@ -18,16 +18,16 @@ export type BuildBaseStagesConfig = Pick<AggregateBaseConfig<any>, "match" | "re
  * Appends standard filtering and sorting stages to an aggregation pipeline.
  */
 export function buildBaseStages(
-    {stages = [], reference, match}: BuildBaseStagesConfig
+    {stages = [], reference, match, sort}: BuildBaseStagesConfig
 ): PipelineStage[] {
-    if (match?.filters?.$match && Object.keys(match.filters.$match).length > 0) {
-        stages.push(match.filters);
+    if (match && Object.keys(match.$match).length > 0) {
+        stages.push(match);
     } else {
         stages?.push({$match: {}});
     }
 
-    if (match?.sorts?.$sort && Object.keys(match.sorts.$sort).length > 0) {
-        stages.push(match.sorts);
+    if (sort && Object.keys(sort.$sort).length > 0) {
+        stages.push(sort);
     }
 
     if (reference?.filters && reference.filters.length > 0) {

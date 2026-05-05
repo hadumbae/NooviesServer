@@ -1,4 +1,4 @@
-import {Types} from "mongoose";
+import {type PipelineStage, Types} from "mongoose";
 import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate/optionTypes";
 
 declare module "express" {
@@ -14,6 +14,10 @@ declare module "express" {
         unsetFields?: any;
 
         queryOptions?: AggregateQueryOptions;
+
+        queryMatchStage?: PipelineStage.Match;
+        querySortStage?: PipelineStage.Sort;
+
         parsedParams?: unknown;
         parsedConfig?: unknown;
     }

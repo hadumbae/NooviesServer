@@ -30,13 +30,14 @@ export async function aggregatePaginated<TSchema extends BaseModel, TReturns = u
     const {
         model,
         match,
+        sort,
         reference,
         options: {page, perPage, virtuals, populate},
         virtualsPipelines,
         populationPipelines,
     } = params;
 
-    const stages: PipelineStage[] = buildBaseStages({match, reference});
+    const stages: PipelineStage[] = buildBaseStages({match, sort, reference});
 
     const innerStages: PipelineStage.FacetPipelineStage[] = [
         {$skip: (page - 1) * perPage},

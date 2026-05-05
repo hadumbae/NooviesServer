@@ -1,6 +1,5 @@
 /**
- * @file Generic controller and service for retrieving paginated document collections with metadata.
- * @filename crudPaginated.ts
+ * @fileoverview Generic controller and service for retrieving paginated document collections with metadata.
  */
 
 import populateQuery from "@shared/utility/mongoose/populateQuery";
@@ -12,32 +11,21 @@ import type {
     GetPaginatedDocumentsConfig
 } from "@shared/_feat/generic-crud/path-handlers/paginated/crudPaginated.types";
 import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
-import type {ZodType} from "zod";
-import {getQueryOptionFilters} from "@shared/_feat/generic-crud/path-handlers/utils/getQueryOptionFilters";
 
-/**
- * Retrieves the total count of documents in a collection matching specific filters.
- * ---
- * @param params - Configuration containing the target Mongoose model and filters.
- * @returns A promise resolving to the total count of matching documents.
- */
+/** Retrieves the total count of documents in a collection matching specific filters. */
 export const countDocuments = async <TModel extends BaseModel>(
     {model, filters}: CountDocumentsParams<TModel>
 ): Promise<number> => model.countDocuments(filters ?? {});
 
-/**
- * Fetches a specific subset of documents based on pagination offsets and filters.
- * ---
- * @param params - Model, filters, population paths, and pagination options.
- * @returns A promise resolving to the array of documents for the current page.
- */
+/** Fetches a specific subset of documents based on pagination offsets and filters. */
 export const getPaginatedDocuments = async <TModel extends BaseModel>(
-    {model, filters, populatePaths, options}: GetPaginatedDocumentsConfig<TModel>
+    {model, filters, sorts, populatePaths, options}: GetPaginatedDocumentsConfig<TModel>
 ): Promise<TModel[]> => {
     const {page = 1, perPage = 25} = options ?? {};
 
     const query = model
         .find(filters ?? {})
+        .sort(sorts ?? {})
         .skip((page - 1) * perPage)
         .limit(perPage);
 
@@ -45,32 +33,28 @@ export const getPaginatedDocuments = async <TModel extends BaseModel>(
         query,
         options: {...options, populatePaths},
     });
-}
+};
 
-/**
- * Factory function that generates an Express controller for paginated data retrieval.
- * ---
- * @param params - Configuration including the model, optional population paths, and query schema.
- * @returns An asynchronous Express controller function.
- */
-export const paginated = <TModel extends BaseModel, TSchema extends ZodType>(
+/** Factory function that generates an Express controller for paginated data retrieval. */
+export const paginated = <TModel extends BaseModel>(
     {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
 ) => {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
-
-        const filters = getQueryOptionFilters(req.queryOptions);
+        const filters = req.queryMatchStage?.$match;
+        const sorts = req.querySortStage?.$sort;
 
         const [totalItems, items] = await Promise.all([
-            countDocuments({model, filters}),
-            getPaginatedDocuments({
+            countDocuments<TModel>({model, filters}),
+            getPaginatedDocuments<TModel>({
                 model,
                 populatePaths,
                 options,
-                filters,
+                filters: req.queryMatchStage?.$match ,
+                sorts,
             })
         ]);
 
         return res.status(200).json({totalItems, items});
-    }
-}
+    };
+};

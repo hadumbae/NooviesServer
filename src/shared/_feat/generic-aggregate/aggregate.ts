@@ -9,6 +9,7 @@ import type {Model, PipelineStage} from "mongoose";
 import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
 import type {Request, Response} from "express";
 import {aggregateQuery} from "@shared/_feat/generic-aggregate/aggregateQuery";
+import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
 
 type FactoryConfig<TSchema extends BaseModel> = {
     model: Model<TSchema>;
@@ -21,15 +22,16 @@ type FactoryConfig<TSchema extends BaseModel> = {
  */
 export function aggregate<TSchema extends BaseModel>(
     {model, populationPipelines, virtualsPipelines}: FactoryConfig<TSchema>
-) {
+): ControllerAsyncFunc {
     return async (req: Request, res: Response): Promise<Response> => {
         const options = fetchRequestOptions(req);
-        const {match, reference} = req.queryOptions ?? {};
+        const match = req.queryMatchStage;
+        const sort = req.querySortStage;
 
         const data = await aggregateQuery({
             model,
             match,
-            reference,
+            sort,
             options,
             populationPipelines,
             virtualsPipelines,
