@@ -27,7 +27,6 @@ import type {FindDocumentByIdConfig} from "@shared/_feat/generic-crud/path-handl
 import type {FindDocumentsConfig} from "@shared/_feat/generic-crud/path-handlers/find/crudFind.types";
 import type {DeleteDocumentConfig} from "@shared/_feat/generic-crud/path-handlers/delete/crudDestroy.types";
 import type {CreateDocumentConfig} from "@shared/_feat/generic-crud/path-handlers/create/crudCreate.types";
-import {getQueryOptionFilters} from "@shared/_feat/generic-crud/path-handlers/utils/getQueryOptionFilters";
 
 export {
     createDocument,
@@ -48,7 +47,6 @@ export {
     paginated,
     softDelete,
     update,
-    getQueryOptionFilters,
 }
 
 export type {
