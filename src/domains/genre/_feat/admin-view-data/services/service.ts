@@ -4,8 +4,8 @@
 
 import type {FetchGenreDetailsViewConfig, FetchGenreDetailsViewReturns} from "./service.types";
 import createHttpError from "http-errors";
-import MovieModel from "@domains/movie/model/Movie.model";
 import {Genre} from "@domains/genre/models/genre";
+import MovieModel from "@domains/movie/model/Movie.model";
 
 /**
  * Aggregates a genre's metadata with a paginated list of associated movies.

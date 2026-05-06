@@ -1,18 +1,22 @@
 import {GenreViewDataRoutes} from "@domains/genre/_feat/admin-view-data/routes";
-import {fetchGenreDetails} from "@domains/genre/_feat/admin-view-data/service";
-import type {
-    FetchGenreDetailsViewParams,
-    FetchGenreDetailsViewReturns
-} from "@domains/genre/_feat/admin-view-data/service.types";
-import {getFetchGenreDetailsVeiwData} from "@domains/genre/_feat/admin-view-data/controller";
+import {fetchGenreDetails} from "./services/service";
+import type {FetchGenreDetailsViewConfig, FetchGenreDetailsViewReturns} from "./services/service.types";
+import {getFetchGenreDetailsViewData} from "@domains/genre/_feat/admin-view-data/controller";
+import {
+    type GenreDetailsViewRouteConfig,
+    GenreDetailsViewRouteConfigSchema
+} from "@domains/genre/_feat/admin-view-data/schemas/GenreDetailsViewRouteConfigSchema";
 
 export {
     GenreViewDataRoutes,
     fetchGenreDetails,
-    getFetchGenreDetailsVeiwData,
+    getFetchGenreDetailsViewData,
+    GenreDetailsViewRouteConfigSchema,
 }
 
 export type {
-    FetchGenreDetailsViewParams,
+    FetchGenreDetailsViewConfig,
     FetchGenreDetailsViewReturns,
+    GenreDetailsViewRouteConfig,
 }
+
