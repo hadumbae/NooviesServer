@@ -6,15 +6,19 @@ import {
     type ScreenQueryMatchSorts,
     ScreenQueryMatchSortSchema
 } from "@domains/screen/_feat/validate-query/ScreenQueryMatchSortSchema";
-import {
-    type ScreenQueryOptions,
-    ScreenQueryOptionsSchema
-} from "@domains/screen/_feat/validate-query/ScreenQueryOption.schema";
+import {type ScreenQueryOptions, ScreenQueryOptionsSchema} from "./ScreenQueryOptionSchema";
 import {
     type ScreenQueryParams,
     ScreenQueryParamSchema
 } from "@domains/screen/_feat/validate-query/ScreenQueryParamSchema";
-
+import {
+    type ScreenQueryMatchStage,
+    ScreenQueryMatchStageSchema
+} from "@domains/screen/_feat/validate-query/ScreenQueryMatchStageSchema";
+import {
+    type ScreenQuerySortStage,
+    ScreenQuerySortStageSchema
+} from "@domains/screen/_feat/validate-query/ScreenQuerySortStageSchema";
 
 export {
     ScreenQueryMatchFilterSchema,
@@ -28,4 +32,14 @@ export type {
     ScreenQueryMatchSorts,
     ScreenQueryOptions,
     ScreenQueryParams,
+}
+
+export {
+    ScreenQueryMatchStageSchema,
+    ScreenQuerySortStageSchema,
+}
+
+export type {
+    ScreenQueryMatchStage,
+    ScreenQuerySortStage,
 }

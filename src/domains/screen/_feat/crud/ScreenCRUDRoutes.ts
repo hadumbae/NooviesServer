@@ -6,15 +6,19 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
-import {parseQueryOptions} from "@shared/_feat/middleware";
+import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
 import {Screen, type ScreenSchemaFields} from "@domains/screen/models/screen";
 import {ScreenPopulationPaths, ScreenPopulationPipelines, ScreenVirtualPipelines} from "../query-population";
 import {ScreenInputSchema} from "@domains/screen/_feat/validate-submit";
-import {ScreenQueryOptionsSchema} from "@domains/screen/_feat/validate-query";
+import {ScreenQueryMatchStageSchema, ScreenQuerySortStageSchema} from "@domains/screen/_feat/validate-query";
 import validateZodSchemaAsync from "@shared/utility/schema/validators/validateZodSchemaAsync";
+
+const modelName = Screen.modelName;
+const matchSchema = ScreenQueryMatchStageSchema;
+const sortSchema = ScreenQuerySortStageSchema;
 
 /**
  * CRUD route definitions for the Screen entity.
@@ -24,20 +28,14 @@ const routes: CRUDRoute<ScreenSchemaFields>[] = [
         /** Basic retrieval based on query filters. */
         path: "/find",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: ScreenQueryOptionsSchema, modelName: Screen.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval for UI tables and infinite scrolls. */
         path: "/paginated",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: ScreenQueryOptionsSchema, modelName: Screen.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -91,7 +89,7 @@ const router: Router = buildCRUDRoutes<ScreenSchemaFields>({
  */
 router.get(
     "/query",
-    [isAuth, parseQueryOptions({schema: ScreenQueryOptionsSchema, modelName: Screen.modelName})],
+    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({
         model: Screen,
         virtualsPipelines: ScreenVirtualPipelines,

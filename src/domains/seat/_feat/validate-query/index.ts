@@ -11,6 +11,14 @@ import {
     SeatQueryReferenceFilterSchema
 } from "@domains/seat/_feat/validate-query/SeatQueryReferenceFilterSchema";
 import {type SeatQueryOptions, SeatQueryOptionsSchema} from "@domains/seat/_feat/validate-query/SeatQueryOptions";
+import {
+    type SeatQueryMatchStage,
+    SeatQueryMatchStageSchema
+} from "@domains/seat/_feat/validate-query/SeatQueryMatchStageSchema";
+import {
+    type SeatQuerySortStage,
+    SeatQuerySortStageSchema
+} from "@domains/seat/_feat/validate-query/SeatQuerySortStageSchema";
 
 
 export {
@@ -26,3 +34,15 @@ export type {
     SeatQueryReferenceFilters,
     SeatQueryOptions,
 }
+
+export {
+    SeatQueryMatchStageSchema,
+    SeatQuerySortStageSchema,
+}
+
+export type {
+    SeatQueryMatchStage,
+    SeatQuerySortStage,
+}
+
+

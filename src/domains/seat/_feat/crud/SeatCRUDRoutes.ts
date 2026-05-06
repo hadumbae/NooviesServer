@@ -1,42 +1,40 @@
 /**
  * @fileoverview Express router configuration for the Screen domain.
- * Provides standard CRUD endpoints and an aggregation query interface.
  */
 
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildUnsetFields, parseQueryOptions} from "@shared/_feat/middleware";
+import {buildAuthCRUDQueryMiddleware, buildUnsetFields} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
-import {SeatQueryOptionsSchema} from "@domains/seat/_feat/validate-query";
 import {SeatInputSchema} from "@domains/seat/_feat/validate-submit";
 import {Seat, type SeatSchemaFields} from "@domains/seat/model";
+import {
+    SeatQueryMatchStageSchema,
+    SeatQuerySortStageSchema
+} from "@domains/seat/_feat/validate-query";
 
-/**
- * CRUD route definitions for the Screen entity.
- */
+const modelName = Seat.modelName;
+const matchSchema = SeatQueryMatchStageSchema;
+const sortSchema = SeatQuerySortStageSchema;
+
+/** CRUD route definitions for the Screen entity. */
 const routes: CRUDRoute<SeatSchemaFields>[] = [
     {
         /** Basic retrieval based on query filters. */
         path: "/find",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: SeatQueryOptionsSchema, modelName: Seat.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval for UI tables and infinite scrolls. */
         path: "/paginated",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: SeatQueryOptionsSchema, modelName: Seat.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -83,21 +81,17 @@ const routes: CRUDRoute<SeatSchemaFields>[] = [
     },
 ];
 
-/**
- * Orchestrates the creation of the router with generic path handlers.
- */
+/** Orchestrates the creation of the router with generic path handlers. */
 const router: Router = buildCRUDRoutes<SeatSchemaFields>({
     model: Seat,
     routes: routes,
     populatePaths: ["screen", "theatre"],
 });
 
-/**
- * Custom aggregation endpoint for complex queries and data reporting.
- */
+/** Custom aggregation endpoint for complex queries and data reporting. */
 router.get(
     "/query",
-    [isAuth, parseQueryOptions({schema: SeatQueryOptionsSchema, modelName: Seat.modelName})],
+    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({model: Seat})),
 );
 

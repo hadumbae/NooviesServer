@@ -10,6 +10,14 @@ import {
     type PersonQueryMatchFilters,
     PersonQueryMatchFiltersSchema
 } from "@domains/person/_feat/validate-query/PersonQueryMatchFiltersSchema";
+import {
+    type PersonQueryMatchStage,
+    PersonQueryMatchStageSchema
+} from "@domains/person/_feat/validate-query/PersonQueryMatchStageSchema";
+import {
+    type PersonQuerySortStage,
+    PersonQuerySortStageSchema
+} from "@domains/person/_feat/validate-query/PersonQuerySortStageSchema";
 
 export {
     PersonQueryMatchSortsSchema,
@@ -23,5 +31,13 @@ export type {
     PersonQueryMatchFilters,
 }
 
+export {
+    PersonQueryMatchStageSchema,
+    PersonQuerySortStageSchema,
+}
 
+export type {
+    PersonQueryMatchStage,
+    PersonQuerySortStage,
+}
 

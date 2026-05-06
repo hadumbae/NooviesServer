@@ -7,14 +7,18 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
-import {parseQueryOptions} from "@shared/_feat/middleware";
+import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import {Person, type PersonSchemaFields} from "@domains/person/model";
-import {PersonQueryOptionsSchema} from "@domains/person/_feat/validate-query";
+import {PersonQueryMatchStageSchema, PersonQuerySortStageSchema} from "@domains/person/_feat/validate-query";
 import {PersonInputSchema} from "@domains/person/_feat/validate-submit";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
+
+const modelName = Person.modelName;
+const matchSchema = PersonQueryMatchStageSchema;
+const sortSchema = PersonQuerySortStageSchema;
 
 /**
  * Configuration for Person CRUD endpoints.
@@ -24,20 +28,14 @@ const routes: CRUDRoute<PersonSchemaFields>[] = [
         /** Basic retrieval of records based on query filters. */
         path: "/find",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: PersonQueryOptionsSchema, modelName: Person.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval for administrative data tables. */
         path: "/paginated",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: PersonQueryOptionsSchema, modelName: Person.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -91,7 +89,7 @@ const router: Router = buildCRUDRoutes<PersonSchemaFields>({
  */
 router.get(
     "/query",
-    [isAuth, parseQueryOptions({schema: PersonQueryOptionsSchema, modelName: Person.modelName})],
+    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({model: Person})),
 );
 

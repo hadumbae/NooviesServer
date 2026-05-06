@@ -7,38 +7,36 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
-import {parseQueryOptions} from "@shared/_feat/middleware";
+import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
 import type IRoleType from "@domains/roleType/model/RoleType.interface";
 import RoleTypeModel from "@domains/roleType/model/RoleType.model";
-import {RoleTypeQueryOptionsSchema} from "@domains/roleType/_feat/validate-query";
+import {RoleTypeQueryMatchStageSchema, RoleTypeQuerySortStageSchema} from "@domains/roleType/_feat/validate-query";
 import {RoleTypeInputSchema} from "@domains/roleType/schemas/RoleTypeInput.schema";
+
+const modelName = RoleTypeModel.modelName;
+const matchSchema = RoleTypeQueryMatchStageSchema;
+const sortSchema = RoleTypeQuerySortStageSchema;
 
 /**
  * CRUD route definitions for the RoleType entity.
-*/
+ */
 const routes: CRUDRoute<IRoleType>[] = [
     {
         /** Basic retrieval of roles based on name or department. */
         path: "/find",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: RoleTypeQueryOptionsSchema, modelName: RoleTypeModel.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval for administrative role-management tables. */
         path: "/paginated",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: RoleTypeQueryOptionsSchema, modelName: RoleTypeModel.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -80,11 +78,11 @@ const router: Router = buildCRUDRoutes<IRoleType>({
 });
 
 /**
- * Advanced aggregation endpoint for complex organizational queries.
+ * Advanced aggregation endpoint for complex organisational queries.
  */
 router.get(
     "/query",
-    [isAuth, parseQueryOptions({schema: RoleTypeQueryOptionsSchema, modelName: RoleTypeModel.modelName})],
+    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({model: RoleTypeModel})),
 );
 
