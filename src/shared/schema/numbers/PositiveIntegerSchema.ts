@@ -1,18 +1,16 @@
 /**
- * @file Positive integer Zod schema.
- * PositiveIntegerSchema.ts
+ * @fileoverview Zod schema for validating positive integers.
  */
 
-import { PositiveNumberSchema } from "./PositiveNumberSchema.js";
-import { z } from "zod";
+import {z} from "zod";
+import {NumberValueSchema} from "@shared/schema/numbers/NumberValueSchema";
 
 /**
  * Zod schema for validating positive integers.
  */
-export const PositiveIntegerSchema = PositiveNumberSchema.refine(
-    (val) => Number.isInteger(val),
-    { message: "Must be a positive integer." }
-);
+export const PositiveIntegerSchema = NumberValueSchema
+    .integer({message: "Must be an integer."})
+    .positive({message: "Must be a positive number."});
 
 /**
  * Inferred TypeScript type for a validated positive integer.
