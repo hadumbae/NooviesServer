@@ -12,6 +12,7 @@ import {FetchAdminReservationRoutes} from "@domains/reservation/features/fetch-r
 import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer-review-actions/routing";
 import {PersonCreditRoutes} from "@domains/movieCredit/_feat/person-credits";
 import {UIInputDataRoutes} from "@domains/ui-inputs";
+import {GenreImageManagementRoutes} from "@domains/genre/_feat/manage-image";
 
 /**
  * Foundation feature routes.
@@ -19,6 +20,7 @@ import {UIInputDataRoutes} from "@domains/ui-inputs";
 const setupRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/inputs/feat", router: UIInputDataRoutes},
     {path: "/api/v1/admin/persons/feat", router: PersonImageRoutes},
+    {path: "/api/v1/admin/genres/feat/manage-images", router: GenreImageManagementRoutes},
 ];
 
 /**

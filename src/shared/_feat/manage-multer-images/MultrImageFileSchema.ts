@@ -6,6 +6,7 @@ import {z} from "zod";
 import {StringValueSchema} from "@shared/schema/strings/StringValueSchema";
 import {PositiveIntegerSchema} from "@shared/schema/numbers/PositiveIntegerSchema";
 import {MulterImageFileMimeTypeSchema} from "./MulterImageFileMimeTypeSchema";
+import {MulterImageFileBufferSchema} from "@shared/_feat/manage-multer-images/MulterImageFileBufferSchema";
 
 /**
  * Zod schema defining the structure of an uploaded image file,
@@ -17,7 +18,7 @@ export const MulterImageFileSchema = z.object({
     encoding: StringValueSchema,
     mimetype: MulterImageFileMimeTypeSchema,
     size: PositiveIntegerSchema,
-    buffer: z.instanceof(Buffer, {message: "Expected a Buffer"}),
+    buffer: MulterImageFileBufferSchema,
 });
 
 /**

@@ -9,7 +9,7 @@ import {NumberValueSchema} from "@shared/schema/numbers/NumberValueSchema";
  * Zod schema for validating positive integers.
  */
 export const PositiveIntegerSchema = NumberValueSchema
-    .integer({message: "Must be an integer."})
+    .int({message: "Must be an integer."})
     .positive({message: "Must be a positive number."});
 
 /**

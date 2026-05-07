@@ -9,8 +9,8 @@ import type {
     UploadPersonProfileImageConfig
 } from "@domains/person/_feat/update-image/service.types";
 import createHttpError from "http-errors";
-import CloudinaryUtils from "@shared/utility/cloudinary/CloudinaryUtils";
 import {Person, type PersonSchemaFields} from "@domains/person/model";
+import {removeCloudinaryImage, uploadCloudinaryImage} from "@shared/_feat/manage-cloudinary-images";
 
 /**
  * Uploads a new profile image for a person.
@@ -22,12 +22,11 @@ export async function updateProfileImage(
     const person = await Person.findById(_id);
     if (!person) throw createHttpError(404, "Person not found.");
 
-    // Clean up existing asset
-    if (person.profileImage?.public_id) {
-        await CloudinaryUtils.delete(person.profileImage.public_id);
+    if (person.profileImage) {
+        await removeCloudinaryImage({public_id: person.profileImage.public_id});
     }
 
-    person.profileImage = await CloudinaryUtils.upload(image);
+    person.profileImage = await uploadCloudinaryImage({image});
     await person.save();
 
     return person;
@@ -44,8 +43,7 @@ export async function deleteProfileImage(
     if (!person) throw createHttpError(404, "Person not found.");
 
     if (person.profileImage?.public_id) {
-        await CloudinaryUtils.delete(person.profileImage.public_id);
-
+        await removeCloudinaryImage({public_id: person.profileImage.public_id});
         person.profileImage = null;
         await person.save();
     }
