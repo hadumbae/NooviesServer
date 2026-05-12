@@ -5,7 +5,7 @@ import type {
 } from "@shared/types/mongoose/AggregatePipelineStages";
 import type {
     MovieCreditQueryMatchFilters
-} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryMatchFiltersSchema";
+} from "@domains/movieCredit/_feat/validate-query";
 import type {MovieCreditQueryOptions} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryOptionsSchema";
 
 /**

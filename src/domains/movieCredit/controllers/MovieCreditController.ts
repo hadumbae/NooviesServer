@@ -13,7 +13,7 @@ import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionServ
 
 import type {
     MovieCreditQueryMatchFilters
-} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryMatchFiltersSchema";
+} from "@domains/movieCredit/_feat/validate-query";
 
 /**
  * Constructor parameters for {@link MovieCreditController}.

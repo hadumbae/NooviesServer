@@ -34,7 +34,7 @@ import generateReferenceFilterPipelineStages
 import type {MovieCreditQueryOptionMethods} from "./MovieCreditQueryOptionService.types.js";
 import type {
     MovieCreditQueryMatchFilters
-} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryMatchFiltersSchema";
+} from "@domains/movieCredit/_feat/validate-query";
 import {
     type MovieCreditQueryOptions,
     MovieCreditQueryOptionsSchema

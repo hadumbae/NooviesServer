@@ -7,10 +7,10 @@
 import {z} from "zod";
 import {
     MovieCreditQueryMatchFiltersSchema
-} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryMatchFiltersSchema";
+} from "./filters/MovieCreditQueryMatchFiltersSchema";
 import {
     MovieCreditQueryMatchSortsSchema
-} from "@domains/movieCredit/_feat/validate-query/MovieCreditQueryMatchSortsSchema";
+} from "./sorting/MovieCreditQueryMatchSortsSchema";
 import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
 import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
 

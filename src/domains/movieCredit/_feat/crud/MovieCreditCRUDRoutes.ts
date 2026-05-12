@@ -7,16 +7,23 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
-import {parseQueryOptions} from "@shared/_feat/middleware";
+import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
 import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interface";
 import MovieCredit from "@domains/movieCredit/models/MovieCredit.model";
-import {MovieCreditQueryOptionsSchema} from "@domains/movieCredit/_feat/validate-query";
+import {
+    MovieCreditQueryMatchStageSchema,
+    MovieCreditQuerySortStageSchema
+} from "@domains/movieCredit/_feat/validate-query";
 import {MovieCreditInputSchema} from "@domains/movieCredit/schemas/MovieCreditInputSchema";
 import {MovieCreditPopulationPaths} from "@domains/movieCredit/_feat/query-population";
+
+const modelName = MovieCredit.modelName;
+const matchSchema = MovieCreditQueryMatchStageSchema;
+const sortSchema = MovieCreditQuerySortStageSchema;
 
 /**
  * CRUD route definitions for the MovieCredit entity.
@@ -26,20 +33,14 @@ const routes: CRUDRoute<IMovieCredit>[] = [
         /** Basic retrieval based on relational filters (e.g., all credits for a specific Movie ID). */
         path: "/find",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: MovieCreditQueryOptionsSchema, modelName: MovieCredit.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval optimized for cast/crew lists in admin panels or movie detail pages. */
         path: "/paginated",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: MovieCreditQueryOptionsSchema, modelName: MovieCredit.modelName})
-        ],
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -93,7 +94,7 @@ const router: Router = buildCRUDRoutes<IMovieCredit>({
  */
 router.get(
     "/query",
-    [isAuth, parseQueryOptions({schema: MovieCreditQueryOptionsSchema, modelName: MovieCredit.modelName})],
+    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({model: MovieCredit})),
 );
 
