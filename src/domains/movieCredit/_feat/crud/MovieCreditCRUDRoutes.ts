@@ -16,6 +16,7 @@ import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interfa
 import MovieCredit from "@domains/movieCredit/models/MovieCredit.model";
 import {MovieCreditQueryOptionsSchema} from "@domains/movieCredit/_feat/validate-query";
 import {MovieCreditInputSchema} from "@domains/movieCredit/schemas/MovieCreditInputSchema";
+import {MovieCreditPopulationPaths} from "@domains/movieCredit/_feat/query-population";
 
 /**
  * CRUD route definitions for the MovieCredit entity.
@@ -84,6 +85,7 @@ const routes: CRUDRoute<IMovieCredit>[] = [
 const router: Router = buildCRUDRoutes<IMovieCredit>({
     model: MovieCredit,
     routes: routes,
+    populatePaths: MovieCreditPopulationPaths,
 });
 
 /**
