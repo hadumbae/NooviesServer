@@ -16,6 +16,7 @@ import type {MovieSchemaFields} from "@domains/movie/model/Movie.types";
 import {MovieQueryOptionsSchema} from "@domains/movie/_feat/validate-query";
 import MovieModel from "@domains/movie/model/Movie.model";
 import {MovieInputSchema} from "@domains/movie/schema/MovieInput.schema";
+import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
 
 /**
  * CRUD route definitions for the Movie entity.
@@ -84,6 +85,7 @@ const routes: CRUDRoute<MovieSchemaFields>[] = [
 const router: Router = buildCRUDRoutes<MovieSchemaFields>({
     model: MovieModel,
     routes: routes,
+    populatePaths: MoviePopulationPaths,
 });
 
 /**
