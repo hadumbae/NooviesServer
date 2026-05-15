@@ -3,18 +3,21 @@
  * BrowseMovieDetailsService.ts
  */
 
+
 import type {
-    BrowseReviewsByMovieParams, FeaturedReviewsByMovieParams, FeaturedReviewsByMovieReturns,
+    BrowseReviewsByMovieParams,
+    FeaturedReviewsByMovieParams,
+    FeaturedReviewsByMovieReturns,
     ReviewDetailsByMovieParams,
     ReviewDetailsByMovieReturns
-} from "./BrowseMovieDetailsService.types.js";
-import type {PaginationReturns} from "../../../../shared/types/PaginationReturns.js";
-import type {MovieReviewSchemaFields} from "../../../movieReview/model/MovieReview.types.js";
-import {MovieReview} from "../../../movieReview/model/MovieReview.model.js";
-import populateQuery from "../../../../shared/utility/mongoose/populateQuery.js";
-import {MovieReviewPopulatePaths} from "../../../movieReview/queries/MovieReviewPopulatePaths.js";
-import {MovieReviewPopulationPipelines} from "../../../movieReview/queries/MovieReviewPopulationPipelines.js";
-import {addMovieReviewDetailsPipelines} from "../../../movieReview/utilities/addMovieReviewDetailsPipelines.js";
+} from "./service.types";
+import type {MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types";
+import type {PaginationReturns} from "@shared/types/PaginationReturns";
+import {MovieReview} from "@domains/movieReview/model/MovieReview.model";
+import populateQuery from "@shared/utility/mongoose/populateQuery";
+import {MovieReviewPopulatePaths} from "@domains/movieReview/queries/MovieReviewPopulatePaths";
+import {MovieReviewPopulationPipelines} from "@domains/movieReview/queries/MovieReviewPopulationPipelines";
+import {addMovieReviewDetailsPipelines} from "@domains/movieReview/utilities/addMovieReviewDetailsPipelines";
 
 /**
  * Returns paginated reviews for a movie.

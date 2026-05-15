@@ -8,11 +8,13 @@ import type {
     ToggleUserFavouriteMovieReturns,
     UserFavouriteMovieParams
 } from "./UserFavouriteService.types.js";
+
 import User from "@models/User.model.js";
 import createHttpError from "http-errors";
 import type {UserSchemaFields} from "@models/User.types.js";
 import MovieModel from "../../../movie/model/Movie.model.js";
-import {fetchRequiredMovie} from "../../../movie/service/fetch-service/MovieFetchService.js";
+import {fetchRequiredMovie} from "@domains/movie/_feat/fetch-movies";
+
 
 /** Returns paginated favourites for a user. */
 export const fetchUserFavourites = async (

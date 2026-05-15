@@ -3,12 +3,13 @@
  * @filename fetchRequiredMovie.ts
  */
 
-import type {RequestOptions} from "../../../../shared/types/request-options/RequestOptions.js";
+import type {RequestOptions} from "@shared/types/request-options/RequestOptions";
 import {Types} from "mongoose";
 import populateQuery from "../../../../shared/utility/mongoose/populateQuery.js";
 import MovieModel from "../../model/Movie.model.js";
-import type {SlugString} from "../../../../shared/schema/strings/SlugStringSchema.js";
-import type {MovieDocument} from "../../type/MovieTypes.js";
+import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
+import type {DocumentType} from "@shared/types/mongoose/DocumentType";
+import type {MovieSchemaFields} from "@domains/movie/model/Movie.types";
 
 /**
  * Parameters for fetching a required movie.
@@ -29,7 +30,7 @@ type FetchParams = {
  */
 export function fetchRequiredMovie(
     {_id, slug, options}: FetchParams,
-): Promise<MovieDocument> {
+): Promise<DocumentType<MovieSchemaFields>> {
     const query = _id
         ? MovieModel.findById(_id)
         : MovieModel.findOne({slug});

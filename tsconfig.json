@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@shared/*": ["shared/*"],
-      "@domains/*": ["domains/*"],
+      "@shared/*": ["src/shared/*"],
+      "@domains/*": ["src/domains/*"],
 
-      "@config/*": ["shared/config/*"],
-      "@models/*": ["domains/users/model/*"]
+      "@config/*": ["src/shared/config/*"],
+      "@models/*": ["src/domains/users/model/*"]
     },
     "strict": true,
     "esModuleInterop": true,

@@ -10,7 +10,7 @@ import {fetchShowingsForMovie} from "../../services/showings-for-movie/ShowingsF
 import {fetchRequestQueryBySchema} from "@shared/utility/request/fetchRequestQueryBySchema";
 import {
     ShowingsViewQueryStringSchema
-} from "../../../movie/schema/view-data/showings-for-movie/ShowingsViewQueryStringSchema.js";
+} from "src/domains/showing/schemas/ShowingsViewQueryStringSchema";
 import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
 
 /**
