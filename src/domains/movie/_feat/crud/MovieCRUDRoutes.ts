@@ -14,7 +14,7 @@ import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
 import type {MovieSchemaFields} from "@domains/movie/model/Movie.types";
 import MovieModel from "@domains/movie/model/Movie.model";
-import {MovieInputSchema} from "@domains/movie/schema/MovieInput.schema";
+import {MovieInputSchema} from "../validate-submit/MovieInputSchema";
 import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
 import {MovieQueryMatchStageSchema, MovieQuerySortStageSchema} from "@domains/movie/_feat/validate-query";
 

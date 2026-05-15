@@ -4,7 +4,7 @@
  */
 
 import type {PipelineStage} from "mongoose";
-import {MoviePopulationPipelines} from "../../movie/queries/MoviePopulationPipelines.js";
+import {MoviePopulationPipelines} from "@domains/movie/_feat/query-population";
 
 /** * Union type restricted to the specific stages used in the rating calculation pipeline.
  */

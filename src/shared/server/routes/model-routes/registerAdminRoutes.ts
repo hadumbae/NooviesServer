@@ -8,7 +8,6 @@
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
 import RoleTypeRoutes from "@domains/roleType/routing/RoleTypeRoutes.js";
-import MovieRoutes from "@domains/movie/routing/MovieRoutes.js";
 import MovieCreditRoutes from "@domains/movieCredit/routing/MovieCreditRoutes.js";
 import {MovieReviewCRUDRoutes} from "@domains/movieReview/routes/MovieReviewCRUDRoutes.js";
 import ShowingRoutes from "@domains/showing/routing/ShowingRoutes.js";
@@ -27,7 +26,6 @@ const setupRoutes: RouteRegistration[] = [
  * Content management routes for movies, cast/crew credits, and reviews.
  */
 const movieRoutes: RouteRegistration[] = [
-    {path: "/api/v1/admin/movies", router: MovieRoutes},
     {path: "/api/v1/admin/movie/credits", router: MovieCreditRoutes},
     {path: "/api/v1/admin/movie/reviews", router: MovieReviewCRUDRoutes},
 ];

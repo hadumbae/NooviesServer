@@ -1,7 +1,5 @@
 /**
- * @fileoverview Centralized registration for administrative "Feature" routes.
- * Unlike standard CRUD operations, these routes handle specialized business logic,
- * complex updates, and non-standard actions (e.g., image processing or review moderation).
+ * @fileoverview Registers administrative feature routes for the Express application.
  */
 
 import type {Express} from "express";
@@ -13,6 +11,7 @@ import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer
 import {PersonCreditRoutes} from "@domains/movieCredit/_feat/person-credits";
 import {UIInputDataRoutes} from "@domains/ui-inputs";
 import {GenreImageManagementRoutes} from "@domains/genre/_feat/manage-image";
+import {MovieImageManagementRoutes} from "@domains/movie/_feat/manage-image/routes";
 
 /**
  * Foundation feature routes.
@@ -21,6 +20,7 @@ const setupRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/inputs/feat", router: UIInputDataRoutes},
     {path: "/api/v1/admin/persons/feat", router: PersonImageRoutes},
     {path: "/api/v1/admin/genres/feat/manage-images", router: GenreImageManagementRoutes},
+    {path: "/api/v1/admin/movies/feat/manage-images", router: MovieImageManagementRoutes},
 ];
 
 /**
@@ -46,7 +46,7 @@ const customerRoutes: RouteRegistration[] = [
 ];
 
 /**
- * Registers all administrative feature-specific routes into the Express application.
+ * Mounts all administrative feature-specific routers into the provided Express application instance.
  */
 export function registerAdminFeatureRoutes(app: Express): void {
     const routeGroups: RouteRegistration[][] = [

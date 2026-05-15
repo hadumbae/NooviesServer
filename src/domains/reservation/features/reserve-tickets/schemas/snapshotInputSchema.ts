@@ -14,7 +14,7 @@ import { PositiveNumberSchema } from "@shared/schema/numbers/PositiveNumberSchem
 import { BooleanValueSchema } from "@shared/schema/booleans/BooleanValueSchema";
 import { ISO6391LanguageCodeSchema } from "@shared/schema/enums/ISO6391LanguageCodeSchema";
 import {ReservationTypeEnumSchema} from "@domains/reservation/validation/enums";
-import {MovieSnapshotInputSchema} from "@domains/movie/schema/MovieSnapshotInputSchema";
+import {MovieSnapshotInputSchema} from "src/domains/movie/_feat/validate-submit/MovieSnapshotInputSchema";
 import {ReservedSeatSnapshotInputSchema} from "@domains/seatmap/schema/ReservedSeatSnapshotInputSchema";
 import {ScreenSnapshotInputSchema} from "@domains/screen/_feat/validate-submit";
 import {TheatreSnapshotInputSchema} from "@domains/theatre/validation";

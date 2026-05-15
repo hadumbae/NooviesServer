@@ -1,60 +1,17 @@
 /**
- * @file createMovieSnapshot.ts
- *
- * Factory function for creating an immutable movie snapshot.
- *
- * Fetches a fully populated {@link MovieModel} document and transforms it
- * into a validated snapshot suitable for embedding in reservations,
- * tickets, and historical records.
- *
- * @remarks
- * This function enforces strict internal consistency guarantees:
- * - Missing source documents result in {@link DocumentNotFoundError}
- * - Invalid or corrupted persisted data results in {@link InconsistentDataError}
- *
- * Snapshots produced here are intended to be write-once and must never
- * be mutated after creation.
+ * @fileoverview Utility for generating immutable movie snapshots for historical records.
  */
 
 import MovieModel from "../../model/Movie.model.js";
 import type {MovieSnapshotSchemaFields} from "../../model/movie-snapshot/MovieSnapshot.types.js";
 import {Types} from "mongoose";
-import {DocumentNotFoundError} from "../../../../shared/errors/DocumentNotFoundError.js";
-import {MovieSnapshotInputSchema} from "../../schema/MovieSnapshotInputSchema.js";
-import {InconsistentDataError} from "../../../../shared/errors/InconsistentDataError.js";
+import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
+import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
 import {MovieSnapshot} from "../../model/movie-snapshot/MovieSnapshot.model.js";
-import type {GenreSchemaFields} from "../../../genre/models/genre/Genre.types.js";
-import type {MovieSchemaFields} from "../../model/Movie.types.js";
+import type {MovieWithGenres} from "../../model/Movie.types.js";
+import {MovieSnapshotInputSchema} from "@domains/movie/_feat/validate-submit";
 
-/**
- * Internal helper type representing a movie document
- * populated with its genre relations.
- *
- * @internal
- */
-interface MovieWithGenres extends MovieSchemaFields {
-    genres: GenreSchemaFields[];
-}
-
-/**
- * Create an immutable snapshot of a movie.
- *
- * @remarks
- * This operation performs a defensive read of persisted movie data and
- * validates it against the snapshot input schema before constructing
- * the snapshot instance. Any inconsistencies indicate a violation of
- * internal invariants rather than user input errors.
- *
- * @param movieID - ObjectId of the source movie document
- *
- * @returns A validated, immutable {@link MovieSnapshotSchemaFields} instance
- *
- * @throws {@link DocumentNotFoundError}
- * Thrown when the source movie document cannot be found.
- *
- * @throws {@link InconsistentDataError}
- * Thrown when the source movie data fails snapshot validation.
- */
+/** Fetches a movie by ID and validates its data against the snapshot schema. */
 export async function createMovieSnapshot(
     movieID: Types.ObjectId
 ): Promise<MovieSnapshotSchemaFields> {

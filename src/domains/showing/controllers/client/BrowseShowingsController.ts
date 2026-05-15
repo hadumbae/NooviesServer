@@ -3,15 +3,15 @@
  * @filename getFetchShowingsWithMovie.ts
  */
 
-import type {ControllerAsyncFunc} from "../../../../shared/types/ControllerTypes.js";
+import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
 import type {Request, Response} from "express";
 import {fetchRequiredMovie} from "../../../movie/utilities/fetch/fetchRequiredMovie.js";
-import {MoviePopulatePaths} from "../../../movie/queries/MoviePopulatePaths.js";
 import {fetchShowingsForMovie} from "../../services/showings-for-movie/ShowingsForMovieService.js";
-import {fetchRequestQueryBySchema} from "../../../../shared/utility/request/fetchRequestQueryBySchema.js";
+import {fetchRequestQueryBySchema} from "@shared/utility/request/fetchRequestQueryBySchema";
 import {
     ShowingsViewQueryStringSchema
 } from "../../../movie/schema/view-data/showings-for-movie/ShowingsViewQueryStringSchema.js";
+import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
 
 /**
  * Returns a movie with populated showing data.
@@ -28,7 +28,7 @@ export const getFetchShowingsWithMovie: ControllerAsyncFunc = async (req: Reques
         options: {
             populate: true,
             virtuals: true,
-            populatePaths: MoviePopulatePaths
+            populatePaths: MoviePopulationPaths
         },
     });
 

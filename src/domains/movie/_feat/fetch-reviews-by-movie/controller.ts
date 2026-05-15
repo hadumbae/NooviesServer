@@ -3,19 +3,19 @@
  * MovieBrowseController.ts
  */
 
-import type {ControllerAsyncFunc} from "../../../../../shared/types/ControllerTypes.js";
 import type {Request, Response} from "express";
-import isValidObjectId from "../../../../../shared/utility/mongoose/isValidObjectId.js";
-import * as BrowseMovieDetailsService from "../../../service/browse-movie-details-service/BrowseMovieDetailsService.js";
-import QueryUtils from "../../../../../shared/services/query-utils/QueryUtils.js";
-import {fetchRequestUser} from "../../../../../shared/utility/request/fetchRequestUser.js";
+import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
+import QueryUtils from "@shared/services/query-utils/QueryUtils";
+import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
+import * as BrowseMovieDetailsService
+    from "@domains/movie/service/browse-movie-details-service/BrowseMovieDetailsService";
 
 /**
  * Handles paginated movie review retrieval.
  */
-export const getReviewsByMovie: ControllerAsyncFunc = async (
+export async function getReviewsByMovie(
     req: Request, res: Response
-): Promise<Response> => {
+): Promise<Response> {
     const {_id} = req.params;
     const movieID = isValidObjectId(_id);
 
@@ -37,9 +37,9 @@ export const getReviewsByMovie: ControllerAsyncFunc = async (
 /**
  * Returns featured reviews for a movie and the requesting user's review.
  */
-export const getFeaturedReviewsByMovie: ControllerAsyncFunc = async (
+export async function getFeaturedReviewsByMovie(
     req: Request, res: Response
-) => {
+): Promise<Response> {
     const {_id} = req.params;
 
     const userID = fetchRequestUser(req);
@@ -59,9 +59,9 @@ export const getFeaturedReviewsByMovie: ControllerAsyncFunc = async (
  * Handles paginated movie review retrieval with aggregate stats
  * and the requesting user's review.
  */
-export const getReviewDetailsByMovie: ControllerAsyncFunc = async (
+export async function getReviewDetailsByMovie(
     req: Request, res: Response
-): Promise<Response> => {
+): Promise<Response> {
     const {_id} = req.params;
 
     const userID = fetchRequestUser(req);

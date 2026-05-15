@@ -6,7 +6,7 @@
 import type {FetchRequiredMovieBySlugParams, FetchRequiredMovieParams} from "./MovieFetchService.types.js";
 import MovieModel from "../../model/Movie.model.js";
 import type {MovieDocument} from "../../type/MovieTypes.js";
-import {fetchOrFailQuery} from "../../../../shared/utility/mongoose/fetchOrFailQuery.js";
+import {fetchOrFailQuery} from "@shared/utility/mongoose/fetchOrFailQuery";
 
 /**
  * Retrieves a Movie by `_id`, rejecting if not found.
