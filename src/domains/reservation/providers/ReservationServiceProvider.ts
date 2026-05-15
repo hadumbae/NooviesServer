@@ -24,8 +24,8 @@ import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import type { PopulatePath } from "@shared/types/mongoose/PopulatePath";
 import { BaseRepository } from "@shared/repository/BaseRepository";
 import { ReservationCRUDController } from "@domains/reservation/features/reservation-crud/controllers/controller";
-import { ReservationQueryOptionService } from "domains/reservation/features/get-query-options/services";
 import {ReservationPopulateRefs} from "@domains/reservation/constants";
+import {ReservationQueryOptionService} from "@domains/reservation/features/get-query-options/services";
 
 /**
  * Service provider for Reservation domain bindings.

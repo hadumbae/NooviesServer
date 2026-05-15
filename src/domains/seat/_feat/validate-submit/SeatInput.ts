@@ -10,7 +10,7 @@ import { PositiveNumberSchema } from "@shared/schema/numbers/PositiveNumberSchem
 import { NonNegativeNumberSchema } from "@shared/schema/numbers/NonNegativeNumberSchema";
 import { ObjectIdStringSchema } from "@shared/schema/mongoose/ObjectIdStringSchema";
 import { SeatLayoutTypeSchema } from "@domains/seat/validation/SeatLayoutTypeSchema";
-import {SeatTypeSchema} from "domains/seat/validation";
+import {SeatTypeSchema} from "@domains/seat/validation";
 
 /**
  * Common properties shared across all grid elements in a theatre screen layout.

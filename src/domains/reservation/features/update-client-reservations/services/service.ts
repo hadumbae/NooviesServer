@@ -11,7 +11,7 @@ import {
     assertReservationExists,
     assertReservationNotExpired,
     assertReservationOwnership
-} from "domains/reservation/utils/assert";
+} from "@domains/reservation/utils/assert";
 
 /**
  * Transitions a reservation from a temporary hold (`RESERVED`) to a finalized `PAID` state.
