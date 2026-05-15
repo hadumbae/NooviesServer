@@ -4,9 +4,9 @@
  */
 
 import { Router } from "express";
-import isAuth from "../../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../../shared/utility/handlers/asyncHandler.js";
-import * as MovieBrowseController from "../../_feat/fetch-reviews-by-movie/controller";
+import asyncHandler from "@shared/utility/handlers/asyncHandler";
+import isAuth from "@domains/authentication/middleware/isAuth";
+import * as MovieBrowseController from "@domains/movie/_feat/fetch-reviews-by-movie/controller";
 
 const router = Router();
 
@@ -38,5 +38,5 @@ router.get(
 );
 
 export {
-    router as MovieBrowseRoutes,
+    router as ReviewsByMovieRoutes,
 };

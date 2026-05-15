@@ -5,10 +5,10 @@
 
 
 import type {
-    BrowseReviewsByMovieParams,
-    FeaturedReviewsByMovieParams,
+    BrowseReviewsByMovieConfig,
+    FeaturedReviewsByMovieConfig,
     FeaturedReviewsByMovieReturns,
-    ReviewDetailsByMovieParams,
+    ReviewDetailsByMovieConfig,
     ReviewDetailsByMovieReturns
 } from "./service.types";
 import type {MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types";
@@ -22,12 +22,13 @@ import {addMovieReviewDetailsPipelines} from "@domains/movieReview/utilities/add
 /**
  * Returns paginated reviews for a movie.
  */
-export const fetchReviewsByMovie = async (
-    {movieID, page, perPage, options}: BrowseReviewsByMovieParams
+export const fetchPaginatedReviewsByMovie = async (
+    {movieID, page, perPage, options}: BrowseReviewsByMovieConfig
 ): Promise<PaginationReturns<MovieReviewSchemaFields>> => {
     const baseQuery = MovieReview
         .find({movie: movieID})
-        .skip((page - 1) * perPage);
+        .skip((page - 1) * perPage)
+        .limit(perPage);
 
     const paginatedQuery = populateQuery({
         query: baseQuery,
@@ -49,7 +50,7 @@ export const fetchReviewsByMovie = async (
  * Fetches featured reviews for a movie.
  */
 export const fetchFeaturedReviewsByMovie = async (
-    {movieID, userID, options}: FeaturedReviewsByMovieParams
+    {movieID, userID, options}: FeaturedReviewsByMovieConfig
 ): Promise<FeaturedReviewsByMovieReturns> => {
     const populationPipelines = options?.populate ? MovieReviewPopulationPipelines : [];
 
@@ -88,8 +89,8 @@ export const fetchFeaturedReviewsByMovie = async (
 /**
  * Returns paginated reviews with aggregate stats and the requesting user's review.
  */
-export const fetchReviewDetailsByMovie = async (
-    {userID, movieID, page, perPage, options}: ReviewDetailsByMovieParams
+export const fetchReviewDetailsForMovie = async (
+    {userID, movieID, page, perPage, options}: ReviewDetailsByMovieConfig
 ): Promise<ReviewDetailsByMovieReturns> => {
     const populationPipelines = options?.populate ? MovieReviewPopulationPipelines : [];
 

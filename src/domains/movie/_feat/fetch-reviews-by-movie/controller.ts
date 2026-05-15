@@ -22,7 +22,7 @@ export async function getReviewsByMovie(
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const options = QueryUtils.fetchOptionsFromQuery(req);
 
-    const data = await BrowseMovieDetailsService.fetchReviewsByMovie({
+    const data = await BrowseMovieDetailsService.fetchPaginatedReviewsByMovie({
         movieID,
         page,
         perPage,
@@ -70,7 +70,7 @@ export async function getReviewDetailsByMovie(
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const options = QueryUtils.fetchOptionsFromQuery(req);
 
-    const data = await BrowseMovieDetailsService.fetchReviewDetailsByMovie({
+    const data = await BrowseMovieDetailsService.fetchReviewDetailsForMovie({
         userID,
         movieID,
         page,

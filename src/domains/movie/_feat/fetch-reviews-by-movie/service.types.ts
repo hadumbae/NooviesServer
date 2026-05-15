@@ -8,7 +8,7 @@ import type {MovieReviewSchemaFields} from "@domains/movieReview/model/MovieRevi
 import type {PaginationReturns} from "@shared/types/PaginationReturns";
 
 /** Parameters for paginated movie review retrieval. */
-export type BrowseReviewsByMovieParams = {
+export type BrowseReviewsByMovieConfig = {
     movieID: Types.ObjectId;
     page: number;
     perPage: number;
@@ -16,7 +16,7 @@ export type BrowseReviewsByMovieParams = {
 };
 
 /** Parameters for retrieving featured reviews for a movie. */
-export type FeaturedReviewsByMovieParams = {
+export type FeaturedReviewsByMovieConfig = {
     movieID: Types.ObjectId;
     userID: Types.ObjectId;
     options?: Pick<RequestOptions, "populate" | "virtuals">;
@@ -29,7 +29,7 @@ export type FeaturedReviewsByMovieReturns = {
 };
 
 /** Parameters for review retrieval including user context. */
-export type ReviewDetailsByMovieParams = BrowseReviewsByMovieParams & {
+export type ReviewDetailsByMovieConfig = BrowseReviewsByMovieConfig & {
     userID: Types.ObjectId;
 };
 
