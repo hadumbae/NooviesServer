@@ -10,7 +10,7 @@ import type {
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
-import {createMovieSnapshot} from "@domains/movie/utilities/snapshots/createMovieSnapshot";
+import {createMovieSnapshot} from "src/domains/movie/_feat/manage-snapshots/createMovieSnapshot";
 import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
 import {createReservedSeatSnapshot} from "@domains/seatmap/utilities/snapshots/createReservedSeatSnapshot";
 import type {

@@ -3,13 +3,13 @@
  */
 
 import {Movie} from "src/domains/movie/model/movie/Movie.model";
-import type {MovieSnapshotSchemaFields} from "@domains/movie/model/movie-snapshot";
+import type {MovieSnapshotSchemaFields} from "src/domains/movie/model/movie-snapshot";
 import {Types} from "mongoose";
-import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
-import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
-import {MovieSnapshot} from "@domains/movie/model/movie-snapshot";
+import {DocumentNotFoundError} from "src/shared/errors/DocumentNotFoundError";
+import {InconsistentDataError} from "src/shared/errors/InconsistentDataError";
+import {MovieSnapshot} from "src/domains/movie/model/movie-snapshot";
 import type {MovieWithGenres} from "src/domains/movie/model/movie/Movie.types";
-import {MovieSnapshotInputSchema} from "@domains/movie/_feat/validate-submit";
+import {MovieSnapshotInputSchema} from "src/domains/movie/_feat/validate-submit";
 
 /** Fetches a movie by ID and validates its data against the snapshot schema. */
 export async function createMovieSnapshot(

@@ -7,8 +7,8 @@
 import type {Express} from "express";
 import type {RouteRegistration} from "@shared/server/registerRoutes";
 import {GenreClientViewDataRoutes} from "@domains/genre/_feat/client-view-data";
-import {MovieClientViewDataRoutes} from "@domains/movie/routing/client/MovieClientViewDataRoutes";
 import {TheatreClientViewDataRoutes} from "@domains/theatre/_feat/client-view-data";
+import {MovieClientViewDataRoutes} from "@domains/movie/_feat/client-view-data";
 
 /**
  * Collection of route groups related to Genre client-side views.

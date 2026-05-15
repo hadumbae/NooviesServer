@@ -5,10 +5,10 @@
  */
 
 import {Router} from "express";
-import isAuth from "../../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../../shared/utility/handlers/asyncHandler.js";
-import * as BrowseMovieCreditsController from "../../../movieCredit/controllers/client/BrowseMovieCreditsController.js";
-import * as BrowseShowingsController from "../../../showing/controllers/client/BrowseShowingsController.js";
+import isAuth from "src/domains/authentication/middleware/isAuth.js";
+import asyncHandler from "src/shared/utility/handlers/asyncHandler.js";
+import * as BrowseMovieCreditsController from "src/domains/movieCredit/controllers/client/BrowseMovieCreditsController.js";
+import * as BrowseShowingsController from "src/domains/showing/controllers/client/BrowseShowingsController.js";
 
 const router = Router();
 
