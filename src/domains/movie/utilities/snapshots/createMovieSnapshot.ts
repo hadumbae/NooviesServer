@@ -2,24 +2,24 @@
  * @fileoverview Utility for generating immutable movie snapshots for historical records.
  */
 
-import MovieModel from "../../model/Movie.model.js";
-import type {MovieSnapshotSchemaFields} from "../../model/movie-snapshot/MovieSnapshot.types.js";
+import {Movie} from "src/domains/movie/model/movie/Movie.model";
+import type {MovieSnapshotSchemaFields} from "@domains/movie/model/movie-snapshot";
 import {Types} from "mongoose";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
-import {MovieSnapshot} from "../../model/movie-snapshot/MovieSnapshot.model.js";
-import type {MovieWithGenres} from "../../model/Movie.types.js";
+import {MovieSnapshot} from "@domains/movie/model/movie-snapshot";
+import type {MovieWithGenres} from "src/domains/movie/model/movie/Movie.types";
 import {MovieSnapshotInputSchema} from "@domains/movie/_feat/validate-submit";
 
 /** Fetches a movie by ID and validates its data against the snapshot schema. */
 export async function createMovieSnapshot(
     movieID: Types.ObjectId
 ): Promise<MovieSnapshotSchemaFields> {
-    const movie = await MovieModel.findById(movieID).populate(["genres"]).lean();
+    const movie = await Movie.findById(movieID).populate(["genres"]).lean();
 
     if (!movie) {
         throw new DocumentNotFoundError({
-            model: MovieModel,
+            model: Movie,
             identifier: movieID,
             message: "Failed to fetch Movie for snapshot.",
         });

@@ -1,30 +1,15 @@
 /**
- * @file MovieSnapshot.schema.ts
- *
- * Mongoose schema defining an immutable snapshot of a movie.
- *
- * A movie snapshot represents the resolved state of a movie at a specific
- * point in time and is embedded into other entities such as showings and
- * reservations to preserve historical accuracy.
- *
- * Snapshot data must remain valid even if the source movie is later edited
- * or deleted.
+ * @fileoverview Mongoose schema defining an immutable snapshot of a movie for historical data preservation.
  */
 
 import { Schema } from "mongoose";
 import ISO3166Alpha2CodeConstant from "../../../../shared/constants/country/ISO3166Alpha2CodeConstant.js";
 import type { MovieSnapshotSchemaFields } from "./MovieSnapshot.types.js";
-import { URLStringSchema } from "../../../../shared/schema/strings/URLStringSchema.js";
+import { URLStringSchema } from "@shared/schema/strings/URLStringSchema";
 
-/**
- * Mongoose schema for movie snapshot persistence.
- *
- * @remarks
- * This schema is write-once by convention and must not be mutated after
- * being embedded into a parent document.
- */
+/** Mongoose schema for movie snapshot persistence. */
 export const MovieSnapshotSchema = new Schema<MovieSnapshotSchemaFields>({
-    /** Localized display title of the movie. */
+    /** Localised display title of the movie. */
     title: {
         type: String,
         minlength: [1, "Must not be an empty string."],

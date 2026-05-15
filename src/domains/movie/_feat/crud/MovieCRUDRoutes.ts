@@ -12,13 +12,13 @@ import {create, destroy, find, findById, findBySlug, paginated, update} from "@s
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
-import type {MovieSchemaFields} from "@domains/movie/model/Movie.types";
-import MovieModel from "@domains/movie/model/Movie.model";
+import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types";
+import {Movie} from "src/domains/movie/model/movie/Movie.model";
 import {MovieInputSchema} from "../validate-submit/MovieInputSchema";
 import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
 import {MovieQueryMatchStageSchema, MovieQuerySortStageSchema} from "@domains/movie/_feat/validate-query";
 
-const modelName = MovieModel.modelName;
+const modelName = Movie.modelName;
 const matchSchema = MovieQueryMatchStageSchema;
 const sortSchema = MovieQuerySortStageSchema;
 
@@ -81,7 +81,7 @@ const routes: CRUDRoute<MovieSchemaFields>[] = [
  * Orchestrates the creation of the router using the generic CRUD utility factory.
  */
 const router: Router = buildCRUDRoutes<MovieSchemaFields>({
-    model: MovieModel,
+    model: Movie,
     routes: routes,
     populatePaths: MoviePopulationPaths,
 });
@@ -92,7 +92,7 @@ const router: Router = buildCRUDRoutes<MovieSchemaFields>({
 router.get(
     "/query",
     buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
-    asyncHandler(aggregate({model: MovieModel})),
+    asyncHandler(aggregate({model: Movie})),
 );
 
 export {

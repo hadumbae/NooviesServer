@@ -6,10 +6,10 @@
 import type {RequestOptions} from "@shared/types/request-options/RequestOptions";
 import {Types} from "mongoose";
 import populateQuery from "../../../../shared/utility/mongoose/populateQuery.js";
-import MovieModel from "../../model/Movie.model.js";
+import {Movie} from "src/domains/movie/model/movie/Movie.model";
 import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 import type {DocumentType} from "@shared/types/mongoose/DocumentType";
-import type {MovieSchemaFields} from "@domains/movie/model/Movie.types";
+import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types";
 
 /**
  * Parameters for fetching a required movie.
@@ -32,8 +32,8 @@ export function fetchRequiredMovie(
     {_id, slug, options}: FetchParams,
 ): Promise<DocumentType<MovieSchemaFields>> {
     const query = _id
-        ? MovieModel.findById(_id)
-        : MovieModel.findOne({slug});
+        ? Movie.findById(_id)
+        : Movie.findOne({slug});
 
     const movie = populateQuery({query, options});
     return movie.orFail();

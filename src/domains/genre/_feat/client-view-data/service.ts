@@ -9,8 +9,8 @@ import type {
     GenreWithMoviesReturns
 } from "@domains/genre/_feat/client-view-data/service.types";
 import {Genre} from "@domains/genre/models/genre";
-import MovieModel from "@domains/movie/model/Movie.model";
-import type {MovieWithGenres} from "@domains/movie/model/Movie.types";
+import {Movie} from "src/domains/movie/model/movie/Movie.model";
+import type {MovieWithGenres} from "src/domains/movie/model/movie/Movie.types";
 
 /**
  * Retrieves a genre and its associated movies for the public "Browse Genre" view.
@@ -21,8 +21,8 @@ export async function fetchGenreWithMovies(
     const genre = await Genre.findOne({slug}).lean().orFail();
 
     const [totalItems, items] = await Promise.all([
-        MovieModel.countDocuments({genres: genre._id}),
-        MovieModel
+        Movie.countDocuments({genres: genre._id}),
+        Movie
             .find({genres: genre._id})
             .skip((page - 1) * perPage)
             .limit(perPage)

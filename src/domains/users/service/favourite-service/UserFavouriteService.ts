@@ -12,7 +12,7 @@ import type {
 import User from "@models/User.model.js";
 import createHttpError from "http-errors";
 import type {UserSchemaFields} from "@models/User.types.js";
-import MovieModel from "../../../movie/model/Movie.model.js";
+import {Movie} from "src/domains/movie/model/movie/Movie.model";
 import {fetchRequiredMovie} from "@domains/movie/_feat/fetch-movies";
 
 
@@ -25,8 +25,8 @@ export const fetchUserFavourites = async (
 
     const {favourites} = user as UserSchemaFields;
     const [totalItems, items] = await Promise.all([
-        MovieModel.countDocuments({_id: {$in: favourites}}),
-        MovieModel.find({_id: {$in: favourites}})
+        Movie.countDocuments({_id: {$in: favourites}}),
+        Movie.find({_id: {$in: favourites}})
             .skip(perPage * (page - 1))
             .limit(perPage)
             .populate("genres")

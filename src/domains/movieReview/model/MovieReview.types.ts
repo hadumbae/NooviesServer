@@ -5,7 +5,7 @@
 
 import {Types} from "mongoose";
 import type {LeanUserSchemaFields} from "@models/User.types.js";
-import type {MovieWithGenres, MovieWithRating} from "../../movie/model/Movie.types.js";
+import type {MovieWithGenres, MovieWithRating} from "src/domains/movie/model/movie/Movie.types";
 import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/MovieReviewUniqueCodeSchema";
 

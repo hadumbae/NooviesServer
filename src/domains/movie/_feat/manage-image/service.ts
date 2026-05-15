@@ -2,8 +2,8 @@
  * @fileoverview Service for managing movie poster image uploads and deletions in Cloudinary.
  */
 
-import type {MovieSchemaFields} from "@domains/movie/model/Movie.types";
-import MovieModel from "@domains/movie/model/Movie.model";
+import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types";
+import {Movie} from "src/domains/movie/model/movie/Movie.model";
 import createHttpError from "http-errors";
 import {removeCloudinaryImage, uploadCloudinaryImage} from "@shared/_feat/manage-cloudinary-images";
 import type {DeletePosterImageConfig, UploadPosterImageConfig} from "@domains/movie/_feat/manage-image/service.types";
@@ -12,7 +12,7 @@ import type {DeletePosterImageConfig, UploadPosterImageConfig} from "@domains/mo
 export async function updateMoviePosterImage(
     {movieID, image}: UploadPosterImageConfig
 ): Promise<MovieSchemaFields> {
-    const movie = await MovieModel.findById(movieID);
+    const movie = await Movie.findById(movieID);
     if (!movie) throw createHttpError(404, "Not found.");
 
     if (movie.posterImage) {
@@ -29,7 +29,7 @@ export async function updateMoviePosterImage(
 export async function removeMoviePosterImage(
     {movieID}: DeletePosterImageConfig
 ): Promise<MovieSchemaFields> {
-    const movie = await MovieModel.findById(movieID);
+    const movie = await Movie.findById(movieID);
     if (!movie) throw createHttpError(404, "Not found.");
 
     const {posterImage} = movie;

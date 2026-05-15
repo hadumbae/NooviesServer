@@ -6,7 +6,7 @@
 import "dotenv/config";
 import connect from "@config/database.js";
 import mongoose from "mongoose";
-import MovieModel from "../domains/movie/model/Movie.model.js";
+import {Movie} from "src/domains/movie/model/movie/Movie.model";
 import {Genre} from "@domains/genre/models/genre";
 
 /**
@@ -21,7 +21,7 @@ connect().then(async () => {
         genre = await cursor.next()
     ) {
         /** Recalculate actual count from the Movie collection. */
-        const count = await MovieModel.countDocuments({genres: genre._id});
+        const count = await Movie.countDocuments({genres: genre._id});
 
         console.log(`Updating: ${genre.name} | Found: ${count} movies`);
 

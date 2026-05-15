@@ -1,18 +1,15 @@
-import {Schema} from "mongoose";
-import {CloudinaryImageSchema} from "../../../shared/model/cloudinary-image/CloudinaryImage.js";
-import ISO6391CodeConstant from "../../../shared/constants/language/ISO6391CodeConstant.js";
-import ISO3166Alpha2CodeConstant from "../../../shared/constants/country/ISO3166Alpha2CodeConstant.js";
-import {URLStringSchema} from "../../../shared/schema/strings/URLStringSchema.js";
-import type {MovieSchemaFields} from "./Movie.types.js";
-
 /**
- * Movie mongoose schema.
- *
- * @remarks
- * Defines persistence rules, validation constraints, and indexes
- * for movie documents, including localization, release metadata,
- * media assets, genre relations, and availability state.
+ * @fileoverview Defines the Mongoose schema and persistence logic for movie documents.
  */
+
+import {Schema} from "mongoose";
+import {CloudinaryImageSchema} from "src/shared/model/cloudinary-image/CloudinaryImage.js";
+import ISO6391CodeConstant from "src/shared/constants/language/ISO6391CodeConstant.js";
+import ISO3166Alpha2CodeConstant from "src/shared/constants/country/ISO3166Alpha2CodeConstant.js";
+import {URLStringSchema} from "src/shared/schema/strings/URLStringSchema.js";
+import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types.js";
+
+/** Mongoose schema for the Movie entity. */
 export const MovieSchema: Schema<MovieSchemaFields> = new Schema<MovieSchemaFields>({
     /** Primary display title. */
     title: {
@@ -156,9 +153,3 @@ export const MovieSchema: Schema<MovieSchemaFields> = new Schema<MovieSchemaFiel
 }, {
     timestamps: {createdAt: "createdAt", updatedAt: "updatedAt"},
 });
-
-/** Indexes for common query patterns. */
-MovieSchema.index({title: 1});
-MovieSchema.index({originalTitle: 1});
-MovieSchema.index({releaseDate: -1});
-MovieSchema.index({isAvailable: 1});

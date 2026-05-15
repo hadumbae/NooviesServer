@@ -3,14 +3,14 @@
  * Handles slug generation, genre count synchronization, and cascade deletions.
  */
 
-import {MovieSchema} from "./Movie.schema.js";
+import {MovieSchema} from "src/domains/movie/model/movie/Movie.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import Showing from "@domains/showing/models/showing/Showing.model.js";
-import type {MovieSchemaFields} from "./Movie.types.js";
-import generateSlug from "@shared/utility/generateSlug.js";
-import MovieCredit from "@domains/movieCredit/models/MovieCredit.model.js";
-import MovieModel from "./Movie.model.js";
-import {Genre} from "@domains/genre/models/genre";
+import Showing from "src/domains/showing/models/showing/Showing.model.js";
+import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types.js";
+import generateSlug from "src/shared/utility/generateSlug.js";
+import MovieCredit from "src/domains/movieCredit/models/MovieCredit.model.js";
+import {Movie} from "src/domains/movie/model/movie/Movie.model.js";
+import {Genre} from "src/domains/genre/models/genre";
 
 /**
  * Synchronizes the URL slug whenever the title is modified.
@@ -34,7 +34,7 @@ MovieSchema.pre(
     {document: true},
     async function (this: HydratedDocument<MovieSchemaFields>) {
         if (!this.isNew || this.isModified("genres")) {
-            const oldDoc = await MovieModel.findById(this._id).select("genres");
+            const oldDoc = await Movie.findById(this._id).select("genres");
             (this as any)._genresToRemove = oldDoc?.genres ?? [];
         }
     }

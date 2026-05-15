@@ -9,7 +9,7 @@ import type {
 import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 import type {GenreSchemaFields} from "@domains/genre/models/genre";
 import type {PaginationReturns} from "@shared/types/PaginationReturns";
-import type {MovieWithGenres} from "@domains/movie/model/Movie.types";
+import type {MovieWithGenres} from "src/domains/movie/model/movie/Movie.types";
 
 /**
  * Configuration object for the `fetchGenreWithMovies` service function.

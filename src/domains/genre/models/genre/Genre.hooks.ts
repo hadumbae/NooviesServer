@@ -5,7 +5,7 @@
 
 import {GenreSchema} from "./Genre.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import MovieModel from "../../../movie/model/Movie.model.js";
+import {Movie} from "src/domains/movie/model/movie/Movie.model";
 import type {GenreSchemaFields} from "./Genre.types.js";
 import generateSlug from "../../../../shared/utility/generateSlug.js";
 
@@ -31,7 +31,7 @@ GenreSchema.pre(
     "deleteOne",
     {document: true, query: false},
     async function (this: HydratedDocument<GenreSchemaFields>) {
-        await MovieModel.updateMany({$pull: {genres: this._id}}).exec();
+        await Movie.updateMany({$pull: {genres: this._id}}).exec();
     }
 );
 
@@ -43,6 +43,6 @@ GenreSchema.pre(
     {document: false, query: true},
     async function (this: Query<any, GenreSchemaFields>) {
         const {_id} = this.getFilter();
-        if (_id) await MovieModel.deleteMany({genre: _id}).exec();
+        if (_id) await Movie.deleteMany({genre: _id}).exec();
     }
 );
