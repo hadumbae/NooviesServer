@@ -7,12 +7,12 @@ import type MovieQueryOptionService from "../service/MovieQueryOptionService.js"
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 import type {MovieSchemaFields} from "../model/Movie.types.js";
+import type {MovieQueryFilters} from "@domains/movie/_feat/validate-query";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
 } from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
 
-import type {MovieQueryMatchFilters} from "@domains/movie/_feat/validate-query/MovieQueryMatchFiltersSchema";
 
 /**
  * Constructor parameters for {@link MovieController}.
@@ -37,7 +37,7 @@ export interface IMovieControllerConstructor extends BaseCRUDControllerConstruct
  * - Updating/deleting poster images
  * - Fetching paginated movies with recent showings
  */
-export interface IMovieController extends BaseControllerCRUDMethods<MovieSchemaFields, MovieQueryMatchFilters> {
+export interface IMovieController extends BaseControllerCRUDMethods<MovieSchemaFields, MovieQueryFilters> {
     /**
      * Updates the poster image of a movie.
      *
@@ -104,7 +104,7 @@ export default class MovieController extends BaseCRUDController<MovieSchemaField
      * @param req - Express request object containing query parameters
      * @returns Structured {@link QueryOptionTypes} with filters and sorts
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<MovieSchemaFields, MovieQueryMatchFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<MovieSchemaFields, MovieQueryFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }

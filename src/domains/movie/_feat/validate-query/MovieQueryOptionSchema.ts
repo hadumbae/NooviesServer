@@ -4,16 +4,16 @@
  */
 
 import {z} from "zod";
-import {MovieQueryMatchFiltersSchema} from "@domains/movie/_feat/validate-query/MovieQueryMatchFiltersSchema";
-import {MovieQueryMatchSortsSchema} from "@domains/movie/_feat/validate-query/MovieQueryMatchSortsSchema";
+import {MovieQueryFiltersSchema} from "./MovieQueryFiltersSchema";
+import {MovieQuerySortsSchema} from "./MovieQuerySortsSchema";
 import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
 import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema for Movie query options with an aggregation transformation.
  */
-export const MovieQueryOptionsSchema = MovieQueryMatchSortsSchema
-    .merge(MovieQueryMatchFiltersSchema)
+export const MovieQueryOptionsSchema = MovieQuerySortsSchema
+    .merge(MovieQueryFiltersSchema)
     .transform(
         (values): AggregateQueryOptions => ({
             match: {

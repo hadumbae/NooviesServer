@@ -1,7 +1,6 @@
 import type {FilterQuery, SortOrder} from "mongoose";
 import type {MovieSchemaFields} from "../../model/Movie.types.js";
-
-import type {MovieQueryMatchFilters} from "@domains/movie/_feat/validate-query/MovieQueryMatchFiltersSchema";
+import type {MovieQueryFilters} from "@domains/movie/_feat/validate-query";
 
 /**
  * Parameters for fetching paginated movies that include recent active showings.
@@ -22,7 +21,7 @@ export interface FetchPaginatedMoviesWithRecentShowingsParams {
      *
      * Example: `{ genre: "Action" }`
      */
-    query?: FilterQuery<MovieQueryMatchFilters>;
+    query?: FilterQuery<MovieQueryFilters>;
 
     /**
      * Optional sort definition for movies.

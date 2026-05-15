@@ -1,6 +1,5 @@
 /**
- * @fileoverview Validation schema for filtering Movie entities in database queries.
- * Provides a comprehensive set of filters for catalog management and customer search.
+ * @fileoverview Defines the Zod schema for validating movie search query parameters.
  */
 
 import {z} from "zod";
@@ -12,10 +11,8 @@ import {URLParamBooleanSchema} from "@shared/schema/url/URLParamBooleanSchema";
 import {ISO3166Alpha2CountryCodeSchema} from "@shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
 import {URLParamRegexPatternSchema} from "@shared/_feat/parse-query-string";
 
-/**
- * Zod schema defining the available match filters for Movie queries.
- */
-export const MovieQueryMatchFiltersSchema = z.object({
+/** Zod schema for validating and parsing movie filter criteria from URL parameters. */
+export const MovieQueryFiltersSchema = z.object({
     _id: URLParamObjectIDSchema,
     title: URLParamRegexPatternSchema,
     releaseDate: URLParamDateOnlySchema,
@@ -26,7 +23,5 @@ export const MovieQueryMatchFiltersSchema = z.object({
     isAvailable: URLParamBooleanSchema,
 });
 
-/**
- * TypeScript type inferred from MovieQueryMatchFiltersSchema.
- */
-export type MovieQueryMatchFilters = z.infer<typeof MovieQueryMatchFiltersSchema>;
+/** Type definition for movie query filters inferred from the schema. */
+export type MovieQueryFilters = z.infer<typeof MovieQueryFiltersSchema>;

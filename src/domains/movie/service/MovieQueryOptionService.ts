@@ -8,7 +8,7 @@ import {
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
 import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 import type {MovieSchemaFields} from "../model/Movie.types.js";
-import type {MovieQueryMatchFilters} from "@domains/movie/_feat/validate-query/MovieQueryMatchFiltersSchema";
+import type {MovieQueryFilters} from "@domains/movie/_feat/validate-query";
 
 /**
  * Service for parsing, validating, and converting query parameters
@@ -17,7 +17,7 @@ import type {MovieQueryMatchFilters} from "@domains/movie/_feat/validate-query/M
  * Implements {@link IQueryOptionService} to provide a consistent interface
  * for fetching query parameters and generating query options.
  */
-export default class MovieQueryOptionService implements IQueryOptionService<MovieSchemaFields, MovieQueryOptions, MovieQueryMatchFilters> {
+export default class MovieQueryOptionService implements IQueryOptionService<MovieSchemaFields, MovieQueryOptions, MovieQueryFilters> {
 
     /**
      * Parses and validates query parameters from an Express request.
@@ -48,7 +48,7 @@ export default class MovieQueryOptionService implements IQueryOptionService<Movi
      * const filters = service.generateMatchFilters({title: "Matrix", genres: ["Action"]});
      * // filters: { title: { $regex: "Matrix", $options: "i" }, genres: { $in: ["Action"] } }
      */
-    generateMatchFilters(options: MovieQueryOptions): FilterQuery<MovieQueryMatchFilters> {
+    generateMatchFilters(options: MovieQueryOptions): FilterQuery<MovieQueryFilters> {
         const {_id, title, releaseDate, genres, originalTitle, isReleased, country, isAvailable} = options;
 
         const conditions = {
@@ -108,7 +108,7 @@ export default class MovieQueryOptionService implements IQueryOptionService<Movi
      * const queryOptions = service.generateQueryOptions({title: "Matrix", sortByReleaseDate: 1});
      * // queryOptions: { match: { filters: { title: /Matrix/i }, sorts: { releaseDate: 1 } } }
      */
-    generateQueryOptions(options: MovieQueryOptions): QueryOptionTypes<MovieSchemaFields, MovieQueryMatchFilters> {
+    generateQueryOptions(options: MovieQueryOptions): QueryOptionTypes<MovieSchemaFields, MovieQueryFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
 

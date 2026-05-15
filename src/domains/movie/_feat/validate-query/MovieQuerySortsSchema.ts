@@ -1,6 +1,6 @@
 /**
  * @fileoverview Validation schema for sorting Movie entities in database queries.
- * Normalizes user-facing sort parameters into standard Mongoose-compatible order values.
+ *
  */
 
 import {z} from "zod";
@@ -9,7 +9,7 @@ import {URLParamSortOrderSchema} from "@shared/_feat/parse-query-string";
 /**
  * Zod schema defining sort criteria for Movie queries.
  */
-export const MovieQueryMatchSortsSchema = z.object({
+export const MovieQuerySortsSchema = z.object({
     sortByReleaseDate: URLParamSortOrderSchema,
     sortByTitle: URLParamSortOrderSchema,
     sortByOriginalTitle: URLParamSortOrderSchema,
@@ -19,6 +19,6 @@ export const MovieQueryMatchSortsSchema = z.object({
 });
 
 /**
- * TypeScript type inferred from MovieQueryMatchSortsSchema.
+ * Sort criteria for Movie queries.
  */
-export type MovieQueryMatchSorts = z.infer<typeof MovieQueryMatchSortsSchema>;
+export type MovieQuerySorts = z.infer<typeof MovieQuerySortsSchema>;
