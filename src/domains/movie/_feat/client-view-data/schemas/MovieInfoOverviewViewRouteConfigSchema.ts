@@ -7,11 +7,11 @@ import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
 import {PositiveIntegerSchema} from "@shared/schema/numbers/PositiveIntegerSchema";
 
 /** Zod schema for validating movie information route parameters. */
-export const MovieInfoViewRouteConfigSchema = z.object({
+export const MovieInfoOverviewViewRouteConfigSchema = z.object({
     slug: SlugStringSchema,
     reviewPage: PositiveIntegerSchema.optional(),
     reviewPerPage: PositiveIntegerSchema.optional(),
 });
 
 /** Configuration object for the movie information view route. */
-export type MovieInfoViewRouteConfig = z.infer<typeof MovieInfoViewRouteConfigSchema>;
+export type MovieInfoOverviewViewRouteConfig = z.infer<typeof MovieInfoOverviewViewRouteConfigSchema>;

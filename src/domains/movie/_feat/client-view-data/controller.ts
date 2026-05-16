@@ -8,14 +8,14 @@ import {fetchRequiredMovie} from "@domains/movie/utilities/fetch/fetchRequiredMo
 import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
 import {
     fetchCreditsForMovie,
-    fetchMovieInfoViewData,
+    fetchMovieInfoOverviewViewData,
     fetchShowingsForMovie
 } from "src/domains/movie/_feat/client-view-data/service";
 import {fetchRequestQueryBySchema} from "@shared/utility/request/fetchRequestQueryBySchema";
 import {ShowingsViewQueryStringSchema} from "@domains/showing/schemas/ShowingsViewQueryStringSchema";
 import type {
-    MovieInfoViewRouteConfig
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoViewRouteConfigSchema";
+    MovieInfoOverviewViewRouteConfig
+} from "src/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
 
 /**
@@ -79,11 +79,11 @@ export async function getFetchShowingsWithMovie(req: Request, res: Response): Pr
 }
 
 /** Fetches composite data required for the movie information view. */
-export async function getFetchMovieInfoViewData(req: Request, res: Response): Promise<Response> {
+export async function getFetchMovieInfoOverviewViewData(req: Request, res: Response): Promise<Response> {
     const userID = fetchRequestUser(req);
-    const {slug, reviewPage = 1, reviewPerPage = 3} = req.parsedConfig as MovieInfoViewRouteConfig;
+    const {slug, reviewPage = 1, reviewPerPage = 3} = req.parsedConfig as MovieInfoOverviewViewRouteConfig;
 
-    const data = await fetchMovieInfoViewData({
+    const data = await fetchMovieInfoOverviewViewData({
         slug,
         userID,
         reviewPage,

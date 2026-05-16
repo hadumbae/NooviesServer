@@ -9,11 +9,11 @@ import {generateFuzzyRegexPattern} from "@shared/utility/regex/generateFuzzyRege
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {ShowingPopulationPipelines} from "@domains/showing/queries/ShowingPopulationPipelines";
 import type {
-    FetchMovieInfoViewDataConfig,
+    FetchMovieInfoOverviewViewDataConfig,
     FetchShowingsForMovieParams,
     FetchShowingsForMovieReturns,
     GroupedCreditsForMovieData,
-    MovieInfoViewData
+    MovieInfoOverviewViewData
 } from "@domains/movie/_feat/client-view-data/service.types";
 import {Movie} from "@domains/movie/model/movie";
 import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
@@ -114,9 +114,9 @@ export async function fetchShowingsForMovie(
 }
 
 /** Fetches composite data for the movie information view including details, credits, and reviews. */
-export async function fetchMovieInfoViewData(
-    {userID, slug, reviewPage, reviewPerPage}: FetchMovieInfoViewDataConfig
-): Promise<MovieInfoViewData> {
+export async function fetchMovieInfoOverviewViewData(
+    {userID, slug, reviewPage, reviewPerPage}: FetchMovieInfoOverviewViewDataConfig
+): Promise<MovieInfoOverviewViewData> {
     const movie = await Movie
         .findOne({slug})
         .populate(MoviePopulationPaths)

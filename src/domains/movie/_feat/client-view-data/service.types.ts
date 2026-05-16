@@ -45,7 +45,7 @@ export type FetchShowingsForMovieReturns = {
 };
 
 /** Configuration parameters for fetching movie information view data. */
-export type FetchMovieInfoViewDataConfig = {
+export type FetchMovieInfoOverviewViewDataConfig = {
     slug: SlugString;
     userID: Types.ObjectId;
     reviewPage: PositiveInteger;
@@ -53,7 +53,7 @@ export type FetchMovieInfoViewDataConfig = {
 }
 
 /** The composite data structure returned for the movie information view. */
-export type MovieInfoViewData = {
+export type MovieInfoOverviewViewData = {
     movie: MovieSchemaFields;
     credits: IMovieCredit[];
     reviews: ReviewDetailsByMovieReturns;

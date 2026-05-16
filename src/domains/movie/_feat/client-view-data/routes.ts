@@ -6,36 +6,30 @@ import {Router} from "express";
 import isAuth from "src/domains/authentication/middleware/isAuth.js";
 import asyncHandler from "src/shared/utility/handlers/asyncHandler.js";
 import {
-    getFetchGroupedCreditsWithMovie, getFetchMovieInfoViewData,
+    getFetchGroupedCreditsWithMovie, getFetchMovieInfoOverviewViewData,
     getFetchShowingsWithMovie
 } from "@domains/movie/_feat/client-view-data/controller";
 import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
 import {
-    MovieInfoViewRouteConfigSchema
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoViewRouteConfigSchema";
+    MovieInfoOverviewViewRouteConfigSchema
+} from "src/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 
 const router = Router();
 
 router.get(
-    "/item/:slug/movie-info",
-    [isAuth, validateRequestConfig({schema: MovieInfoViewRouteConfigSchema})],
-    asyncHandler(getFetchMovieInfoViewData),
+    "/item/:slug/info-overview",
+    [isAuth, validateRequestConfig({schema: MovieInfoOverviewViewRouteConfigSchema})],
+    asyncHandler(getFetchMovieInfoOverviewViewData),
 );
 
 router.get(
-    "/item/:slug/credits",
+    "/item/:slug/info-credits",
     [isAuth],
     asyncHandler(getFetchGroupedCreditsWithMovie),
 );
 
 router.get(
-    "/item/:slug/showings",
-    [isAuth],
-    asyncHandler(getFetchShowingsWithMovie),
-);
-
-router.get(
-    "/item/:slug/showings",
+    "/item/:slug/info-showings",
     [isAuth],
     asyncHandler(getFetchShowingsWithMovie),
 );
