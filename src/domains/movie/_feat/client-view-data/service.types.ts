@@ -56,5 +56,5 @@ export type FetchMovieInfoOverviewViewDataConfig = {
 export type MovieInfoOverviewViewData = {
     movie: MovieSchemaFields;
     credits: IMovieCredit[];
-    reviews: ReviewDetailsByMovieReturns;
+    reviewDetails: ReviewDetailsByMovieReturns;
 }

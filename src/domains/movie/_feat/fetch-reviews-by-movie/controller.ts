@@ -67,6 +67,8 @@ export async function getReviewDetailsByMovie(
     const userID = fetchRequestUser(req);
     const movieID = isValidObjectId(_id);
 
+    console.log("MovieID : ", movieID);
+
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const options = QueryUtils.fetchOptionsFromQuery(req);
 

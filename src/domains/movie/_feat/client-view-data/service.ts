@@ -129,7 +129,7 @@ export async function fetchMovieInfoOverviewViewData(
         .populate(MovieCreditPopulationPaths)
         .lean({virtuals: true});
 
-    const reviews = await fetchReviewDetailsForMovie({
+    const reviewDetails = await fetchReviewDetailsForMovie({
         userID,
         movieID: movie._id,
         page: reviewPage,
@@ -140,6 +140,6 @@ export async function fetchMovieInfoOverviewViewData(
     return {
         movie,
         credits,
-        reviews,
+        reviewDetails,
     };
 }
