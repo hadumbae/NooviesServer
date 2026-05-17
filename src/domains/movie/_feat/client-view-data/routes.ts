@@ -3,19 +3,24 @@
  */
 
 import {Router} from "express";
-import isAuth from "src/domains/authentication/middleware/isAuth.js";
-import asyncHandler from "src/shared/utility/handlers/asyncHandler.js";
+import isAuth from "@domains/authentication/middleware/isAuth.js";
 import {
-    getFetchGroupedCreditsWithMovie, getFetchMovieInfoOverviewViewData,
-    getFetchShowingsWithMovie
+    getFetchMovieInfoCreditsViewData,
+    getFetchMovieInfoOverviewViewData,
+    getFetchMovieInfoShowingsViewData
 } from "@domains/movie/_feat/client-view-data/controller";
 import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
 import {
     MovieInfoOverviewViewRouteConfigSchema
-} from "src/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
+} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 import {
     MovieInfoCreditsViewRouteConfigSchema
 } from "@domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
+import {
+    MovieInfoShowingsViewRouteConfigSchema
+} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
+import asyncHandler from "@/utility/handlers/asyncHandler";
+
 
 const router = Router();
 
@@ -28,13 +33,13 @@ router.get(
 router.get(
     "/item/:slug/info-credits",
     [isAuth, validateRequestConfig({schema: MovieInfoCreditsViewRouteConfigSchema})],
-    asyncHandler(getFetchGroupedCreditsWithMovie),
+    asyncHandler(getFetchMovieInfoCreditsViewData),
 );
 
 router.get(
     "/item/:slug/info-showings",
-    [isAuth],
-    asyncHandler(getFetchShowingsWithMovie),
+    [isAuth, validateRequestConfig({schema: MovieInfoShowingsViewRouteConfigSchema})],
+    asyncHandler(getFetchMovieInfoShowingsViewData),
 );
 
 /** Router handling movie client view data requests. */

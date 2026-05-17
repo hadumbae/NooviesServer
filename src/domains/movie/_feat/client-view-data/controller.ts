@@ -6,30 +6,31 @@
 import type {Request, Response} from "express";
 import {fetchRequiredMovie} from "@domains/movie/utilities/fetch/fetchRequiredMovie";
 import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
-import {
-    fetchCreditsWithMovie,
-    fetchMovieInfoOverviewViewData,
-    fetchShowingsForMovie
-} from "src/domains/movie/_feat/client-view-data/service";
-import {fetchRequestQueryBySchema} from "@shared/utility/request/fetchRequestQueryBySchema";
-import {ShowingsViewQueryStringSchema} from "@domains/showing/schemas/ShowingsViewQueryStringSchema";
-import type {
-    MovieInfoOverviewViewRouteConfig
-} from "src/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
 import type {
     MovieInfoCreditsViewRouteConfig
 } from "@domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
+import type {
+    MovieInfoShowingsViewRouteConfig
+} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
+import {fetchShowingsForMovie} from "@domains/movie/_feat/client-view-data/utils/fetchShowingsForMovie";
+import {
+    fetchMovieInfoCreditsViewData,
+    fetchMovieInfoOverviewViewData
+} from "@domains/movie/_feat/client-view-data/utils";
+import type {
+    MovieInfoOverviewViewRouteConfig
+} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 
 /**
  * Fetches a movie and its grouped cast and crew credits for browse views.
  */
-export async function getFetchGroupedCreditsWithMovie(
+export async function getFetchMovieInfoCreditsViewData(
     req: Request, res: Response
 ): Promise<Response> {
     const {slug} = req.parsedConfig as MovieInfoCreditsViewRouteConfig;
 
-    const data = await fetchCreditsWithMovie({slug});
+    const data = await fetchMovieInfoCreditsViewData({slug});
 
     return res
         .status(200)
@@ -39,12 +40,8 @@ export async function getFetchGroupedCreditsWithMovie(
 /**
  * Fetches a movie and its associated showtimes based on location and pagination filters.
  */
-export async function getFetchShowingsWithMovie(req: Request, res: Response): Promise<Response> {
-    const {slug} = req.params;
-    const {page, perPage, near, country} = fetchRequestQueryBySchema({
-        req,
-        schema: ShowingsViewQueryStringSchema,
-    })
+export async function getFetchMovieInfoShowingsViewData(req: Request, res: Response): Promise<Response> {
+    const {slug, near, page, perPage, country} = req.parsedConfig as MovieInfoShowingsViewRouteConfig;
 
     const movie = await fetchRequiredMovie({
         slug,
