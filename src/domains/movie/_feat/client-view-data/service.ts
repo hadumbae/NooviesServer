@@ -9,6 +9,8 @@ import {generateFuzzyRegexPattern} from "@shared/utility/regex/generateFuzzyRege
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {ShowingPopulationPipelines} from "@domains/showing/queries/ShowingPopulationPipelines";
 import type {
+    FetchCreditsWithMovieConfig,
+    FetchCreditsWithMovieReturns,
     FetchMovieInfoOverviewViewDataConfig,
     FetchShowingsForMovieParams,
     FetchShowingsForMovieReturns,
@@ -54,6 +56,24 @@ export async function fetchCreditsForMovie(
     ]);
 
     return data;
+}
+
+/** Retrieves a movie by slug and its associated grouped credits. */
+export async function fetchCreditsWithMovie(
+    {slug}: FetchCreditsWithMovieConfig
+): Promise<FetchCreditsWithMovieReturns> {
+    const movie = await Movie
+        .findOne({slug})
+        .populate(MoviePopulationPaths)
+        .lean({virtuals: true});
+
+    if (!movie) throw createHttpError(404, "Movie not found.");
+    const creditDetails = await fetchCreditsForMovie(movie._id);
+
+    return {
+        movie,
+        creditDetails,
+    };
 }
 
 /** Retrieves a paginated list of active scheduled showings for a movie, filtered by location. */

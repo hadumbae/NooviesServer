@@ -13,6 +13,9 @@ import {validateRequestConfig} from "@shared/utility/schema/validators/validateR
 import {
     MovieInfoOverviewViewRouteConfigSchema
 } from "src/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
+import {
+    MovieInfoCreditsViewRouteConfigSchema
+} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
 
 const router = Router();
 
@@ -24,7 +27,7 @@ router.get(
 
 router.get(
     "/item/:slug/info-credits",
-    [isAuth],
+    [isAuth, validateRequestConfig({schema: MovieInfoCreditsViewRouteConfigSchema})],
     asyncHandler(getFetchGroupedCreditsWithMovie),
 );
 

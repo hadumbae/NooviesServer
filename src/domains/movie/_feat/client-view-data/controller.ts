@@ -7,7 +7,7 @@ import type {Request, Response} from "express";
 import {fetchRequiredMovie} from "@domains/movie/utilities/fetch/fetchRequiredMovie";
 import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
 import {
-    fetchCreditsForMovie,
+    fetchCreditsWithMovie,
     fetchMovieInfoOverviewViewData,
     fetchShowingsForMovie
 } from "src/domains/movie/_feat/client-view-data/service";
@@ -17,6 +17,9 @@ import type {
     MovieInfoOverviewViewRouteConfig
 } from "src/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
+import type {
+    MovieInfoCreditsViewRouteConfig
+} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
 
 /**
  * Fetches a movie and its grouped cast and crew credits for browse views.
@@ -24,21 +27,13 @@ import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
 export async function getFetchGroupedCreditsWithMovie(
     req: Request, res: Response
 ): Promise<Response> {
-    const {slug} = req.params;
+    const {slug} = req.parsedConfig as MovieInfoCreditsViewRouteConfig;
 
-    const movie = await fetchRequiredMovie({
-        slug, options: {
-            populate: true,
-            virtuals: true,
-            populatePaths: MoviePopulationPaths
-        }
-    });
-
-    const data = await fetchCreditsForMovie(movie._id);
+    const data = await fetchCreditsWithMovie({slug});
 
     return res
         .status(200)
-        .json({movie, creditDetails: data});
+        .json(data);
 }
 
 /**

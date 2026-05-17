@@ -26,6 +26,16 @@ export type GroupedCreditsForMovieData = {
     castCredits: IMovieCredit[];
     crewCredits: CategoryGroupedCredits[];
 }
+/** Configuration for fetching movie credits along with movie details. */
+export type FetchCreditsWithMovieConfig = {
+    slug: SlugString;
+};
+
+/** The result containing movie details and grouped credit information. */
+export type FetchCreditsWithMovieReturns = {
+  movie: MovieSchemaFields;
+  creditDetails: GroupedCreditsForMovieData;
+};
 
 /** Parameters for fetching movie showings based on location and pagination. */
 export type FetchShowingsForMovieParams = {
