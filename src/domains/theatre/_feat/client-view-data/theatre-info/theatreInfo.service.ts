@@ -2,7 +2,6 @@
  * @fileoverview Service for fetching client-facing theatre browsing information.
  */
 
-
 import type {FetchTheatreInfoViewDataConfig, TheatreInfoViewData} from "@domains/theatre/_feat/client-view-data";
 import {Theatre} from "@domains/theatre/model/theatre";
 import createHttpError from "http-errors";
@@ -45,6 +44,7 @@ export async function fetchTheatreInfoViewData(
     const screens = await Screen.aggregate([
         {$match: {theatre: theatre._id}},
         {$sort: {name: 1}},
+        {$limit: 50},
         screenShowingsStage,
     ]);
 

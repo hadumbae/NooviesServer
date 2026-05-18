@@ -33,7 +33,7 @@ TheatreSchema.pre(
     ["find", "findOne", "findOneAndUpdate"],
     {query: true, document: false},
     function (this: Query<any, TheatreSchemaFields>, next: () => void): void {
-        const options = this.getOptions();
+        const options = this.mongooseOptions();
         const hasVirtuals =
             typeof options.lean === "object" &&
             (options.lean as any).virtuals === true;
