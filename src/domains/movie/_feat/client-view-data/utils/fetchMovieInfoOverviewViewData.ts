@@ -3,9 +3,9 @@
  */
 
 import createHttpError from "http-errors";
-import type {SlugString} from "@/schema/strings/SlugStringSchema";
+import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 import {Types} from "mongoose";
-import type {PositiveInteger} from "@/schema/numbers/PositiveIntegerSchema";
+import type {PositiveInteger} from "@shared/schema/numbers/PositiveIntegerSchema";
 import {Movie, type MovieSchemaFields} from "@domains/movie/model/movie";
 import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interface";
 import {

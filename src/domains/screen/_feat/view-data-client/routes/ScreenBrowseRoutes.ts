@@ -1,14 +1,12 @@
 import {Router} from "express";
-import ScreenServiceProvider from "../../../provider/ScreenServiceProvider";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
-
-const {controllers: {browseController}} = ScreenServiceProvider.register();
+import {getFetchShowingsByScreens} from "@domains/screen/_feat/view-data-client/controller/controller";
 
 const router = Router();
 
 router.get(
     "/showings-by-screen/theatre/:theatreID/date/:dateString",
-    asyncHandler(browseController.fetchShowingsByScreens.bind(browseController)),
+    asyncHandler(getFetchShowingsByScreens),
 );
 
 export {

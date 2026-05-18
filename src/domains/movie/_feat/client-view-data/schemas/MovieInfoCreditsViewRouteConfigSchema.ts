@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {SlugStringSchema} from "@/schema/strings/SlugStringSchema";
+import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
 
 /** Zod validation schema for the movie info credits view route configuration. */
 export const MovieInfoCreditsViewRouteConfigSchema = z.object({

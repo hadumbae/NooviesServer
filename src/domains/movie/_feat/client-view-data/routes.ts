@@ -19,7 +19,7 @@ import {
 import {
     MovieInfoShowingsViewRouteConfigSchema
 } from "@domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
-import asyncHandler from "@/utility/handlers/asyncHandler";
+import asyncHandler from "@shared/utility/handlers/asyncHandler";
 
 
 const router = Router();

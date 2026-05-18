@@ -1,6 +1,5 @@
 import {Model, model} from "mongoose";
 import {type ShowingModel, ShowingSchema} from "./Showing.schema.js";
-import ShowingServiceProvider from "../../providers/ShowingServiceProvider.js";
 
 /**
  * @file Showing.model.ts
@@ -32,7 +31,7 @@ import "./Showing.methods.js";
  * This call is intentionally colocated with the model definition to ensure
  * hooks are registered exactly once during model initialization.
  */
-ShowingServiceProvider.registerMiddleware();
+// ShowingServiceProvider.registerMiddleware();
 
 /**
  * @summary Mongoose model for `Showing` documents.
