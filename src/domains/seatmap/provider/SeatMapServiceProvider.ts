@@ -12,13 +12,12 @@
 
 import SeatMap from "../model/SeatMap.model.js";
 import SeatMapController from "../controller/SeatMapController.js";
-import SeatMapService from "../service/seat-map-service/SeatMapService.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import SeatMapPopulateRefs from "../constants/SeatMapPopulateRefs.js";
-import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
-import {CRUDWriter} from "../../../shared/repository/operations/CRUDWriter.js";
+import {BaseRepository} from "@shared/repository/BaseRepository";
+import {CRUDWriter} from "@shared/repository/operations/CRUDWriter";
 import {SeatMapPersistenceManager} from "../repositories/managers/SeatMapPersistenceManager.js";
 import {SeatMapPopulationPipelines} from "../queries/SeatMapPopulationPipelines.js";
 import {SeatMapVirtualPipelines} from "../queries/SeatMapVirtualPipelines.js";
@@ -59,9 +58,6 @@ export default class SeatMapServiceProvider {
             writer,
         });
 
-        /** SeatMap domain business logic */
-        const service = new SeatMapService();
-
         /** Query option parsing and validation */
         const optionService = new SeatMapQueryOptionService();
 
@@ -75,7 +71,6 @@ export default class SeatMapServiceProvider {
         /** HTTP controller for SeatMap endpoints */
         const controller = new SeatMapController({
             repository,
-            service,
             optionService,
             queryUtils,
             aggregateService,
@@ -85,7 +80,6 @@ export default class SeatMapServiceProvider {
             model,
             repository,
             services: {
-                service,
                 optionService,
                 aggregateService,
             },

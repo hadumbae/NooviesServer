@@ -1,23 +1,10 @@
-import {Model, model} from "mongoose";
+/**
+ * @fileoverview Mongoose model definition for the Showing entity.
+ */
+
+import {model} from "mongoose";
 import {type ShowingModel, ShowingSchema} from "./Showing.schema.js";
 
-/**
- * @file Showing.model.ts
- * @summary Mongoose model definition for `Showing`.
- *
- * @description
- * Represents an individual movie showing within a theatre, including
- * scheduling, pricing, language, and related metadata.
- *
- * This model composes multiple concerns:
- * - **Schema** — structural definition and validation (`Showing.schema.js`)
- * - **Virtuals** — derived and aggregated fields (`Showing.virtuals.js`)
- * - **Indexes** — query and performance optimization (`Showing.indexes.js`)
- * - **Lifecycle Hooks** — side effects and cascading behavior (registered via `ShowingServiceProvider`)
- *
- * Together, these components ensure data integrity, relational consistency,
- * and predictable lifecycle behavior.
- */
 
 import type {ShowingSchemaFields} from "./Showing.types.js";
 import "./Showing.virtuals.js";
@@ -25,22 +12,7 @@ import "./Showing.indexes.js";
 import "./Showing.hooks.js";
 import "./Showing.methods.js";
 
-/**
- * Registers all Showing-related middleware and lifecycle hooks.
- *
- * This call is intentionally colocated with the model definition to ensure
- * hooks are registered exactly once during model initialization.
- */
-// ShowingServiceProvider.registerMiddleware();
-
-/**
- * @summary Mongoose model for `Showing` documents.
- *
- * @type {Model<ShowingSchemaFields>}
- *
- * @see ShowingSchemaFields - TypeScript interface for Showing documents.
- * @see ShowingSchema - Underlying schema definition.
- */
+/** Mongoose model for Showing documents. */
 const Showing: ShowingModel = model<ShowingSchemaFields, ShowingModel>("Showing", ShowingSchema);
 
 export default Showing;

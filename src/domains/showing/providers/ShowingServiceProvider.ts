@@ -1,51 +1,20 @@
 /**
- * @file ShowingServiceProvider.ts
- *
- * Dependency registration for the Showing domain.
+ * @fileoverview Dependency registration and infrastructure wiring for the Showing domain.
  */
 
 import Showing from "../models/showing/Showing.model.js";
 import ShowingController from "../controllers/ShowingController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import SeatMapService from "../../seatmap/service/seat-map-service/SeatMapService.js";
-import ShowingLifestyleService from "../services/lifestyle-service/ShowingLifestyleService.js";
-import {ShowingSchema} from "../models/showing/Showing.schema.js";
 import ShowingQueryOptionService from "../services/query-option/ShowingQueryOptionService.js";
-import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {BaseRepository} from "@shared/repository/BaseRepository";
 import {ShowingCRUDWriter} from "../repositories/ShowingCRUDWriter.js";
 import {ShowingPopulationPipelines} from "../queries/ShowingPopulationPipelines.js";
 import {ShowingSeatMapVirtualPipelines} from "../queries/ShowingSeatMapVirtualPipelines.js";
 
-/**
- * Service provider for the Showing module.
- *
- * Responsible for schema lifecycle registration and
- * dependency wiring for repositories, services, and controllers.
- */
+/** Service provider responsible for wiring repositories, services, and controllers for the Showing module. */
 export default class ShowingServiceProvider {
-    /**
-     * Registers schema lifecycle hooks.
-     *
-     * @remarks
-     * Handles side effects such as seat-map creation
-     * and cascading cleanup.
-     */
-    static registerMiddleware() {
-        const seatMapService = new SeatMapService();
-        const lifestyleService = new ShowingLifestyleService({seatMapService});
-
-        lifestyleService.registerHooks(ShowingSchema);
-
-        return {
-            seatMapService,
-            lifestyleService,
-        };
-    }
-
-    /**
-     * Registers all Showing infrastructure.
-     */
+    /** Initializes and returns the full dependency graph for the Showing domain. */
     static register() {
         const model = Showing;
         const populateRefs = [

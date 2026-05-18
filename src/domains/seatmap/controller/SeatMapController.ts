@@ -12,12 +12,13 @@ import type {Request, Response} from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
 
 import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
-import type SeatMapService from "../service/seat-map-service/SeatMapService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {SeatMapSchemaFields} from "../model/SeatMap.types.js";
 import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 import type {ISeatMapController, ISeatMapControllerConstructor} from "./SeatMapController.types.js";
 import type {SeatMapQueryMatchFilters} from "@domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
+import {toggleSeatMapAvailability} from "@domains/seatmap/_feat/manage-seat-maps";
+import {createShowingSeatMap} from "@domains/seatmap/_feat/manage-showing-seat-maps";
 
 /**
  * SeatMap HTTP controller.
@@ -29,9 +30,6 @@ export default class SeatMapController
     extends BaseCRUDController<SeatMapSchemaFields>
     implements ISeatMapController {
 
-    /** SeatMap domain logic service */
-    protected service: SeatMapService;
-
     /** SeatMap query option service */
     protected optionService: SeatMapQueryOptionService;
 
@@ -41,10 +39,9 @@ export default class SeatMapController
      * @param params - Controller dependencies and base configuration
      */
     constructor(params: ISeatMapControllerConstructor) {
-        const { service, optionService, ...superParams } = params;
+        const {optionService, ...superParams} = params;
         super(superParams);
 
-        this.service = service;
         this.optionService = optionService;
     }
 
@@ -65,11 +62,11 @@ export default class SeatMapController
      * POST /showings/:_id/seat-map
      */
     async createSeatMap(req: Request, res: Response): Promise<Response> {
-        const { _id } = req.params;
+        const {_id} = req.params;
         const showingID = isValidObjectId(_id);
 
-        await this.service.createShowingSeatMap({ showingID });
-        return res.status(200).json({ message: "Seat Map created." });
+        await createShowingSeatMap({showingID});
+        return res.status(200).json({message: "Seat Map created."});
     }
 
     /**
@@ -79,11 +76,10 @@ export default class SeatMapController
      * PATCH /seat-maps/:_id/toggle-availability
      */
     async toggleSeatMapAvailability(req: Request, res: Response): Promise<Response> {
-        const { _id } = req.params;
+        const {_id} = req.params;
         const seatMapID = isValidObjectId(_id);
 
-        const seatMap =
-            await this.service.toggleSeatMapAvailability({ seatMapID });
+        const seatMap = await toggleSeatMapAvailability({_id: seatMapID});
 
         return res.status(200).json(seatMap);
     }
