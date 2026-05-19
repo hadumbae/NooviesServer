@@ -8,6 +8,7 @@ import {ShowingSeatMapVirtualPipelines} from "@domains/showing/queries/ShowingSe
 import {Theatre} from "@domains/theatre/model/theatre";
 import {buildTheatreLocationMatchStage} from "@domains/theatre/_feat/aggregate";
 import type {FetchTheatreByLocationConfig, TheatreByLocationReturns} from "@domains/theatre/_feat/search-theatres";
+import type {LookupPipelineStages} from "@shared/_types";
 
 /**
  * Aggregates theatres matching a location target, including their upcoming scheduled showings and seat maps.
@@ -17,21 +18,27 @@ export async function fetchTheatresByLocation(
 ): Promise<TheatreByLocationReturns> {
     const limitedPerPage = Math.min(perPage, 20);
 
+    const showingPipelines: LookupPipelineStages = [
+        {$match: {status: "SCHEDULED", startTime: {$gte: new Date()}}},
+        {$sort: {startTime: 1}},
+        ...ShowingPopulationPipelines,
+        ...ShowingSeatMapVirtualPipelines,
+        ...(showingLimit ? [{$limit: Math.min(showingLimit, 10)}] : []),
+    ];
+
     const pipelines: PipelineStage[] = [
-        ...(target ? [buildTheatreLocationMatchStage(target)] : []),
+        ...(
+            target
+                ? [buildTheatreLocationMatchStage(target)]
+                : []
+        ),
         {
             $lookup: {
                 from: "showings",
                 localField: "_id",
                 foreignField: "theatre",
                 as: "showings",
-                pipeline: [
-                    {$match: {status: "SCHEDULED"}},
-                    {$sort: {startTime: -1}},
-                    ...ShowingPopulationPipelines,
-                    ...ShowingSeatMapVirtualPipelines,
-                    ...(showingLimit ? [{$limit: Math.min(showingLimit, 10)}] : []),
-                ],
+                pipeline: showingPipelines,
             },
         },
         {
