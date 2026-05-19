@@ -1,44 +1,45 @@
 /**
  * @fileoverview Express router configuration for the Showing domain.
- * Provides standard CRUD endpoints and specialized aggregation query interfaces
- * for managing cinema showtimes and scheduling.
+ *
+ * Provides standard CRUD endpoints and specialized aggregation query interfaces for managing cinema showtimes.
  */
 
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
-import {parseQueryOptions} from "@shared/_feat/middleware";
+import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
 import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
 import Showing from "@domains/showing/models/showing/Showing.model";
-import {ShowingQueryOptionSchema} from "@domains/showing/_feat/validate-query";
+import {ShowingQueryMatchStageSchema, ShowingQuerySortStageSchema} from "@domains/showing/_feat/validate-query";
 import {ShowingInputSchema} from "@domains/showing/validation/ShowingInputSchema";
+import {ShowingPopulationPaths} from "@domains/showing/_feat/query-population";
+import {ShowingPopulationPipelines} from "@domains/showing/queries/ShowingPopulationPipelines";
+import {ShowingSeatMapVirtualPipelines} from "@domains/showing/queries/ShowingSeatMapVirtualPipelines";
 
-/**
- * CRUD route definitions for the Showing entity.
- */
+const authCRUDMiddleware = buildAuthCRUDQueryMiddleware({
+    modelName: Showing.modelName,
+    matchSchema: ShowingQueryMatchStageSchema,
+    sortSchema: ShowingQuerySortStageSchema,
+});
+
+/** CRUD route definitions for the Showing entity. */
 const routes: CRUDRoute<ShowingSchemaFields>[] = [
     {
         /** Basic retrieval of showtimes based on IDs or operational status. */
         path: "/find",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: ShowingQueryOptionSchema, modelName: Showing.modelName})
-        ],
+        middleware: authCRUDMiddleware,
         handler: find
     },
     {
         /** Paginated retrieval for theater schedule management tables. */
         path: "/paginated",
         method: "get",
-        middleware: [
-            isAuth,
-            parseQueryOptions({schema: ShowingQueryOptionSchema, modelName: Showing.modelName})
-        ],
+        middleware: authCRUDMiddleware,
         handler: paginated
     },
     {
@@ -78,21 +79,24 @@ const routes: CRUDRoute<ShowingSchemaFields>[] = [
     },
 ];
 
-/**
- * Orchestrates the creation of the router using the generic CRUD utility factory.
- */
+/** Orchestrates the creation of the router using the generic CRUD utility factory. */
 const router: Router = buildCRUDRoutes<ShowingSchemaFields>({
     model: Showing,
     routes: routes,
+    populatePaths: ShowingPopulationPaths,
 });
 
-/**
- * Advanced aggregation endpoint for complex scheduling lookups.
- */
+/** Advanced aggregation endpoint for complex scheduling lookups. */
 router.get(
     "/query",
-    [isAuth, parseQueryOptions({schema: ShowingQueryOptionSchema, modelName: Showing.modelName})],
-    asyncHandler(aggregate({model: Showing})),
+    authCRUDMiddleware,
+    asyncHandler(
+        aggregate({
+            model: Showing,
+            populationPipelines: ShowingPopulationPipelines,
+            virtualsPipelines: ShowingSeatMapVirtualPipelines,
+        })
+    ),
 );
 
 export {

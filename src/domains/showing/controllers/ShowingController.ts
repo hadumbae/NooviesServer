@@ -22,8 +22,8 @@ import type {
 import type ShowingQueryOptionService from "../services/query-option/ShowingQueryOptionService.js";
 import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
 import type { ShowingSchemaFields } from "../models/showing/Showing.types.js";
+import type {ShowingQueryMatchFilters} from "@domains/showing/_feat/validate-query";
 
-import type {ShowingQueryMatchFilters} from "@domains/showing/_feat/validate-query/ShowingQueryMatchFilterSchema";
 
 /**
  * HTTP controller method contract for Showing resources.

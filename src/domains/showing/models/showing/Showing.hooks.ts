@@ -37,7 +37,7 @@ ShowingSchema.pre(
     ["find", "findOne", "findOneAndUpdate"],
     {document: false, query: true},
     function (this: Query<any, ScreenSchemaFields>, next: () => void) {
-        if (!this.getOptions().getSoftDeleted) {
+        if (!this.mongooseOptions().getSoftDeleted) {
             this.where({isDeleted: false, deletedAt: null});
         }
 

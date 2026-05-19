@@ -16,7 +16,11 @@
 
 import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import type {Request} from "express";
-import {type ShowingQueryOptions, ShowingQueryOptionSchema} from "@domains/showing/_feat/validate-query";
+import {
+    type ShowingQueryMatchFilters,
+    type ShowingQueryOptions,
+    ShowingQueryOptionSchema
+} from "@domains/showing/_feat/validate-query";
 import {RequestValidationError} from "@shared/errors/RequestValidationError";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
@@ -33,7 +37,6 @@ import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {ShowingSchemaFields} from "../../models/showing/Showing.types.js";
 
-import type {ShowingQueryMatchFilters} from "@domains/showing/_feat/validate-query/ShowingQueryMatchFilterSchema";
 
 /**
  * Builds query options and aggregation pipelines for
