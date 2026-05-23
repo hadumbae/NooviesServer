@@ -6,7 +6,24 @@ import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
 
 /** Configuration array for populating related showing, seat, and reservation data. */
 export const SeatMapPopulationPaths: PopulatePath[] = [
-    {path: "showing"},
-    {path: "seat"},
-    {path: "reservation"},
+    {
+        path: "reservation",
+    },
+
+    {
+        path: "seat",
+        populate: [
+            {path: "theatre"},
+            {path: "screen"},
+        ],
+    },
+
+    {
+        path: "showing",
+        populate: [
+            {path: "movie", populate: ["genres"]},
+            {path: "theatre"},
+            {path: "screen"},
+        ],
+    },
 ];
