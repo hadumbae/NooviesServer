@@ -15,6 +15,7 @@ import SeatMap from "@domains/seatmap/model/SeatMap.model";
 import {SeatMapPopulationPaths} from "@domains/seatmap/_feat/query-population";
 import {Movie} from "@domains/movie/model/movie";
 import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
+import {ShowingPopulationPaths} from "@domains/showing/_feat/query-population";
 
 /**
  * Fetches a showing and its associated movie, theatre, screen, and seating data.
@@ -22,7 +23,10 @@ import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
 export async function fetchShowingDetailsViewData(
     {slug}: FetchShowingDetailsViewDataConfig
 ): Promise<ShowingDetailsViewData> {
-    const showing = await Showing.findOne({slug}).lean();
+    const showing = await Showing
+        .findOne({slug})
+        .populate(ShowingPopulationPaths)
+        .lean({virtuals: true});
 
     if (!showing) {
         throw createHttpError(404, "Showing Not Found.");
