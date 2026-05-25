@@ -2,7 +2,6 @@
  * @fileoverview Mongoose middleware for the Showing model lifecycle to handle data synchronization and soft-delete filtering.
  */
 
-
 import {ShowingSchema} from "./Showing.schema.js";
 import {type HydratedDocument, type Query} from "mongoose";
 import type {ShowingSchemaFields} from "./Showing.types.js";
@@ -13,15 +12,29 @@ import {ShowingVirtualPopulationPaths} from "@domains/showing/_feat/query-popula
 import {createShowingSeatMap} from "@domains/seatmap/_feat/manage-showing-seat-maps";
 import {ShowingSeatMapVirtualPipelines} from "@domains/showing/queries/ShowingSeatMapVirtualPipelines";
 import SeatMap from "@domains/seatmap/model/SeatMap.model";
+import {Movie} from "@domains/movie/model/movie";
+import generateSlug from "@shared/utility/generateSlug";
 
 ShowingSchema.pre("validate", {document: true}, async function () {
-    const theatre = await fetchRequiredModelDocument({
-        model: Theatre,
-        _id: this.theatre,
-        notFoundMessage: "Theatre Not Found.",
-    });
+    if (this.isModified("theatre")) {
+        const theatre = await fetchRequiredModelDocument({
+            model: Theatre,
+            _id: this.theatre,
+            notFoundMessage: "Theatre Not Found.",
+        });
 
-    this.location = theatre.location;
+        this.location = theatre.location;
+    }
+
+    if (this.isModified("movie")) {
+        const movie = await fetchRequiredModelDocument({
+            model: Movie,
+            _id: this.movie,
+            notFoundMessage: "Movie Not Found.",
+        });
+
+        this.slug = generateSlug(movie.title);
+    }
 });
 
 ShowingSchema.pre("save", {document: true}, function () {
