@@ -35,9 +35,10 @@ export async function fetchShowingsForMovie(
 ): Promise<PaginatedShowingsForMovie> {
     const matchStage: FilterQuery<ShowingSchemaFields> = {
         movie: movieID,
-        status: "SCHEDULED",
+        status: {$in: ["SCHEDULED", "SOLD_OUT"]},
         "config.isActive": true,
         "location.country": country,
+        startTime: {$gt: new Date()}
     };
 
     if (near) {
