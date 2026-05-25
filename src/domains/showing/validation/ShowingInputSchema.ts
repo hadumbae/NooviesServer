@@ -5,20 +5,14 @@
 
 import {z} from "zod";
 import {DateTime} from "luxon";
-import {ObjectIdStringSchema}
-    from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
-import {NonEmptyStringSchema}
-    from "../../../shared/schema/strings/NonEmptyStringSchema.js";
-import {PositiveNumberSchema}
-    from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import {ShowingStatusEnumSchema}
-    from "./ShowingStatusEnumSchema.js";
-import {SimpleDateStringSchema}
-    from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
-import {TimeStringSchema}
-    from "../../../shared/schema/date-time/TimeStringSchema.js";
-import {ShowingConfigInputSchema}
-    from "./showing/showing-config/ShowingConfigInputSchema.js";
+import {ObjectIdStringSchema} from "@shared/schema/mongoose/ObjectIdStringSchema";
+import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
+import {ShowingStatusEnumSchema} from "./ShowingStatusEnumSchema.js";
+import {SimpleDateStringSchema} from "@shared/schema/date-time/SimpleDateStringSchema";
+import {TimeStringSchema} from "@shared/schema/date-time/TimeStringSchema";
+import {ShowingConfigInputSchema} from "./showing/showing-config/ShowingConfigInputSchema.js";
+import {IANATimezoneSchema} from "@shared/schema/date-time/IANATimezoneSchema";
 
 /**
  * Input schema for showing creation and updates.
@@ -46,8 +40,8 @@ export const ShowingInputSchema = z
         screen: ObjectIdStringSchema,
 
         status: ShowingStatusEnumSchema,
+        localTimezone: IANATimezoneSchema,
 
-        /** Nullable to allow explicit clearing. */
         config: ShowingConfigInputSchema,
     })
     .superRefine((values, ctx) => {
@@ -72,6 +66,21 @@ export const ShowingInputSchema = z
                     message,
                 });
             }
+        }
+    }).transform(({startAtTime, startAtDate, endAtTime, endAtDate, localTimezone, ...values}) => {
+        const startTime = DateTime
+            .fromISO(`${startAtDate}T${startAtTime}`, {zone: localTimezone})
+            .toUTC()
+            .toJSDate();
+
+        const endTime = (endAtDate && endAtTime)
+            ? DateTime.fromISO(`${endAtDate}T${endAtTime}`, {zone: localTimezone}).toUTC().toJSDate()
+            : null;
+
+        return {
+            ...values,
+            startTime,
+            endTime,
         }
     });
 
