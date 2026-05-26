@@ -8,7 +8,7 @@ import type {
     ResetReservationExpiryParams,
     UpdateReservationNotesParams
 } from "@domains/reservation/features/update-reservations/service/service.types";
-import type {AdminReservation} from "@domains/reservation/features/fetch-reservations/admin";
+import type {AdminReservation} from "@domains/reservation/_feat/fetch-customer-reservations";
 import createHttpError from "http-errors";
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {DateTime} from "luxon";
@@ -16,7 +16,7 @@ import {DateTime} from "luxon";
 import {
     fetchAdminReservationByID,
     fetchRequiredAdminReservation
-} from "@domains/reservation/features/fetch-reservations/admin/utilities";
+} from "@domains/reservation/_feat/fetch-customer-reservations/utilities";
 
 /**
  * Updates the administrative notes for a specific reservation.

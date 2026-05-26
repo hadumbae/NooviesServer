@@ -1,19 +1,15 @@
 /**
- * @file Strict data access function for retrieving an existing administrative reservation.
- * @filename fetchRequiredAdminReservation.ts
+ * @fileoverview Data access utility for retrieving administrative reservation documents.
  */
 
 import {Types} from "mongoose";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import type {DocumentType} from "@shared/types/mongoose/DocumentType";
-import type {AdminReservation} from "@domains/reservation/features/fetch-reservations/admin";
+import type {AdminReservation} from "@domains/reservation/_feat/fetch-customer-reservations";
 import createHttpError from "http-errors";
 
 /**
- * Retrieves a reservation by ID or throws a 404 error if it does not exist.
- * @param _id - The unique Mongoose {@link Types.ObjectId} of the target reservation.
- * @returns A promise resolving to the populated {@link AdminReservation} document.
- * @throws 404 - "Reservation not found!" if no document matches the provided ID.
+ * Retrieves a populated reservation by ID or throws a 404 error if it does not exist.
  */
 export async function fetchRequiredAdminReservation(
     _id: Types.ObjectId

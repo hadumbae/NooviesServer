@@ -5,7 +5,7 @@
 
 
 import type {ReservationSchemaFields} from "@domains/reservation/model/reservation/Reservation.types";
-import type {AdminReservationUser} from "@domains/reservation/features/fetch-reservations/admin";
+import type {AdminReservationUser} from "./AdminReservationUser";
 
 /**
  * A refined representation of the Reservation entity with a populated User projection.

@@ -3,7 +3,7 @@
  * @filename AdminReservationUser.ts
  */
 
-import type {UserSchemaFields} from "@models/User.types.js";
+import type {UserSchemaFields} from "@domains/users/model/User.types.js";
 
 /**
  * A narrowed projection of the {@link UserSchemaFields} tailored for administrative reservation views.

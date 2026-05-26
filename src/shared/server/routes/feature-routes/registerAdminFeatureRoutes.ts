@@ -6,7 +6,7 @@ import type {Express} from "express";
 import type {RouteRegistration} from "@shared/server/registerRoutes";
 import {PersonImageRoutes} from "@domains/person/_feat/update-image";
 import {ReservationUpdateRoutes} from "@domains/reservation/features/update-reservations/routes";
-import {FetchAdminReservationRoutes} from "@domains/reservation/features/fetch-reservations/admin";
+import {FetchAdminReservationRoutes} from "@domains/reservation/_feat/fetch-customer-reservations";
 import {CustomerMovieReviewActions} from "@domains/movieReview/features/customer-review-actions/routing";
 import {PersonCreditRoutes} from "@domains/movieCredit/_feat/person-credits";
 import {UIInputDataRoutes} from "@domains/ui-inputs";

@@ -5,8 +5,8 @@
 
 
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
-import type {AdminReservation} from "@domains/reservation/features/fetch-reservations/admin/types/AdminReservation";
-import type {FetchReservationByCodeParams} from "@domains/reservation/features/fetch-reservations/admin/FetchService.types";
+import type {AdminReservation} from "@domains/reservation/_feat/fetch-customer-reservations/types/AdminReservation";
+import type {FetchReservationByCodeParams} from "@domains/reservation/_feat/fetch-customer-reservations/service/service.types";
 
 /**
  * Retrieves a single reservation by its unique identifier and populates basic user information.
