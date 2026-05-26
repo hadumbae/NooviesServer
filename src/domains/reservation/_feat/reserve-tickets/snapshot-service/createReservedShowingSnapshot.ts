@@ -1,6 +1,5 @@
 /**
  * @fileoverview Service for generating immutable data snapshots for reservations.
- * Preserves the exact state of a Showing, Movie, Theatre, and Seating at the point of purchase.
  */
 
 import {Types} from "mongoose";
@@ -10,30 +9,31 @@ import type {
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
-import {createMovieSnapshot} from "src/domains/movie/_feat/manage-snapshots/createMovieSnapshot";
+import {createMovieSnapshot} from "@domains/movie/_feat/manage-snapshots/createMovieSnapshot";
 import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
 import {createReservedSeatSnapshot} from "@domains/seatmap/utilities/snapshots/createReservedSeatSnapshot";
-import type {
-    CreateReservedShowingSnapshotParams
-} from "@domains/reservation/features/reserve-tickets/services/snapshotService.types";
-import {ReservedShowingSnapshotInputSchema} from "@domains/reservation/features/reserve-tickets/schemas";
+import {ReservedShowingSnapshotInputSchema} from "@domains/reservation/_feat/reserve-tickets/schemas";
 import {createScreenSnapshot} from "@domains/screen/_feat/build-snapshot";
 import {createTheatreSnapshot} from "@domains/theatre/utilities";
+import type {ReservationType} from "@domains/reservation/validation/enums";
 
-/**
- * Internal type representing a Showing document with unresolved ObjectIDs.
- */
 type ShowingWithReferences = Omit<ShowingSchemaFields, "movie" | "theatre" | "screen"> & {
     movie: Types.ObjectId;
     theatre: Types.ObjectId;
     screen: Types.ObjectId;
 }
 
+/** Input parameters required to generate a historically accurate showing snapshot. */
+export type CreateReservedShowingSnapshotParams = {
+    pricePaid: number;
+    ticketCount: number;
+    reservationType: ReservationType;
+    showingID: Types.ObjectId;
+    selectedSeating?: Types.ObjectId[] | null | undefined;
+};
+
 /**
  * Orchestrates the creation of a deep, immutable snapshot for a specific reservation.
- * @returns A validated snapshot object conforming to {@link ReservedShowingSnapshotSchemaFields}.
- * @throws {DocumentNotFoundError} If the source `showingID` is invalid or missing.
- * @throws {InconsistentDataError} If any sub-factory fails or the combined schema is invalid.
  */
 export async function createReservedShowingSnapshot(
     {showingID, selectedSeating, pricePaid, ticketCount, reservationType}: CreateReservedShowingSnapshotParams

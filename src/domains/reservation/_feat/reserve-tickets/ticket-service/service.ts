@@ -1,30 +1,26 @@
 /**
- * @file Orchestration service for initiating ticket reservations.
- * @filename service.ts
+ * @fileoverview Orchestration service for initiating and finalizing ticket reservations.
  */
 
-import type {ReservationDoc, ReservationSchemaFields} from "../../../model/reservation/Reservation.types";
+import type {ReservationSchemaFields} from "@domains/reservation/model/reservation/Reservation.types";
 import {calculateFutureDate} from "@shared/utility/date/LuxonDateUtils";
 import {fetchPopulatedShowing} from "@domains/showing/utilities/fetchPopulatedShowing";
 import {BookingError} from "@shared/errors/reservations/BookingError";
-import type {ReserveGeneralTicketData, ReserveSeatTicketData, ReserveTicketsParams} from "./service.types";
+import type {
+    ReserveGeneralTicketData,
+    ReserveSeatTicketData,
+    ReserveTicketsParams
+} from "@domains/reservation/_feat/reserve-tickets/ticket-service/service.types";
 import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import SeatMap from "@domains/seatmap/model/SeatMap.model";
 import type {SeatMapSchemaFields} from "@domains/seatmap/model/SeatMap.types";
-import {RequestValidationError} from "@shared/errors/RequestValidationError";
-import {
-    type ReserveTicketPersistenceData,
-    ReserveTicketPersistenceSchema
-} from "@domains/reservation/features/reserve-tickets/schemas";
-import {ReservationPopulateRefs} from "@domains/reservation/constants";
+import {type ReserveTicketPersistenceData} from "@domains/reservation/_feat/reserve-tickets/schemas";
 import {Seat} from "@domains/seat/model";
+import {
+    saveValidatedReservation
+} from "@domains/reservation/_feat/reserve-tickets/ticket-service/saveValidatedReservation";
 
-/**
- * Main entry point for initiating a ticket reservation hold.
- * @param params - Identity context and client-provided request data.
- * @returns Fully initialized and saved reservation document.
- * @throws {BookingError} 409 - If the reservation type is invalid or availability checks fail.
- */
+/** Initiates a ticket reservation hold based on the provided type and identity context. */
 export async function reserveTickets(
     {userID, inputData}: ReserveTicketsParams
 ): Promise<ReservationSchemaFields> {
@@ -53,9 +49,7 @@ export async function reserveTickets(
     });
 }
 
-/**
- * Internal strategy handlers for specific reservation types.
- */
+/** Internal strategy handlers for specific reservation types. */
 const ReserveHandlers = {
     /**
      * Logic for General Admission (GA) bookings.
@@ -137,7 +131,7 @@ const ReserveHandlers = {
             if (error instanceof BookingError) throw error;
             throw new BookingError({
                 statusCode: 500,
-                message: "An unknown error occured trying to reserve seats.",
+                message: "An unknown error occurred trying to reserve seats.",
                 errorCode: "ERR_UNKNOWN_ERROR",
             });
         } finally {
@@ -152,67 +146,3 @@ const ReserveHandlers = {
     },
 };
 
-/**
- * Final validation and persistence for a reservation.
- * @param data - The complete payload containing both user input and system metadata.
- * @returns The populated Mongoose document.
- * @throws {RequestValidationError} 422 - If data violates the persistence schema.
- */
-export const saveValidatedReservation = async (
-    data: ReserveTicketPersistenceData
-): Promise<ReservationSchemaFields> => {
-    const {data: parsedData, success, error} = ReserveTicketPersistenceSchema.safeParse(data);
-
-    if (!success) {
-        throw new RequestValidationError({
-            message: "Failed to parse ticket checkout input data.",
-            errors: error?.errors,
-            raw: data,
-        });
-    }
-
-    const doc = new Reservation(parsedData);
-    await doc.save();
-
-    await doc.populate(ReservationPopulateRefs);
-
-    return doc;
-};
-
-/**
- * Commits previously locked 'PENDING' seats to a specific reservation ID.
- * @param reservation - The target reservation document.
- * @throws {BookingError} 409 - If the seats cannot be finalized.
- */
-export async function reserveReservationSeats(
-    reservation: ReservationDoc
-): Promise<void> {
-    const {_id, selectedSeating, reservationType} = reservation;
-
-    if (reservationType === "GENERAL_ADMISSION") return;
-
-    const seatsToReserve = selectedSeating.map(({_id}) => _id);
-
-    const {modifiedCount: reservedCount} = await SeatMap.updateMany(
-        {_id: {$in: seatsToReserve}, status: "PENDING"},
-        {reservation: _id, status: "RESERVED"},
-    );
-
-    if (seatsToReserve.length !== reservedCount) {
-        await SeatMap.updateMany(
-            {reservation: _id},
-            {reservation: null, status: "AVAILABLE"}
-        );
-
-        await Reservation.findByIdAndUpdate(_id, {
-            status: "INVALID",
-            notes: "Seat(s) already reserved.",
-        });
-
-        throw new BookingError({
-            statusCode: 409,
-            errorCode: "ERR_SEAT_RESERVED",
-            message: "Seat(s) already reserved.",
-        });
-    }
-}

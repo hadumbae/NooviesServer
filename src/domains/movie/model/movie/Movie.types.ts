@@ -4,10 +4,10 @@
  */
 
 import {Types} from "mongoose";
-import type {URLString} from "src/shared/schema/strings/URLStringSchema.js";
-import type {ISO6391LanguageCode} from "src/shared/schema/enums/ISO6391LanguageCodeSchema.js";
-import type {CloudinaryImageObject} from "src/shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
-import type {GenreSchemaFields} from "src/domains/genre/models/genre/Genre.types.js";
+import type {URLString} from "@shared/schema/strings/URLStringSchema.js";
+import type {ISO6391LanguageCode} from "@shared/schema/enums/ISO6391LanguageCodeSchema.js";
+import type {CloudinaryImageObject} from "@shared/schema/cloudinary/CloudinaryImageObjectSchema.js";
+import type {GenreSchemaFields} from "@domains/genre/models/genre/Genre.types.js";
 
 /**
  * Comprehensive shape of a Movie document in the database.

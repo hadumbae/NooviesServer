@@ -6,13 +6,13 @@
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes";
 import {ScreenBrowseRoutes} from "@domains/screen/_feat/view-data-client/routes/ScreenBrowseRoutes";
-import {ReserveTicketsRoutes} from "@domains/reservation/features/reserve-tickets/routes/routes";
 import {UserProfileRoutes} from "@domains/users/routing/UserProfileRoutes";
 import {MyMovieReviewsRoutes} from "@domains/movieReview/routes/MyMovieReviewsRoutes";
 import {FetchClientReservationRoutes} from "@domains/reservation/features/fetch-client-reservations/routes";
 import {UpdateClientReservationRoutes} from "@domains/reservation/features/update-client-reservations/routes";
 import {TheatreSearchRoutes} from "@domains/theatre/_feat/search-theatres";
 import {ReviewsByMovieRoutes} from "@domains/movie/_feat/fetch-reviews-by-movie";
+import {ReserveTicketsRoutes} from "@domains/reservation/_feat/reserve-tickets";
 
 /**
  * Mounts all primary routes intended for end-user consumption.

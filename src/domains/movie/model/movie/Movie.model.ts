@@ -3,8 +3,8 @@
  */
 
 import {Model, model,} from "mongoose";
-import {MovieSchema} from "src/domains/movie/model/movie/Movie.schema.js";
-import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types.js";
+import {MovieSchema} from "@domains/movie/model/movie/Movie.schema.js";
+import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types.js";
 
 import "./Movie.indexes.js";
 import "./Movie.hooks.js";

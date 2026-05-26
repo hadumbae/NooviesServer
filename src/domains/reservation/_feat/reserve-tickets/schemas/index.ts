@@ -1,15 +1,15 @@
 import {
     ReserveTicketInputBaseSchema, type ReserveTicketInputData,
     ReserveTicketInputSchema
-} from "@domains/reservation/features/reserve-tickets/schemas/inputSchema";
+} from "@domains/reservation/_feat/reserve-tickets/schemas/inputSchema";
 import {
     type ReserveTicketPersistenceData,
     ReserveTicketPersistenceSchema
-} from "@domains/reservation/features/reserve-tickets/schemas/persistenceSchema";
+} from "@domains/reservation/_feat/reserve-tickets/schemas/persistenceSchema";
 import {
     type ReservedShowingSnapshotInputData,
     ReservedShowingSnapshotInputSchema
-} from "@domains/reservation/features/reserve-tickets/schemas/snapshotInputSchema";
+} from "@domains/reservation/_feat/reserve-tickets/schemas/snapshotInputSchema";
 
 
 export {

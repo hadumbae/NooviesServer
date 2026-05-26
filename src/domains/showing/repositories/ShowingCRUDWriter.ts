@@ -26,7 +26,7 @@ import {DateTime} from "luxon";
 import {Theatre} from "@domains/theatre/model/theatre";
 import createHttpError from "http-errors";
 import {Types} from "mongoose";
-import {Movie} from "src/domains/movie/model/movie/Movie.model";
+import {Movie} from "@domains/movie/model/movie/Movie.model";
 import generateSlug from "../../../shared/utility/generateSlug.js";
 import Showing from "../models/showing/Showing.model.js";
 

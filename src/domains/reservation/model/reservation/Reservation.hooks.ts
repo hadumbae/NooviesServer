@@ -1,6 +1,5 @@
 /**
- * @file Mongoose lifecycle middleware and query hooks for the Reservation model.
- * @filename Reservation.hooks.ts
+ * @fileoverview Mongoose lifecycle middleware and query hooks for the Reservation model.
  */
 
 import ReservationSchema from "./Reservation.schema.js";
@@ -10,18 +9,14 @@ import {DateTime} from "luxon";
 import {
     generateReservationUniqueCode
 } from "../../features/generate-reservation-code/index.js";
-import {
-    createReservedShowingSnapshot,
-    reserveReservationSeats
-} from "@domains/reservation/features/reserve-tickets/services";
 import type {ReservationStatus} from "@domains/reservation/validation/enums";
 import SeatMap from "@domains/seatmap/model/SeatMap.model";
 import generateSlug from "@shared/utility/generateSlug";
 import type {PopulatedShowing} from "@domains/showing/models/showing/Showing.types";
+import {createReservedShowingSnapshot, reserveReservationSeats} from "@domains/reservation/_feat/reserve-tickets";
 
 /**
  * Mapping of reservation statuses to their mandatory audit timestamp fields.
- * Ensures that terminal or transitional states have the matching date recorded for audit trails.
  */
 const REQUIRED_DATES_BY_STATUS: Partial<Record<ReservationStatus, keyof ReservationSchemaFields>> = {
     PAID: "datePaid",
@@ -31,7 +26,7 @@ const REQUIRED_DATES_BY_STATUS: Partial<Record<ReservationStatus, keyof Reservat
 } as const;
 
 /**
- * Pre-validation hook: Orchestrates all document-level business logic and field initialization.
+ * Orchestrates all document-level business logic and field initialization before validation.
  */
 ReservationSchema.pre("validate", async function (this: HydratedDocument<ReservationSchemaFields>, next: () => void) {
     // --- Is New ? ---
@@ -95,7 +90,7 @@ ReservationSchema.pre("validate", async function (this: HydratedDocument<Reserva
 });
 
 /**
- * Post-save hook: Triggers external side-effects after successful persistence.
+ * Triggers external side-effects and seat status updates after successful persistence.
  */
 ReservationSchema.post("save", async function (this: HydratedDocument<ReservationDoc>) {
     if (this.isNew) {
@@ -111,7 +106,7 @@ ReservationSchema.post("save", async function (this: HydratedDocument<Reservatio
 });
 
 /**
- * Pre-find hook: Enforces soft-deletion filtering globally for all read queries.
+ * Enforces soft-deletion filtering globally for all read queries.
  */
 ReservationSchema.pre("find", {query: true}, async function (next: () => void) {
     if (this.getOptions().getSoftDeleted) {

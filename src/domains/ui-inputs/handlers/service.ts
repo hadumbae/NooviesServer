@@ -1,8 +1,8 @@
 /** @fileoverview Services for fetching lean, optimized subsets of movie, person, and role type data. */
 
 import type {FetchLeanDataConfig} from "@domains/ui-inputs/handlers/service.types";
-import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types";
-import {Movie} from "src/domains/movie/model/movie/Movie.model";
+import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
+import {Movie} from "@domains/movie/model/movie/Movie.model";
 import type IRoleType from "@domains/roleType/model/RoleType.interface";
 import RoleTypeModel from "@domains/roleType/model/RoleType.model";
 import {Person, type PersonSchemaFields} from "@domains/person/model";

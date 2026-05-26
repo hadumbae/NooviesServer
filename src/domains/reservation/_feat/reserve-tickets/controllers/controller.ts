@@ -1,14 +1,15 @@
+/**
+ * @fileoverview Controller for handling ticket reservation requests.
+ */
+
 import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
 import type {Request, Response} from "express";
 import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
-import {reserveTickets} from "@domains/reservation/features/reserve-tickets/services";
-import type {ReserveTicketInputData} from "@domains/reservation/features/reserve-tickets/schemas";
+import type {ReserveTicketInputData} from "@domains/reservation/_feat/reserve-tickets/schemas";
+import {reserveTickets} from "@domains/reservation/_feat/reserve-tickets/ticket-service";
 
 /**
- * Creates a reservation for the authenticated user.
- *
- * @remarks
- * Requires a validated request body.
+ * Creates a reservation for the authenticated user using validated request body data.
  */
 export const postReserveTickets: ControllerAsyncFunc = async (
     req: Request,

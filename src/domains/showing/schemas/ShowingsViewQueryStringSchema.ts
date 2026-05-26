@@ -4,9 +4,9 @@
  */
 
 import {z} from "zod";
-import {QueryPaginationParamsSchema} from "src/shared/schema/query/QueryPaginationParamsSchema";
-import {URLParamStringSchema} from "src/shared/schema/url/URLParamStringSchema";
-import {ISO3166Alpha2CountryCodeSchema} from "src/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
+import {QueryPaginationParamsSchema} from "@shared/schema/query/QueryPaginationParamsSchema";
+import {URLParamStringSchema} from "@shared/schema/url/URLParamStringSchema";
+import {ISO3166Alpha2CountryCodeSchema} from "@shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
 
 /**
  * Query parameters for fetching showings in the movie view.

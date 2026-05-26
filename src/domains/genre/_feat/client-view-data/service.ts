@@ -9,8 +9,8 @@ import type {
     GenreWithMoviesReturns
 } from "@domains/genre/_feat/client-view-data/service.types";
 import {Genre} from "@domains/genre/models/genre";
-import {Movie} from "src/domains/movie/model/movie/Movie.model";
-import type {MovieWithGenres} from "src/domains/movie/model/movie/Movie.types";
+import {Movie} from "@domains/movie/model/movie/Movie.model";
+import type {MovieWithGenres} from "@domains/movie/model/movie/Movie.types";
 
 /**
  * Retrieves a genre and its associated movies for the public "Browse Genre" view.

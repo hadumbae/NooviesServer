@@ -2,7 +2,7 @@
  * @fileoverview Type definitions for the Genre view-specific data service.
  */
 
-import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types";
+import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
 import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 import type {GenreSchemaFields} from "@domains/genre/models/genre";
 import type {PaginationReturns} from "@shared/types/PaginationReturns";

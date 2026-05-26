@@ -3,14 +3,14 @@
  * Handles slug generation, genre count synchronization, and cascade deletions.
  */
 
-import {MovieSchema} from "src/domains/movie/model/movie/Movie.schema.js";
+import {MovieSchema} from "@domains/movie/model/movie/Movie.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import Showing from "src/domains/showing/models/showing/Showing.model.js";
-import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types.js";
-import generateSlug from "src/shared/utility/generateSlug.js";
-import MovieCredit from "src/domains/movieCredit/models/MovieCredit.model.js";
-import {Movie} from "src/domains/movie/model/movie/Movie.model.js";
-import {Genre} from "src/domains/genre/models/genre";
+import Showing from "@domains/showing/models/showing/Showing.model.js";
+import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types.js";
+import generateSlug from "@shared/utility/generateSlug.js";
+import MovieCredit from "@domains/movieCredit/models/MovieCredit.model.js";
+import {Movie} from "@domains/movie/model/movie/Movie.model.js";
+import {Genre} from "@domains/genre/models/genre";
 
 /**
  * Synchronizes the URL slug whenever the title is modified.

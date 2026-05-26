@@ -2,8 +2,8 @@
  * @fileoverview Service for managing movie poster image uploads and deletions in Cloudinary.
  */
 
-import type {MovieSchemaFields} from "src/domains/movie/model/movie/Movie.types";
-import {Movie} from "src/domains/movie/model/movie/Movie.model";
+import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
+import {Movie} from "@domains/movie/model/movie/Movie.model";
 import createHttpError from "http-errors";
 import {removeCloudinaryImage, uploadCloudinaryImage} from "@shared/_feat/manage-cloudinary-images";
 import type {DeletePosterImageConfig, UploadPosterImageConfig} from "@domains/movie/_feat/manage-image/service.types";

@@ -2,7 +2,7 @@ import {
     fetchMovieInfoShowingsViewData,
     type FetchMovieInfoShowingsViewDataConfig,
     type MovieInfoShowingsViewData
-} from "src/domains/movie/_feat/client-view-data/utils/fetchMovieInfoShowingsViewData";
+} from "@domains/movie/_feat/client-view-data/utils/fetchMovieInfoShowingsViewData";
 import {
     type CategoryGroupedCredits,
     fetchCreditsForMovie,

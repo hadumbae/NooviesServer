@@ -6,7 +6,7 @@
 import "dotenv/config";
 import connect from "@config/database.js";
 import mongoose from "mongoose";
-import {Movie} from "src/domains/movie/model/movie/Movie.model";
+import {Movie} from "@domains/movie/model/movie/Movie.model";
 import {Genre} from "@domains/genre/models/genre";
 
 /**

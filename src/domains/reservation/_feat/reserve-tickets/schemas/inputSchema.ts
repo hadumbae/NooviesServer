@@ -1,6 +1,5 @@
 /**
- * @file Zod validation schemas and types for ticket reservation input.
- * @filename inputSchema.ts
+ * @fileoverview Zod validation schemas and types for ticket reservation input.
  */
 
 import {z} from "zod";
@@ -11,26 +10,12 @@ import {ISO4217CurrencyCodeEnumSchema} from "@shared/schema/enums/ISO4217Currenc
 import {ReservationTypeConstant} from "@domains/reservation/constants";
 import {ReservationTypeEnumSchema} from "@domains/reservation/validation/enums";
 
-/**
- * Base checkout submission schema providing shared structural validation.
- */
+/** Base checkout submission schema providing shared structural validation. */
 export const ReserveTicketInputBaseSchema = z.object({
-    /** The specific event showing being booked. */
     showing: ObjectIdSchema,
-
-    /** Total quantity of tickets in the request. */
     ticketCount: PositiveNumberSchema,
-
-    /** The currency context for pricing calculations. */
     currency: ISO4217CurrencyCodeEnumSchema,
-
-    /** Identifies if the booking follows GA or Reserved Seating rules. */
     reservationType: ReservationTypeEnumSchema,
-
-    /**
-     * Optional collection of seat identifiers.
-     * Logic for requirement vs. exclusion is handled in {@link ReserveTicketInputSchema}.
-     */
     selectedSeating: generateArraySchema(ObjectIdSchema)
         .min(1, {message: "Must not be an empty array."})
         .optional()
@@ -61,16 +46,12 @@ const SubmitReservedSchema =
         }),
     });
 
-/**
- * Final checkout submission schema utilizing a discriminated union.
- */
+/** Final checkout submission schema utilizing a discriminated union. */
 export const ReserveTicketInputSchema = z.discriminatedUnion(
     "reservationType",
     [SubmitReservedSchema, SubmitGeneralSchema]
 );
 
-/**
- * TypeScript type inferred from {@link ReserveTicketInputSchema}.
- */
+/** TypeScript type inferred from ReserveTicketInputSchema. */
 export type ReserveTicketInputData =
     z.infer<typeof ReserveTicketInputSchema>;

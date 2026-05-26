@@ -12,7 +12,7 @@ import type {
 import User from "@models/User.model.js";
 import createHttpError from "http-errors";
 import type {UserSchemaFields} from "@models/User.types.js";
-import {Movie} from "src/domains/movie/model/movie/Movie.model";
+import {Movie} from "@domains/movie/model/movie/Movie.model";
 import {fetchRequiredMovie} from "@domains/movie/_feat/fetch-movies";
 
 
