@@ -1,25 +1,12 @@
 /**
- * @file Parameter types for reservation guard and assertion utilities.
- * @filename assertUtils.types.ts
+ * @fileoverview Parameter types for reservation guard and assertion utilities.
  */
 
-import { Types } from "mongoose";
-import type { ReservationSchemaFields } from "../../model/reservation/Reservation.types";
+import {Types} from "mongoose";
+import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
 
-/**
- * Parameters required to validate and assert reservation ownership.
- * ---
- * ### Mechanics
- * Bundles the active security context (`userID`) with the target
- * data model (`reservation`) to perform safe equality checks.
- * ---
- */
+/** Parameters required to validate and assert reservation ownership. */
 export type AssertReservationOwnershipParams = {
-    /** The MongoDB ObjectId of the authenticated user from the request context. */
     userID: Types.ObjectId;
-
-    /** * The hydrated reservation document or schema fields.
-     * Specifically requires the `user` field to perform the ownership comparison.
-     */
     reservation: ReservationSchemaFields;
 };

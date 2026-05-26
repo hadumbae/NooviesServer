@@ -1,21 +1,17 @@
 /**
- * @file Guard utilities and assertions for reservation lifecycle workflows.
- * @filename assertUtils.ts
+ * @fileoverview Guard utilities and assertions for reservation lifecycle workflows.
+ *
  */
-
-import type {ReservationSchemaFields} from "../../model/reservation/Reservation.types";
+import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
 import {calculateDateNow} from "@shared/utility/date/LuxonDateUtils";
 import {BookingError} from "@shared/errors/reservations/BookingError";
 import {Types} from "mongoose";
-import Reservation from "../../model/reservation/Reservation.model";
+import {Reservation} from "@domains/reservation/model/reservation";
 import type {AssertReservationOwnershipParams} from "./assertUtils.types";
 import type {DocumentType} from "@shared/types/mongoose/DocumentType";
 
 /**
- * Retrieves a reservation document or terminates the request with a 404 error.
- * @param _id - The unique MongoDB ObjectId of the reservation.
- * @returns A promise resolving to the hydrated {@link DocumentType}.
- * @throws {BookingError} 404 - If the identifier does not match any record.
+ * Retrieves a reservation document or throws a 404 error if not found.
  */
 export const assertReservationExists = async (
     _id: Types.ObjectId
@@ -34,9 +30,7 @@ export const assertReservationExists = async (
 };
 
 /**
- * Validates that the reservation hold period has not lapsed.
- * @param reservation - The reservation fields containing the `expiresAt` timestamp.
- * @throws {BookingError} 409 - If the current time is equal to or past the expiration deadline.
+ * Asserts that the reservation hold period has not expired.
  */
 export const assertReservationNotExpired = (
     {expiresAt}: ReservationSchemaFields
@@ -51,9 +45,7 @@ export const assertReservationNotExpired = (
 };
 
 /**
- * Asserts that the authenticated user is the legal owner of the reservation.
- * @param params - Contains the `userID` to check and the `reservation` object to verify.
- * @throws {BookingError} 403 - If the IDs do not match, indicating an unauthorized access attempt.
+ * Verifies that the authenticated user is the owner of the specified reservation.
  */
 export const assertReservationOwnership = (
     {userID, reservation: {user: resUser}}: AssertReservationOwnershipParams

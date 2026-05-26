@@ -11,7 +11,6 @@ import type {
     FetchCustomerReviewsViewDataConfig,
     FetchCustomerReviewViewDataConfig
 } from "@domains/customer/features/customer-details/services/service.types"
-import Reservation from "@domains/reservation/model/reservation/Reservation.model"
 import {MovieReview} from "@domains/movieReview/model/MovieReview.model"
 import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types"
 import createHttpError from "http-errors"
@@ -27,6 +26,7 @@ import type {
     MovieReviewModerationLogSchemaFields
 } from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types"
 import {MovieReviewModerationLog} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.model"
+import {Reservation} from "@domains/reservation/model/reservation";
 
 /**
  * Aggregates a customer's profile details, recent reservations, and movie

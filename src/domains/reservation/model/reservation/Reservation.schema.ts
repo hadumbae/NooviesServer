@@ -1,10 +1,9 @@
 /**
- * @file Mongoose schema definition and model type for the Reservation domain.
- * @filename Reservation.schema.ts
+ * @fileoverview Mongoose schema definition and model type for the Reservation domain.
  */
 
 import {type Model, Schema} from "mongoose";
-import {ReservedShowingSnapshotSchema} from "../snapshots/showing-snapshot/ReservedShowingSnapshot.schema.js";
+import {ReservedShowingSnapshotSchema} from "@domains/reservation/model/snapshots/showing-snapshot";
 import type {ReservationSchemaFields} from "./Reservation.types.js";
 import ISO4217CurrencyCodesConstant from "../../../../shared/constants/currency/ISO4217CurrencyCodesConstant.js";
 import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOptions.js";
@@ -13,15 +12,11 @@ import {DeletedAtSchemaTypeOptions} from "@shared/model/DeletedAtSchemaTypeOptio
 import type {ModelSoftDeleteMethods} from "@shared/types/schema/ModelSoftDelete";
 import {ReservationStatusConstant, ReservationTypeConstant} from "@domains/reservation/constants";
 
-/**
- * TypeScript type representing the compiled Reservation Model.
- */
+/** TypeScript type representing the compiled Reservation Model. */
 export type ReservationModel = Model<ReservationSchemaFields, {}, ModelSoftDeleteMethods<ReservationSchemaFields>>;
 
-/**
- * Mongoose schema representing a booking transaction.
- */
-const ReservationSchema = new Schema<
+/** Mongoose schema representing a booking transaction. */
+export const ReservationSchema = new Schema<
     ReservationSchemaFields,
     ReservationModel,
     ModelSoftDeleteMethods<ReservationSchemaFields>
@@ -155,5 +150,3 @@ const ReservationSchema = new Schema<
     /** Automatically handles `createdAt` and `updatedAt` properties. */
     timestamps: true,
 });
-
-export default ReservationSchema;

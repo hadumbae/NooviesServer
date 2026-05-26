@@ -2,16 +2,18 @@
  * @fileoverview Service for validating and persisting reservation data to the database.
  */
 
-import type {ReservationSchemaFields} from "@domains/reservation/model/reservation/Reservation.types";
 import {RequestValidationError} from "@shared/errors/RequestValidationError";
-import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import {ReservationPopulateRefs} from "@domains/reservation/constants/ReservationPopulateRefs";
-import {type ReserveTicketPersistenceData, ReserveTicketPersistenceSchema} from "@domains/reservation/_feat/reserve-tickets/schemas/persistenceSchema";
+import {
+    type ReserveTicketPersistenceData,
+    ReserveTicketPersistenceSchema
+} from "@domains/reservation/_feat/reserve-tickets";
+import {Reservation, type ReservationSchemaFields} from "@domains/reservation/model/reservation";
 
 /** Validates the input data against the persistence schema before saving and populating the reservation document. */
-export const saveValidatedReservation = async (
+export async function saveValidatedReservation(
     data: ReserveTicketPersistenceData
-): Promise<ReservationSchemaFields> => {
+): Promise<ReservationSchemaFields> {
     const {data: parsedData, success, error} = ReserveTicketPersistenceSchema.safeParse(data);
 
     if (!success) {
@@ -28,4 +30,4 @@ export const saveValidatedReservation = async (
     await doc.populate(ReservationPopulateRefs);
 
     return doc;
-};
+}

@@ -1,16 +1,11 @@
 /**
- * @file Specialized TypeScript type for representing a Reservation in the Administrative Dashboard.
- * @filename AdminReservation.ts
+ * @fileoverview Specialized reservation type for the administrative dashboard with populated user data.
  */
 
-
-import type {ReservationSchemaFields} from "@domains/reservation/model/reservation/Reservation.types";
 import type {AdminReservationUser} from "./AdminReservationUser";
+import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
 
-/**
- * A refined representation of the Reservation entity with a populated User projection.
- */
+/** Reservation entity with a populated administrative user projection. */
 export type AdminReservation = Omit<ReservationSchemaFields, "user"> & {
-    /** The narrowed user identity associated with this reservation. */
     user: AdminReservationUser;
 };

@@ -1,10 +1,7 @@
-import type {
-    ReservationSchemaFields
-} from "@domains/reservation/model/reservation/Reservation.types";
 import SeatMap from "@domains/seatmap/model/SeatMap.model";
-import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import {BookingError} from "@shared/errors/reservations/BookingError";
 import type {DocumentType} from "@shared/types/mongoose/DocumentType";
+import {Reservation, type ReservationSchemaFields} from "@domains/reservation/model/reservation";
 
 /** Finalizes seat status from pending to reserved for a specific reservation. */
 export async function reserveReservationSeats(

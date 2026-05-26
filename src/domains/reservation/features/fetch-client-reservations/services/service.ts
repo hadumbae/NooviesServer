@@ -1,21 +1,13 @@
 /**
- * @file Service for retrieving paginated reservation history for client-side users.
- * @filename service.ts
+ * @fileoverview Service for retrieving paginated reservation history for client-side users.
  */
 
-import Reservation from "../../../model/reservation/Reservation.model";
 import type {FetchPaginatedUserReservationsParams} from "./service.types";
-import type {ReservationSchemaFields} from "../../../model/reservation/Reservation.types";
 import type {PaginationReturns} from "@shared/types/PaginationReturns";
 import {ReservationPopulateRefs} from "@domains/reservation/constants";
+import {Reservation, type ReservationSchemaFields} from "@domains/reservation/model/reservation";
 
-/**
- * Retrieves a paginated collection of reservations belonging to a specific user.
- * @param params - Configuration containing the `userID` and standard `pagination` offsets.
- * @returns A promise resolving to a {@link PaginationReturns} object containing the item
- * slice and total count.
- * @throws {Error} If the database query fails or the connection is interrupted.
- */
+/** Retrieves a paginated collection of reservations belonging to a specific user. */
 export const fetchPaginatedUserReservations = async (
     {userID, pagination: {page, perPage}}: FetchPaginatedUserReservationsParams
 ): Promise<PaginationReturns<ReservationSchemaFields>> => {

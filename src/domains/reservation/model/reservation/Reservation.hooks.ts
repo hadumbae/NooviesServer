@@ -2,7 +2,7 @@
  * @fileoverview Mongoose lifecycle middleware and query hooks for the Reservation model.
  */
 
-import ReservationSchema from "./Reservation.schema.js";
+import {ReservationSchema} from "./Reservation.schema.js";
 import type {HydratedDocument} from "mongoose";
 import type {ReservationSchemaFields, ReservationDoc} from "./Reservation.types.js";
 import {DateTime} from "luxon";

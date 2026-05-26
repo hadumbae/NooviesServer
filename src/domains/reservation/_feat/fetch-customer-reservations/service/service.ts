@@ -1,18 +1,12 @@
 /**
- * @file Service layer for administrative-level Reservation retrieval and data hydration.
- * @filename FetchService.ts
+ * @fileoverview Service layer for administrative-level reservation retrieval and data hydration.
  */
 
-
-import Reservation from "@domains/reservation/model/reservation/Reservation.model";
-import type {AdminReservation} from "@domains/reservation/_feat/fetch-customer-reservations/types/AdminReservation";
 import type {FetchReservationByCodeParams} from "@domains/reservation/_feat/fetch-customer-reservations/service/service.types";
+import type {AdminReservation} from "@domains/reservation/_feat/fetch-customer-reservations";
+import {Reservation} from "@domains/reservation/model/reservation";
 
-/**
- * Retrieves a single reservation by its unique identifier and populates basic user information.
- * @param params - Configuration containing the target `uniqueCode`.
- * @returns {Promise<AdminReservation | null>} A hydrated reservation object or `null` if no match is found.
- */
+/** Retrieves a single reservation by its unique identifier and populates basic user information. */
 export const fetchByUniqueCode = async (
     {uniqueCode}: FetchReservationByCodeParams
 ): Promise<AdminReservation | null> => {

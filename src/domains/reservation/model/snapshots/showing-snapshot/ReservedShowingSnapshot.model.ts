@@ -1,14 +1,5 @@
 /**
- * @file ReservedShowingSnapshot.model.ts
- *
- * Mongoose model for reserved showing snapshots.
- *
- * Binds the immutable {@link ReservedShowingSnapshotSchema} to a concrete
- * model and registers all associated validation hooks.
- *
- * @remarks
- * This model represents a write-once, historical snapshot of a showing
- * at reservation time. Documents must not be mutated after creation.
+ * @fileoverview Defines the Mongoose model for snapshots of showing data at the time of reservation.
  */
 
 import { type Model, model } from "mongoose";
@@ -17,9 +8,7 @@ import type { ReservedShowingSnapshotSchemaFields } from "./ReservedShowingSnaps
 
 import "./ReservedShowingSnapshot.hooks.js";
 
-/**
- * Reserved showing snapshot model.
- */
+/** Mongoose model for the ReservedShowingSnapshot collection. */
 export const ReservedShowingSnapshot: Model<ReservedShowingSnapshotSchemaFields> =
     model<ReservedShowingSnapshotSchemaFields>(
         "ReservedShowingSnapshot",

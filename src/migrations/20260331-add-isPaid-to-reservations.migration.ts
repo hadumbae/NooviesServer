@@ -3,7 +3,7 @@
 import "dotenv/config";
 import connect from "@config/database.js";
 import mongoose from "mongoose";
-import Reservation from "../domains/reservation/model/reservation/Reservation.model.js";
+import {Reservation} from "@domains/reservation/model/reservation";
 
 /**
  * Execution block for the Reservation data migration.

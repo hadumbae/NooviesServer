@@ -3,9 +3,6 @@
  */
 
 import {Types} from "mongoose";
-import type {
-    ReservedShowingSnapshotSchemaFields
-} from "@domains/reservation/model/snapshots/showing-snapshot/ReservedShowingSnapshot.types";
 import Showing from "@domains/showing/models/showing/Showing.model";
 import {DocumentNotFoundError} from "@shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
@@ -16,6 +13,7 @@ import {ReservedShowingSnapshotInputSchema} from "@domains/reservation/_feat/res
 import {createScreenSnapshot} from "@domains/screen/_feat/build-snapshot";
 import {createTheatreSnapshot} from "@domains/theatre/utilities";
 import type {ReservationType} from "@domains/reservation/validation/enums";
+import type {ReservedShowingSnapshotSchemaFields} from "@domains/reservation/model/snapshots/showing-snapshot";
 
 type ShowingWithReferences = Omit<ShowingSchemaFields, "movie" | "theatre" | "screen"> & {
     movie: Types.ObjectId;

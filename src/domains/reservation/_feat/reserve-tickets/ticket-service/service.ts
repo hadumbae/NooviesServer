@@ -2,7 +2,6 @@
  * @fileoverview Orchestration service for initiating and finalizing ticket reservations.
  */
 
-import type {ReservationSchemaFields} from "@domains/reservation/model/reservation/Reservation.types";
 import {calculateFutureDate} from "@shared/utility/date/LuxonDateUtils";
 import {fetchPopulatedShowing} from "@domains/showing/utilities/fetchPopulatedShowing";
 import {BookingError} from "@shared/errors/reservations/BookingError";
@@ -11,7 +10,6 @@ import type {
     ReserveSeatTicketData,
     ReserveTicketsParams
 } from "@domains/reservation/_feat/reserve-tickets/ticket-service/service.types";
-import Reservation from "@domains/reservation/model/reservation/Reservation.model";
 import SeatMap from "@domains/seatmap/model/SeatMap.model";
 import type {SeatMapSchemaFields} from "@domains/seatmap/model/SeatMap.types";
 import {type ReserveTicketPersistenceData} from "@domains/reservation/_feat/reserve-tickets/schemas";
@@ -19,6 +17,7 @@ import {Seat} from "@domains/seat/model";
 import {
     saveValidatedReservation
 } from "@domains/reservation/_feat/reserve-tickets/ticket-service/saveValidatedReservation";
+import {Reservation, type ReservationSchemaFields} from "@domains/reservation/model/reservation";
 
 /** Initiates a ticket reservation hold based on the provided type and identity context. */
 export async function reserveTickets(

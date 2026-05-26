@@ -1,16 +1,9 @@
 /**
- * @file ReservationCRUDController.ts
- *
- * CRUD controller for reservation resources.
- *
- * Provides standard create, read, update, and delete operations
- * for {@link ReservationSchemaFields}, extending the shared
- * {@link BaseCRUDController} with reservation-specific
- * query option handling.
+ * @fileoverview Controller for handling CRUD operations and query option generation for reservations.
  */
 
 import BaseCRUDController from "@shared/controller/base-crud-controller/BaseCRUDController";
-import type {ReservationSchemaFields} from "../../../model/reservation/Reservation.types";
+import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
 import type {
     ReservationCRUDConstructor,
     ReservationCRUDMethods,
@@ -21,42 +14,19 @@ import {ReservationQueryOptionService} from "@domains/reservation/features/get-q
 import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
 
 /**
- * Reservation CRUD controller.
- *
- * @remarks
- * - Exposes standard CRUD endpoints for reservation documents
- * - Delegates query parsing, validation, and transformation to
- *   {@link ReservationQueryOptionService}
- * - Keeps controller logic thin by relying on shared base behavior
+ * Controller providing standard CRUD endpoints and specialized query parsing for reservation entities.
  */
 export class ReservationCRUDController
     extends BaseCRUDController<ReservationSchemaFields, ReservationQueryMatchFilters>
     implements ReservationCRUDMethods {
 
-    /** Service responsible for reservation query option resolution. */
     protected optionService: ReservationQueryOptionService;
 
-    /**
-     * Create a new {@link ReservationCRUDController}.
-     *
-     * @param params - Controller dependencies and base configuration
-     */
     constructor({optionService, ...superParams}: ReservationCRUDConstructor) {
         super(superParams);
         this.optionService = optionService;
     }
 
-    /**
-     * Resolve query options from an incoming HTTP request.
-     *
-     * @remarks
-     * - Parses and validates request query parameters
-     * - Converts them into MongoDB-compatible query options
-     * - Used internally by base CRUD read handlers
-     *
-     * @param req - Express request object
-     * @returns Structured query options for reservation queries
-     */
     fetchQueryOptions(
         req: Request,
     ): QueryOptionTypes<ReservationSchemaFields, ReservationQueryMatchFilters> {

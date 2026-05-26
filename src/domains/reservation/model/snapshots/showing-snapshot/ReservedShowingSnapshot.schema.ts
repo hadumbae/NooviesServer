@@ -1,8 +1,5 @@
 /**
  * @fileoverview Mongoose schema definition for Reserved Showing snapshots.
- * Implements a "Deep Snapshot" pattern to lock in all showing variables—from movie
- * metadata to specific seat geometry—ensuring transaction records remain
- * immutable and historically accurate.
  */
 
 import { Schema, type SchemaDefinitionProperty } from "mongoose";
@@ -27,7 +24,7 @@ const LanguageDefinition: SchemaDefinitionProperty = {
 };
 
 /**
- * Reserved Showing Snapshot Schema.
+ * Mongoose schema for capturing immutable showing data at the time of reservation.
  */
 export const ReservedShowingSnapshotSchema =
     new Schema<ReservedShowingSnapshotSchemaFields>({
