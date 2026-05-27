@@ -3,11 +3,11 @@
  */
 
 import {z} from "zod";
-import {URLParamMongooseSortOrderSchema} from "@shared/schema/url/URLParamMongooseSortOrderSchema";
+import {URLParamSortOrderSchema} from "@shared/_feat/parse-query-string";
 
 /** Zod schema for reservation query sorting options. */
 export const ReservationQueryMatchSortSchema = z.object({
-    sortByDateReserved: URLParamMongooseSortOrderSchema,
+    sortByDateReserved: URLParamSortOrderSchema,
 });
 
 /** Sort options for reservation queries. */
