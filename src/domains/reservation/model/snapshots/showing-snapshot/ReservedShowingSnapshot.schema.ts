@@ -4,12 +4,12 @@
 
 import { Schema, type SchemaDefinitionProperty } from "mongoose";
 import type { ReservedShowingSnapshotSchemaFields } from "./ReservedShowingSnapshot.types.js";
-import { ReservationTypeConstant } from "@domains/reservation/constants";
 import ISO6391CodeConstant from "@shared/constants/language/ISO6391CodeConstant";
 import { MovieSnapshotSchema } from "@domains/movie/model/movie-snapshot/MovieSnapshot.schema";
 import { ReservedSeatSnapshotSchema } from "@domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.schema";
 import { ScreenSnapshotSchema } from "@domains/screen/models/screen-snapshot";
 import {TheatreSnapshotSchema} from "@domains/theatre/model/theatre-snapshot";
+import {ReservationTypeConstant} from "@domains/reservation/validation/enums";
 
 /**
  * Reusable ISO 639-1 language field definition.

@@ -9,9 +9,9 @@ import type {
     ReservationCRUDMethods,
 } from "./controller.types";
 import type {Request} from "express";
-import type {ReservationQueryMatchFilters} from "@domains/reservation/features/get-query-options/schemas";
 import {ReservationQueryOptionService} from "@domains/reservation/features/get-query-options/services";
 import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
+import type {ReservationQueryMatchFilters} from "@domains/reservation/_feat/validate-query-options";
 
 /**
  * Controller providing standard CRUD endpoints and specialized query parsing for reservation entities.

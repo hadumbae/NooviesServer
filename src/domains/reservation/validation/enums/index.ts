@@ -1,15 +1,19 @@
 import {
     type ReservationStatus,
-    ReservationStatusEnumSchema
-} from "@domains/reservation/validation/enums/ReservationStatusEnumSchema";
+    ReservationStatusSchema
+} from "@domains/reservation/validation/enums/ReservationStatusSchema";
 import {
     type ReservationType,
-    ReservationTypeEnumSchema
-} from "@domains/reservation/validation/enums/ReservationTypeEnumSchema";
+    ReservationTypeSchema
+} from "@domains/reservation/validation/enums/ReservationTypeSchema";
+import {ReservationTypeConstant} from "@domains/reservation/validation/enums/ReservationTypeConstant";
+import {ReservationStatusConstant} from "@domains/reservation/validation/enums/ReservationStatusConstant";
 
 export {
-    ReservationStatusEnumSchema,
-    ReservationTypeEnumSchema
+    ReservationStatusSchema,
+    ReservationTypeSchema,
+    ReservationTypeConstant,
+    ReservationStatusConstant,
 }
 
 export type {

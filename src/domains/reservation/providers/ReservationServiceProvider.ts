@@ -10,14 +10,14 @@ import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
 import {BaseRepository} from "@shared/repository/BaseRepository";
 import {ReservationCRUDController} from "@domains/reservation/features/reservation-crud/controllers/controller";
-import {ReservationPopulateRefs} from "@domains/reservation/constants";
 import {ReservationQueryOptionService} from "@domains/reservation/features/get-query-options/services";
+import {ReservationPopulatePaths} from "@domains/reservation/_feat/query-population";
 
 /** Service provider for Reservation domain bindings. */
 export class ReservationServiceProvider {
     static register() {
         const model = Reservation;
-        const populateRefs: PopulatePath[] = ReservationPopulateRefs;
+        const populateRefs: PopulatePath[] = ReservationPopulatePaths;
         const repository = new BaseRepository({model, populateRefs});
         const optionService = new ReservationQueryOptionService();
         const aggregateService = new AggregateQueryService({model});

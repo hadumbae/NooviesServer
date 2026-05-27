@@ -1,25 +1,24 @@
 /**
  * @fileoverview Service for parsing and transforming reservation request queries into MongoDB options.
  */
+
 import type {Request} from "express";
 import type IQueryOptionService from "@shared/types/query-options/IQueryOptionService";
 import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
-import {ReservationQueryOptionSchema} from "@domains/reservation/features/get-query-options/schemas";
 import {RequestValidationError} from "@shared/errors/RequestValidationError";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
 import type {QueryOptionTypes, SortQuery,} from "@shared/types/query-options/QueryOptionService.types";
-import type {ReservationQueryMatchFilters, ReservationQueryOptions} from "@domains/reservation/features/get-query-options/schemas";
+import {
+    type ReservationQueryMatchFilters,
+    type ReservationQueryOptions, ReservationQueryOptionSchema
+} from "@domains/reservation/_feat/validate-query-options";
 
-/** Service responsible for the translation of API query parameters into database-level filters and sorts. */
+/** Translates API query parameters into database-level filters and sorts for reservations. */
 export class ReservationQueryOptionService
     implements IQueryOptionService<ReservationSchemaFields, ReservationQueryOptions, ReservationQueryMatchFilters> {
 
-    /**
-     * Extracts and validates reservation query parameters from an Express request.
-     * @param req - The Express request object containing raw query strings.
-     * @throws {RequestValidationError} 422 - If query parameters fail schema validation.
-     */
+    /** Extracts and validates reservation query parameters from an Express request. */
     fetchQueryParams(req: Request): ReservationQueryOptions {
         const {data, success, error} = ReservationQueryOptionSchema.safeParse(req.query);
 

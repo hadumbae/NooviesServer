@@ -5,8 +5,8 @@
 import type {ReservedShowingSnapshotSchemaFields} from "@domains/reservation/model/snapshots/showing-snapshot";
 import {Types} from "mongoose";
 import type {ISO4217CurrencyCode} from "@shared/schema/enums/ISO4217CurrencyCodeEnumSchema";
-import type {ReservationStatus} from "@domains/reservation/validation/enums/ReservationStatusEnumSchema.js";
-import type {ReservationType} from "@domains/reservation/validation/enums/ReservationTypeEnumSchema.js";
+import type {ReservationStatus} from "@domains/reservation/validation/enums/ReservationStatusSchema";
+import type {ReservationType} from "@domains/reservation/validation/enums/ReservationTypeSchema";
 import type {NonNegativeNumber} from "@shared/schema/numbers/NonNegativeNumberSchema";
 import type {BaseModelWithSlug} from "@shared/types/schema/BaseModel";
 import type {ModelTimestamps} from "@shared/types/schema/ModelTimestamps";

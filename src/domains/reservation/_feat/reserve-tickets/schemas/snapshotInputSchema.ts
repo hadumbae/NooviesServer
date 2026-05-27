@@ -8,7 +8,7 @@ import {ValidDateInstanceSchema} from "@shared/schema/date-time/ValidDateInstanc
 import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
 import {BooleanValueSchema} from "@shared/schema/booleans/BooleanValueSchema";
 import {ISO6391LanguageCodeSchema} from "@shared/schema/enums/ISO6391LanguageCodeSchema";
-import {ReservationTypeEnumSchema} from "@domains/reservation/validation/enums";
+import {ReservationTypeSchema} from "@domains/reservation/validation/enums";
 import {ReservedSeatSnapshotInputSchema} from "@domains/seatmap/schema/ReservedSeatSnapshotInputSchema";
 import {ScreenSnapshotInputSchema} from "@domains/screen/_feat/validate-submit";
 import {TheatreSnapshotInputSchema} from "@domains/theatre/validation";
@@ -27,7 +27,7 @@ export const ReservedShowingSnapshotInputSchema = z.object({
     isSpecialEvent: BooleanValueSchema.optional(),
     pricePaid: PositiveNumberSchema,
     ticketCount: PositiveNumberSchema,
-    reservationType: ReservationTypeEnumSchema,
+    reservationType: ReservationTypeSchema,
 });
 
 /** Type representing the validated input for a reserved showing snapshot. */

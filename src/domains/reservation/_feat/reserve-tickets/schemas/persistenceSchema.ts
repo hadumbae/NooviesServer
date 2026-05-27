@@ -8,7 +8,7 @@ import {ReserveTicketInputSchema} from "@domains/reservation/_feat/reserve-ticke
 import {DateInstanceSchema} from "@shared/schema/date-time/DateInstanceSchema";
 import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
 import {NonNegativeNumberSchema} from "@shared/schema/numbers/NonNegativeNumberSchema";
-import {ReservationStatusEnumSchema} from "@domains/reservation/validation/enums";
+import {ReservationStatusSchema} from "@domains/reservation/validation/enums";
 
 /** Validation schema for the internal persistence layer of a ticket reservation. */
 export const ReserveTicketPersistenceSchema =
@@ -18,7 +18,7 @@ export const ReserveTicketPersistenceSchema =
             expiresAt: DateInstanceSchema,
             dateReserved: DateInstanceSchema,
             pricePaid: NonNegativeNumberSchema,
-            status: ReservationStatusEnumSchema,
+            status: ReservationStatusSchema,
             notes: NonEmptyStringSchema
                 .max(3000, "Must be 3000 characters or less.")
                 .optional(),

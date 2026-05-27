@@ -8,7 +8,10 @@ import type {
 } from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
 import type {ReservationSchemaFields} from "@domains/reservation/model/reservation/Reservation.types";
 import {ReservationQueryOptionService} from "@domains/reservation/features/get-query-options/services";
-import type {ReservationQueryMatchFilters} from "@domains/reservation/features/get-query-options/schemas";
+
+import {
+    ReservationQueryMatchFilters
+} from "@domains/reservation/_feat/validate-query-options/schemas/ReservationQueryMatchFilterSchema";
 
 /** Constructor contract for the ReservationCRUDController. */
 export interface ReservationCRUDConstructor

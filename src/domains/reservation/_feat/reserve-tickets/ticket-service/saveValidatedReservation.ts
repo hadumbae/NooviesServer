@@ -3,7 +3,7 @@
  */
 
 import {RequestValidationError} from "@shared/errors/RequestValidationError";
-import {ReservationPopulateRefs} from "@domains/reservation/constants/ReservationPopulateRefs";
+import {ReservationPopulatePaths} from "@domains/reservation/_feat/query-population/ReservationPopulatePaths";
 import {
     type ReserveTicketPersistenceData,
     ReserveTicketPersistenceSchema
@@ -27,7 +27,7 @@ export async function saveValidatedReservation(
     const doc = new Reservation(parsedData);
     await doc.save();
 
-    await doc.populate(ReservationPopulateRefs);
+    await doc.populate(ReservationPopulatePaths);
 
     return doc;
 }

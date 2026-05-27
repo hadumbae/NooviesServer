@@ -10,7 +10,7 @@ import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOption
 import {IsDeletedSchemaTypeOptions} from "@shared/model/IsDeletedSchemaTypeOptions";
 import {DeletedAtSchemaTypeOptions} from "@shared/model/DeletedAtSchemaTypeOptions";
 import type {ModelSoftDeleteMethods} from "@shared/types/schema/ModelSoftDelete";
-import {ReservationStatusConstant, ReservationTypeConstant} from "@domains/reservation/constants";
+import {ReservationStatusConstant, ReservationTypeConstant} from "@domains/reservation/validation/enums";
 
 /** TypeScript type representing the compiled Reservation Model. */
 export type ReservationModel = Model<ReservationSchemaFields, {}, ModelSoftDeleteMethods<ReservationSchemaFields>>;

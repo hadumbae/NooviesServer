@@ -8,7 +8,7 @@ import type {ReservationSchemaFields, ReservationDoc} from "./Reservation.types.
 import {DateTime} from "luxon";
 import {
     generateReservationUniqueCode
-} from "../../features/generate-reservation-code/index.js";
+} from "@domains/reservation/_feat/generate-reservation-code/index.js";
 import type {ReservationStatus} from "@domains/reservation/validation/enums";
 import SeatMap from "@domains/seatmap/model/SeatMap.model";
 import generateSlug from "@shared/utility/generateSlug";
