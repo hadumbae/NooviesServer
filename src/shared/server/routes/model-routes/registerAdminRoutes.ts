@@ -12,7 +12,6 @@ import MovieCreditRoutes from "@domains/movieCredit/routing/MovieCreditRoutes.js
 import {MovieReviewCRUDRoutes} from "@domains/movieReview/routes/MovieReviewCRUDRoutes.js";
 import ShowingRoutes from "@domains/showing/routing/ShowingRoutes.js";
 import SeatMapRoutes from "@domains/seatmap/routing/SeatMapRoutes.js";
-import {ReservationRoutes} from "@domains/reservation/routes/ReservationRoutes.js";
 import {CustomerViewDataRoutes} from "@domains/customer/features/customer-details/routing";
 
 /**
@@ -39,13 +38,6 @@ const showingRoutes: RouteRegistration[] = [
 ];
 
 /**
- * Transactional and feature-specific routes for admin-level reservation management.
- */
-const reservationRoutes: RouteRegistration[] = [
-    {path: "/api/v1/admin/reservations", router: ReservationRoutes},
-];
-
-/**
  * CRM-specific routes for administrative customer management.
  */
 const customerRoutes: RouteRegistration[] = [
@@ -60,7 +52,6 @@ export function registerAdminRoutes(app: Express): void {
         setupRoutes,
         movieRoutes,
         showingRoutes,
-        reservationRoutes,
         customerRoutes,
     ];
 
