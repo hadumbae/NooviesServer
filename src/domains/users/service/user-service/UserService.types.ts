@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import type { UserPasswordUpdateInput } from "../../schema/UserPasswordUpdateInputSchema.js";
+import type { UserPasswordUpdateInput } from "@domains/users/validation/submit/UserPasswordUpdateInputSchema";
 
 /**
  * Data required to update a user's password.

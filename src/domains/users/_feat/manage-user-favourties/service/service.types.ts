@@ -6,14 +6,14 @@
 import {Types} from "mongoose";
 
 /** Pagination input for favourites retrieval. */
-export type FetchUserFavouritesParams = {
+export type FetchUserFavouritesConfig = {
     userID: Types.ObjectId;
     page: number;
     perPage: number;
 };
 
 /** Identifiers for favourite movie operations. */
-export type UserFavouriteMovieParams = {
+export type UserFavouriteMovieConfig = {
     userID: Types.ObjectId;
     movieID: Types.ObjectId;
 }

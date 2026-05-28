@@ -1,13 +1,11 @@
 /**
- * @file Aggregation pipelines for lean User population.
- * @filename LeanUserPopulationPipelines.ts
+ * @fileoverview Aggregation pipelines for lean User population.
  */
 
-import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+import type {PopulationPipelineStages} from "@shared/types/mongoose/AggregatePipelineStages.js";
 
 /**
- * A sequence of Mongoose/MongoDB aggregation stages to populate a user reference.
- * @returns {PopulationPipelineStages} An array of typed aggregation stages.
+ * Aggregation stages to populate a user reference with limited fields.
  */
 export const LeanUserPopulationPipelines: PopulationPipelineStages = [
     {

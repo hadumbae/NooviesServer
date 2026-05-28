@@ -3,8 +3,8 @@
  *
  */
 
-import type {UserUniqueCode} from "@domains/users/validation"
-import type {LeanUserSchemaFields} from "@models/User.types"
+import type {UserUniqueCode} from "@domains/users/_feat/manage-user-unique-code/schemas"
+import type {LeanUserSchemaFields} from "@domains/users/model/user/User.types"
 import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/model/MovieReview.types"
 import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/review-code/MovieReviewUniqueCodeSchema"
 import type {RequestPaginationOptions} from "@shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema"

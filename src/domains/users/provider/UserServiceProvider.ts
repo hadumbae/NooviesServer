@@ -1,9 +1,9 @@
-import User from "@models/User.model.js";
-import type {UserSchemaFields} from "@models/User.types.js";
+import {User} from "@domains/users/model/user/User.model";
+import type {UserSchemaFields} from "@domains/users/model/user/User.types";
 
 import UserController from "../controller/UserController.js";
 
-import {BaseRepository} from "../../../shared/repository/BaseRepository.js";
+import {BaseRepository} from "@shared/repository/BaseRepository";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import UserService from "../service/user-service/UserService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";

@@ -1,6 +1,6 @@
 import type {UserCredentials} from "../types/UserCredentials.js";
 import type {UserRegisterInput} from "../schema/UserRegisterInputSchema.js";
-import type {UserSchemaFields} from "@models/User.types.js";
+import type {UserSchemaFields} from "@domains/users/model/user/User.types";
 import {Types} from "mongoose";
 import type {UserLoginInput} from "../schema/UserLoginInputSchema.js";
 

@@ -4,11 +4,11 @@
  */
 
 import {Router} from 'express';
-import isAuth from "../../authentication/middleware/isAuth.js";
-import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
-import * as UserFavouriteController from "../controller/UserFavouriteController.js";
-import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
-import {UserFavouriteMovieInputSchema} from "../schema/UserFavouriteMovieInputSchema.js";
+import isAuth from "@domains/authentication/middleware/isAuth.js";
+import asyncHandler from "@shared/utility/handlers/asyncHandler.js";
+import * as UserFavouriteController from "@domains/users/_feat/manage-user-favourties/controller/controller";
+import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema.js";
+import {UserFavouriteMovieInputSchema} from "@domains/users/validation/submit/UserFavouriteMovieInputSchema";
 
 const router = Router();
 
@@ -34,5 +34,5 @@ router.patch(
 );
 
 export {
-    router as UserProfileRoutes,
+    router as UserFavouritesRoutes,
 }

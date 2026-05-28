@@ -1,15 +1,12 @@
 /**
- * @file Mongoose schema definition for the User model.
- * @filename User.schema.ts
+ * @fileoverview Mongoose schema definition for the User model.
  */
 
 import {Schema} from "mongoose";
-import type {UserSchemaFields} from "@models/User.types.js";
-import UserRoleConstant from "../constants/UserRoleConstant.js";
+import type {UserSchemaFields} from "@domains/users/model/user/User.types.js";
+import {UserRoleConstant} from "@domains/users/validation/enum/UserRoleConstant";
 
-/**
- * User document schema.
- */
+/** User document schema. */
 export const UserSchema = new Schema<UserSchemaFields>({
     name: {
         type: String,

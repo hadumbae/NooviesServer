@@ -3,7 +3,7 @@
  */
 
 import {Types} from "mongoose";
-import type {LeanUserSchemaFields} from "@domains/users/model/User.types.js";
+import type {LeanUserSchemaFields} from "@domains/users/model/user/User.types";
 import type {MovieWithGenres, MovieWithRating} from "@domains/movie/model/movie/Movie.types";
 import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
 import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/review-code/MovieReviewUniqueCodeSchema";

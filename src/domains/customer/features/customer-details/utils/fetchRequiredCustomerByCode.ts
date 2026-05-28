@@ -1,21 +1,14 @@
 /**
- * @file Data access utility for retrieving non-sensitive customer profile information.
- * @filename fetchRequiredCustomerByCode.ts
+ * @fileoverview Utility for retrieving non-sensitive customer profile information by unique code.
  */
 
-import User from "@models/User.model";
+import {User} from "@domains/users/model/user/User.model";
 import createHttpError from "http-errors";
-import type {UserUniqueCode} from "@domains/users/validation";
+import type {UserUniqueCode} from "@domains/users/_feat/manage-user-unique-code/schemas";
 import type {DocumentType} from "@shared/types/mongoose/DocumentType";
-import type {LeanUserSchemaFields} from "@models/User.types";
+import type {LeanUserSchemaFields} from "@domains/users/model/user/User.types";
 
-/**
- * Retrieves a customer document by their unique system code, enforcing existence.
- * ---
- * @param code - The validated {@link UserUniqueCode} of the target customer.
- * @returns A promise resolving to the hydrated Lean Mongoose document.
- * @throws {HttpError} 404 if no user matches the provided code.
- */
+/** Retrieves a customer document by their unique system code and throws a 404 error if not found. */
 export async function fetchRequiredCustomerByCode(
     code: UserUniqueCode
 ): Promise<DocumentType<LeanUserSchemaFields>> {

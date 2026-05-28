@@ -7,13 +7,13 @@ import "dotenv/config";
 import {type UserRegisterInput} from "../schema/UserRegisterInputSchema.js";
 import { RequestValidationError } from "@shared/errors/RequestValidationError";
 import bcrypt from "bcryptjs";
-import User from "@models/User.model.js";
+import {User} from "@domains/users/model/user/User.model";
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
 import {z, type ZodIssue} from "zod";
 import jwt from "jsonwebtoken";
 import type {UserCredentials} from "../types/UserCredentials.js";
-import type {UserSchemaFields} from "@models/User.types.js";
+import type {UserSchemaFields} from "@domains/users/model/user/User.types";
 import type {UserLoginInput} from "../schema/UserLoginInputSchema.js";
 import type {AuthServiceMethods} from "./AuthService.types.js";
 

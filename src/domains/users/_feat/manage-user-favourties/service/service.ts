@@ -4,21 +4,21 @@
  */
 
 import type {
-    FetchUserFavouritesParams, IsUserFavouriteMovieReturns,
+    FetchUserFavouritesConfig, IsUserFavouriteMovieReturns,
     ToggleUserFavouriteMovieReturns,
-    UserFavouriteMovieParams
-} from "./UserFavouriteService.types.js";
+    UserFavouriteMovieConfig
+} from "@domains/users/_feat/manage-user-favourties/service/service.types";
 
-import User from "@models/User.model.js";
+import {User} from "@domains/users/model/user/User.model";
 import createHttpError from "http-errors";
-import type {UserSchemaFields} from "@models/User.types.js";
+import type {UserSchemaFields} from "@domains/users/model/user/User.types";
 import {Movie} from "@domains/movie/model/movie/Movie.model";
 import {fetchRequiredMovie} from "@domains/movie/_feat/fetch-movies";
 
 
 /** Returns paginated favourites for a user. */
 export const fetchUserFavourites = async (
-    {userID, page, perPage}: FetchUserFavouritesParams
+    {userID, page, perPage}: FetchUserFavouritesConfig
 ) => {
     const user = await User.findById(userID).select("favourites").lean();
     if (!user) createHttpError(404, "User not found.");
@@ -41,7 +41,7 @@ export const fetchUserFavourites = async (
 
 /** Determines if a movie is favourited by a user. */
 export const isUserFavouriteMovie = async (
-    {userID, movieID}: UserFavouriteMovieParams
+    {userID, movieID}: UserFavouriteMovieConfig
 ): Promise<IsUserFavouriteMovieReturns> => {
     const checkValue = await User.exists({_id: userID, favourites: movieID});
     const isFavourite = checkValue !== null
@@ -56,7 +56,7 @@ export const isUserFavouriteMovie = async (
 
 /** Toggles a movie in the user's favourites. */
 export const toggleCurrentUserFavouriteMovie = async (
-    {userID, movieID}: UserFavouriteMovieParams,
+    {userID, movieID}: UserFavouriteMovieConfig,
 ): Promise<ToggleUserFavouriteMovieReturns> => {
     const movie = await fetchRequiredMovie({
         _id: movieID,

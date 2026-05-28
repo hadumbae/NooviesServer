@@ -4,8 +4,8 @@
  */
 
 import {Types} from "mongoose";
-import type {UserRole} from "../../users/schema/enum/UserRoleEnumSchema.js";
-import type {UserUniqueCode} from "@domains/users/validation";
+import type {UserRole} from "@domains/users/validation/enum/UserRoleEnumSchema.js";
+import type {UserUniqueCode} from "@domains/users/_feat/manage-user-unique-code/schemas";
 
 /**
  * Represents the core security and identity payload returned upon successful authentication.

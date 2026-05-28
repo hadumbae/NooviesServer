@@ -6,8 +6,8 @@
 import "dotenv/config";
 import connect from "@config/database.js";
 import mongoose from "mongoose";
-import User from "@models/User.model";
-import {generateUserUniqueCode} from "@domains/users/utilities";
+import {User} from "@domains/users/model/user/User.model";
+import {generateUserUniqueCode} from "@domains/users/_feat/manage-user-unique-code/generators";
 
 /**
  * Execution block for the User data migration.

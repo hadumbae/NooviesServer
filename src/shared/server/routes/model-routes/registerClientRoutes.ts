@@ -6,7 +6,7 @@
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes";
 import {ScreenBrowseRoutes} from "@domains/screen/_feat/view-data-client/routes/ScreenBrowseRoutes";
-import {UserProfileRoutes} from "@domains/users/routing/UserProfileRoutes";
+import {UserFavouritesRoutes} from "@domains/users/_feat/manage-user-favourties/routes/routes";
 import {FetchClientReservationRoutes} from "@domains/reservation/_feat/fetch-client-reservations/routes";
 import {TheatreSearchRoutes} from "@domains/theatre/_feat/search-theatres";
 import {ReviewsByMovieRoutes} from "@domains/movie/_feat/fetch-reviews-by-movie";
@@ -28,7 +28,7 @@ export function registerClientRoutes(app: Express) {
         {path: "/api/v1/feat/update-client-reservations", router: UpdateClientReservationRoutes},
         {path: "/api/v1/feat/search-theatres", router: TheatreSearchRoutes},
 
-        {path: "/api/v1/profile", router: UserProfileRoutes},
+        {path: "/api/v1/profile", router: UserFavouritesRoutes},
         {path: "/api/v1/user/reviews", router: MyMovieReviewsRoutes},
     ];
 

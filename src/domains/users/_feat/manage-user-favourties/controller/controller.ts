@@ -4,12 +4,12 @@
  */
 
 import type {Request, Response} from 'express';
-import type {ControllerAsyncFunc} from "../../../shared/types/ControllerTypes.js";
-import {fetchRequestUser} from "../../../shared/utility/request/fetchRequestUser.js";
-import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
-import * as UserFavouriteService from "../service/favourite-service/UserFavouriteService.js";
-import type {UserFavouriteMovieInput} from "../schema/UserFavouriteMovieInputSchema.js";
-import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
+import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes.js";
+import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser.js";
+import QueryUtils from "@shared/services/query-utils/QueryUtils.js";
+import * as UserFavouriteService from "@domains/users/_feat/manage-user-favourties/service/service";
+import type {UserFavouriteMovieInput} from "@domains/users/validation/submit/UserFavouriteMovieInputSchema";
+import isValidObjectId from "@shared/utility/mongoose/isValidObjectId.js";
 
 /** Returns paginated favourites for the current user. */
 export const getFavouriteMovies: ControllerAsyncFunc = async (
