@@ -1,12 +1,8 @@
 /**
- * @file Constants defining the permissible moderation actions for movie reviews.
- * @filename constant.ts
+ * @fileoverview Constants defining the permissible moderation actions for movie reviews.
  */
 
-/**
- * List of available administrative actions for moderating user reviews.
- * ---
- */
+/** List of available administrative actions for moderating user reviews. */
 export const MovieReviewModerationActionConstant = [
   "MOD_SOFT_DELETE",
   "MOD_TOGGLE_PUBLICITY",

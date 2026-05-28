@@ -1,6 +1,6 @@
 /**
- * @fileoverview Defines the Mongoose model for Movie Review moderation audit
- * entries, enabling database operations for moderation logs.
+ * @fileoverview Defines the Mongoose model for movie review moderation audit entries.
+ *
  */
 
 import {model, type Model} from "mongoose"
@@ -12,8 +12,7 @@ import {
 } from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.schema"
 
 /**
- * Model constructor for MovieReviewModerationLog documents used to interact
- * with the moderation logs collection in MongoDB.
+ * Mongoose model for interacting with the movie review moderation logs collection.
  */
 export const MovieReviewModerationLog: Model<MovieReviewModerationLogSchemaFields> =
     model<MovieReviewModerationLogSchemaFields>("MovieReviewModerationLog", MovieReviewModerationLogSchema)

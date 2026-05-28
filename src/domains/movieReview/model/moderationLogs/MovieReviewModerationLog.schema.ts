@@ -1,6 +1,6 @@
 /**
  * @fileoverview Defines the Mongoose schema for movie review moderation logs.
- * Tracks administrative actions to provide an immutable audit trail.
+ *
  */
 
 import {Schema} from "mongoose"

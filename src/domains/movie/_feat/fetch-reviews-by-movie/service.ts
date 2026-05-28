@@ -11,13 +11,13 @@ import type {
     ReviewDetailsByMovieConfig,
     ReviewDetailsByMovieReturns
 } from "./service.types";
-import type {MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types";
+import type {MovieReviewSchemaFields} from "@domains/movieReview/model/model/MovieReview.types";
 import type {PaginationReturns} from "@shared/types/PaginationReturns";
-import {MovieReview} from "@domains/movieReview/model/MovieReview.model";
+import {MovieReview} from "@domains/movieReview/model/model/MovieReview.model";
 import populateQuery from "@shared/utility/mongoose/populateQuery";
-import {MovieReviewPopulatePaths} from "@domains/movieReview/queries/MovieReviewPopulatePaths";
-import {MovieReviewPopulationPipelines} from "@domains/movieReview/queries/MovieReviewPopulationPipelines";
-import {addMovieReviewDetailsPipelines} from "@domains/movieReview/utilities/addMovieReviewDetailsPipelines";
+import {MovieReviewPopulatePaths} from "@domains/movieReview/_feat/query-population/MovieReviewPopulatePaths";
+import {MovieReviewPopulationPipelines} from "@domains/movieReview/_feat/query-population/MovieReviewPopulationPipelines";
+import {addMovieReviewDetailsPipelines} from "@domains/movieReview/_feat/query-population/addMovieReviewDetailsPipelines";
 
 /**
  * Returns paginated reviews for a movie.

@@ -5,16 +5,12 @@
 
 import type {UserUniqueCode} from "@domains/users/validation"
 import type {LeanUserSchemaFields} from "@models/User.types"
-import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/MovieReview.types"
-import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/MovieReviewUniqueCodeSchema"
-import type {
-    RequestPaginationOptions
-} from "@shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema"
+import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/model/MovieReview.types"
+import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/review-code/MovieReviewUniqueCodeSchema"
+import type {RequestPaginationOptions} from "@shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema"
 import type {PaginationReturns} from "@shared/types/PaginationReturns"
-import type {
-    MovieReviewModerationLogSchemaFields
-} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types"
 import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
+import type {MovieReviewModerationLogSchemaFields} from "@domains/movieReview/model";
 
 /** Configuration parameters for fetching aggregated customer profile data. */
 export type FetchCustomerProfileViewDataConfig = {
