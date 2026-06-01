@@ -6,10 +6,7 @@ import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
 import isAuth from "@domains/authentication/middleware/isAuth";
 import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
-import {Genre} from "@domains/genre/models/genre";
-import {findById, findBySlug, destroy} from "@shared/_feat/generic-crud/path-handlers";
+import {destroy, find, findById, findBySlug, paginated} from "@shared/_feat/generic-crud/path-handlers";
 import {MovieReview, type MovieReviewSchemaFields} from "@domains/movieReview/model";
 import {
     MovieReviewQueryMatchStageSchema,
@@ -34,6 +31,18 @@ const routes: CRUDRoute<MovieReviewSchemaFields>[] = [
         handler: findBySlug
     },
     {
+        path: "/find",
+        method: "get",
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        handler: find
+    },
+    {
+        path: "/paginated",
+        method: "get",
+        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        handler: paginated
+    },
+    {
         path: `/item/:_id`,
         method: "delete",
         middleware: [isAuth],
@@ -45,12 +54,6 @@ const router: Router = buildCRUDRoutes<MovieReviewSchemaFields>({
     model: MovieReview,
     routes: routes,
 });
-
-router.get(
-    "/query",
-    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
-    asyncHandler(aggregate({model: Genre})),
-);
 
 /** Router instance containing movie review CRUD and query endpoints. */
 export {

@@ -37,7 +37,7 @@ const setupRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/showings/crud", router: ShowingCRUDRoutes},
     {path: "/api/v1/admin/seat-maps/crud", router: SeatMapCRUDRoutes},
     {path: "/api/v1/admin/reservations/crud", router: ReservationCRUDRoutes},
-    {path: "/api/v1/admin/movie-review/crud", router: MovieReviewCRUDRoutes},
+    {path: "/api/v1/admin/movie-reviews/crud", router: MovieReviewCRUDRoutes},
 ];
 
 /**
