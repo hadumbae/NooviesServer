@@ -1,10 +1,10 @@
 import {z} from "zod";
 
-import {PositiveNumberSchema} from "../../../shared/schema/numbers/PositiveNumberSchema.js";
-import {ObjectIdStringSchema} from "../../../shared/schema/mongoose/ObjectIdStringSchema.js";
-import {NonEmptyStringSchema} from "../../../shared/schema/strings/NonEmptyStringSchema.js";
-import {CoercedBooleanValueSchema} from "../../../shared/schema/booleans/CoercedBooleanValueSchema.js";
-import {RoleTypeDepartmentEnumSchema} from "../../roleType/schemas/RoleTypeDepartment.enum.js";
+import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
+import {ObjectIdStringSchema} from "@shared/schema/mongoose/ObjectIdStringSchema";
+import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {CoercedBooleanValueSchema} from "@shared/schema/booleans/CoercedBooleanValueSchema";
+import {RoleTypeDepartmentSchema} from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
 
 /**
  * Base schema for a movie credit input (common fields for both CAST and CREW)
@@ -17,7 +17,7 @@ const MovieCreditBaseSchema = z.object({
     person: ObjectIdStringSchema,
 
     /** Department of the credit ("CAST" or "CREW") */
-    department: RoleTypeDepartmentEnumSchema,
+    department: RoleTypeDepartmentSchema,
 
     /** Role type ID (e.g., Actor, Director) */
     roleType: ObjectIdStringSchema,

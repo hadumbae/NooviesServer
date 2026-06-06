@@ -1,5 +1,5 @@
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
-import type IRoleType from "../model/RoleType.interface.js";
+import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
 import type { Request } from "express";
 import {
     type RoleTypeQueryOptions,
@@ -15,7 +15,7 @@ import type {RoleTypeQueryMatchFilters} from "@domains/roleType/_feat/validate-q
  * Mongoose-compatible query filters and sorting options for RoleType documents.
  */
 export default class RoleTypeQueryOptionService
-    implements IQueryOptionService<IRoleType, RoleTypeQueryOptions, RoleTypeQueryMatchFilters> {
+    implements IQueryOptionService<RoleTypeSchemaFields, RoleTypeQueryOptions, RoleTypeQueryMatchFilters> {
 
     /**
      * Parses query parameters from an Express request and validates them
@@ -53,7 +53,7 @@ export default class RoleTypeQueryOptionService
      * @param options - Parsed RoleType query options
      * @returns Partial record mapping RoleType fields to Mongoose sort orders
      */
-    generateMatchSorts(options: RoleTypeQueryOptions): Partial<Record<keyof IRoleType, SortOrder>> {
+    generateMatchSorts(options: RoleTypeQueryOptions): Partial<Record<keyof RoleTypeSchemaFields, SortOrder>> {
         const { sortByRoleName, sortByDepartment } = options;
 
         const sorts = {
@@ -71,7 +71,7 @@ export default class RoleTypeQueryOptionService
      * @param options - Parsed RoleType query options
      * @returns An object containing `filters` and `sorts` ready for querying RoleType documents
      */
-    generateQueryOptions(options: RoleTypeQueryOptions): QueryOptionTypes<IRoleType, RoleTypeQueryMatchFilters> {
+    generateQueryOptions(options: RoleTypeQueryOptions): QueryOptionTypes<RoleTypeSchemaFields, RoleTypeQueryMatchFilters> {
         const matchFilters = this.generateMatchFilters(options);
         const matchSorts = this.generateMatchSorts(options);
 

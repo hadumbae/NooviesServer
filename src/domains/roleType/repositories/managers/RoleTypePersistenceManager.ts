@@ -5,10 +5,10 @@
  * including database error translation.
  */
 
-import {PersistenceManager} from "../../../../shared/repository/managers/PersistenceManager.js";
-import type {PersistenceManagerMethods} from "../../../../shared/repository/managers/PersistenceManager.types.js";
-import RoleTypeModel from "../../model/RoleType.model.js";
-import {ZodDuplicateIndexError} from "../../../../shared/errors/zod/ZodDuplicateIndexError.js";
+import {PersistenceManager} from "@shared/repository/managers/PersistenceManager";
+import type {PersistenceManagerMethods} from "@shared/repository/managers/PersistenceManager.types";
+import {RoleTypeModel} from "@domains/roleType/model";
+import {ZodDuplicateIndexError} from "@shared/errors/zod/ZodDuplicateIndexError";
 
 /**
  * Persistence manager for RoleType.

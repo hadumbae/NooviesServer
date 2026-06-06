@@ -12,10 +12,10 @@ import {create, destroy, find, findById, paginated, update} from "@shared/_feat/
 import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@shared/utility/handlers/asyncHandler";
 import {aggregate} from "@shared/_feat/generic-aggregate";
-import type IRoleType from "@domains/roleType/model/RoleType.interface";
-import RoleTypeModel from "@domains/roleType/model/RoleType.model";
+import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
+import {RoleTypeModel} from "@domains/roleType/model/RoleType.model";
 import {RoleTypeQueryMatchStageSchema, RoleTypeQuerySortStageSchema} from "@domains/roleType/_feat/validate-query";
-import {RoleTypeInputSchema} from "@domains/roleType/schemas/RoleTypeInput.schema";
+import {RoleTypeInputSchema} from "@domains/roleType/validation/schema/RoleTypeInputSchema";
 
 const modelName = RoleTypeModel.modelName;
 const matchSchema = RoleTypeQueryMatchStageSchema;
@@ -24,7 +24,7 @@ const sortSchema = RoleTypeQuerySortStageSchema;
 /**
  * CRUD route definitions for the RoleType entity.
  */
-const routes: CRUDRoute<IRoleType>[] = [
+const routes: CRUDRoute<RoleTypeSchemaFields>[] = [
     {
         /** Basic retrieval of roles based on name or department. */
         path: "/find",
@@ -72,7 +72,7 @@ const routes: CRUDRoute<IRoleType>[] = [
 /**
  * Orchestrates the creation of the router using the generic CRUD utility factory.
  */
-const router: Router = buildCRUDRoutes<IRoleType>({
+const router: Router = buildCRUDRoutes<RoleTypeSchemaFields>({
     model: RoleTypeModel,
     routes: routes,
 });

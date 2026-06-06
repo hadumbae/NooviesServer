@@ -5,7 +5,7 @@
 
 import {z} from "zod";
 import {URLParamObjectIDSchema} from "@shared/schema/url/URLParamObjectIDSchema";
-import {RoleTypeDepartmentEnumSchema} from "@domains/roleType/schemas/RoleTypeDepartment.enum";
+import {RoleTypeDepartmentSchema} from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
 import {URLParamBooleanSchema} from "@shared/schema/url/URLParamBooleanSchema";
 import {URLParamRegexPatternSchema} from "@shared/_feat/parse-query-string";
 import {URLParamNumberSchema} from "@shared/schema/url/URLParamNumberSchema";
@@ -18,7 +18,7 @@ export const MovieCreditQueryMatchFiltersSchema = z.object({
     movie: URLParamObjectIDSchema,
     person: URLParamObjectIDSchema,
     roleType: URLParamObjectIDSchema,
-    department: RoleTypeDepartmentEnumSchema.optional(),
+    department: RoleTypeDepartmentSchema.optional(),
     displayRoleName: URLParamObjectIDSchema,
     creditedAs: URLParamObjectIDSchema,
     isPrimary: URLParamBooleanSchema,

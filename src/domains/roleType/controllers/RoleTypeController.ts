@@ -1,5 +1,5 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type IRoleType from "../model/RoleType.interface.js";
+import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
 import type RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionService.js";
 import type { Request } from "express";
 import type {
@@ -17,7 +17,7 @@ import type {RoleTypeQueryMatchFilters} from "@domains/roleType/_feat/validate-q
  * Extends {@link BaseCRUDControllerConstructorParams} with a required
  * {@link RoleTypeQueryOptionService} for parsing queries.
  */
-export interface IRoleTypeControllerConstructor extends BaseCRUDControllerConstructorParams<IRoleType> {
+export interface IRoleTypeControllerConstructor extends BaseCRUDControllerConstructorParams<RoleTypeSchemaFields> {
     /** Service for parsing query params into match filters and sorts. */
     optionService: RoleTypeQueryOptionService;
 }
@@ -29,7 +29,7 @@ export interface IRoleTypeControllerConstructor extends BaseCRUDControllerConstr
 export interface IRoleTypeController extends BaseControllerCRUDMethods {}
 
 /**
- * Controller for handling requests related to {@link IRoleType}.
+ * Controller for handling requests related to {@link RoleTypeSchemaFields}.
  *
  * Extends {@link BaseCRUDController} to provide standard CRUD functionality,
  * and adds query handling capabilities using {@link RoleTypeQueryOptionService}.
@@ -46,7 +46,7 @@ export interface IRoleTypeController extends BaseControllerCRUDMethods {}
  * // - Sort results by roleName ascending
  */
 export default class RoleTypeController
-    extends BaseCRUDController<IRoleType>
+    extends BaseCRUDController<RoleTypeSchemaFields>
     implements IRoleTypeController
 {
     /** Service for extracting query params and converting them into filters/sorts. */
@@ -76,7 +76,7 @@ export default class RoleTypeController
      * // Returns:
      * // { match: { filters: { roleName: /Director/i }, sorts: { roleName: 1 } } }
      */
-    fetchQueryOptions(req: Request): QueryOptionTypes<IRoleType, RoleTypeQueryMatchFilters> {
+    fetchQueryOptions(req: Request): QueryOptionTypes<RoleTypeSchemaFields, RoleTypeQueryMatchFilters> {
         const params = this.optionService.fetchQueryParams(req);
         return this.optionService.generateQueryOptions(params);
     }

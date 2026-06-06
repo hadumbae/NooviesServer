@@ -6,7 +6,7 @@
 
 import {Types} from "mongoose";
 import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
-import type IRoleType from "../../roleType/model/RoleType.interface.js";
+import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
 import type {PersonSchemaFields} from "@domains/person/model";
 
 /**
@@ -31,7 +31,7 @@ export interface IMovieCredit {
     department: "CAST" | "CREW";
 
     /** Role type definition */
-    roleType: IRoleType;
+    roleType: RoleTypeSchemaFields;
 
     /** Optional display label for CREW roles */
     displayRoleName?: string;

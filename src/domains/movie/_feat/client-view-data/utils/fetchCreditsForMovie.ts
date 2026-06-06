@@ -3,9 +3,9 @@
  */
 
 import {Types} from "mongoose";
-import type {RoleTypeCastCategory, RoleTypeCrewCategory} from "@domains/roleType/schemas/RoleTypeCategory.types";
 import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interface";
 import MovieCredit from "@domains/movieCredit/models/MovieCredit.model";
+import type {RoleTypeCastCategory, RoleTypeCrewCategory} from "@domains/roleType/validation/schema/RoleTypeCategorySchema";
 
 /** Credits grouped by their specific role type category. */
 export type CategoryGroupedCredits = {

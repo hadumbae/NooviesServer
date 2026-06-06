@@ -4,7 +4,7 @@
  */
 
 import {z} from "zod";
-import {RoleTypeDepartmentEnumSchema} from "@domains/roleType/schemas/RoleTypeDepartment.enum";
+import {RoleTypeDepartmentSchema} from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
 import {URLParamRegexPatternSchema} from "@shared/_feat/parse-query-string";
 
 /**
@@ -12,7 +12,7 @@ import {URLParamRegexPatternSchema} from "@shared/_feat/parse-query-string";
  */
 export const RoleTypeQueryMatchFiltersSchema = z.object({
     roleName: URLParamRegexPatternSchema,
-    department: RoleTypeDepartmentEnumSchema.optional(),
+    department: RoleTypeDepartmentSchema.optional(),
 });
 
 /**

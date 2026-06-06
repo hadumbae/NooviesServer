@@ -6,7 +6,9 @@
 
 import {Schema} from "mongoose";
 import type {IMovieCredit} from "./MovieCredit.interface.js";
-import RoleTypeDepartmentConstant from "../../roleType/constants/RoleTypeDepartmentConstant.js";
+import {
+    RoleTypeDepartmentConstant
+} from "@domains/roleType/validation/constants/RoleTypeDepartmentConstant";
 import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
 
 /**

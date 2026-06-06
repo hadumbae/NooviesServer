@@ -3,8 +3,8 @@
 import type {FetchLeanDataConfig} from "@domains/ui-inputs/handlers/service.types";
 import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
 import {Movie} from "@domains/movie/model/movie/Movie.model";
-import type IRoleType from "@domains/roleType/model/RoleType.interface";
-import RoleTypeModel from "@domains/roleType/model/RoleType.model";
+import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
+import {RoleTypeModel} from "@domains/roleType/model/RoleType.model";
 import {Person, type PersonSchemaFields} from "@domains/person/model";
 
 /** Retrieves a list of lean movie documents filtered and sorted by the provided configuration. */
@@ -31,8 +31,8 @@ export async function fetchLeanPersons(
 
 /** Retrieves a list of lean role type documents filtered and sorted by the provided configuration. */
 export async function fetchLeanRoleTypes(
-    {filters, sorts}: FetchLeanDataConfig<IRoleType> = {}
-): Promise<IRoleType[]> {
+    {filters, sorts}: FetchLeanDataConfig<RoleTypeSchemaFields> = {}
+): Promise<RoleTypeSchemaFields[]> {
     return RoleTypeModel
         .find(filters ?? {})
         .sort(sorts)

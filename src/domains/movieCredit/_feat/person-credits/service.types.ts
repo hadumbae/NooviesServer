@@ -4,8 +4,8 @@
 
 import {Types} from "mongoose";
 import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interface";
-import type {RoleTypeDepartmentEnum} from "@domains/roleType/schemas/RoleTypeDepartment.enum";
-import type IRoleType from "@domains/roleType/model/RoleType.interface";
+import type {RoleTypeDepartment} from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
+import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
 
 /**
  * Configuration for fetching statistical credit data.
@@ -35,8 +35,8 @@ export type FetchPersonFilmographyConfig = {
  */
 export type RoleCreditsGroup = {
     role: string;
-    roleType: IRoleType;
-    department: RoleTypeDepartmentEnum;
+    roleType: RoleTypeSchemaFields;
+    department: RoleTypeDepartment;
     totalCredits: number;
     topCredits: IMovieCredit[];
 }
