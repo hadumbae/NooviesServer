@@ -18,11 +18,11 @@ import BaseCRUDController from "../../../shared/controller/base-crud-controller/
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+} from "@/shared/controller/base-crud-controller/BaseControllerCRUDMethods";
 import type ShowingQueryOptionService from "../services/query-option/ShowingQueryOptionService.js";
-import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
+import type { QueryOptionTypes } from "@/shared/types/query-options/QueryOptionService.types";
 import type { ShowingSchemaFields } from "../models/showing/Showing.types.js";
-import type {ShowingQueryMatchFilters} from "@domains/showing/_feat/validate-query";
+import type {ShowingQueryMatchFilters} from "@/domains/showing/_feat/validate-query";
 
 
 /**

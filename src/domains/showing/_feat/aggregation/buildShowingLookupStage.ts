@@ -3,7 +3,7 @@
  */
 
 import type {PipelineStage} from "mongoose";
-import type {LookupStageConfig} from "@shared/_feat/aggregation";
+import type {LookupStageConfig} from "@/shared/_feat/aggregation";
 
 /**
  * Builds a MongoDB $lookup stage for the showings collection.

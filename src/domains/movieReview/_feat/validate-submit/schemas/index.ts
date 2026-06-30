@@ -1,11 +1,11 @@
 import {
     type MovieReviewCreateInputData,
     MovieReviewCreateInputSchema
-} from "@domains/movieReview/_feat/validate-submit/schemas/MovieReviewCreateInputSchema";
+} from "@/domains/movieReview/_feat/validate-submit/schemas/MovieReviewCreateInputSchema";
 import {
     type MovieReviewUpdateInputData,
     MovieReviewUpdateInputSchema
-} from "@domains/movieReview/_feat/validate-submit/schemas/MovieReviewUpdateInputSchema";
+} from "@/domains/movieReview/_feat/validate-submit/schemas/MovieReviewUpdateInputSchema";
 
 export {
     MovieReviewCreateInputSchema,

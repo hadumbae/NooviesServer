@@ -1,7 +1,7 @@
 import {
     buildPaginationPipelines,
     type BuildPaginationPipelinesConfig
-} from "@shared/_feat/pagination-pipelines/buildPaginationPipelines";
+} from "@/shared/_feat/pagination-pipelines/buildPaginationPipelines";
 
 
 export {

@@ -4,10 +4,10 @@
  */
 
 import {Schema} from "mongoose"
-import {MovieReviewModerationActionConstant} from "@domains/movieReview/validation/moderation-actions/constant"
+import {MovieReviewModerationActionConstant} from "@/domains/movieReview/validation/moderation-actions/constant"
 import type {
     MovieReviewModerationLogSchemaFields
-} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types"
+} from "@/domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types"
 
 /**
  * Mongoose schema for tracking administrative interventions on movie reviews.

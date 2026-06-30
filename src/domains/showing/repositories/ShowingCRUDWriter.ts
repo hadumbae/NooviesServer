@@ -9,13 +9,13 @@
  * - Automatic start/end time computation
  */
 
-import {CRUDWriter} from "@shared/repository/operations/CRUDWriter";
+import {CRUDWriter} from "@/shared/repository/operations/CRUDWriter";
 import type {ShowingSchemaFields} from "../models/showing/Showing.types.js";
 import type {ShowingInput} from "../validation/ShowingInputSchema.js";
 import type {
     CRUDCreateParams,
     CRUDUpdateParams,
-} from "@shared/repository/operations/CRUDWriter.types";
+} from "@/shared/repository/operations/CRUDWriter.types";
 import type {
     BuildShowingDateParams,
     GetShowingDateTimeParams,
@@ -23,10 +23,10 @@ import type {
     ShowingCRUDWriterConstructor, ShowingWriteMethods,
 } from "./ShowingCRUDWriter.types.js";
 import {DateTime} from "luxon";
-import {Theatre} from "@domains/theatre/model/theatre";
+import {Theatre} from "@/domains/theatre/model/theatre";
 import createHttpError from "http-errors";
 import {Types} from "mongoose";
-import {Movie} from "@domains/movie/model/movie/Movie.model";
+import {Movie} from "@/domains/movie/model/movie/Movie.model";
 import generateSlug from "../../../shared/utility/generateSlug.js";
 import Showing from "../models/showing/Showing.model.js";
 

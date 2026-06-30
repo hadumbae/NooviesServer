@@ -4,7 +4,7 @@
 
 import {type ZodType, type ZodTypeDef} from "zod";
 import type {NextFunction, Request, RequestHandler, Response} from "express";
-import InvalidRequestQueryError from "@shared/errors/InvalidRequestQueryError";
+import InvalidRequestQueryError from "@/shared/errors/InvalidRequestQueryError";
 import type {PipelineStage} from "mongoose";
 
 /** Props configuration for the parse query match stage middleware. */

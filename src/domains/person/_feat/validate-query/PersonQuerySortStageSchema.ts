@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {normaliseQuerySortValues} from "@shared/_feat/pipeline-schema-transformers";
-import {PersonQueryMatchSortsSchema} from "@domains/person/_feat/validate-query/PersonQueryMatchSortsSchema";
+import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
+import {PersonQueryMatchSortsSchema} from "@/domains/person/_feat/validate-query/PersonQueryMatchSortsSchema";
 
 /** Zod schema that transforms person query sort values into a Mongoose sort pipeline stage. */
 export const PersonQuerySortStageSchema = PersonQueryMatchSortsSchema.transform(normaliseQuerySortValues);

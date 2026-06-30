@@ -4,9 +4,9 @@
  */
 
 import {z} from "zod";
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema.js";
-import {PositiveIntegerSchema} from "@shared/schema/numbers/PositiveIntegerSchema.js";
-import {BooleanValueSchema} from "@shared/schema/booleans/BooleanValueSchema.js";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema.js";
+import {PositiveIntegerSchema} from "@/shared/schema/numbers/PositiveIntegerSchema.js";
+import {BooleanValueSchema} from "@/shared/schema/booleans/BooleanValueSchema.js";
 
 /**
  * Input schema for updating MovieReview records.

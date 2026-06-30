@@ -4,19 +4,19 @@
 
 import {Types} from "mongoose";
 import type {ScreenSchemaFields}
-    from "@domains/screen/models/screen/Screen.types";
+    from "@/domains/screen/models/screen/Screen.types";
 import type {ShowingStatusCode}
     from "../../validation/ShowingStatusEnumSchema.js";
 import type {TheatreSchemaFields}
-    from "@domains/theatre/model/theatre";
+    from "@/domains/theatre/model/theatre";
 import type {ISO6391LanguageCode}
-    from "@shared/schema/enums/ISO6391LanguageCodeSchema";
+    from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
 import type {MovieWithGenres}
-    from "@domains/movie/model/movie/Movie.types";
+    from "@/domains/movie/model/movie/Movie.types";
 import type {ShowingConfigSchemaFields}
     from "../showing-config/ShowingConfig.types.js";
-import type {LocationSchemaFields} from "@shared/model/location/LocationSchemaFields";
-import type {BaseSoftDeleteModel} from "@shared/types/schema/BaseModel";
+import type {LocationSchemaFields} from "@/shared/model/location/LocationSchemaFields";
+import type {BaseSoftDeleteModel} from "@/shared/types/schema/BaseModel";
 
 /** Core schema fields for a theatre showing. */
 export type ShowingSchemaFields = BaseSoftDeleteModel & {

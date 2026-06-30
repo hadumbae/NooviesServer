@@ -4,7 +4,7 @@
  * filters/sorts are injected into the pipeline array.
  */
 
-import type {AggregateBaseConfig} from "@shared/_feat/generic-aggregate/configTypes";
+import type {AggregateBaseConfig} from "@/shared/_feat/generic-aggregate/configTypes";
 import type {PipelineStage} from "mongoose";
 
 /**

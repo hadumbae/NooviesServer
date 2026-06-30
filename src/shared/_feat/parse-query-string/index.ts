@@ -1,8 +1,8 @@
-import {URLParamRegexPatternSchema} from "@shared/_feat/parse-query-string/URLParamRegexPatternSchema";
+import {URLParamRegexPatternSchema} from "@/shared/_feat/parse-query-string/URLParamRegexPatternSchema";
 import {
     type URLParamSortOrder,
     URLParamSortOrderSchema
-} from "@shared/_feat/parse-query-string/URLParamSortOrderSchema";
+} from "@/shared/_feat/parse-query-string/URLParamSortOrderSchema";
 
 export {
     URLParamRegexPatternSchema,

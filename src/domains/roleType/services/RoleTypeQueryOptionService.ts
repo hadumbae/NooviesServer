@@ -1,14 +1,14 @@
 import type IQueryOptionService from "../../../shared/types/query-options/IQueryOptionService.js";
-import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
+import type {RoleTypeSchemaFields} from "@/domains/roleType/model/RoleType.types";
 import type { Request } from "express";
 import {
     type RoleTypeQueryOptions,
     RoleTypeQueryOptionsSchema
-} from "@domains/roleType/_feat/validate-query";
+} from "@/domains/roleType/_feat/validate-query";
 import filterNullishAttributes from "../../../shared/utility/filterNullishAttributes.js";
 import type { FilterQuery, SortOrder } from "mongoose";
-import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
-import type {RoleTypeQueryMatchFilters} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
+import type { QueryOptionTypes } from "@/shared/types/query-options/QueryOptionService.types";
+import type {RoleTypeQueryMatchFilters} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
 
 /**
  * Service responsible for parsing request query parameters and generating

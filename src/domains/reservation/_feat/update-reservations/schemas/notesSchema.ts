@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 
 /**
  * Validation schema for the reservation notes field.

@@ -2,7 +2,7 @@
  * @fileoverview Defines the validation schema for movie synopsis strings.
  */
 
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 import {z} from "zod";
 
 /** Zod schema for validating that a movie synopsis is non-empty and within character limits. */

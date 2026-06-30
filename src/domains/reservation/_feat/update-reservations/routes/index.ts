@@ -1,4 +1,4 @@
-import {ReservationUpdateRoutes} from "@domains/reservation/_feat/update-reservations/routes/routes";
+import {ReservationUpdateRoutes} from "@/domains/reservation/_feat/update-reservations/routes/routes";
 
 
 export {

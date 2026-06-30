@@ -3,7 +3,7 @@
  * Enforces data integrity and optimizes query performance for relational lookups.
  */
 
-import {ScreenSchema} from "@domains/screen/models/screen/Screen.schema";
+import {ScreenSchema} from "@/domains/screen/models/screen/Screen.schema";
 
 /**
  * Compound Unique Index: theatre + slug

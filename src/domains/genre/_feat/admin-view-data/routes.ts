@@ -5,11 +5,11 @@
 import {Router} from "express";
 import isAuth from "../../../authentication/middleware/isAuth";
 import * as GenreAdminViewDataController from "./controller";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {
     GenreDetailsViewRouteConfigSchema
-} from "@domains/genre/_feat/admin-view-data/schemas/GenreDetailsViewRouteConfigSchema";
+} from "@/domains/genre/_feat/admin-view-data/schemas/GenreDetailsViewRouteConfigSchema";
 
 const router = Router();
 

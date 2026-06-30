@@ -4,8 +4,8 @@
  */
 
 import {z} from "zod";
-import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
-import {CoercedNonNegativeNumberSchema} from "@shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
+import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
+import {CoercedNonNegativeNumberSchema} from "@/shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
 
 /**
  * Validation schema for the fetchPersonCreditStats route parameters.

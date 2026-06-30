@@ -2,12 +2,12 @@
  * @fileoverview Generic controller and service for filtering and retrieving documents of a specific model.
  */
 
-import populateQuery from "@shared/utility/mongoose/populateQuery";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
+import populateQuery from "@/shared/utility/mongoose/populateQuery";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
-import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
-import type {FindDocumentsConfig} from "@shared/_feat/generic-crud/path-handlers/find/crudFind.types";
-import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
+import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
+import type {FindDocumentsConfig} from "@/shared/_feat/generic-crud/path-handlers/find/crudFind.types";
+import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
 
 /** Executes a filtered database search with support for population and request modifiers. */
 export const findDocuments = async <TModel extends BaseModel>(

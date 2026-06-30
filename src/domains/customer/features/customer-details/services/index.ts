@@ -1,7 +1,7 @@
 import {
     fetchCustomerProfileViewData, fetchCustomerReviewsViewData,
     fetchCustomerReviewViewData
-} from "@domains/customer/features/customer-details/services/service";
+} from "@/domains/customer/features/customer-details/services/service";
 import type {
     CustomerProfileViewData,
     CustomerReviewViewData,
@@ -9,7 +9,7 @@ import type {
     FetchCustomerReviewsViewData,
     FetchCustomerReviewsViewDataConfig,
     FetchCustomerReviewViewDataConfig
-} from "@domains/customer/features/customer-details/services/service.types";
+} from "@/domains/customer/features/customer-details/services/service.types";
 
 export {
     fetchCustomerProfileViewData,

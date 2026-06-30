@@ -10,7 +10,7 @@
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+} from "@/shared/controller/base-crud-controller/BaseControllerCRUDMethods";
 import type {SeatMapSchemaFields} from "../model/SeatMap.types.js";
 import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
 import type {Request, Response} from "express";

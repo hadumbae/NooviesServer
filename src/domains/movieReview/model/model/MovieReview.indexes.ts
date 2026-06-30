@@ -3,7 +3,7 @@
  *
  */
 
-import { MovieReviewSchema } from "@domains/movieReview/model/model/MovieReview.schema.js";
+import { MovieReviewSchema } from "@/domains/movieReview/model/model/MovieReview.schema.js";
 
 /**
  * Index to optimize queries by movie.

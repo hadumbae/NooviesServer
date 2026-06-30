@@ -3,7 +3,7 @@
  */
 
 import type {Request, Response} from "express";
-import {fetchShowingDetailsViewData, type ShowingDetailsViewRouteConfig} from "@domains/showing/_feat/admin-view-data";
+import {fetchShowingDetailsViewData, type ShowingDetailsViewRouteConfig} from "@/domains/showing/_feat/admin-view-data";
 
 /**
  * Express handler that retrieves composite data for the showing details admin view.

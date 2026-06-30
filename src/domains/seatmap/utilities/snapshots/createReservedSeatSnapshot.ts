@@ -3,9 +3,9 @@ import type {ReservedSeatSnapshotSchemaFields} from "../../model/seat-map-snapsh
 import SeatMap from "../../model/SeatMap.model.js";
 import type {SeatMapSchemaFields} from "../../model/SeatMap.types.js";
 import {ReservedSeatSnapshotInputArraySchema} from "../../schema/ReservedSeatSnapshotInputSchema.js";
-import {InconsistentDataError} from "@shared/errors/InconsistentDataError";
+import {InconsistentDataError} from "@/shared/errors/InconsistentDataError";
 import {ReservedSeatSnapshot} from "../../model/seat-map-snapshot/ReservedSeatSnapshot.model.js";
-import type {SeatSchemaFields} from "@domains/seat/model";
+import type {SeatSchemaFields} from "@/domains/seat/model";
 
 /**
  * Seat map document populated with its associated seat definition.

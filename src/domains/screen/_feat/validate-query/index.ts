@@ -1,24 +1,24 @@
 import {
     type ScreenQueryMatchFilters,
     ScreenQueryMatchFilterSchema
-} from "@domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
+} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
 import {
     type ScreenQueryMatchSorts,
     ScreenQueryMatchSortSchema
-} from "@domains/screen/_feat/validate-query/ScreenQueryMatchSortSchema";
+} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchSortSchema";
 import {type ScreenQueryOptions, ScreenQueryOptionsSchema} from "./ScreenQueryOptionSchema";
 import {
     type ScreenQueryParams,
     ScreenQueryParamSchema
-} from "@domains/screen/_feat/validate-query/ScreenQueryParamSchema";
+} from "@/domains/screen/_feat/validate-query/ScreenQueryParamSchema";
 import {
     type ScreenQueryMatchStage,
     ScreenQueryMatchStageSchema
-} from "@domains/screen/_feat/validate-query/ScreenQueryMatchStageSchema";
+} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchStageSchema";
 import {
     type ScreenQuerySortStage,
     ScreenQuerySortStageSchema
-} from "@domains/screen/_feat/validate-query/ScreenQuerySortStageSchema";
+} from "@/domains/screen/_feat/validate-query/ScreenQuerySortStageSchema";
 
 export {
     ScreenQueryMatchFilterSchema,

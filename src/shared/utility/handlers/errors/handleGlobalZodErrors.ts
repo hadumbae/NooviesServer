@@ -1,7 +1,7 @@
 import type {Response} from 'express';
 import {ZodError} from "zod";
-import { RequestValidationError } from "@shared/errors/RequestValidationError";
-import {ZodDuplicateIndexError} from "@shared/errors/zod/ZodDuplicateIndexError";
+import { RequestValidationError } from "@/shared/errors/RequestValidationError";
+import {ZodDuplicateIndexError} from "@/shared/errors/zod/ZodDuplicateIndexError";
 import InvalidRequestQueryError from "../../../errors/InvalidRequestQueryError";
 
 /**

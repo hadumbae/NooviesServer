@@ -9,13 +9,13 @@ import type {
     SetRatingsConfig,
     ToggleReviewPublicityConfig,
     WriteMovieReviewModLogConfig,
-} from "@domains/movieReview/_feat/customer-review-actions/services/service.types";
+} from "@/domains/movieReview/_feat/customer-review-actions/services/service.types";
 import {
     MovieReview,
     MovieReviewModerationLog,
     type MovieReviewModerationLogSchemaFields,
     type MovieReviewSchemaFields
-} from "@domains/movieReview/model";
+} from "@/domains/movieReview/model";
 
 /** Creates and persists a moderation audit log entry in the database. */
 export const writeMovieReviewModLog = async (

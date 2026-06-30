@@ -2,7 +2,7 @@
  * @fileoverview Defines the validation schema and type for movie titles.
  */
 
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 import {z} from "zod";
 
 /** Zod schema for validating a movie title string. */

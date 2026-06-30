@@ -6,13 +6,13 @@ import type {Request, Response} from "express";
 import {
     fetchTheatreDetailsViewData,
     fetchTheatreShowingListViewData
-} from "@domains/theatre/_feat/admin-view-data/service/service";
+} from "@/domains/theatre/_feat/admin-view-data/service/service";
 import type {
     TheatreDetailsViewRouteConfig
-} from "@domains/theatre/_feat/admin-view-data/schemas/TheatreDetailsViewRouteConfigSchema";
+} from "@/domains/theatre/_feat/admin-view-data/schemas/TheatreDetailsViewRouteConfigSchema";
 import type {
     TheatreShowingListRouteConfig
-} from "@domains/theatre/_feat/admin-view-data/schemas/TheatreShowingListRouteConfigSchema";
+} from "@/domains/theatre/_feat/admin-view-data/schemas/TheatreShowingListRouteConfigSchema";
 
 /**
  * Fetches high-level theatre details, including paginated screens and recent showings.

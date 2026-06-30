@@ -3,23 +3,23 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {
     patchResetDisplayName,
     patchResetLikes,
     patchSetRatings,
     patchToggleReviewPublicity
-} from "@domains/movieReview/_feat/customer-review-actions/controllers";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import {AdminModerationMessageInputSchema} from "@shared/_feat/admin-users/schema";
+} from "@/domains/movieReview/_feat/customer-review-actions/controllers";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import {AdminModerationMessageInputSchema} from "@/shared/_feat/admin-users/schema";
 import {
     ResetReviewDisplayNameInputSchema,
     SetReviewRatingInputSchema
-} from "@domains/movieReview/_feat/customer-review-actions/validation";
-import isAdmin from "@domains/authentication/middleware/isAdmin";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
-import {CustomerReviewIDRouteConfigSchema} from "@domains/movieReview/_feat/customer-review-actions/schema";
+} from "@/domains/movieReview/_feat/customer-review-actions/validation";
+import isAdmin from "@/domains/authentication/middleware/isAdmin";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
+import {CustomerReviewIDRouteConfigSchema} from "@/domains/movieReview/_feat/customer-review-actions/schema";
 
 const router = Router();
 

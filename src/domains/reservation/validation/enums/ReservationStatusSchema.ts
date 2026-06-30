@@ -10,7 +10,7 @@
  */
 
 import { z } from "zod";
-import {ReservationStatusConstant} from "@domains/reservation/validation/enums/ReservationStatusConstant";
+import {ReservationStatusConstant} from "@/domains/reservation/validation/enums/ReservationStatusConstant";
 
 /**
  * Reservation status validation schema.

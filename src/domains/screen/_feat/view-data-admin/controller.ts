@@ -6,8 +6,8 @@
 import type {Request, Response} from "express";
 import type {
     TheatreScreenDetailsViewRouteConfig
-} from "@domains/screen/_feat/view-data-admin/schemas/TheatreScreenDetailsViewRouteConfigSchema";
-import {fetchTheatreScreenDetailsViewData} from "@domains/screen/_feat/view-data-admin/service/service";
+} from "@/domains/screen/_feat/view-data-admin/schemas/TheatreScreenDetailsViewRouteConfigSchema";
+import {fetchTheatreScreenDetailsViewData} from "@/domains/screen/_feat/view-data-admin/service/service";
 
 /**
  * Controller: Handles the retrieval of layout data and metadata for a specific screen.

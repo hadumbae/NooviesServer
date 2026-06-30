@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {SeatQueryMatchSortsSchema} from "@domains/seat/_feat/validate-query/SeatQueryMatchSortsSchema";
-import {normaliseQuerySortValues} from "@shared/_feat/pipeline-schema-transformers";
+import {SeatQueryMatchSortsSchema} from "@/domains/seat/_feat/validate-query/SeatQueryMatchSortsSchema";
+import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms seat query sort values into a Mongoose sort pipeline stage. */
 export const SeatQuerySortStageSchema = SeatQueryMatchSortsSchema.transform(normaliseQuerySortValues);

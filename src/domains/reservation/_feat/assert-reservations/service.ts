@@ -2,13 +2,13 @@
  * @fileoverview Guard utilities and assertions for reservation lifecycle workflows.
  *
  */
-import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
-import {calculateDateNow} from "@shared/utility/date/LuxonDateUtils";
-import {BookingError} from "@shared/errors/reservations/BookingError";
+import type {ReservationSchemaFields} from "@/domains/reservation/model/reservation";
+import {calculateDateNow} from "@/shared/utility/date/LuxonDateUtils";
+import {BookingError} from "@/shared/errors/reservations/BookingError";
 import {Types} from "mongoose";
-import {Reservation} from "@domains/reservation/model/reservation";
-import type {AssertReservationOwnershipConfig} from "@domains/reservation/_feat/assert-reservations/service.types";
-import type {DocumentType} from "@shared/types/mongoose/DocumentType";
+import {Reservation} from "@/domains/reservation/model/reservation";
+import type {AssertReservationOwnershipConfig} from "@/domains/reservation/_feat/assert-reservations/service.types";
+import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
 
 /**
  * Retrieves a reservation document or throws a 404 error if not found.

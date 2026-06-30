@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {MovieReviewQueryMatchSortSchema} from "@domains/movieReview/_feat/validate-query-options/query-schemas";
-import {normaliseQuerySortValues} from "@shared/_feat/pipeline-schema-transformers";
+import {MovieReviewQueryMatchSortSchema} from "@/domains/movieReview/_feat/validate-query-options/query-schemas";
+import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms raw movie review sort parameters into a normalized Mongoose sort object. */
 export const MovieReviewQuerySortStageSchema = MovieReviewQueryMatchSortSchema.transform(normaliseQuerySortValues);

@@ -2,12 +2,12 @@
  * @fileoverview Service for aggregating a person's filmography.
  */
 
-import MovieCredit from "@domains/movieCredit/models/MovieCredit.model";
+import MovieCredit from "@/domains/movieCredit/models/MovieCredit.model";
 import type {
     FetchPersonCreditStatsConfig,
     FetchPersonFilmographyConfig, PersonCreditStats,
     RoleCreditsGroup
-} from "@domains/movieCredit/_feat/person-credits/service.types";
+} from "@/domains/movieCredit/_feat/person-credits/service.types";
 
 /**
  * Calculates aggregated statistics for a person's involvement in movies.

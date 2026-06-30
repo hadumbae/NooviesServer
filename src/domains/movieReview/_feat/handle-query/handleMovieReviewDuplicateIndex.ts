@@ -2,8 +2,8 @@
  * @fileoverview Maps MongoDB duplicate index errors to ZodDuplicateIndexError for the MovieReview model.
  */
 
-import {ZodDuplicateIndexError} from "@shared/errors/zod/ZodDuplicateIndexError.js";
-import {MovieReview} from "@domains/movieReview/model/model/MovieReview.model";
+import {ZodDuplicateIndexError} from "@/shared/errors/zod/ZodDuplicateIndexError.js";
+import {MovieReview} from "@/domains/movieReview/model/model/MovieReview.model";
 
 /** Translates a MongoDB duplicate index string into a typed ZodDuplicateIndexError. */
 export function handleMovieReviewDuplicateIndex(indexString: string): never {

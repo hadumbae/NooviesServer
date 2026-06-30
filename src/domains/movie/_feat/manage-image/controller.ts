@@ -5,9 +5,9 @@
 import type {Request, Response} from "express";
 import type {
     ManageMoviePosterImageRouteConfig
-} from "@domains/movie/_feat/manage-image/ManageMoviePosterImageRouteConfigSchema";
+} from "@/domains/movie/_feat/manage-image/ManageMoviePosterImageRouteConfigSchema";
 import type {MoviePosterImageInputData} from "./MoviePosterImageInputSchema";
-import {removeMoviePosterImage, updateMoviePosterImage} from "@domains/movie/_feat/manage-image/service";
+import {removeMoviePosterImage, updateMoviePosterImage} from "@/domains/movie/_feat/manage-image/service";
 
 /** Updates the poster image for a specific movie. */
 export async function patchUpdateMoviePosterImage(req: Request, res: Response): Promise<Response> {

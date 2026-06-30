@@ -1,7 +1,7 @@
 import type {Request, Response} from "express";
-import {validateRequestParameters} from "@shared/utility/schema/validateRequestParameters";
+import {validateRequestParameters} from "@/shared/utility/schema/validateRequestParameters";
 import {ShowingsByScreenQuerySchema} from "../schema/ShowingsByScreenQuerySchema";
-import {fetchShowingsByScreens} from "@domains/screen/_feat/view-data-client/service/fetchShowingsByScreens";
+import {fetchShowingsByScreens} from "@/domains/screen/_feat/view-data-client/service/fetchShowingsByScreens";
 
 
 export async function getFetchShowingsByScreens(req: Request, res: Response): Promise<Response> {

@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {generateFuzzyRegexPattern} from "@shared/utility/regex/generateFuzzyRegexPattern";
+import {generateFuzzyRegexPattern} from "@/shared/utility/regex/generateFuzzyRegexPattern";
 
 /**
  * A transformation schema that converts raw URL string input into a MongoDB-compatible regex object.

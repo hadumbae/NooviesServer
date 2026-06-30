@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type {UserSchemaFields} from "@domains/users/model/user/User.types";
+import type {UserSchemaFields} from "@/domains/users/model/user/User.types";
 import type UserService from "../service/user-service/UserService.js";
 import createHttpError from "http-errors";
 import type { UserControllerConstructor, UserControllerMethods } from "./UserController.types.js";
-import type { UserPasswordUpdateInput } from "@domains/users/validation/submit/UserPasswordUpdateInputSchema";
+import type { UserPasswordUpdateInput } from "@/domains/users/validation/submit/UserPasswordUpdateInputSchema";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 
 /**

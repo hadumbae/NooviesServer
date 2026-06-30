@@ -5,7 +5,7 @@
 
 import {z, type ZodTypeAny} from "zod";
 import type {Request} from "express";
-import InvalidRequestQueryError from "@shared/errors/InvalidRequestQueryError";
+import InvalidRequestQueryError from "@/shared/errors/InvalidRequestQueryError";
 
 /**
  * Configuration parameters for the query parsing operation.

@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {StringValueSchema} from "@shared/schema/strings/StringValueSchema";
+import {StringValueSchema} from "@/shared/schema/strings/StringValueSchema";
 
 
 /** Zod schema for validating user password update input. */

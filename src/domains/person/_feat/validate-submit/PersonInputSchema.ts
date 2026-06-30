@@ -4,9 +4,9 @@
  */
 
 import {z} from "zod";
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
-import {ISO3166Alpha2CountryCodeSchema} from "@shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
-import {UTCDateOnlySchema} from "@shared/schema/date-time/UTCDateOnlySchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
+import {ISO3166Alpha2CountryCodeSchema} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
+import {UTCDateOnlySchema} from "@/shared/schema/date-time/UTCDateOnlySchema";
 
 /**
  * Validates Person data for creation or updates.

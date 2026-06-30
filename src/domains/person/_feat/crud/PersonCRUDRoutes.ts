@@ -5,16 +5,16 @@
  */
 
 import {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import {Person, type PersonSchemaFields} from "@domains/person/model";
-import {PersonQueryMatchStageSchema, PersonQuerySortStageSchema} from "@domains/person/_feat/validate-query";
-import {PersonInputSchema} from "@domains/person/_feat/validate-submit";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import {Person, type PersonSchemaFields} from "@/domains/person/model";
+import {PersonQueryMatchStageSchema, PersonQuerySortStageSchema} from "@/domains/person/_feat/validate-query";
+import {PersonInputSchema} from "@/domains/person/_feat/validate-submit";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
 
 const modelName = Person.modelName;
 const matchSchema = PersonQueryMatchStageSchema;

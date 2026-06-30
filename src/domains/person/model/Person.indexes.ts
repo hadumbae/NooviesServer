@@ -3,7 +3,7 @@
  * Optimizes searches by name (case-insensitive) and nationality.
  */
 
-import {PersonSchema} from "@domains/person/model/Person.schema";
+import {PersonSchema} from "@/domains/person/model/Person.schema";
 
 /**
  * Case-insensitive index on 'name' for efficient searching and sorting.

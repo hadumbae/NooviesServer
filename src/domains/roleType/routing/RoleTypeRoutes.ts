@@ -2,9 +2,9 @@ import {
     type BaseRouteMiddleware,
     createBaseRoutes,
     type BaseRouteConfig
-} from "@shared/routing/BaseRoutes";
+} from "@/shared/routing/BaseRoutes";
 import RoleTypeServiceProvider from "../provider/RoleTypeServiceProvider.js";
-import {RoleTypeInputSchema} from "@domains/roleType/validation/schema/RoleTypeInputSchema";
+import {RoleTypeInputSchema} from "@/domains/roleType/validation/schema/RoleTypeInputSchema";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 import unsetModelFormFields from "../../../shared/utility/mongoose/unsetModelFormFields.js";
 

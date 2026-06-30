@@ -4,8 +4,8 @@
  */
 
 import {z} from "zod";
-import {CoercedNonNegativeNumberSchema} from "@shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
-import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
+import {CoercedNonNegativeNumberSchema} from "@/shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
+import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 
 /**
  * Validation schema for the Person details route.

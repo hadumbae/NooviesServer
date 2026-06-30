@@ -3,18 +3,18 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import {ReservationNotesInputSchema} from "@domains/reservation/_feat/update-reservations/schemas";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import {ReservationNotesInputSchema} from "@/domains/reservation/_feat/update-reservations/schemas";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {
     patchCancelReservation,
     patchRefundReservation,
     patchResetReservationExpiry,
     patchUpdateReservationNotes
-} from "@domains/reservation/_feat/update-reservations/controller";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
-import {IDRouteConfigSchema} from "@shared/_schema";
+} from "@/domains/reservation/_feat/update-reservations/controller";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
+import {IDRouteConfigSchema} from "@/shared/_schema";
 
 const routes = Router();
 

@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {ScreenQueryMatchFilterSchema} from "@domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
-import {normaliseQueryMatchValues} from "@shared/_feat/pipeline-schema-transformers";
+import {ScreenQueryMatchFilterSchema} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
+import {normaliseQueryMatchValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms screen query match values into a Mongoose match pipeline stage. */
 export const ScreenQueryMatchStageSchema = ScreenQueryMatchFilterSchema.transform(normaliseQueryMatchValues);

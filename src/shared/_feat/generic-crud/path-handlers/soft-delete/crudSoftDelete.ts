@@ -3,12 +3,12 @@
  * @filename crudSoftDelete.ts
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {SoftDeleteDocumentConfig} from "@shared/_feat/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
-import {InvalidMethodError} from "@shared/errors/InvalidMethodError";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {SoftDeleteDocumentConfig} from "@/shared/_feat/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
+import {InvalidMethodError} from "@/shared/errors/InvalidMethodError";
 import type {Request, Response} from "express";
-import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
+import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
+import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Executes a soft-delete by invoking a document's internal `softDelete` method.

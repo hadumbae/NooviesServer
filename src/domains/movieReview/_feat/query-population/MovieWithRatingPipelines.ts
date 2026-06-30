@@ -5,7 +5,7 @@
  */
 
 import type {PipelineStage} from "mongoose";
-import {MoviePopulationPipelines} from "@domains/movie/_feat/query-population";
+import {MoviePopulationPipelines} from "@/domains/movie/_feat/query-population";
 
 /** Union type restricted to the specific stages used in the rating calculation pipeline. */
 type RatedMoviePipelines = PipelineStage.Lookup | PipelineStage.AddFields | PipelineStage.Unset;

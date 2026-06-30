@@ -4,8 +4,8 @@
  */
 
 import type {Request, Response} from "express";
-import type {PersonDetailsViewRouteConfig} from "@domains/person/_feat/admin-view-data/routeSchemas";
-import {fetchPersonDetailsViewData} from "@domains/person/_feat/admin-view-data/service";
+import type {PersonDetailsViewRouteConfig} from "@/domains/person/_feat/admin-view-data/routeSchemas";
+import {fetchPersonDetailsViewData} from "@/domains/person/_feat/admin-view-data/service";
 
 /**
  * Handles the GET request to retrieve comprehensive data for the Person Details view.

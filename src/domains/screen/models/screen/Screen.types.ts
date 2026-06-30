@@ -5,9 +5,9 @@
  */
 
 import {Types} from "mongoose";
-import type {TheatreSchemaFields} from "@domains/theatre/model/theatre";
-import type {ScreenType} from "@domains/screen/validation";
-import type {ShowingWithMovie} from "@domains/showing/models/showing/Showing.types";
+import type {TheatreSchemaFields} from "@/domains/theatre/model/theatre";
+import type {ScreenType} from "@/domains/screen/validation";
+import type {ShowingWithMovie} from "@/domains/showing/models/showing/Showing.types";
 
 /**
  * Type representing the structure of a Screen document in MongoDB.

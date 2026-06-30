@@ -2,8 +2,8 @@
  * @fileoverview Type definitions for the location-based theatre search service.
  */
 
-import type { LocationTarget } from "@shared/schema/features/location-query-options/LocationQueryOptions.types";
-import type {TheatreWithShowings} from "@domains/theatre/model/theatre";
+import type { LocationTarget } from "@/shared/schema/features/location-query-options/LocationQueryOptions.types";
+import type {TheatreWithShowings} from "@/domains/theatre/model/theatre";
 
 /** Props for the fetchTheatresByLocation service function. */
 export type FetchTheatreByLocationConfig = {

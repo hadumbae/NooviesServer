@@ -3,12 +3,12 @@
  */
 
 import {z} from "zod";
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
-import {ReserveTicketInputSchema} from "@domains/reservation/_feat/reserve-tickets/schemas";
-import {DateInstanceSchema} from "@shared/schema/date-time/DateInstanceSchema";
-import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
-import {NonNegativeNumberSchema} from "@shared/schema/numbers/NonNegativeNumberSchema";
-import {ReservationStatusSchema} from "@domains/reservation/validation/enums";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
+import {ReserveTicketInputSchema} from "@/domains/reservation/_feat/reserve-tickets/schemas";
+import {DateInstanceSchema} from "@/shared/schema/date-time/DateInstanceSchema";
+import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
+import {NonNegativeNumberSchema} from "@/shared/schema/numbers/NonNegativeNumberSchema";
+import {ReservationStatusSchema} from "@/domains/reservation/validation/enums";
 
 /** Validation schema for the internal persistence layer of a ticket reservation. */
 export const ReserveTicketPersistenceSchema =

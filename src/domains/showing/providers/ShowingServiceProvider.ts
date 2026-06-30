@@ -7,7 +7,7 @@ import ShowingController from "../controllers/ShowingController.js";
 import QueryUtils from "../../../shared/services/query-utils/QueryUtils.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
 import ShowingQueryOptionService from "../services/query-option/ShowingQueryOptionService.js";
-import {BaseRepository} from "@shared/repository/BaseRepository";
+import {BaseRepository} from "@/shared/repository/BaseRepository";
 import {ShowingCRUDWriter} from "../repositories/ShowingCRUDWriter.js";
 import {ShowingPopulationPipelines} from "../queries/ShowingPopulationPipelines.js";
 import {ShowingSeatMapVirtualPipelines} from "../queries/ShowingSeatMapVirtualPipelines.js";

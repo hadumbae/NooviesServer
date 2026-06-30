@@ -5,7 +5,7 @@
 
 import {GenreSchema} from "./Genre.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import {Movie} from "@domains/movie/model/movie/Movie.model";
+import {Movie} from "@/domains/movie/model/movie/Movie.model";
 import type {GenreSchemaFields} from "./Genre.types.js";
 import generateSlug from "../../../../shared/utility/generateSlug.js";
 

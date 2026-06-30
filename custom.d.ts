@@ -1,5 +1,5 @@
 import {type PipelineStage, Types} from "mongoose";
-import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate/optionTypes";
+import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate/optionTypes";
 
 declare module "express" {
     export interface Request {

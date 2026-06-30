@@ -7,7 +7,7 @@ import { SeatSchema } from "./Seat.schema.js";
 
 import "./Seat.indexes";
 import "./Seat.hooks";
-import type {SeatSchemaFields} from "@domains/seat/model/Seat.types";
+import type {SeatSchemaFields} from "@/domains/seat/model/Seat.types";
 
 /**
  * Model representing a seat or grid element within a theatre screen.

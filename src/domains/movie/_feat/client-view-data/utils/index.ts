@@ -2,27 +2,27 @@ import {
     fetchMovieInfoShowingsViewData,
     type FetchMovieInfoShowingsViewDataConfig,
     type MovieInfoShowingsViewData
-} from "@domains/movie/_feat/client-view-data/utils/fetchMovieInfoShowingsViewData";
+} from "@/domains/movie/_feat/client-view-data/utils/fetchMovieInfoShowingsViewData";
 import {
     type CategoryGroupedCredits,
     fetchCreditsForMovie,
     type GroupedCreditsForMovieData
-} from "@domains/movie/_feat/client-view-data/utils/fetchCreditsForMovie";
+} from "@/domains/movie/_feat/client-view-data/utils/fetchCreditsForMovie";
 import {
     fetchMovieInfoCreditsViewData,
     type FetchMovieInfoCreditsViewDataConfig,
     type MovieInfoCreditsViewData
-} from "@domains/movie/_feat/client-view-data/utils/fetchMovieInfoCreditsViewData";
+} from "@/domains/movie/_feat/client-view-data/utils/fetchMovieInfoCreditsViewData";
 import {
     fetchMovieInfoOverviewViewData,
     type FetchMovieInfoOverviewViewDataConfig,
     type MovieInfoOverviewViewData
-} from "@domains/movie/_feat/client-view-data/utils/fetchMovieInfoOverviewViewData";
+} from "@/domains/movie/_feat/client-view-data/utils/fetchMovieInfoOverviewViewData";
 import {
     fetchShowingsForMovie,
     type FetchShowingsForMovieConfig,
     type PaginatedShowingsForMovie
-} from "@domains/movie/_feat/client-view-data/utils/fetchShowingsForMovie";
+} from "@/domains/movie/_feat/client-view-data/utils/fetchShowingsForMovie";
 
 
 export {

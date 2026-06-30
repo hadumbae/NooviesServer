@@ -5,9 +5,9 @@
  */
 
 import {Schema} from "mongoose";
-import {LocationSchema} from "@shared/model/location/Location";
+import {LocationSchema} from "@/shared/model/location/Location";
 import type {TheatreSchemaFields} from "./Theatre.types";
-import SlugSchemaTypeOptions from "@shared/model/SlugSchemaTypeOptions";
+import SlugSchemaTypeOptions from "@/shared/model/SlugSchemaTypeOptions";
 
 /**
  * Mongoose schema for a Theatre.

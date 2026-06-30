@@ -3,10 +3,10 @@
  */
 
 import { Types } from "mongoose";
-import type { LocationSchemaFields } from "@shared/model/location/LocationSchemaFields";
-import type { BaseModelWithSlug } from "@shared/types/schema/BaseModel";
-import type { ModelTimestamps } from "@shared/types/schema/ModelTimestamps";
-import type { ShowingSchemaFields } from "@domains/showing/models/showing/Showing.types";
+import type { LocationSchemaFields } from "@/shared/model/location/LocationSchemaFields";
+import type { BaseModelWithSlug } from "@/shared/types/schema/BaseModel";
+import type { ModelTimestamps } from "@/shared/types/schema/ModelTimestamps";
+import type { ShowingSchemaFields } from "@/domains/showing/models/showing/Showing.types";
 
 /** * Structure of a Theatre document including branding, capacity, and location data.
  */

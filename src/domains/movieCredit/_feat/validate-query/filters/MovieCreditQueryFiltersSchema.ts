@@ -2,7 +2,7 @@
 
 import {z} from "zod";
 import {MovieCreditQueryReferenceFiltersSchema} from "./MovieCreditQueryReferenceFiltersSchema";
-import {MovieCreditQueryMatchFiltersSchema} from "@domains/movieCredit/_feat/validate-query";
+import {MovieCreditQueryMatchFiltersSchema} from "@/domains/movieCredit/_feat/validate-query";
 
 /** Zod schema merging match-level and reference-level filters for MovieCredit queries. */
 export const MovieCreditQueryFiltersSchema =

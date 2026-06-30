@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {ISO6391LanguageCodeSchema} from "@shared/schema/enums/ISO6391LanguageCodeSchema";
+import {ISO6391LanguageCodeSchema} from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
 
 /** Zod schema for an array of unique ISO 639-1 language codes. */
 export const MovieLanguagesSchema = z.array(

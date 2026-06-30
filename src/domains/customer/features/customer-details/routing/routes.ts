@@ -5,14 +5,14 @@
  */
 
 import {Router} from "express"
-import isAuth from "@domains/authentication/middleware/isAuth"
-import asyncHandler from "@shared/utility/handlers/asyncHandler"
+import isAuth from "@/domains/authentication/middleware/isAuth"
+import asyncHandler from "@/shared/utility/handlers/asyncHandler"
 import {
     getFetchCustomerProfileViewData,
     getFetchCustomerReviewsViewData,
     getFetchCustomerReviewViewData
-} from "@domains/customer/features/customer-details/controllers"
-import {getFetchCustomerReviewLogsViewData} from "@domains/customer/features/customer-details/controllers/controller"
+} from "@/domains/customer/features/customer-details/controllers"
+import {getFetchCustomerReviewLogsViewData} from "@/domains/customer/features/customer-details/controllers/controller"
 
 /**
  * Express Router instance for aggregating Customer activity and identity views.

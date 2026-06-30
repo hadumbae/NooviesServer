@@ -2,10 +2,10 @@
  * @fileoverview Defines the core interface for role types within the system.
  */
 
-import type {RoleTypeDepartment} from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
+import type {RoleTypeDepartment} from "@/domains/roleType/validation/schema/RoleTypeDepartmentSchema";
 import {Types} from "mongoose";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {RoleTypeCastCategory, RoleTypeCrewCategory} from "@domains/roleType/validation/schema/RoleTypeCategorySchema";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {RoleTypeCastCategory, RoleTypeCrewCategory} from "@/domains/roleType/validation/schema/RoleTypeCategorySchema";
 
 /** Represents a specific role definition and its classification metadata. */
 export type RoleTypeSchemaFields = BaseModel & {

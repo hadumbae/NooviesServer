@@ -3,10 +3,10 @@
  */
 
 import {Types} from "mongoose";
-import type {AdminModerationMessage} from "@shared/_feat/admin-users/schema";
+import type {AdminModerationMessage} from "@/shared/_feat/admin-users/schema";
 import type {
     MovieReviewModerationAction
-} from "@domains/movieReview/validation/moderation-actions/MovieReviewModerationActionSchema";
+} from "@/domains/movieReview/validation/moderation-actions/MovieReviewModerationActionSchema";
 
 /** Configuration for toggling a review's visibility status. */
 export type ToggleReviewPublicityConfig = {

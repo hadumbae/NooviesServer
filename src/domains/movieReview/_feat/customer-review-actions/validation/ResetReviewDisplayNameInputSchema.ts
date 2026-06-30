@@ -2,8 +2,8 @@
  * @fileoverview Zod validation schema for administrative display name resets on movie reviews.
  */
 
-import {AdminModerationMessageInputSchema} from "@shared/_feat/admin-users/schema";
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {AdminModerationMessageInputSchema} from "@/shared/_feat/admin-users/schema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 import {z} from "zod";
 
 /** Validates the input required to reset a reviewer's display name. */

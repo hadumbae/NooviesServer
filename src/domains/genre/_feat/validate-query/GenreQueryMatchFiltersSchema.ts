@@ -4,7 +4,7 @@
  */
 
 import {z} from "zod";
-import {URLParamStringSchema} from "@shared/schema/url/URLParamStringSchema";
+import {URLParamStringSchema} from "@/shared/schema/url/URLParamStringSchema";
 
 /**
  * Validates the raw filterable fields for Genres.

@@ -4,11 +4,11 @@
  */
 
 import type {Request, Response} from "express";
-import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import QueryUtils from "@shared/services/query-utils/QueryUtils";
-import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
+import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
+import QueryUtils from "@/shared/services/query-utils/QueryUtils";
+import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
 import * as BrowseMovieDetailsService
-    from "@domains/movie/_feat/fetch-reviews-by-movie/service";
+    from "@/domains/movie/_feat/fetch-reviews-by-movie/service";
 
 /**
  * Handles paginated movie review retrieval.

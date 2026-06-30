@@ -3,9 +3,9 @@
  */
 
 import type {Request} from "express";
-import {User} from "@domains/users/model/user/User.model";
+import {User} from "@/domains/users/model/user/User.model";
 import createHttpError from "http-errors";
-import type {UserSchemaFields} from "@domains/users/model/user/User.types";
+import type {UserSchemaFields} from "@/domains/users/model/user/User.types";
 
 /** Configuration for the fetchAuthAdmin function. */
 type FetchParams = {

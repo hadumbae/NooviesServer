@@ -4,8 +4,8 @@
  */
 
 import { z } from "zod";
-import { ObjectIdSchema } from "@shared/schema/mongoose/ObjectIdSchema.js";
-import { MovieReviewUpdateInputSchema } from "@domains/movieReview/_feat/validate-submit/schemas/MovieReviewUpdateInputSchema.js";
+import { ObjectIdSchema } from "@/shared/schema/mongoose/ObjectIdSchema.js";
+import { MovieReviewUpdateInputSchema } from "@/domains/movieReview/_feat/validate-submit/schemas/MovieReviewUpdateInputSchema.js";
 
 /**
  * Input schema for creating MovieReview records.

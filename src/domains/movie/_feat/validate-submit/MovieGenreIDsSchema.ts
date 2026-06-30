@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {ObjectIdStringSchema} from "@shared/schema/mongoose/ObjectIdStringSchema";
+import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
 
 /** Zod schema that validates an array of MongoDB ObjectId strings for movie genres. */
 export const MovieGenreIDsSchema = z.array(

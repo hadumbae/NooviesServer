@@ -3,9 +3,9 @@
  * @filename CRUDRouteHandler.ts
  */
 
-import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
+import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {PopulatePath} from "@/shared/types/mongoose/PopulatePath";
 import type {Model} from "mongoose";
 
 /**

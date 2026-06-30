@@ -3,9 +3,9 @@
  */
 
 import { z } from "zod";
-import { NonEmptyStringSchema } from "@shared/schema/strings/NonEmptyStringSchema";
-import { NonNegativeNumberSchema } from "@shared/schema/numbers/NonNegativeNumberSchema";
-import { LocationSchema } from "@shared/schema/theatre/Location.schema";
+import { NonEmptyStringSchema } from "@/shared/schema/strings/NonEmptyStringSchema";
+import { NonNegativeNumberSchema } from "@/shared/schema/numbers/NonNegativeNumberSchema";
+import { LocationSchema } from "@/shared/schema/theatre/Location.schema";
 
 /**
  * Zod validation schema for creating or updating a theatre.

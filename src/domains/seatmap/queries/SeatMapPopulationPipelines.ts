@@ -2,9 +2,9 @@
  * @fileoverview MongoDB aggregation pipelines for populating SeatMap reference data.
  */
 
-import type { PopulationPipelineStages } from "@shared/types/mongoose/AggregatePipelineStages";
+import type { PopulationPipelineStages } from "@/shared/types/mongoose/AggregatePipelineStages";
 import { ShowingPopulationPipelines } from "../../showing/queries/ShowingPopulationPipelines.js";
-import { SeatPopulationPipelines } from "@domains/seat/_feat/aggregate";
+import { SeatPopulationPipelines } from "@/domains/seat/_feat/aggregate";
 
 /**
  * Aggregation stages that resolve showing and seat references for SeatMap documents.

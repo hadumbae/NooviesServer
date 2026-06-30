@@ -1,15 +1,15 @@
 import {
     type MovieInfoCreditsViewRouteConfig,
     MovieInfoCreditsViewRouteConfigSchema
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
 import {
     type MovieInfoOverviewViewRouteConfig,
     MovieInfoOverviewViewRouteConfigSchema
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 import {
     type MovieInfoShowingsViewRouteConfig,
     MovieInfoShowingsViewRouteConfigSchema
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
 
 
 export {

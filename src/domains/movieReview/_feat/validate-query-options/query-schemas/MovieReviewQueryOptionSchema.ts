@@ -3,10 +3,10 @@
  */
 
 import {z} from "zod";
-import {MovieReviewQueryMatchSortSchema} from "@domains/movieReview/_feat/validate-query-options/query-schemas/MovieReviewQueryMatchSortSchema";
+import {MovieReviewQueryMatchSortSchema} from "@/domains/movieReview/_feat/validate-query-options/query-schemas/MovieReviewQueryMatchSortSchema";
 import {
     MovieReviewQueryMatchFilterSchema
-} from "@domains/movieReview/_feat/validate-query-options/query-schemas/MovieReviewQueryMatchFilterSchema";
+} from "@/domains/movieReview/_feat/validate-query-options/query-schemas/MovieReviewQueryMatchFilterSchema";
 
 /** Zod schema merging movie review filter and sort options. */
 export const MovieReviewQueryOptionSchema = MovieReviewQueryMatchFilterSchema.merge(MovieReviewQueryMatchSortSchema);

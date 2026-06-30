@@ -3,7 +3,7 @@
  */
 
 import { z } from "zod";
-import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
+import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
 
 /** Zod schema for validating the reviewID route parameter. */
 export const CustomerReviewIDRouteConfigSchema = z.object({

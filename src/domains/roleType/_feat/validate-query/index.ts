@@ -1,23 +1,23 @@
 import {
     type RoleTypeQueryMatchFilters,
     RoleTypeQueryMatchFiltersSchema
-} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
+} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
 import {
     type RoleTypeQueryMatchSorts,
     RoleTypeQueryMatchSortsSchema
-} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchSortsSchema";
+} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryMatchSortsSchema";
 import {
     type RoleTypeQueryOptions,
     RoleTypeQueryOptionsSchema
-} from "@domains/roleType/_feat/validate-query/RoleTypeQueryOptionsSchema";
+} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryOptionsSchema";
 import {
     type RoleTypeQueryMatchStage,
     RoleTypeQueryMatchStageSchema
-} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchStageSchema";
+} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryMatchStageSchema";
 import {
     type RoleTypeQuerySortStage,
     RoleTypeQuerySortStageSchema
-} from "@domains/roleType/_feat/validate-query/RoleTypeQuerySortStageSchema";
+} from "@/domains/roleType/_feat/validate-query/RoleTypeQuerySortStageSchema";
 
 
 export {

@@ -4,7 +4,7 @@
  */
 
 import {z} from "zod";
-import {CoercedPositiveNumberSchema} from "@shared/schema/numbers/coerced-number/CoercedPositiveNumberSchema";
+import {CoercedPositiveNumberSchema} from "@/shared/schema/numbers/coerced-number/CoercedPositiveNumberSchema";
 
 /**
  * Validates and transforms incoming pagination parameters.

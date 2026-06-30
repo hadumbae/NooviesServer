@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
-import {CoercedNonNegativeNumberSchema} from "@shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
+import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
+import {CoercedNonNegativeNumberSchema} from "@/shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
 
 /**
  * Zod schema for validating the route and search parameters of the Theatre Details page.

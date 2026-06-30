@@ -3,10 +3,10 @@
  */
 
 import {z} from "zod";
-import {URLParamObjectIDSchema} from "@shared/schema/url/URLParamObjectIDSchema";
-import {URLParamRegexStringSchema} from "@shared/schema/url/URLParamRegexStringSchema";
-import {URLParamDateOnlySchema} from "@shared/schema/url/URLParamDateOnlySchema";
-import {ISO3166Alpha2CountryCodeSchema} from "@shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
+import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema";
+import {URLParamRegexStringSchema} from "@/shared/schema/url/URLParamRegexStringSchema";
+import {URLParamDateOnlySchema} from "@/shared/schema/url/URLParamDateOnlySchema";
+import {ISO3166Alpha2CountryCodeSchema} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
 
 /**
  * Validates filtering criteria for Person queries.

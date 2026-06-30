@@ -6,10 +6,10 @@
 import type {Express, Router} from "express";
 import {registerAuthRoutes} from "./routes/registerAuthRoutes.js";
 import {registerExternalRoutes} from "./routes/registerExternalRoutes.js";
-import {registerAdminRoutes, registerClientRoutes} from "@shared/server/routes/model-routes";
-import {registerAdminCRUDRoutes} from "@shared/server/routes/crud-routes";
-import {registerAdminFeatureRoutes} from "@shared/server/routes/feature-routes";
-import {registerAdminViewDataRoutes, registerClientViewDataRoutes} from "@shared/server/routes/view-data";
+import {registerAdminRoutes, registerClientRoutes} from "@/shared/server/routes/model-routes";
+import {registerAdminCRUDRoutes} from "@/shared/server/routes/crud-routes";
+import {registerAdminFeatureRoutes} from "@/shared/server/routes/feature-routes";
+import {registerAdminViewDataRoutes, registerClientViewDataRoutes} from "@/shared/server/routes/view-data";
 
 /**
  * Standard descriptor for mapping a URL segment to an Express router.

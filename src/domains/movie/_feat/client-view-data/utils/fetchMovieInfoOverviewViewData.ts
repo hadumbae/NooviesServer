@@ -3,18 +3,18 @@
  */
 
 import createHttpError from "http-errors";
-import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
+import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import {Types} from "mongoose";
-import type {PositiveInteger} from "@shared/schema/numbers/PositiveIntegerSchema";
-import {Movie, type MovieSchemaFields} from "@domains/movie/model/movie";
-import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interface";
+import type {PositiveInteger} from "@/shared/schema/numbers/PositiveIntegerSchema";
+import {Movie, type MovieSchemaFields} from "@/domains/movie/model/movie";
+import type {IMovieCredit} from "@/domains/movieCredit/models/MovieCredit.interface";
 import {
     fetchReviewDetailsForMovie,
     type ReviewDetailsByMovieReturns
-} from "@domains/movie/_feat/fetch-reviews-by-movie";
-import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
-import MovieCredit from "@domains/movieCredit/models/MovieCredit.model";
-import {MovieCreditPopulationPaths} from "@domains/movieCredit/_feat/query-population";
+} from "@/domains/movie/_feat/fetch-reviews-by-movie";
+import {MoviePopulationPaths} from "@/domains/movie/_feat/query-population";
+import MovieCredit from "@/domains/movieCredit/models/MovieCredit.model";
+import {MovieCreditPopulationPaths} from "@/domains/movieCredit/_feat/query-population";
 
 /** Configuration parameters for fetching movie information view data. */
 export type FetchMovieInfoOverviewViewDataConfig = {

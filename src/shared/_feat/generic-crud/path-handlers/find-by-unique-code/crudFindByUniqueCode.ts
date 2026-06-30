@@ -3,14 +3,14 @@
  * @filename crudFindByUniqueCode.ts
  */
 
-import type {BaseModelWithUniqueCode} from "@shared/types/schema/BaseModel";
-import populateQuery from "@shared/utility/mongoose/populateQuery";
+import type {BaseModelWithUniqueCode} from "@/shared/types/schema/BaseModel";
+import populateQuery from "@/shared/utility/mongoose/populateQuery";
 import type {
     FindDocumentByUniqueCodeConfig
-} from "@shared/_feat/generic-crud/path-handlers/find-by-unique-code/crudFindByUniqueCode.types";
+} from "@/shared/_feat/generic-crud/path-handlers/find-by-unique-code/crudFindByUniqueCode.types";
 import type {Request, Response} from "express";
-import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
-import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
+import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
+import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Performs a database lookup for a document using its system-wide unique identifier.

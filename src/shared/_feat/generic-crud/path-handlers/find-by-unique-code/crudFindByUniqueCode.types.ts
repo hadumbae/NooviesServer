@@ -3,9 +3,9 @@
  * @filename crudFindByUniqueCode.types.ts
  */
 
-import type {BaseModelWithUniqueCode} from "@shared/types/schema/BaseModel";
-import type {BaseCRUDParams} from "@shared/_feat/generic-crud/types";
-import type {UniqueCode} from "@shared/validation/codes";
+import type {BaseModelWithUniqueCode} from "@/shared/types/schema/BaseModel";
+import type {BaseCRUDParams} from "@/shared/_feat/generic-crud/types";
+import type {UniqueCode} from "@/shared/validation/codes";
 
 /**
  * Specific configuration for the "Find By Unique Code" database operation.

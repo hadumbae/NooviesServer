@@ -7,15 +7,15 @@ import {
     resetLikes,
     setRatings,
     toggleReviewPublicity
-} from "@domains/movieReview/_feat/customer-review-actions/services/service";
+} from "@/domains/movieReview/_feat/customer-review-actions/services/service";
 import type {Request, Response} from "express";
-import {fetchAuthAdmin} from "@shared/_feat/admin-users/utils/fetchAuthAdmin";
-import type {AdminModerationMessageInputData} from "@shared/_feat/admin-users/schema";
-import type {ResetReviewDisplayNameInputData} from "@domains/movieReview/_feat/customer-review-actions/validation";
+import {fetchAuthAdmin} from "@/shared/_feat/admin-users/utils/fetchAuthAdmin";
+import type {AdminModerationMessageInputData} from "@/shared/_feat/admin-users/schema";
+import type {ResetReviewDisplayNameInputData} from "@/domains/movieReview/_feat/customer-review-actions/validation";
 import type {
     SetReviewRatingInputData
-} from "@domains/movieReview/_feat/customer-review-actions/validation/SetReviewRatingInputSchema";
-import type {CustomerReviewIDRouteConfig} from "@domains/movieReview/_feat/customer-review-actions";
+} from "@/domains/movieReview/_feat/customer-review-actions/validation/SetReviewRatingInputSchema";
+import type {CustomerReviewIDRouteConfig} from "@/domains/movieReview/_feat/customer-review-actions";
 
 /** Toggles the public visibility status of a specific movie review. */
 export async function patchToggleReviewPublicity(

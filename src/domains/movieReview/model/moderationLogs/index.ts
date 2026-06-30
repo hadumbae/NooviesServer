@@ -1,10 +1,10 @@
-import {MovieReviewModerationLog} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.model";
+import {MovieReviewModerationLog} from "@/domains/movieReview/model/moderationLogs/MovieReviewModerationLog.model";
 import type {
     MovieReviewModerationLogSchemaFields
-} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types";
+} from "@/domains/movieReview/model/moderationLogs/MovieReviewModerationLog.types";
 import {
     MovieReviewModerationLogSchema
-} from "@domains/movieReview/model/moderationLogs/MovieReviewModerationLog.schema";
+} from "@/domains/movieReview/model/moderationLogs/MovieReviewModerationLog.schema";
 
 export {
     MovieReviewModerationLog,

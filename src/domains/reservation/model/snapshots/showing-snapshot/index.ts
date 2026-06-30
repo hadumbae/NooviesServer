@@ -1,12 +1,12 @@
 import type {
     ReservedShowingSnapshotSchemaFields
-} from "@domains/reservation/model/snapshots/showing-snapshot/ReservedShowingSnapshot.types";
+} from "@/domains/reservation/model/snapshots/showing-snapshot/ReservedShowingSnapshot.types";
 import {
     ReservedShowingSnapshotSchema
-} from "@domains/reservation/model/snapshots/showing-snapshot/ReservedShowingSnapshot.schema";
+} from "@/domains/reservation/model/snapshots/showing-snapshot/ReservedShowingSnapshot.schema";
 import {
     ReservedShowingSnapshot
-} from "@domains/reservation/model/snapshots/showing-snapshot/ReservedShowingSnapshot.model";
+} from "@/domains/reservation/model/snapshots/showing-snapshot/ReservedShowingSnapshot.model";
 
 export {
     ReservedShowingSnapshotSchema,

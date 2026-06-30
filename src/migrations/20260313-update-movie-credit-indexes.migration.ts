@@ -4,7 +4,7 @@
  */
 
 import "dotenv/config";
-import connect from "@config/database.js";
+import connect from "@/shared/config/database.js";
 import MovieCredit from "../domains/movieCredit/models/MovieCredit.model.js";
 import mongoose from "mongoose";
 

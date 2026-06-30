@@ -4,11 +4,11 @@
  */
 
 import {z} from "zod";
-import {URLParamStringSchema} from "@shared/schema/url/URLParamStringSchema";
-import {URLParamNonNegativeNumberSchema} from "@shared/schema/url/URLParamNonNegativeNumberSchema";
-import {ISO3166Alpha2CountryCodeSchema} from "@shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
-import {IANATimezoneSchema} from "@shared/schema/date-time/IANATimezoneSchema";
-import {URLParamRegexPatternSchema} from "@shared/_feat/parse-query-string";
+import {URLParamStringSchema} from "@/shared/schema/url/URLParamStringSchema";
+import {URLParamNonNegativeNumberSchema} from "@/shared/schema/url/URLParamNonNegativeNumberSchema";
+import {ISO3166Alpha2CountryCodeSchema} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
+import {IANATimezoneSchema} from "@/shared/schema/date-time/IANATimezoneSchema";
+import {URLParamRegexPatternSchema} from "@/shared/_feat/parse-query-string";
 
 /**
  * Zod schema defining the available match filters for Theatre queries.

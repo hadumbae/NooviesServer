@@ -5,7 +5,7 @@
 
 import {Schema} from "mongoose";
 import type {PersonSchemaFields} from "./Person.types";
-import {CloudinaryImageSchema} from "@shared/model/cloudinary-image/CloudinaryImage";
+import {CloudinaryImageSchema} from "@/shared/model/cloudinary-image/CloudinaryImage";
 import ISO3166Alpha2CodeConstant from "../../../shared/constants/country/ISO3166Alpha2CodeConstant.js";
 import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
 

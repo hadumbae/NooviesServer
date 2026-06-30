@@ -4,7 +4,7 @@
  */
 
 import {Types} from "mongoose";
-import {MovieReview} from "@domains/movieReview/model/model/MovieReview.model";
+import {MovieReview} from "@/domains/movieReview/model/model/MovieReview.model";
 
 /**
  * Parameters for `checkMovieReviewOwnership`

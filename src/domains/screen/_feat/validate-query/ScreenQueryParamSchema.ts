@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {URLParamNonNegativeNumberSchema} from "@shared/schema/url/URLParamNonNegativeNumberSchema";
+import {URLParamNonNegativeNumberSchema} from "@/shared/schema/url/URLParamNonNegativeNumberSchema";
 
 /**
  * Zod schema for auxiliary Screen query parameters.

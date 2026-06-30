@@ -2,11 +2,11 @@
  * @fileoverview Service for retrieving a specific movie document from the database.
  */
 
-import {Movie} from "@domains/movie/model/movie/Movie.model";
-import {fetchOrFailQuery} from "@shared/utility/mongoose/fetchOrFailQuery";
+import {Movie} from "@/domains/movie/model/movie/Movie.model";
+import {fetchOrFailQuery} from "@/shared/utility/mongoose/fetchOrFailQuery";
 import {Types} from "mongoose";
-import type {DocumentType} from "@shared/types/mongoose/DocumentType";
-import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
+import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {MovieSchemaFields} from "@/domains/movie/model/movie/Movie.types";
 
 /** Query modifiers for Movie fetches. */
 type FetchMovieQueryOptions = {

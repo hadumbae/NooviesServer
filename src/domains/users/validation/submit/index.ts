@@ -1,11 +1,11 @@
 import {
     type UserFavouriteMovieInput,
     UserFavouriteMovieInputSchema
-} from "@domains/users/validation/submit/UserFavouriteMovieInputSchema";
+} from "@/domains/users/validation/submit/UserFavouriteMovieInputSchema";
 import {
     type UserPasswordUpdateInput,
     UserPasswordUpdateInputSchema
-} from "@domains/users/validation/submit/UserPasswordUpdateInputSchema";
+} from "@/domains/users/validation/submit/UserPasswordUpdateInputSchema";
 
 export {
     UserFavouriteMovieInputSchema,

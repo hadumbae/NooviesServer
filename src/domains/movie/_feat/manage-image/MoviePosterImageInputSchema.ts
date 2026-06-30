@@ -2,7 +2,7 @@
  * @fileoverview Defines the schema and type for movie poster image uploads.
  */
 
-import { MulterImageFileSchema } from "@shared/_feat/manage-multer-images";
+import { MulterImageFileSchema } from "@/shared/_feat/manage-multer-images";
 import {z} from "zod";
 
 /** Zod validation schema for a movie poster image file input. */

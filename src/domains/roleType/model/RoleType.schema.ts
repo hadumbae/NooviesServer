@@ -5,14 +5,14 @@
 import {Schema} from "mongoose";
 import {
     RoleTypeDepartmentConstant
-} from "@domains/roleType/validation/constants/RoleTypeDepartmentConstant";
+} from "@/domains/roleType/validation/constants/RoleTypeDepartmentConstant";
 import {
     RoleTypeCastCategoryConstant
-} from "@domains/roleType/validation/constants/RoleTypeCastCategoryConstant";
+} from "@/domains/roleType/validation/constants/RoleTypeCastCategoryConstant";
 import {
     RoleTypeCrewCategoryConstant
-} from "@domains/roleType/validation/constants/RoleTypeCrewCategoryConstant";
-import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
+} from "@/domains/roleType/validation/constants/RoleTypeCrewCategoryConstant";
+import type {RoleTypeSchemaFields} from "@/domains/roleType/model/RoleType.types";
 
 /** Mongoose schema for role type documents. */
 export const RoleTypeSchema: Schema<RoleTypeSchemaFields> = new Schema<RoleTypeSchemaFields>({

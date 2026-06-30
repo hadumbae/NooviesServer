@@ -3,8 +3,8 @@
  */
 
 import {Types} from "mongoose";
-import type {ReserveTicketInputData} from "@domains/reservation/_feat/reserve-tickets/schemas/inputSchema";
-import type {ReserveTicketPersistenceData} from "@domains/reservation/_feat/reserve-tickets/schemas";
+import type {ReserveTicketInputData} from "@/domains/reservation/_feat/reserve-tickets/schemas/inputSchema";
+import type {ReserveTicketPersistenceData} from "@/domains/reservation/_feat/reserve-tickets/schemas";
 
 /** Parameters for the primary reservation service entry point. */
 export type ReserveTicketsParams = {

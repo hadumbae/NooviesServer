@@ -5,10 +5,10 @@
 import type {
     RemoveGenreImageConfig,
     UpdateGenreImageConfig
-} from "@domains/genre/_feat/manage-image/service/service.types";
-import {Genre, type GenreSchemaFields} from "@domains/genre/models/genre";
+} from "@/domains/genre/_feat/manage-image/service/service.types";
+import {Genre, type GenreSchemaFields} from "@/domains/genre/models/genre";
 import createHttpError from "http-errors";
-import {removeCloudinaryImage, uploadCloudinaryImage} from "@shared/_feat/manage-cloudinary-images";
+import {removeCloudinaryImage, uploadCloudinaryImage} from "@/shared/_feat/manage-cloudinary-images";
 
 /** Updates a genre's image in Cloudinary and the database. */
 export async function updateGenreImage(

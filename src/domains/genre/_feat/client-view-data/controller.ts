@@ -5,8 +5,8 @@
  */
 
 import type {Request, Response} from "express";
-import type {BrowseGenreWithMoviesRouteParams} from "@domains/genre/_feat/client-view-data/schemas";
-import {fetchGenreWithMovies} from "@domains/genre/_feat/client-view-data/service";
+import type {BrowseGenreWithMoviesRouteParams} from "@/domains/genre/_feat/client-view-data/schemas";
+import {fetchGenreWithMovies} from "@/domains/genre/_feat/client-view-data/service";
 
 /**
  * Handles the GET request for fetching a specific genre and its associated movies.

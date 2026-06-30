@@ -3,10 +3,10 @@
  * Defines the database shape, including assets, metrics, and identity.
  */
 
-import type {CloudinaryImageObject} from "@shared/schema/cloudinary/CloudinaryImageObjectSchema";
+import type {CloudinaryImageObject} from "@/shared/schema/cloudinary/CloudinaryImageObjectSchema";
 import {Types} from "mongoose";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {ModelTimestamps} from "@shared/types/schema/ModelTimestamps";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {ModelTimestamps} from "@/shared/types/schema/ModelTimestamps";
 
 /**
  * Shape of a Genre document within MongoDB.

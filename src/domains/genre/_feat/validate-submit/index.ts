@@ -1,4 +1,4 @@
-import {type GenreInputData, GenreInputSchema} from "@domains/genre/_feat/validate-submit/GenreInputSchema";
+import {type GenreInputData, GenreInputSchema} from "@/domains/genre/_feat/validate-submit/GenreInputSchema";
 
 export {
     GenreInputSchema,

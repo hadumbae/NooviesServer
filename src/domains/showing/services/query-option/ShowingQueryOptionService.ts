@@ -20,19 +20,19 @@ import {
     type ShowingQueryMatchFilters,
     type ShowingQueryOptions,
     ShowingQueryOptionSchema
-} from "@domains/showing/_feat/validate-query";
-import {RequestValidationError} from "@shared/errors/RequestValidationError";
+} from "@/domains/showing/_feat/validate-query";
+import {RequestValidationError} from "@/shared/errors/RequestValidationError";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {
     QueryOptionTypes,
     SortQuery
-} from "@shared/types/query-options/QueryOptionService.types";
+} from "@/shared/types/query-options/QueryOptionService.types";
 import type {
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages
-} from "@shared/types/mongoose/AggregatePipelineStages";
-import type {LookupMatchStageOptions} from "@shared/types/mongoose/LookupMatchStage.types";
+} from "@/shared/types/mongoose/AggregatePipelineStages";
+import type {LookupMatchStageOptions} from "@/shared/types/mongoose/LookupMatchStage.types";
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {ShowingSchemaFields} from "../../models/showing/Showing.types.js";

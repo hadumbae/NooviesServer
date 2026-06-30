@@ -4,13 +4,13 @@ import {
     fetchCurrentUserMovieReview,
     fetchCurrentUserMovieReviewList,
     updateMovieReviewForCurrentUser
-} from "@domains/movieReview/_feat/current-user-reviews/service/service";
+} from "@/domains/movieReview/_feat/current-user-reviews/service/service";
 import type {
     CreateUserMovieReviewConfig,
     DeleteUserMovieReviewConfig,
     FetchPaginatedUserReviewsConfig,
     UpdateUserMovieReviewConfig
-} from "@domains/movieReview/_feat/current-user-reviews/service/service.types";
+} from "@/domains/movieReview/_feat/current-user-reviews/service/service.types";
 
 export {
     fetchCurrentUserMovieReview,

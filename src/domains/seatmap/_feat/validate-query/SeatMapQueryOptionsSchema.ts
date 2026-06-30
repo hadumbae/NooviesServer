@@ -5,10 +5,10 @@
  */
 
 import {z} from "zod";
-import {SeatMapQueryMatchFilterSchema} from "@domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
-import {SeatMapQueryMatchSortSchema} from "@domains/seatmap/_feat/validate-query/SeatMapQueryMatchSortSchema";
-import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
+import {SeatMapQueryMatchFilterSchema} from "@/domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
+import {SeatMapQueryMatchSortSchema} from "@/domains/seatmap/_feat/validate-query/SeatMapQueryMatchSortSchema";
+import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
+import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema for SeatMap query options with an aggregation transformation.

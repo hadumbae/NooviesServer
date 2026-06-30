@@ -6,24 +6,24 @@ import type {
     DeleteUserMovieReviewConfig,
     FetchPaginatedUserReviewsConfig,
     UpdateUserMovieReviewConfig
-} from "@domains/movieReview/_feat/current-user-reviews/service/service.types";
-import {MovieReview} from "@domains/movieReview/model/model/MovieReview.model";
-import {MovieReviewPopulatePaths} from "@domains/movieReview/_feat/query-population/MovieReviewPopulatePaths.js";
-import populateQuery from "@shared/utility/mongoose/populateQuery.js";
-import {handlePersistenceQuery} from "@shared/utility/mongoose/handlePersistenceQuery.js";
-import {handleMovieReviewDuplicateIndex} from "@domains/movieReview/_feat/handle-query/handleMovieReviewDuplicateIndex";
+} from "@/domains/movieReview/_feat/current-user-reviews/service/service.types";
+import {MovieReview} from "@/domains/movieReview/model/model/MovieReview.model";
+import {MovieReviewPopulatePaths} from "@/domains/movieReview/_feat/query-population/MovieReviewPopulatePaths.js";
+import populateQuery from "@/shared/utility/mongoose/populateQuery.js";
+import {handlePersistenceQuery} from "@/shared/utility/mongoose/handlePersistenceQuery.js";
+import {handleMovieReviewDuplicateIndex} from "@/domains/movieReview/_feat/handle-query/handleMovieReviewDuplicateIndex";
 import type {
     MovieReviewSchemaFields,
     MyMovieReviewSchemaFields
-} from "@domains/movieReview/model/model/MovieReview.types";
+} from "@/domains/movieReview/model/model/MovieReview.types";
 import createHttpError from "http-errors";
-import {DocumentVersionError} from "@shared/errors/DocumentVersionError.js";
-import type {PaginationReturns} from "@shared/types/PaginationReturns.js";
+import {DocumentVersionError} from "@/shared/errors/DocumentVersionError.js";
+import type {PaginationReturns} from "@/shared/types/PaginationReturns.js";
 import {
     MovieReviewPopulationPipelines
-} from "@domains/movieReview/_feat/query-population/MovieReviewPopulationPipelines.js";
+} from "@/domains/movieReview/_feat/query-population/MovieReviewPopulationPipelines.js";
 import {Types} from "mongoose";
-import {checkMovieReviewOwnership} from "@domains/movieReview/_feat/check-ownership";
+import {checkMovieReviewOwnership} from "@/domains/movieReview/_feat/check-ownership";
 
 /** Fetches a single movie review enriched for the current user's view. */
 export const fetchCurrentUserMovieReview = async (

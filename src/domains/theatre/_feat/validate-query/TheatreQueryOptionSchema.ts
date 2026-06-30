@@ -4,10 +4,10 @@
  */
 
 import {z} from "zod";
-import {TheatreQueryMatchFilterSchema} from "@domains/theatre/_feat/validate-query/TheatreQueryMatchFilterSchema";
-import {TheatreQueryMatchSortSchema} from "@domains/theatre/_feat/validate-query/TheatreQueryMatchSortSchema";
-import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
+import {TheatreQueryMatchFilterSchema} from "@/domains/theatre/_feat/validate-query/TheatreQueryMatchFilterSchema";
+import {TheatreQueryMatchSortSchema} from "@/domains/theatre/_feat/validate-query/TheatreQueryMatchSortSchema";
+import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
+import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema for Theatre query options.

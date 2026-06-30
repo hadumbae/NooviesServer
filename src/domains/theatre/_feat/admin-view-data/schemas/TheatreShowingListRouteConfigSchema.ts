@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
-import {URLParamNonNegativeNumberSchema} from "@shared/schema/url/URLParamNonNegativeNumberSchema";
+import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
+import {URLParamNonNegativeNumberSchema} from "@/shared/schema/url/URLParamNonNegativeNumberSchema";
 
 /**
  * Schema for validating route configuration and pagination parameters for theatre showings.

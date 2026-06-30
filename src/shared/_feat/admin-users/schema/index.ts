@@ -1,11 +1,11 @@
 import {
     type AdminModerationMessage,
     AdminModerationMessageSchema
-} from "@shared/_feat/admin-users/schema/AdminModerationMessageSchema";
+} from "@/shared/_feat/admin-users/schema/AdminModerationMessageSchema";
 import {
     type AdminModerationMessageInputData,
     AdminModerationMessageInputSchema
-} from "@shared/_feat/admin-users/schema/AdminModerationMessageInputSchema";
+} from "@/shared/_feat/admin-users/schema/AdminModerationMessageInputSchema";
 
 
 export {

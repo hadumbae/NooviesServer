@@ -3,11 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@shared/*": ["./src/shared/*"],
-      "@domains/*": ["./src/domains/*"],
-
-      "@config/*": ["./src/shared/config/*"],
-      "@models/*": ["./src/domains/users/model/*"]
+      "@/shared/*": ["./src/shared/*"],
+      "@/domains/*": ["./src/domains/*"],
     },
     "strict": true,
     "esModuleInterop": true,

@@ -1,4 +1,4 @@
-import {UserCRUDRoutes} from "@domains/users/_feat/crud/UserCRUDRoutes";
+import {UserCRUDRoutes} from "@/domains/users/_feat/crud/UserCRUDRoutes";
 
 export {
     UserCRUDRoutes,

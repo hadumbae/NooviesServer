@@ -1,10 +1,10 @@
-import {TheatreSchema} from "@domains/theatre/model/theatre/Theatre.schema";
+import {TheatreSchema} from "@/domains/theatre/model/theatre/Theatre.schema";
 import type {
     TheatreSchemaFields,
     TheatreWithShowings,
     TheatreWithVirtuals
-} from "@domains/theatre/model/theatre/Theatre.types";
-import {Theatre} from "@domains/theatre/model/theatre/Theatre.model";
+} from "@/domains/theatre/model/theatre/Theatre.types";
+import {Theatre} from "@/domains/theatre/model/theatre/Theatre.model";
 
 export {
     TheatreSchema,

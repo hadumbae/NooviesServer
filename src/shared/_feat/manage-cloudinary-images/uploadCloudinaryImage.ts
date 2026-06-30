@@ -5,10 +5,10 @@
 import {
     type CloudinaryImageObject,
     CloudinaryImageObjectSchema
-} from "@shared/schema/cloudinary/CloudinaryImageObjectSchema";
-import cloudinary from "@config/cloudinary";
-import {RequestValidationError} from "@shared/errors/RequestValidationError";
-import type {MulterImageFile} from "@shared/_feat/manage-multer-images";
+} from "@/shared/schema/cloudinary/CloudinaryImageObjectSchema";
+import cloudinary from "@/shared/config/cloudinary";
+import {RequestValidationError} from "@/shared/errors/RequestValidationError";
+import type {MulterImageFile} from "@/shared/_feat/manage-multer-images";
 
 type UploadImageConfig = {
     image: MulterImageFile

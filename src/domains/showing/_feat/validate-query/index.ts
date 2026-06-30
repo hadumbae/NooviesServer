@@ -1,11 +1,11 @@
 import {
     type ShowingQueryOptions,
     ShowingQueryOptionSchema
-} from "@domains/showing/_feat/validate-query/ShowingQueryOptions";
+} from "@/domains/showing/_feat/validate-query/ShowingQueryOptions";
 import {
     type ShowingQueryReferenceFilters,
     ShowingQueryReferenceFilterSchema
-} from "@domains/showing/_feat/validate-query/ShowingQueryReferenceFilterSchema";
+} from "@/domains/showing/_feat/validate-query/ShowingQueryReferenceFilterSchema";
 
 export * from "./match-schemas";
 export * from "./stage-schemas";

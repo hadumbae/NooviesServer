@@ -4,12 +4,12 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 
-import {ReserveTicketInputSchema} from "@domains/reservation/_feat/reserve-tickets/schemas";
-import {postReserveTickets} from "@domains/reservation/_feat/reserve-tickets/controllers";
+import {ReserveTicketInputSchema} from "@/domains/reservation/_feat/reserve-tickets/schemas";
+import {postReserveTickets} from "@/domains/reservation/_feat/reserve-tickets/controllers";
 
 const router = Router();
 

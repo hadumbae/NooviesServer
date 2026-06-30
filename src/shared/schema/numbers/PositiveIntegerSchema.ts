@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {NumberValueSchema} from "@shared/schema/numbers/NumberValueSchema";
+import {NumberValueSchema} from "@/shared/schema/numbers/NumberValueSchema";
 
 /**
  * Zod schema for validating positive integers.

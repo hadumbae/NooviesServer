@@ -3,11 +3,11 @@
  * @filename CRUDRoutesFactory.types.ts
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
 import type {Model} from "mongoose";
-import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
+import type {PopulatePath} from "@/shared/types/mongoose/PopulatePath";
 import type {RequestHandler} from "express";
-import type {CRUDControllerHandler} from "@shared/_feat/generic-crud/types";
+import type {CRUDControllerHandler} from "@/shared/_feat/generic-crud/types";
 
 /** Supported HTTP verbs for the generic CRUD router. */
 export type CRUDRouteMethods =

@@ -4,7 +4,7 @@
  */
 
 import {Types} from "mongoose";
-import type {QueryPaginationParams} from "@shared/schema/query/QueryPaginationParamsSchema";
+import type {QueryPaginationParams} from "@/shared/schema/query/QueryPaginationParamsSchema";
 
 /**
  * Configuration parameters for retrieving a paginated collection of

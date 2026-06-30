@@ -4,7 +4,7 @@
 
 import type {NextFunction, Request, Response} from "express";
 import {MoviePosterImageInputSchema} from "./MoviePosterImageInputSchema";
-import {RequestValidationError} from "@shared/errors/RequestValidationError";
+import {RequestValidationError} from "@/shared/errors/RequestValidationError";
 
 /**
  * Validates an uploaded movie poster file against the input schema and attaches it to the request.

@@ -3,9 +3,9 @@
  */
 
 import {z} from "zod";
-import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
-import {SimpleDateStringSchema} from "@shared/schema/date-time/SimpleDateStringSchema";
-import {CoercedNonNegativeNumberSchema} from "@shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
+import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
+import {SimpleDateStringSchema} from "@/shared/schema/date-time/SimpleDateStringSchema";
+import {CoercedNonNegativeNumberSchema} from "@/shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
 
 /** Zod schema for validating theatre info view route parameters. */
 export const FetchTheatreInfoViewRouteConfigSchema = z.object({

@@ -1,10 +1,10 @@
-import {MovieReviewSchema} from "@domains/movieReview/model/model/MovieReview.schema";
-import {MovieReview} from "@domains/movieReview/model/model/MovieReview.model";
+import {MovieReviewSchema} from "@/domains/movieReview/model/model/MovieReview.schema";
+import {MovieReview} from "@/domains/movieReview/model/model/MovieReview.model";
 import type {
     CustomerMovieReviewSummary,
     MovieReviewSchemaFields,
     MyMovieReviewSchemaFields
-} from "@domains/movieReview/model/model/MovieReview.types";
+} from "@/domains/movieReview/model/model/MovieReview.types";
 
 export {
     MovieReviewSchema,

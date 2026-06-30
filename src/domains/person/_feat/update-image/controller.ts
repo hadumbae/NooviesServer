@@ -4,8 +4,8 @@
  */
 
 import type {Request, Response} from "express";
-import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import {deleteProfileImage, updateProfileImage} from "@domains/person/_feat/update-image/service";
+import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
+import {deleteProfileImage, updateProfileImage} from "@/domains/person/_feat/update-image/service";
 
 /**
  * Patches a person's profile image.

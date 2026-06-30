@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {normaliseQueryMatchValues} from "@shared/_feat/pipeline-schema-transformers";
-import {RoleTypeQueryMatchFiltersSchema} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
+import {normaliseQueryMatchValues} from "@/shared/_feat/pipeline-schema-transformers";
+import {RoleTypeQueryMatchFiltersSchema} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
 
 /** Zod schema that transforms role type query match values into a Mongoose match pipeline stage. */
 export const RoleTypeQueryMatchStageSchema = RoleTypeQueryMatchFiltersSchema.transform(normaliseQueryMatchValues);

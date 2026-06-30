@@ -4,8 +4,8 @@
  */
 
 import type {Request, Response, NextFunction} from "express";
-import handleZodError from "@shared/utility/schema/handlers/handleZodError";
-import {PersonProfileImageFileSchema} from "@domains/person/_feat/validate-submit";
+import handleZodError from "@/shared/utility/schema/handlers/handleZodError";
+import {PersonProfileImageFileSchema} from "@/domains/person/_feat/validate-submit";
 
 /**
  * Validates the presence and format of an uploaded profile image.

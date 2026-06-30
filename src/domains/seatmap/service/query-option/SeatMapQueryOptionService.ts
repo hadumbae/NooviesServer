@@ -14,21 +14,21 @@ import type IReferenceQueryOptionService from "../../../../shared/types/query-op
 import {
     type SeatMapQueryOptions,
     SeatMapQueryOptionsSchema
-} from "@domains/seatmap/_feat/validate-query";
-import {RequestValidationError} from "@shared/errors/RequestValidationError";
+} from "@/domains/seatmap/_feat/validate-query";
+import {RequestValidationError} from "@/shared/errors/RequestValidationError";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
 import type {FilterQuery} from "mongoose";
-import type {QueryOptionTypes, SortQuery} from "@shared/types/query-options/QueryOptionService.types";
+import type {QueryOptionTypes, SortQuery} from "@/shared/types/query-options/QueryOptionService.types";
 import type {
     ReferenceFilterPipelineStages,
     ReferenceSortPipelineStages
-} from "@shared/types/mongoose/AggregatePipelineStages";
+} from "@/shared/types/mongoose/AggregatePipelineStages";
 import type {SeatMapSchemaFields} from "../../model/SeatMap.types.js";
-import type {LookupMatchStageOptions} from "@shared/types/mongoose/LookupMatchStage.types";
+import type {LookupMatchStageOptions} from "@/shared/types/mongoose/LookupMatchStage.types";
 import generateReferenceFilterPipelineStages
     from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 
-import type {SeatMapQueryMatchFilters} from "@domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
+import type {SeatMapQueryMatchFilters} from "@/domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
 
 /**
  * Query option service for SeatMap list and search endpoints.

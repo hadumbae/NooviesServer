@@ -3,10 +3,10 @@
  */
 
 import type {Request, Response} from "express";
-import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
-import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import {updateDocument} from "@shared/_feat/generic-crud/path-handlers";
-import {Genre, handleGenreDuplicateIndex} from "@domains/genre/models/genre";
+import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
+import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
+import {updateDocument} from "@/shared/_feat/generic-crud/path-handlers";
+import {Genre, handleGenreDuplicateIndex} from "@/domains/genre/models/genre";
 
 /**
  * Updates a Genre document by ID, handling field synchronization and unsetting.

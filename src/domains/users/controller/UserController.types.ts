@@ -1,8 +1,8 @@
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
-import type {UserSchemaFields} from "@domains/users/model/user/User.types";
+} from "@/shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+import type {UserSchemaFields} from "@/domains/users/model/user/User.types";
 import type UserService from "../service/user-service/UserService.js";
 import type { Request, Response } from "express";
 

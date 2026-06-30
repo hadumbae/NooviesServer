@@ -6,7 +6,7 @@
 
 import {type ZodTypeAny} from "zod";
 import type {NextFunction, Request, RequestHandler, Response} from "express";
-import {InvalidRouteParamError} from "@shared/errors/InvalidRouteParamError";
+import {InvalidRouteParamError} from "@/shared/errors/InvalidRouteParamError";
 
 type ParseParams<TSchema extends ZodTypeAny> = {
     /** The Zod schema used to validate and transform the route parameters. */

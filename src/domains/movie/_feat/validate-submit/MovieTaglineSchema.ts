@@ -2,7 +2,7 @@
  * @fileoverview Defines the validation schema and type for movie taglines.
  */
 
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 import {z} from "zod";
 
 /** Zod schema for validating an optional movie tagline string. */

@@ -5,11 +5,11 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
-import {BrowseGenreWithMoviesRouteParamSchema} from "@domains/genre/_feat/client-view-data/schemas";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {getFetchGenreWithMovies} from "@domains/genre/_feat/client-view-data/controller";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
+import {BrowseGenreWithMoviesRouteParamSchema} from "@/domains/genre/_feat/client-view-data/schemas";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {getFetchGenreWithMovies} from "@/domains/genre/_feat/client-view-data/controller";
 
 const router = Router();
 

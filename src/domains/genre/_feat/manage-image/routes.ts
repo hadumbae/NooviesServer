@@ -3,13 +3,13 @@
  */
 
 import {Router} from "express";
-import {patchRemoveGenreImage, patchUpdateGenreImage} from "@domains/genre/_feat/manage-image/controller";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
-import {ManageGenreImageRouteConfigSchema} from "@domains/genre/_feat/manage-image/schema/ManageGenreImageRouteConfig";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {uploadImage} from "@config/image-multr";
-import {hasGenreImage} from "@domains/genre/_feat/manage-image/middleware/hasGenreImage";
+import {patchRemoveGenreImage, patchUpdateGenreImage} from "@/domains/genre/_feat/manage-image/controller";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
+import {ManageGenreImageRouteConfigSchema} from "@/domains/genre/_feat/manage-image/schema/ManageGenreImageRouteConfig";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {uploadImage} from "@/shared/config/image-multr";
+import {hasGenreImage} from "@/domains/genre/_feat/manage-image/middleware/hasGenreImage";
 
 const router = Router();
 

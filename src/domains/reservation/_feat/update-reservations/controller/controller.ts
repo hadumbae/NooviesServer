@@ -2,14 +2,14 @@
  * @fileoverview Express controllers for handling reservation update requests.
  */
 
-import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
+import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
 import type {Request, Response} from "express";
 import {
     cancelReservation, refundReservation,
     resetReservationExpiry,
     updateReservationNotes
-} from "@domains/reservation/_feat/update-reservations/service";
-import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
+} from "@/domains/reservation/_feat/update-reservations/service";
+import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
 
 /** Handles the partial update of a reservation's administrative notes. */
 export const patchUpdateReservationNotes: ControllerAsyncFunc = async (

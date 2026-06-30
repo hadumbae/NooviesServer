@@ -1,4 +1,4 @@
-import {SeatPopulationPipelines} from "@domains/seat/_feat/aggregate/SeatPopulationPipelines";
+import {SeatPopulationPipelines} from "@/domains/seat/_feat/aggregate/SeatPopulationPipelines";
 
 export {
     SeatPopulationPipelines,

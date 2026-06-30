@@ -2,7 +2,7 @@ import {
     deleteRemoveMovieReviewForCurrentUser,
     getFetchCurrentUserMovieReview,
     getFetchCurrentUserMovieReviewList, patchUpdateMovieReviewForCurrentUser, postCreateMovieReviewForCurrentUser
-} from "@domains/movieReview/_feat/current-user-reviews/controller/controller";
+} from "@/domains/movieReview/_feat/current-user-reviews/controller/controller";
 
 export {
     getFetchCurrentUserMovieReview,

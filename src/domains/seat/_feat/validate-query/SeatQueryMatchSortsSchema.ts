@@ -4,7 +4,7 @@
  */
 
 import {z} from "zod";
-import {URLParamSortOrderSchema} from "@shared/_feat/parse-query-string";
+import {URLParamSortOrderSchema} from "@/shared/_feat/parse-query-string";
 
 /**
  * Zod schema defining sort criteria for Seat queries.

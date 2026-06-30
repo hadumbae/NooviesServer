@@ -3,7 +3,7 @@
  * @filename ScreenVirtualPipelines.ts
  */
 
-import type {VirtualPipelineStages} from "@shared/types/mongoose/AggregatePipelineStages";
+import type {VirtualPipelineStages} from "@/shared/types/mongoose/AggregatePipelineStages";
 
 /**
  * Computes derived screen metrics from related collections.

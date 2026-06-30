@@ -3,9 +3,9 @@
  */
 
 import type {Request, Response} from "express";
-import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
-import {cancelClientReservation, checkoutClientReservation} from "@domains/reservation/_feat/update-client-reservations/services";
+import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
+import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
+import {cancelClientReservation, checkoutClientReservation} from "@/domains/reservation/_feat/update-client-reservations/services";
 
 /**
  * Finalizes a pending reservation hold for a client.

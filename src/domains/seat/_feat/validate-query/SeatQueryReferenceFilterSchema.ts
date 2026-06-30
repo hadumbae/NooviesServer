@@ -4,8 +4,8 @@
  */
 
 import {z} from "zod";
-import {URLParamObjectIDSchema} from "@shared/schema/url/URLParamObjectIDSchema";
-import {URLParamStringSchema} from "@shared/schema/url/URLParamStringSchema";
+import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema";
+import {URLParamStringSchema} from "@/shared/schema/url/URLParamStringSchema";
 
 /**
  * Zod schema defining reference filters for Seat queries.

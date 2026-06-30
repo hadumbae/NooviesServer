@@ -4,10 +4,10 @@
  */
 
 import {z} from "zod";
-import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
-import {PersonQueryMatchFiltersSchema} from "@domains/person/_feat/validate-query/PersonQueryMatchFiltersSchema";
-import {PersonQueryMatchSortsSchema} from "@domains/person/_feat/validate-query/PersonQueryMatchSortsSchema";
+import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
+import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {PersonQueryMatchFiltersSchema} from "@/domains/person/_feat/validate-query/PersonQueryMatchFiltersSchema";
+import {PersonQueryMatchSortsSchema} from "@/domains/person/_feat/validate-query/PersonQueryMatchSortsSchema";
 
 /**
  * Merges filter and sort schemas, transforming them into a structured AggregateQueryOptions object.

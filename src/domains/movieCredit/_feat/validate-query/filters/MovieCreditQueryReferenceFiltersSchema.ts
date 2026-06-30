@@ -4,8 +4,8 @@
  */
 
 import {z} from "zod";
-import {URLParamStringSchema} from "@shared/schema/url/URLParamStringSchema";
-import {URLParamRegexPatternSchema} from "@shared/_feat/parse-query-string";
+import {URLParamStringSchema} from "@/shared/schema/url/URLParamStringSchema";
+import {URLParamRegexPatternSchema} from "@/shared/_feat/parse-query-string";
 
 /**
  * Zod schema defining reference filters for MovieCredit queries.

@@ -8,8 +8,8 @@ import type {Request, Response} from "express";
 import type {
     FetchPersonCreditStatsRouteConfig,
     FetchPersonFilmographyRouteConfig
-} from "@domains/movieCredit/_feat/person-credits/routeSchemas";
-import {fetchPersonCreditStats, fetchPersonFilmography} from "@domains/movieCredit/_feat/person-credits/service";
+} from "@/domains/movieCredit/_feat/person-credits/routeSchemas";
+import {fetchPersonCreditStats, fetchPersonFilmography} from "@/domains/movieCredit/_feat/person-credits/service";
 
 /**
  * Retrieves high-level credit statistics for a person.

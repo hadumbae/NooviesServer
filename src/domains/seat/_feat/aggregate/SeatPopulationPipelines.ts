@@ -2,7 +2,7 @@
  * @fileoverview MongoDB aggregation stages for populating Seat document references.
  */
 
-import type { PopulationPipelineStages } from "@shared/types/mongoose/AggregatePipelineStages";
+import type { PopulationPipelineStages } from "@/shared/types/mongoose/AggregatePipelineStages";
 
 /**
  * Aggregation pipeline that materializes 'screen' and 'theatre' references for Seat documents.

@@ -6,7 +6,7 @@
 import {z} from "zod";
 import {
     MongooseNumericSortSchema,
-} from "@shared/schema/url/URLParamMongooseSortOrderSchema";
+} from "@/shared/schema/url/URLParamMongooseSortOrderSchema";
 
 /**
  * Validates the available sort keys for Genre queries.

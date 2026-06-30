@@ -4,9 +4,9 @@
  */
 
 import { Router } from "express";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import * as MovieBrowseController from "@domains/movie/_feat/fetch-reviews-by-movie/controller";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import * as MovieBrowseController from "@/domains/movie/_feat/fetch-reviews-by-movie/controller";
 
 const router = Router();
 

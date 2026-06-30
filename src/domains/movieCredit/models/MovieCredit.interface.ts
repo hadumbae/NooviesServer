@@ -5,9 +5,9 @@
  */
 
 import {Types} from "mongoose";
-import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
-import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
-import type {PersonSchemaFields} from "@domains/person/model";
+import type {MovieSchemaFields} from "@/domains/movie/model/movie/Movie.types";
+import type {RoleTypeSchemaFields} from "@/domains/roleType/model/RoleType.types";
+import type {PersonSchemaFields} from "@/domains/person/model";
 
 /**
  * Represents a single credit for a person in a movie.

@@ -3,7 +3,7 @@
  */
 
 import {Types} from "mongoose";
-import type {MulterImageFile} from "@shared/_feat/manage-multer-images";
+import type {MulterImageFile} from "@/shared/_feat/manage-multer-images";
 
 /** Configuration for uploading a movie poster image. */
 export type UploadPosterImageConfig = {

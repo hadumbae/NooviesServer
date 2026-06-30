@@ -3,10 +3,10 @@
  */
 
 import {Types} from "mongoose";
-import type {ISO3166Alpha2CountryCode} from "@shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
-import type {CloudinaryImageObject} from "@shared/schema/cloudinary/CloudinaryImageObjectSchema";
-import type {BaseModelWithSlug} from "@shared/types/schema/BaseModel";
-import type {ModelTimestamps} from "@shared/types/schema/ModelTimestamps";
+import type {ISO3166Alpha2CountryCode} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
+import type {CloudinaryImageObject} from "@/shared/schema/cloudinary/CloudinaryImageObjectSchema";
+import type {BaseModelWithSlug} from "@/shared/types/schema/BaseModel";
+import type {ModelTimestamps} from "@/shared/types/schema/ModelTimestamps";
 
 /**
  * Shape of a Person document in MongoDB (cast, crew, etc.).

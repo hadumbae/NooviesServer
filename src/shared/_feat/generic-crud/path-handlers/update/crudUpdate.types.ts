@@ -3,10 +3,10 @@
  * @filename crudUpdate.types.ts
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {BaseCRUDParams} from "@shared/_feat/generic-crud/types";
-import type {RequestOptions} from "@shared/_feat/fetch-request-options/schemas";
-import type {NonNegativeNumber} from "@shared/schema/numbers/NonNegativeNumberSchema";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseCRUDParams} from "@/shared/_feat/generic-crud/types";
+import type {RequestOptions} from "@/shared/_feat/fetch-request-options/schemas";
+import type {NonNegativeNumber} from "@/shared/schema/numbers/NonNegativeNumberSchema";
 import {Types} from "mongoose";
 
 /**

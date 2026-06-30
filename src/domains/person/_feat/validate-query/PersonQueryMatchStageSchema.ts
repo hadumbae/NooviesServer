@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {PersonQueryMatchFiltersSchema} from "@domains/person/_feat/validate-query/PersonQueryMatchFiltersSchema";
-import {normaliseQueryMatchValues} from "@shared/_feat/pipeline-schema-transformers";
+import {PersonQueryMatchFiltersSchema} from "@/domains/person/_feat/validate-query/PersonQueryMatchFiltersSchema";
+import {normaliseQueryMatchValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms person query match values into a Mongoose match pipeline stage. */
 export const PersonQueryMatchStageSchema = PersonQueryMatchFiltersSchema.transform(normaliseQueryMatchValues);

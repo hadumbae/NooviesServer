@@ -3,12 +3,12 @@ import type {
     IsUserFavouriteMovieReturns,
     ToggleUserFavouriteMovieReturns,
     UserFavouriteMovieConfig
-} from "@domains/users/_feat/manage-user-favourties/service/service.types";
+} from "@/domains/users/_feat/manage-user-favourties/service/service.types";
 import {
     fetchUserFavourites,
     isUserFavouriteMovie,
     toggleCurrentUserFavouriteMovie
-} from "@domains/users/_feat/manage-user-favourties/service/service";
+} from "@/domains/users/_feat/manage-user-favourties/service/service";
 
 export {
     fetchUserFavourites,

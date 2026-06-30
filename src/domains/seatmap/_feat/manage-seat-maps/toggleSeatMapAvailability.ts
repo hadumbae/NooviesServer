@@ -3,9 +3,9 @@
  */
 
 import {Types} from "mongoose";
-import type {SeatMapSchemaFields} from "@domains/seatmap/model/SeatMap.types";
-import SeatMap from "@domains/seatmap/model/SeatMap.model";
-import {SeatMapPopulationPaths} from "@domains/seatmap/_feat/query-population";
+import type {SeatMapSchemaFields} from "@/domains/seatmap/model/SeatMap.types";
+import SeatMap from "@/domains/seatmap/model/SeatMap.model";
+import {SeatMapPopulationPaths} from "@/domains/seatmap/_feat/query-population";
 import createHttpError from "http-errors";
 
 /** Configuration containing the unique identifier for the seat map. */

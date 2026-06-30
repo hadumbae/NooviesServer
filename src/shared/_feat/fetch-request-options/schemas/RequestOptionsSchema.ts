@@ -5,8 +5,8 @@
  */
 
 import {z} from "zod";
-import {URLParamBooleanSchema} from "@shared/schema/url/URLParamBooleanSchema";
-import {URLParamNumberSchema} from "@shared/schema/url/URLParamNumberSchema";
+import {URLParamBooleanSchema} from "@/shared/schema/url/URLParamBooleanSchema";
+import {URLParamNumberSchema} from "@/shared/schema/url/URLParamNumberSchema";
 
 /**
  * Validates global request modifiers for fetching data.

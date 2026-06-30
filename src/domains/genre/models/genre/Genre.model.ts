@@ -5,7 +5,7 @@
 
 import {Model, model} from "mongoose";
 import type {GenreSchemaFields} from "./Genre.types.js";
-import {GenreSchema} from "@domains/genre/models/genre/Genre.schema";
+import {GenreSchema} from "@/domains/genre/models/genre/Genre.schema";
 import "./Genre.hooks.js";
 
 /**

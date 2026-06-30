@@ -4,9 +4,9 @@
  */
 
 import {z} from "zod";
-import {URLParamObjectIDSchema} from "@shared/schema/url/URLParamObjectIDSchema";
-import {URLParamPositiveNumberSchema} from "@shared/schema/url/URLParamPositiveNumberSchema";
-import {SeatMapStatusEnumSchema} from "@domains/seatmap/schema/enum/SeatMapStatusEnumSchema";
+import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema";
+import {URLParamPositiveNumberSchema} from "@/shared/schema/url/URLParamPositiveNumberSchema";
+import {SeatMapStatusEnumSchema} from "@/domains/seatmap/schema/enum/SeatMapStatusEnumSchema";
 
 /**
  * Zod schema defining match-level filters for SeatMap queries.

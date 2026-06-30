@@ -3,7 +3,7 @@ import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
 import express from "express";
 import isAuth from "../../authentication/middleware/isAuth.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
-import {UserPasswordUpdateInputSchema} from "@domains/users/validation/submit/UserPasswordUpdateInputSchema";
+import {UserPasswordUpdateInputSchema} from "@/domains/users/validation/submit/UserPasswordUpdateInputSchema";
 
 const {controller} = UserServiceProvider.register();
 const routes = express.Router();

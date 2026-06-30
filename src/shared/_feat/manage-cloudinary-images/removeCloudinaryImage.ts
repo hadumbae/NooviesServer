@@ -2,7 +2,7 @@
  * @fileoverview Service function for removing an image from Cloudinary storage using its public ID.
  */
 
-import cloudinary from "@config/cloudinary";
+import cloudinary from "@/shared/config/cloudinary";
 
 type RemoveImageConfig = {
     public_id: string;

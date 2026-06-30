@@ -4,23 +4,23 @@
  */
 
 import type {Request, Response} from "express";
-import {fetchRequiredMovie} from "@domains/movie/utilities/fetch/fetchRequiredMovie";
-import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
-import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
+import {fetchRequiredMovie} from "@/domains/movie/utilities/fetch/fetchRequiredMovie";
+import {MoviePopulationPaths} from "@/domains/movie/_feat/query-population";
+import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
 import type {
     MovieInfoCreditsViewRouteConfig
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
 import type {
     MovieInfoShowingsViewRouteConfig
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
-import {fetchShowingsForMovie} from "@domains/movie/_feat/client-view-data/utils/fetchShowingsForMovie";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
+import {fetchShowingsForMovie} from "@/domains/movie/_feat/client-view-data/utils/fetchShowingsForMovie";
 import {
     fetchMovieInfoCreditsViewData,
     fetchMovieInfoOverviewViewData
-} from "@domains/movie/_feat/client-view-data/utils";
+} from "@/domains/movie/_feat/client-view-data/utils";
 import type {
     MovieInfoOverviewViewRouteConfig
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 
 /**
  * Fetches a movie and its grouped cast and crew credits for browse views.

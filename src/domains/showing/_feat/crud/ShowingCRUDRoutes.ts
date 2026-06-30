@@ -5,20 +5,20 @@
  */
 
 import {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
-import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
-import Showing from "@domains/showing/models/showing/Showing.model";
-import {ShowingQueryMatchStageSchema, ShowingQuerySortStageSchema} from "@domains/showing/_feat/validate-query";
-import {ShowingInputSchema} from "@domains/showing/validation/ShowingInputSchema";
-import {ShowingPopulationPaths} from "@domains/showing/_feat/query-population";
-import {ShowingPopulationPipelines} from "@domains/showing/queries/ShowingPopulationPipelines";
-import {ShowingSeatMapVirtualPipelines} from "@domains/showing/queries/ShowingSeatMapVirtualPipelines";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
+import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
+import Showing from "@/domains/showing/models/showing/Showing.model";
+import {ShowingQueryMatchStageSchema, ShowingQuerySortStageSchema} from "@/domains/showing/_feat/validate-query";
+import {ShowingInputSchema} from "@/domains/showing/validation/ShowingInputSchema";
+import {ShowingPopulationPaths} from "@/domains/showing/_feat/query-population";
+import {ShowingPopulationPipelines} from "@/domains/showing/queries/ShowingPopulationPipelines";
+import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/queries/ShowingSeatMapVirtualPipelines";
 
 const authCRUDMiddleware = buildAuthCRUDQueryMiddleware({
     modelName: Showing.modelName,

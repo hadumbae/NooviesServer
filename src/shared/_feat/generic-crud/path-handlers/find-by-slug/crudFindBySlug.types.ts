@@ -3,9 +3,9 @@
  * @filename crudFindBySlug.types.ts
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {BaseCRUDParams} from "@shared/_feat/generic-crud/types";
-import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseCRUDParams} from "@/shared/_feat/generic-crud/types";
+import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 
 /**
  * Specific configuration for the "Find By Slug" database operation.

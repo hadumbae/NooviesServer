@@ -5,9 +5,9 @@
 
 import type {
     MovieReviewModerationAction
-} from "@domains/movieReview/validation/moderation-actions/MovieReviewModerationActionSchema"
+} from "@/domains/movieReview/validation/moderation-actions/MovieReviewModerationActionSchema"
 import {Types} from "mongoose"
-import type {AdminModerationMessage} from "@shared/_feat/admin-users/schema"
+import type {AdminModerationMessage} from "@/shared/_feat/admin-users/schema"
 
 export type MovieReviewModerationLogSchemaFields = {
     review: Types.ObjectId

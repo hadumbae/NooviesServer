@@ -4,7 +4,7 @@
  */
 
 import {z} from "zod";
-import {AdminModerationMessageSchema} from "@shared/_feat/admin-users/schema/AdminModerationMessageSchema";
+import {AdminModerationMessageSchema} from "@/shared/_feat/admin-users/schema/AdminModerationMessageSchema";
 
 /**
  * Object-wrapped schema for moderation message inputs.

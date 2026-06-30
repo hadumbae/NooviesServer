@@ -5,7 +5,7 @@
 import { Schema } from "mongoose";
 import ISO3166Alpha2CodeConstant from "../../../../shared/constants/country/ISO3166Alpha2CodeConstant.js";
 import type { MovieSnapshotSchemaFields } from "./MovieSnapshot.types.js";
-import { URLStringSchema } from "@shared/schema/strings/URLStringSchema";
+import { URLStringSchema } from "@/shared/schema/strings/URLStringSchema";
 
 /** Mongoose schema for movie snapshot persistence. */
 export const MovieSnapshotSchema = new Schema<MovieSnapshotSchemaFields>({

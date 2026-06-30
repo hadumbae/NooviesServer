@@ -4,10 +4,10 @@
  */
 
 import {z} from "zod";
-import {ScreenQueryMatchFilterSchema} from "@domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
-import {ScreenQueryMatchSortSchema} from "@domains/screen/_feat/validate-query/ScreenQueryMatchSortSchema";
-import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
+import {ScreenQueryMatchFilterSchema} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
+import {ScreenQueryMatchSortSchema} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchSortSchema";
+import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
+import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema with a transformation layer for Screen aggregation.

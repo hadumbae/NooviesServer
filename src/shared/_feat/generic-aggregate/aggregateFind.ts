@@ -4,11 +4,11 @@
  * referencing, and optional expansion (population/virtuals).
  */
 
-import type {RequestOptions} from "@shared/_feat/fetch-request-options/schemas";
+import type {RequestOptions} from "@/shared/_feat/fetch-request-options/schemas";
 import type {PipelineStage} from "mongoose";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {AggregateBaseConfig} from "@shared/_feat/generic-aggregate/configTypes";
-import {buildBaseStages} from "@shared/_feat/generic-aggregate/buildBaseStages";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {AggregateBaseConfig} from "@/shared/_feat/generic-aggregate/configTypes";
+import {buildBaseStages} from "@/shared/_feat/generic-aggregate/buildBaseStages";
 
 /**
  * Parameters for the aggregate query utility.

@@ -3,8 +3,8 @@
  * @filename crudSoftDelete.types.ts
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {BaseCRUDParams} from "@shared/_feat/generic-crud/types";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseCRUDParams} from "@/shared/_feat/generic-crud/types";
 import {Types} from "mongoose";
 
 /**

@@ -3,14 +3,14 @@
  */
 
 import {type FilterQuery, Types} from "mongoose";
-import type {NonNegativeNumber} from "@shared/schema/numbers/NonNegativeNumberSchema";
-import type {DocumentType} from "@shared/types/mongoose/DocumentType";
-import type {PositiveInteger} from "@shared/schema/numbers/PositiveIntegerSchema";
-import type {ISO3166Alpha2CountryCode} from "@shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
-import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
-import {generateFuzzyRegexPattern} from "@shared/utility/regex/generateFuzzyRegexPattern";
-import Showing from "@domains/showing/models/showing/Showing.model";
-import {ShowingPopulationPipelines} from "@domains/showing/queries/ShowingPopulationPipelines";
+import type {NonNegativeNumber} from "@/shared/schema/numbers/NonNegativeNumberSchema";
+import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {PositiveInteger} from "@/shared/schema/numbers/PositiveIntegerSchema";
+import type {ISO3166Alpha2CountryCode} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
+import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
+import {generateFuzzyRegexPattern} from "@/shared/utility/regex/generateFuzzyRegexPattern";
+import Showing from "@/domains/showing/models/showing/Showing.model";
+import {ShowingPopulationPipelines} from "@/domains/showing/queries/ShowingPopulationPipelines";
 
 /** Parameters for the fetchShowingsForMovie function. */
 export type FetchShowingsForMovieConfig = {

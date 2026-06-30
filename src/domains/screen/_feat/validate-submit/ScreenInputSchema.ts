@@ -5,10 +5,10 @@
  */
 
 import {z} from "zod";
-import {TheatreAsyncIDString} from "@shared/schema/helpers/ZodIDHelpers";
-import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
-import {ScreenTypeSchema} from "@domains/screen/validation";
+import {TheatreAsyncIDString} from "@/shared/schema/helpers/ZodIDHelpers";
+import {PositiveNumberSchema} from "@/shared/schema/numbers/PositiveNumberSchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
+import {ScreenTypeSchema} from "@/domains/screen/validation";
 
 /**
  * Zod schema for validating Screen creation and update payloads.

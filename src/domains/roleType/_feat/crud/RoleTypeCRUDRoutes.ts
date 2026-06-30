@@ -5,17 +5,17 @@
  */
 
 import {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {create, destroy, find, findById, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
-import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
-import {RoleTypeModel} from "@domains/roleType/model/RoleType.model";
-import {RoleTypeQueryMatchStageSchema, RoleTypeQuerySortStageSchema} from "@domains/roleType/_feat/validate-query";
-import {RoleTypeInputSchema} from "@domains/roleType/validation/schema/RoleTypeInputSchema";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {create, destroy, find, findById, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
+import type {RoleTypeSchemaFields} from "@/domains/roleType/model/RoleType.types";
+import {RoleTypeModel} from "@/domains/roleType/model/RoleType.model";
+import {RoleTypeQueryMatchStageSchema, RoleTypeQuerySortStageSchema} from "@/domains/roleType/_feat/validate-query";
+import {RoleTypeInputSchema} from "@/domains/roleType/validation/schema/RoleTypeInputSchema";
 
 const modelName = RoleTypeModel.modelName;
 const matchSchema = RoleTypeQueryMatchStageSchema;

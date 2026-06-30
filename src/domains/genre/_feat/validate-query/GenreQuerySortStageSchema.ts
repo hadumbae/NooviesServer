@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {GenreQueryMatchSortsSchema} from "@domains/genre/_feat/validate-query/GenreQueryMatchSortsSchema";
-import {normaliseQuerySortValues} from "@shared/_feat/pipeline-schema-transformers";
+import {GenreQueryMatchSortsSchema} from "@/domains/genre/_feat/validate-query/GenreQueryMatchSortsSchema";
+import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms genre query sort values into a Mongoose sort pipeline stage. */
 export const GenreQuerySortStageSchema = GenreQueryMatchSortsSchema.transform(normaliseQuerySortValues);

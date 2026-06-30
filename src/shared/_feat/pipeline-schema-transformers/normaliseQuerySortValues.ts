@@ -2,7 +2,7 @@
  * @fileoverview Normalizes URL sort query parameters into a Mongoose sort stage format.
  */
 
-import type {URLParamSortOrder} from "@shared/_feat/parse-query-string";
+import type {URLParamSortOrder} from "@/shared/_feat/parse-query-string";
 import type {Expression, PipelineStage} from "mongoose";
 
 /** Normalizes URL sort query parameters into a Mongoose sort stage format. */

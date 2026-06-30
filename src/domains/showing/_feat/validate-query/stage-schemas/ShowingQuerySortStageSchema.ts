@@ -5,8 +5,8 @@
 import {z} from "zod";
 import {
     ShowingQueryMatchSortSchema
-} from "@domains/showing/_feat/validate-query/match-schemas/ShowingQueryMatchSortSchema";
-import {normaliseQuerySortValues} from "@shared/_feat/pipeline-schema-transformers";
+} from "@/domains/showing/_feat/validate-query/match-schemas/ShowingQueryMatchSortSchema";
+import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Schema that transforms raw showing sort parameters into a normalized format. */
 export const ShowingQuerySortStageSchema = ShowingQueryMatchSortSchema.transform(normaliseQuerySortValues);

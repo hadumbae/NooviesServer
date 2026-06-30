@@ -6,7 +6,7 @@
 
 import {Schema} from "mongoose";
 import type {ScreenSnapshotSchemaFields} from "./ScreenSnapshot.types.js";
-import {ScreenTypeConstant} from "@domains/screen/validation";
+import {ScreenTypeConstant} from "@/domains/screen/validation";
 
 /**
  * Mongoose schema for a Screen snapshot.

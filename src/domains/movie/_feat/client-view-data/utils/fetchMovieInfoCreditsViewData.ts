@@ -3,10 +3,10 @@
  */
 
 import createHttpError from "http-errors";
-import {Movie, type MovieSchemaFields} from "@domains/movie/model/movie";
-import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
-import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
-import {fetchCreditsForMovie, type GroupedCreditsForMovieData} from "@domains/movie/_feat/client-view-data";
+import {Movie, type MovieSchemaFields} from "@/domains/movie/model/movie";
+import {MoviePopulationPaths} from "@/domains/movie/_feat/query-population";
+import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
+import {fetchCreditsForMovie, type GroupedCreditsForMovieData} from "@/domains/movie/_feat/client-view-data";
 
 /** Configuration for fetching movie credits along with movie details. */
 export type FetchMovieInfoCreditsViewDataConfig = {

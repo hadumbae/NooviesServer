@@ -6,17 +6,17 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {
     getFetchPersonCreditStats,
     getFetchPersonFilmography
-} from "@domains/movieCredit/_feat/person-credits/controller";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
+} from "@/domains/movieCredit/_feat/person-credits/controller";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {
     FetchPersonCreditStatsRouteConfigSchema,
     FetchPersonFilmographyRouteConfigSchema
-} from "@domains/movieCredit/_feat/person-credits/routeSchemas";
+} from "@/domains/movieCredit/_feat/person-credits/routeSchemas";
 
 const router = Router();
 

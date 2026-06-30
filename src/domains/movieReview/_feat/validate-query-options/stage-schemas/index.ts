@@ -1,11 +1,11 @@
 import {
     type MovieReviewQuerySortStage,
     MovieReviewQuerySortStageSchema
-} from "@domains/movieReview/_feat/validate-query-options/stage-schemas/MovieReviewQuerySortStageSchema";
+} from "@/domains/movieReview/_feat/validate-query-options/stage-schemas/MovieReviewQuerySortStageSchema";
 import {
     type MovieReviewQueryMatchStage,
     MovieReviewQueryMatchStageSchema
-} from "@domains/movieReview/_feat/validate-query-options/stage-schemas/MovieReviewQueryMatchStageSchema";
+} from "@/domains/movieReview/_feat/validate-query-options/stage-schemas/MovieReviewQueryMatchStageSchema";
 
 export {
     MovieReviewQuerySortStageSchema,

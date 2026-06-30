@@ -5,7 +5,7 @@
  */
 
 import type {Model, PipelineStage} from "mongoose";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
 
 /**
  * Standard query components for a top-level model aggregation.

@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {TheatreQueryMatchSortSchema} from "@domains/theatre/_feat/validate-query/TheatreQueryMatchSortSchema";
-import {normaliseQuerySortValues} from "@shared/_feat/pipeline-schema-transformers";
+import {TheatreQueryMatchSortSchema} from "@/domains/theatre/_feat/validate-query/TheatreQueryMatchSortSchema";
+import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms theatre query sort values into a Mongoose sort pipeline stage. */
 export const TheatreQuerySortStageSchema = TheatreQueryMatchSortSchema.transform(normaliseQuerySortValues);

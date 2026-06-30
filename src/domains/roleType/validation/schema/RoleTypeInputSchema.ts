@@ -3,9 +3,9 @@
  */
 
 import { z } from "zod";
-import { NonEmptyStringSchema } from "@shared/schema/strings/NonEmptyStringSchema";
-import { RoleTypeDepartmentSchema } from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
-import { RoleTypeCastCategorySchema, RoleTypeCrewCategorySchema } from "@domains/roleType/validation/schema/RoleTypeCategorySchema";
+import { NonEmptyStringSchema } from "@/shared/schema/strings/NonEmptyStringSchema";
+import { RoleTypeDepartmentSchema } from "@/domains/roleType/validation/schema/RoleTypeDepartmentSchema";
+import { RoleTypeCastCategorySchema, RoleTypeCrewCategorySchema } from "@/domains/roleType/validation/schema/RoleTypeCategorySchema";
 
 const RoleTypeBaseSchema = z.object({
     roleName: NonEmptyStringSchema.max(150, { message: "Must be 150 characters or less." }),

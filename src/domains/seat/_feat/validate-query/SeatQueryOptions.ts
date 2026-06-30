@@ -12,7 +12,7 @@ import {z} from "zod";
 import {
     SeatQueryMatchFiltersSchema
 } from "./SeatQueryMatchFilterSchema";
-import {SeatQueryMatchSortsSchema} from "@domains/seat/_feat/validate-query/SeatQueryMatchSortsSchema";
+import {SeatQueryMatchSortsSchema} from "@/domains/seat/_feat/validate-query/SeatQueryMatchSortsSchema";
 
 /**
  * Combined query options for Seat queries.

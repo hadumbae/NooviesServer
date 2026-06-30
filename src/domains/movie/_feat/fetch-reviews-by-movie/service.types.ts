@@ -3,9 +3,9 @@
  */
 
 import {Types} from "mongoose";
-import type {RequestOptions} from "@shared/_feat/fetch-request-options/schemas";
-import type {MovieReviewSchemaFields} from "@domains/movieReview/model/model/MovieReview.types";
-import type {PaginationReturns} from "@shared/types/PaginationReturns";
+import type {RequestOptions} from "@/shared/_feat/fetch-request-options/schemas";
+import type {MovieReviewSchemaFields} from "@/domains/movieReview/model/model/MovieReview.types";
+import type {PaginationReturns} from "@/shared/types/PaginationReturns";
 
 /** Parameters for paginated movie review retrieval. */
 export type BrowseReviewsByMovieConfig = {

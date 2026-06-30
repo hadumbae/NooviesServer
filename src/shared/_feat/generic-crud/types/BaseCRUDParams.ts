@@ -3,10 +3,10 @@
  * @filename BaseCRUDParams.ts
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
 import type {Model} from "mongoose";
-import type {PopulatePath} from "@shared/types/mongoose/PopulatePath";
-import type {RequestOptions} from "@shared/_feat/fetch-request-options/schemas";
+import type {PopulatePath} from "@/shared/types/mongoose/PopulatePath";
+import type {RequestOptions} from "@/shared/_feat/fetch-request-options/schemas";
 
 /**
  * Standardized configuration object for executing database queries within a CRUD factory.

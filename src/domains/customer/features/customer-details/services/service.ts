@@ -10,20 +10,20 @@ import type {
     FetchCustomerReviewsViewData,
     FetchCustomerReviewsViewDataConfig,
     FetchCustomerReviewViewDataConfig
-} from "@domains/customer/features/customer-details/services/service.types"
-import {MovieReview} from "@domains/movieReview/model/model/MovieReview.model"
-import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/model/MovieReview.types"
+} from "@/domains/customer/features/customer-details/services/service.types"
+import {MovieReview} from "@/domains/movieReview/model/model/MovieReview.model"
+import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@/domains/movieReview/model/model/MovieReview.types"
 import createHttpError from "http-errors"
 import {
     fetchRequiredCustomerByCode
-} from "@domains/customer/features/customer-details/utils/fetchRequiredCustomerByCode"
-import {MovieWithRatingPipelines} from "@domains/movieReview/_feat/query-population/MovieWithRatingPipelines"
-import {MoviePopulationPipelines} from "@domains/movie/_feat/query-population"
-import type {PaginationReturns} from "@shared/types/PaginationReturns"
-import {buildPaginationPipelines} from "@shared/_feat/pagination-pipelines"
+} from "@/domains/customer/features/customer-details/utils/fetchRequiredCustomerByCode"
+import {MovieWithRatingPipelines} from "@/domains/movieReview/_feat/query-population/MovieWithRatingPipelines"
+import {MoviePopulationPipelines} from "@/domains/movie/_feat/query-population"
+import type {PaginationReturns} from "@/shared/types/PaginationReturns"
+import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines"
 import type {PipelineStage} from "mongoose"
-import {Reservation} from "@domains/reservation/model/reservation";
-import {MovieReviewModerationLog, type MovieReviewModerationLogSchemaFields} from "@domains/movieReview/model";
+import {Reservation} from "@/domains/reservation/model/reservation";
+import {MovieReviewModerationLog, type MovieReviewModerationLogSchemaFields} from "@/domains/movieReview/model";
 
 /**
  * Aggregates a customer's profile details, recent reservations, and movie

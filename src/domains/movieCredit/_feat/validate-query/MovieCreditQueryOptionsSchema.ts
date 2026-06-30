@@ -11,8 +11,8 @@ import {
 import {
     MovieCreditQueryMatchSortsSchema
 } from "./sorting/MovieCreditQueryMatchSortsSchema";
-import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
+import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
+import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema for MovieCredit query options with an aggregation transformation.

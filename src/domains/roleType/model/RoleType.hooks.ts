@@ -4,7 +4,7 @@
 
 import {RoleTypeSchema} from "./RoleType.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
+import type {RoleTypeSchemaFields} from "@/domains/roleType/model/RoleType.types";
 import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
 
 RoleTypeSchema.pre(

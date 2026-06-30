@@ -4,8 +4,8 @@
  */
 
 import {z} from "zod";
-import ImageTypeConstant from "@shared/constants/ImageTypeConstant";
-import isMulterFile from "@shared/utility/schema/file-upload/isMulterFile";
+import ImageTypeConstant from "@/shared/constants/ImageTypeConstant";
+import isMulterFile from "@/shared/utility/schema/file-upload/isMulterFile";
 
 /**
  * Validates that an uploaded file is a valid image processed by Multer.

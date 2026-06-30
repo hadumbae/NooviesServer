@@ -4,17 +4,17 @@
  */
 
 import {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
-import {Screen, type ScreenSchemaFields} from "@domains/screen/models/screen";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
+import {Screen, type ScreenSchemaFields} from "@/domains/screen/models/screen";
 import {ScreenPopulationPaths, ScreenPopulationPipelines, ScreenVirtualPipelines} from "../query-population";
-import {ScreenInputSchema} from "@domains/screen/_feat/validate-submit";
-import {ScreenQueryMatchStageSchema, ScreenQuerySortStageSchema} from "@domains/screen/_feat/validate-query";
-import validateZodSchemaAsync from "@shared/utility/schema/validators/validateZodSchemaAsync";
+import {ScreenInputSchema} from "@/domains/screen/_feat/validate-submit";
+import {ScreenQueryMatchStageSchema, ScreenQuerySortStageSchema} from "@/domains/screen/_feat/validate-query";
+import validateZodSchemaAsync from "@/shared/utility/schema/validators/validateZodSchemaAsync";
 
 const modelName = Screen.modelName;
 const matchSchema = ScreenQueryMatchStageSchema;

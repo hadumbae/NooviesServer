@@ -4,10 +4,10 @@
  */
 
 import {z} from "zod";
-import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
+import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 import {
     RequestPaginationOptionsSchema
-} from "@shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
+} from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
 
 /**
  * Validation schema for the Genre-specific browsing endpoint.

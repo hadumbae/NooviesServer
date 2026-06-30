@@ -3,20 +3,20 @@
  *
  */
 
-import {BookingError} from "@shared/errors/reservations/BookingError";
+import {BookingError} from "@/shared/errors/reservations/BookingError";
 import type {
     CancelClientReservationParams,
     CheckoutClientReservationParams
-} from "@domains/reservation/_feat/update-client-reservations/services/service.types";
-import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
-import SeatMap from "@domains/seatmap/model/SeatMap.model";
+} from "@/domains/reservation/_feat/update-client-reservations/services/service.types";
+import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
+import SeatMap from "@/domains/seatmap/model/SeatMap.model";
 import {
     assertReservationExists,
     assertReservationNotExpired,
     assertReservationOwnership
-} from "@domains/reservation/_feat/assert-reservations";
-import type {DocumentType} from "@shared/types/mongoose/DocumentType";
-import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
+} from "@/domains/reservation/_feat/assert-reservations";
+import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {ReservationSchemaFields} from "@/domains/reservation/model/reservation";
 
 /**
  * Transitions a reservation from a temporary hold (`RESERVED`) to a finalized `PAID` state.

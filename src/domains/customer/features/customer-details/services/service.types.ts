@@ -3,14 +3,14 @@
  *
  */
 
-import type {UserUniqueCode} from "@domains/users/_feat/manage-user-unique-code/schemas"
-import type {LeanUserSchemaFields} from "@domains/users/model/user/User.types"
-import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@domains/movieReview/model/model/MovieReview.types"
-import type {MovieReviewUniqueCode} from "@domains/movieReview/validation/review-code/MovieReviewUniqueCodeSchema"
-import type {RequestPaginationOptions} from "@shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema"
-import type {PaginationReturns} from "@shared/types/PaginationReturns"
-import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
-import type {MovieReviewModerationLogSchemaFields} from "@domains/movieReview/model";
+import type {UserUniqueCode} from "@/domains/users/_feat/manage-user-unique-code/schemas"
+import type {LeanUserSchemaFields} from "@/domains/users/model/user/User.types"
+import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@/domains/movieReview/model/model/MovieReview.types"
+import type {MovieReviewUniqueCode} from "@/domains/movieReview/validation/review-code/MovieReviewUniqueCodeSchema"
+import type {RequestPaginationOptions} from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema"
+import type {PaginationReturns} from "@/shared/types/PaginationReturns"
+import type {ReservationSchemaFields} from "@/domains/reservation/model/reservation";
+import type {MovieReviewModerationLogSchemaFields} from "@/domains/movieReview/model";
 
 /** Configuration parameters for fetching aggregated customer profile data. */
 export type FetchCustomerProfileViewDataConfig = {

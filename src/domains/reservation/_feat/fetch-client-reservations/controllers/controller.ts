@@ -4,12 +4,12 @@
  */
 
 import type {Request, Response} from "express";
-import type {ControllerAsyncFunc} from "@shared/types/ControllerTypes";
-import QueryUtils from "@shared/services/query-utils/QueryUtils";
+import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
+import QueryUtils from "@/shared/services/query-utils/QueryUtils";
 import {
     fetchPaginatedUserReservations,
-} from "@domains/reservation/_feat/fetch-client-reservations/services/service";
-import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser";
+} from "@/domains/reservation/_feat/fetch-client-reservations/services/service";
+import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
 
 /**
  * Handles the retrieval of a paginated list of reservations for the current user.

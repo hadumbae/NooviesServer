@@ -3,11 +3,11 @@
  *
  */
 
-import {MovieReviewSchema} from "@domains/movieReview/model/model/MovieReview.schema";
+import {MovieReviewSchema} from "@/domains/movieReview/model/model/MovieReview.schema";
 import type {HydratedDocument} from "mongoose";
-import type {MovieReviewSchemaFields} from "@domains/movieReview/model/model/MovieReview.types";
-import {generateMovieReviewUniqueCode} from "@domains/movieReview/_feat/handle-query/generateMovieReviewUniqueCode";
-import generateSlug from "@shared/utility/generateSlug";
+import type {MovieReviewSchemaFields} from "@/domains/movieReview/model/model/MovieReview.types";
+import {generateMovieReviewUniqueCode} from "@/domains/movieReview/_feat/handle-query/generateMovieReviewUniqueCode";
+import generateSlug from "@/shared/utility/generateSlug";
 
 MovieReviewSchema.pre(
     "validate",

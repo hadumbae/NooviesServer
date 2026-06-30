@@ -4,8 +4,8 @@
  */
 
 import {z} from "zod";
-import {RoleTypeDepartmentSchema} from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
-import {URLParamRegexPatternSchema} from "@shared/_feat/parse-query-string";
+import {RoleTypeDepartmentSchema} from "@/domains/roleType/validation/schema/RoleTypeDepartmentSchema";
+import {URLParamRegexPatternSchema} from "@/shared/_feat/parse-query-string";
 
 /**
  * Zod schema defining the available match filters for RoleType queries.

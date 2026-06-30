@@ -4,7 +4,7 @@
 
 import {z} from "zod";
 import {MovieQuerySortsSchema} from "./MovieQuerySortsSchema";
-import {normaliseQuerySortValues} from "@shared/_feat/pipeline-schema-transformers";
+import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that validates and normalises movie sort parameters. */
 export const MovieQuerySortStageSchema = MovieQuerySortsSchema.transform(normaliseQuerySortValues);

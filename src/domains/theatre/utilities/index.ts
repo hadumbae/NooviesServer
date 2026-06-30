@@ -1,4 +1,4 @@
-import {createTheatreSnapshot} from "@domains/theatre/utilities/createTheatreSnapshot";
+import {createTheatreSnapshot} from "@/domains/theatre/utilities/createTheatreSnapshot";
 
 export {
     createTheatreSnapshot,

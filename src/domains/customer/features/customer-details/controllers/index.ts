@@ -1,7 +1,7 @@
 import {
     getFetchCustomerProfileViewData, getFetchCustomerReviewsViewData,
     getFetchCustomerReviewViewData
-} from "@domains/customer/features/customer-details/controllers/controller";
+} from "@/domains/customer/features/customer-details/controllers/controller";
 
 export {
     getFetchCustomerReviewViewData,

@@ -4,11 +4,11 @@ import {type MovieQueryOptions, MovieQueryOptionsSchema} from "./MovieQueryOptio
 import {
     type MovieQueryMatchStage,
     MovieQueryMatchStageSchema
-} from "@domains/movie/_feat/validate-query/MovieQueryMatchStageSchema";
+} from "@/domains/movie/_feat/validate-query/MovieQueryMatchStageSchema";
 import {
     type MovieQuerySortStage,
     MovieQuerySortStageSchema
-} from "@domains/movie/_feat/validate-query/MovieQuerySortStageSchema";
+} from "@/domains/movie/_feat/validate-query/MovieQuerySortStageSchema";
 
 export {
     MovieQueryOptionsSchema,

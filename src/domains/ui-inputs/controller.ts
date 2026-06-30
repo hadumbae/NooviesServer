@@ -1,9 +1,9 @@
 /** @fileoverview Controller handlers for fetching lean, optimized data for UI inputs. */
 
 import type {Request, Response} from "express";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {FetchLeanDataConfig} from "@domains/ui-inputs/handlers/service.types";
-import {fetchLeanMovies, fetchLeanPersons, fetchLeanRoleTypes} from "@domains/ui-inputs/handlers/service";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {FetchLeanDataConfig} from "@/domains/ui-inputs/handlers/service.types";
+import {fetchLeanMovies, fetchLeanPersons, fetchLeanRoleTypes} from "@/domains/ui-inputs/handlers/service";
 
 /** Function signature for services that retrieve lean model data based on filters and sorts. */
 export type LeanDataHandler<TModel extends BaseModel> = (config: FetchLeanDataConfig<TModel>) => Promise<TModel[]>;

@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
+import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 
 /** Zod schema for validating showing details route parameters. */
 export const ShowingDetailsViewRouteConfigSchema = z.object({

@@ -2,11 +2,11 @@
  * @fileoverview Type definitions for theatre and screen data aggregation services.
  */
 
-import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
-import type {TheatreSchemaFields} from "@domains/theatre/model/theatre/Theatre.types";
-import type {ScreenSchemaFields} from "@domains/screen/models/screen";
-import type {PaginationReturns} from "@shared/types/PaginationReturns";
-import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
+import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
+import type {TheatreSchemaFields} from "@/domains/theatre/model/theatre/Theatre.types";
+import type {ScreenSchemaFields} from "@/domains/screen/models/screen";
+import type {PaginationReturns} from "@/shared/types/PaginationReturns";
+import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
 
 /** Configuration for fetching data for the Theatre Details administrative view. */
 export type FetchTheatreDetailsViewDataConfig = {

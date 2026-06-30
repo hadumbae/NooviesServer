@@ -3,14 +3,14 @@
  * @filename crudCreate.ts
  */
 
-import populateQuery from "@shared/utility/mongoose/populateQuery";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
+import populateQuery from "@/shared/utility/mongoose/populateQuery";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
-import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
-import type {CreateDocumentConfig} from "@shared/_feat/generic-crud/path-handlers/create/crudCreate.types";
-import {isDuplicateIndexError} from "@shared/utility/mongoose/isDuplicateIndexError";
-import {handleDuplicateIndexError} from "@shared/utility/mongoose/handleDuplicateIndexError";
-import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
+import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
+import type {CreateDocumentConfig} from "@/shared/_feat/generic-crud/path-handlers/create/crudCreate.types";
+import {isDuplicateIndexError} from "@/shared/utility/mongoose/isDuplicateIndexError";
+import {handleDuplicateIndexError} from "@/shared/utility/mongoose/handleDuplicateIndexError";
+import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Orchestrates document instantiation, persistence, and post-creation enrichment.

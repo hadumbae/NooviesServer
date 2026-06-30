@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {MulterImageFileSchema} from "@shared/_feat/manage-multer-images";
+import {MulterImageFileSchema} from "@/shared/_feat/manage-multer-images";
 
 /**
  * Zod schema for validating the incoming payload when uploading a genre image.

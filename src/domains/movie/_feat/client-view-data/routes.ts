@@ -3,23 +3,23 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth.js";
+import isAuth from "@/domains/authentication/middleware/isAuth.js";
 import {
     getFetchMovieInfoCreditsViewData,
     getFetchMovieInfoOverviewViewData,
     getFetchMovieInfoShowingsViewData
-} from "@domains/movie/_feat/client-view-data/controller";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
+} from "@/domains/movie/_feat/client-view-data/controller";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {
     MovieInfoOverviewViewRouteConfigSchema
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoOverviewViewRouteConfigSchema";
 import {
     MovieInfoCreditsViewRouteConfigSchema
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoCreditsViewRouteConfigSchema";
 import {
     MovieInfoShowingsViewRouteConfigSchema
-} from "@domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
+} from "@/domains/movie/_feat/client-view-data/schemas/MovieInfoShowingsViewRouteConfigSchema";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 
 
 const router = Router();

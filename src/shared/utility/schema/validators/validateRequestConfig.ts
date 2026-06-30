@@ -6,7 +6,7 @@
 
 import {type ZodType, type ZodTypeDef} from "zod";
 import type {NextFunction, Request, Response} from "express";
-import {BadRequestError} from "@shared/errors/BadRequestError";
+import {BadRequestError} from "@/shared/errors/BadRequestError";
 
 /**
  * Configuration options for the request validation middleware.

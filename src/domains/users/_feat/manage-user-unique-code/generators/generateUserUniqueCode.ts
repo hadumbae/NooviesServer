@@ -3,7 +3,7 @@
  * @filename generateUserUniqueCode.ts
  */
 
-import {generateNanoID} from "@shared/utility/generateNanoID";
+import {generateNanoID} from "@/shared/utility/generateNanoID";
 
 /**
  * Generates a unique, alphanumeric identification string for user accounts.

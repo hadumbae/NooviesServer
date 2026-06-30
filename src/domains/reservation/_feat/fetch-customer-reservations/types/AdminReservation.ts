@@ -3,7 +3,7 @@
  */
 
 import type {AdminReservationUser} from "./AdminReservationUser";
-import type {ReservationSchemaFields} from "@domains/reservation/model/reservation";
+import type {ReservationSchemaFields} from "@/domains/reservation/model/reservation";
 
 /** Reservation entity with a populated administrative user projection. */
 export type AdminReservation = Omit<ReservationSchemaFields, "user"> & {

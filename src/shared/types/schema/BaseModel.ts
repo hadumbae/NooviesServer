@@ -7,7 +7,7 @@ import {Types} from "mongoose";
 import type {ModelTimestamps} from "./ModelTimestamps.js";
 import type {ModelSoftDelete} from "./ModelSoftDelete.js";
 import type {SlugString} from "../../schema/strings/SlugStringSchema.js";
-import type {UniqueCode} from "@shared/validation/codes";
+import type {UniqueCode} from "@/shared/validation/codes";
 
 /**
  * Minimal record structure containing the standard Mongoose identification field.

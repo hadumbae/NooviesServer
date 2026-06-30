@@ -3,18 +3,18 @@
  */
 
 import {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
-import {TheatreQueryMatchStageSchema, TheatreQuerySortStageSchema} from "@domains/theatre/_feat/validate-query";
-import {Theatre, type TheatreSchemaFields} from "@domains/theatre/model/theatre";
-import {TheatreVirtualPipelines} from "@domains/theatre/_feat/aggregate";
-import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud/options/TheatreVirtualPopulationPaths";
-import {TheatreInputSchema} from "@domains/theatre/validation";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
+import {TheatreQueryMatchStageSchema, TheatreQuerySortStageSchema} from "@/domains/theatre/_feat/validate-query";
+import {Theatre, type TheatreSchemaFields} from "@/domains/theatre/model/theatre";
+import {TheatreVirtualPipelines} from "@/domains/theatre/_feat/aggregate";
+import {TheatreVirtualPopulationPaths} from "@/domains/theatre/_feat/crud/options/TheatreVirtualPopulationPaths";
+import {TheatreInputSchema} from "@/domains/theatre/validation";
 
 const modelName = Theatre.modelName;
 const matchSchema = TheatreQueryMatchStageSchema;

@@ -3,7 +3,7 @@
  */
 
 import type {PipelineStage} from "mongoose";
-import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
+import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
 
 /** Normalizes object parameters by removing nullish attributes and wrapping the result in a Mongoose match stage object. */
 export function normaliseQueryMatchValues(values: Record<string, unknown>): PipelineStage.Match {

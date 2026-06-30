@@ -1,11 +1,11 @@
 import {
     type ShowingQuerySortStage,
     ShowingQuerySortStageSchema
-} from "@domains/showing/_feat/validate-query/stage-schemas/ShowingQuerySortStageSchema";
+} from "@/domains/showing/_feat/validate-query/stage-schemas/ShowingQuerySortStageSchema";
 import {
     type ShowingQueryMatchStage,
     ShowingQueryMatchStageSchema
-} from "@domains/showing/_feat/validate-query/stage-schemas/ShowingQueryMatchStageSchema";
+} from "@/domains/showing/_feat/validate-query/stage-schemas/ShowingQueryMatchStageSchema";
 
 
 export {

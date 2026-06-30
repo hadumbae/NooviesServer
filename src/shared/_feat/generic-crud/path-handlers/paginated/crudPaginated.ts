@@ -2,15 +2,15 @@
  * @fileoverview Generic controller and service for retrieving paginated document collections with metadata.
  */
 
-import populateQuery from "@shared/utility/mongoose/populateQuery";
-import type {BaseModel} from "@shared/types/schema/BaseModel";
+import populateQuery from "@/shared/utility/mongoose/populateQuery";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
-import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
+import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
 import type {
     CountDocumentsParams,
     GetPaginatedDocumentsConfig
-} from "@shared/_feat/generic-crud/path-handlers/paginated/crudPaginated.types";
-import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
+} from "@/shared/_feat/generic-crud/path-handlers/paginated/crudPaginated.types";
+import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
 
 /** Retrieves the total count of documents in a collection matching specific filters. */
 export const countDocuments = async <TModel extends BaseModel>(

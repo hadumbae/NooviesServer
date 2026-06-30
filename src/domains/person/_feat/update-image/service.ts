@@ -3,14 +3,14 @@
  * Handles both the replacement and removal of image assets.
  */
 
-import type {DocumentType} from "@shared/types/mongoose/DocumentType";
+import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
 import type {
     RemovePersonProfileImageConfig,
     UploadPersonProfileImageConfig
-} from "@domains/person/_feat/update-image/service.types";
+} from "@/domains/person/_feat/update-image/service.types";
 import createHttpError from "http-errors";
-import {Person, type PersonSchemaFields} from "@domains/person/model";
-import {removeCloudinaryImage, uploadCloudinaryImage} from "@shared/_feat/manage-cloudinary-images";
+import {Person, type PersonSchemaFields} from "@/domains/person/model";
+import {removeCloudinaryImage, uploadCloudinaryImage} from "@/shared/_feat/manage-cloudinary-images";
 
 /**
  * Uploads a new profile image for a person.

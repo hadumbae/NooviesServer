@@ -3,10 +3,10 @@
  * @filename CRUDRoutesFactory.ts
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
 import {Router} from "express";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import type {BuildCRUDRoutesParams} from "@shared/_feat/generic-crud/routes/CRUDRoutesFactory.types";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import type {BuildCRUDRoutesParams} from "@/shared/_feat/generic-crud/routes/CRUDRoutesFactory.types";
 
 /**
  * Automates the creation of an Express Router by mapping generic CRUD handlers to HTTP methods.

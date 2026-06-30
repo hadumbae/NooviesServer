@@ -5,18 +5,18 @@
  */
 
 import type {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import type {GenreSchemaFields} from "@domains/genre/models/genre/Genre.types";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
-import {Genre} from "@domains/genre/models/genre";
-import {genreCreate, genreUpdate} from "@domains/genre/_feat/crud/index";
-import {destroy, find, findById, findBySlug, paginated} from "@shared/_feat/generic-crud/path-handlers";
-import {GenreInputSchema} from "@domains/genre/_feat/validate-submit";
-import {GenreQueryMatchStageSchema, GenreQuerySortStageSchema} from "@domains/genre/_feat/validate-query";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import type {GenreSchemaFields} from "@/domains/genre/models/genre/Genre.types";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
+import {Genre} from "@/domains/genre/models/genre";
+import {genreCreate, genreUpdate} from "@/domains/genre/_feat/crud/index";
+import {destroy, find, findById, findBySlug, paginated} from "@/shared/_feat/generic-crud/path-handlers";
+import {GenreInputSchema} from "@/domains/genre/_feat/validate-submit";
+import {GenreQueryMatchStageSchema, GenreQuerySortStageSchema} from "@/domains/genre/_feat/validate-query";
 
 const modelName = Genre.modelName;
 const matchSchema = GenreQueryMatchStageSchema;

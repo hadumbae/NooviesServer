@@ -5,18 +5,18 @@
  */
 
 import {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
-import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
-import {Movie} from "@domains/movie/model/movie/Movie.model";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
+import type {MovieSchemaFields} from "@/domains/movie/model/movie/Movie.types";
+import {Movie} from "@/domains/movie/model/movie/Movie.model";
 import {MovieInputSchema} from "../validate-submit/MovieInputSchema";
-import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
-import {MovieQueryMatchStageSchema, MovieQuerySortStageSchema} from "@domains/movie/_feat/validate-query";
+import {MoviePopulationPaths} from "@/domains/movie/_feat/query-population";
+import {MovieQueryMatchStageSchema, MovieQuerySortStageSchema} from "@/domains/movie/_feat/validate-query";
 
 const modelName = Movie.modelName;
 const matchSchema = MovieQueryMatchStageSchema;

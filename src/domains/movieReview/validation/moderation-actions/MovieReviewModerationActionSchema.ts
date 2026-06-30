@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {MovieReviewModerationActionConstant} from "@domains/movieReview/validation/moderation-actions/constant";
+import {MovieReviewModerationActionConstant} from "@/domains/movieReview/validation/moderation-actions/constant";
 
 /** Schema for validating administrative moderation commands. */
 export const MovieReviewModerationActionSchema = z.enum(MovieReviewModerationActionConstant, {

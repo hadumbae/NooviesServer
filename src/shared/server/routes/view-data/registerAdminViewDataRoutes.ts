@@ -4,11 +4,11 @@
 
 import type { Express } from "express";
 import type { RouteRegistration } from "../../registerRoutes";
-import { GenreViewDataRoutes } from "@domains/genre/_feat/admin-view-data";
-import { PersonAdminViewDataRoutes } from "@domains/person/_feat/admin-view-data";
-import { TheatreAdminViewDataRoutes } from "@domains/theatre/_feat/admin-view-data";
-import {TheatreScreenAdminViewDataRoutes} from "@domains/screen/_feat/view-data-admin";
-import {ShowingAdminViewDataRoutes} from "@domains/showing/_feat/admin-view-data";
+import { GenreViewDataRoutes } from "@/domains/genre/_feat/admin-view-data";
+import { PersonAdminViewDataRoutes } from "@/domains/person/_feat/admin-view-data";
+import { TheatreAdminViewDataRoutes } from "@/domains/theatre/_feat/admin-view-data";
+import {TheatreScreenAdminViewDataRoutes} from "@/domains/screen/_feat/view-data-admin";
+import {ShowingAdminViewDataRoutes} from "@/domains/showing/_feat/admin-view-data";
 
 const setupRouteGroups: RouteRegistration[] = [
     {

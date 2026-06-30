@@ -3,13 +3,13 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth.js";
-import asyncHandler from "@shared/utility/handlers/asyncHandler.js";
-import * as MyMovieReviewController from "@domains/movieReview/_feat/current-user-reviews/controller";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema.js";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
-import {MyReviewIDRouteConfigSchema} from "@domains/movieReview/_feat/current-user-reviews/schema/MyReviewIDRouteConfigSchema";
-import {MovieReviewCreateInputSchema, MovieReviewUpdateInputSchema} from "@domains/movieReview/_feat/validate-submit/schemas";
+import isAuth from "@/domains/authentication/middleware/isAuth.js";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler.js";
+import * as MyMovieReviewController from "@/domains/movieReview/_feat/current-user-reviews/controller";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema.js";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
+import {MyReviewIDRouteConfigSchema} from "@/domains/movieReview/_feat/current-user-reviews/schema/MyReviewIDRouteConfigSchema";
+import {MovieReviewCreateInputSchema, MovieReviewUpdateInputSchema} from "@/domains/movieReview/_feat/validate-submit/schemas";
 
 const router = Router();
 

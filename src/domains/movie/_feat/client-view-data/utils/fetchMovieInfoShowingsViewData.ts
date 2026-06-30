@@ -2,12 +2,12 @@
  * @fileoverview Utility for fetching composite movie and showing data for the client-side movie info view.
  */
 
-import type {MovieInfoShowingsViewRouteConfig} from "@domains/movie/_feat/client-view-data";
-import {Movie, type MovieSchemaFields} from "@domains/movie/model/movie";
-import type {ShowingSchemaFields} from "@domains/showing/models/showing/Showing.types";
-import {MoviePopulationPaths} from "@domains/movie/_feat/query-population";
+import type {MovieInfoShowingsViewRouteConfig} from "@/domains/movie/_feat/client-view-data";
+import {Movie, type MovieSchemaFields} from "@/domains/movie/model/movie";
+import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
+import {MoviePopulationPaths} from "@/domains/movie/_feat/query-population";
 import createHttpError from "http-errors";
-import {fetchShowingsForMovie} from "@domains/movie/_feat/client-view-data/utils/fetchShowingsForMovie";
+import {fetchShowingsForMovie} from "@/domains/movie/_feat/client-view-data/utils/fetchShowingsForMovie";
 
 /** Configuration for fetching movie info and showings view data. */
 export type FetchMovieInfoShowingsViewDataConfig = MovieInfoShowingsViewRouteConfig;

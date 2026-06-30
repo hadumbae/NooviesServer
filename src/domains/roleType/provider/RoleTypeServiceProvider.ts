@@ -9,9 +9,9 @@ import RoleTypeController from "../controllers/RoleTypeController.js";
 import {RoleTypeModel} from "../model/RoleType.model.js";
 import RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionService.js";
 import AggregateQueryService from "../../../shared/services/aggregate/AggregateQueryService.js";
-import {BaseRepository} from "@shared/repository/BaseRepository";
+import {BaseRepository} from "@/shared/repository/BaseRepository";
 import {RoleTypePersistenceManager} from "../repositories/managers/RoleTypePersistenceManager.js";
-import {CRUDWriter} from "@shared/repository/operations/CRUDWriter";
+import {CRUDWriter} from "@/shared/repository/operations/CRUDWriter";
 
 /**
  * Service provider for RoleType domain.

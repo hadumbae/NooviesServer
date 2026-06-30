@@ -4,10 +4,10 @@
  */
 
 import "dotenv/config";
-import connect from "@config/database.js";
+import connect from "@/shared/config/database.js";
 import mongoose from "mongoose";
-import {Reservation} from "@domains/reservation/model/reservation";
-import {generateReservationUniqueCode} from "@domains/reservation/_feat/generate-reservation-code";
+import {Reservation} from "@/domains/reservation/model/reservation";
+import {generateReservationUniqueCode} from "@/domains/reservation/_feat/generate-reservation-code";
 
 /**
  * Execution block for the Reservation data migration.

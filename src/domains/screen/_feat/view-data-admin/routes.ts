@@ -4,13 +4,13 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {
     TheatreScreenDetailsViewRouteConfigSchema
-} from "@domains/screen/_feat/view-data-admin/schemas/TheatreScreenDetailsViewRouteConfigSchema";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {getFetchTheatreScreenDetailsViewData} from "@domains/screen/_feat/view-data-admin/controller";
+} from "@/domains/screen/_feat/view-data-admin/schemas/TheatreScreenDetailsViewRouteConfigSchema";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {getFetchTheatreScreenDetailsViewData} from "@/domains/screen/_feat/view-data-admin/controller";
 
 const router = Router();
 

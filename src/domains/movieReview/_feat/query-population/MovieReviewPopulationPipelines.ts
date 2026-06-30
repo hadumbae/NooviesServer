@@ -2,8 +2,8 @@
  * @fileoverview Defines MongoDB aggregation pipelines for populating movie review relations.
  */
 
-import type {PopulationPipelineStages} from "@shared/types/mongoose/AggregatePipelineStages";
-import {MovieWithRatingPipelines} from "@domains/movieReview/_feat/query-population/MovieWithRatingPipelines.js";
+import type {PopulationPipelineStages} from "@/shared/types/mongoose/AggregatePipelineStages";
+import {MovieWithRatingPipelines} from "@/domains/movieReview/_feat/query-population/MovieWithRatingPipelines.js";
 
 /** Aggregation stages to populate movie and user details for a movie review. */
 export const MovieReviewPopulationPipelines: PopulationPipelineStages = [

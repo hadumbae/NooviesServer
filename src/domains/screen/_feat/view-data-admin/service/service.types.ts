@@ -3,10 +3,10 @@
  * Represents the aggregated state required to render a screen's layout and its parent context.
  */
 
-import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
-import type {TheatreWithVirtuals} from "@domains/theatre/model/theatre";
-import type {ScreenSchemaFields} from "@domains/screen/models/screen";
-import type {SeatSchemaFields} from "@domains/seat/model";
+import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
+import type {TheatreWithVirtuals} from "@/domains/theatre/model/theatre";
+import type {ScreenSchemaFields} from "@/domains/screen/models/screen";
+import type {SeatSchemaFields} from "@/domains/seat/model";
 
 /**
  * Configuration for identifying specific screen data within the theatre hierarchy.

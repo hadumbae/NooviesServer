@@ -5,21 +5,21 @@
  */
 
 import {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {create, destroy, find, findById, findBySlug, paginated, update} from "@shared/_feat/generic-crud/path-handlers";
-import validateZodSchema from "@shared/utility/schema/validators/validateZodSchema";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
-import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interface";
-import MovieCredit from "@domains/movieCredit/models/MovieCredit.model";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
+import type {IMovieCredit} from "@/domains/movieCredit/models/MovieCredit.interface";
+import MovieCredit from "@/domains/movieCredit/models/MovieCredit.model";
 import {
     MovieCreditQueryMatchStageSchema,
     MovieCreditQuerySortStageSchema
-} from "@domains/movieCredit/_feat/validate-query";
-import {MovieCreditInputSchema} from "@domains/movieCredit/schemas/MovieCreditInputSchema";
-import {MovieCreditPopulationPaths} from "@domains/movieCredit/_feat/query-population";
+} from "@/domains/movieCredit/_feat/validate-query";
+import {MovieCreditInputSchema} from "@/domains/movieCredit/schemas/MovieCreditInputSchema";
+import {MovieCreditPopulationPaths} from "@/domains/movieCredit/_feat/query-population";
 
 const modelName = MovieCredit.modelName;
 const matchSchema = MovieCreditQueryMatchStageSchema;

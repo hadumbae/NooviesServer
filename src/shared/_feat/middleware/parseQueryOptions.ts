@@ -6,7 +6,7 @@
 
 import {type ZodTypeAny} from "zod";
 import type {NextFunction, Request, RequestHandler, Response} from "express";
-import InvalidRequestQueryError from "@shared/errors/InvalidRequestQueryError";
+import InvalidRequestQueryError from "@/shared/errors/InvalidRequestQueryError";
 
 /**
  * Configuration for the query parsing middleware.

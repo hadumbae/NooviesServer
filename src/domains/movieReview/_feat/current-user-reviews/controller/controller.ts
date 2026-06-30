@@ -4,14 +4,14 @@
  */
 
 import type {Request, Response} from "express";
-import QueryUtils from "@shared/services/query-utils/QueryUtils.js";
-import * as MyMovieReviewService from "@domains/movieReview/_feat/current-user-reviews/service";
-import {fetchRequestUser} from "@shared/utility/request/fetchRequestUser.js";
+import QueryUtils from "@/shared/services/query-utils/QueryUtils.js";
+import * as MyMovieReviewService from "@/domains/movieReview/_feat/current-user-reviews/service";
+import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser.js";
 import type {
     MovieReviewCreateInputData,
     MovieReviewUpdateInputData
-} from "@domains/movieReview/_feat/validate-submit/schemas";
-import type {MyReviewIDRouteConfig} from "@domains/movieReview/_feat/current-user-reviews/schema";
+} from "@/domains/movieReview/_feat/validate-submit/schemas";
+import type {MyReviewIDRouteConfig} from "@/domains/movieReview/_feat/current-user-reviews/schema";
 
 /**
  * Retrieves a single Movie Review owned by the authenticated user.

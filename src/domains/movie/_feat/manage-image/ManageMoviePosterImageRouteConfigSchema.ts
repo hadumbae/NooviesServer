@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
+import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
 
 /** Zod validation schema for the movie poster image route configuration. */
 export const ManageMoviePosterImageRouteConfigSchema = z.object({

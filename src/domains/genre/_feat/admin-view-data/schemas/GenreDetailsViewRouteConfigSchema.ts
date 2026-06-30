@@ -5,8 +5,8 @@
 import {z} from "zod";
 import {
     RequestPaginationOptionsSchema
-} from "@shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
-import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
+} from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
+import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 
 /** Zod schema defining the route configuration properties for the genre details view. */
 export const GenreDetailsViewRouteConfigSchema = RequestPaginationOptionsSchema.extend({

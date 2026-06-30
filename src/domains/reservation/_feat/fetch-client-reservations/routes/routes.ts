@@ -4,9 +4,9 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {fetchReservationsForUser} from "@domains/reservation/_feat/fetch-client-reservations/controllers";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {fetchReservationsForUser} from "@/domains/reservation/_feat/fetch-client-reservations/controllers";
 
 const router = Router();
 

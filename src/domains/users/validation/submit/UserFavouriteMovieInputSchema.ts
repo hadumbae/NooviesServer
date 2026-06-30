@@ -4,7 +4,7 @@
  */
 
 import {z} from "zod";
-import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema.js";
+import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema.js";
 
 /**
  * Validates favourite movie input payload.

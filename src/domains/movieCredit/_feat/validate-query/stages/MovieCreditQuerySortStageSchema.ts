@@ -2,8 +2,8 @@
 
 
 import {z} from "zod";
-import {MovieCreditQueryMatchSortsSchema} from "@domains/movieCredit/_feat/validate-query";
-import {normaliseQuerySortValues} from "@shared/_feat/pipeline-schema-transformers";
+import {MovieCreditQueryMatchSortsSchema} from "@/domains/movieCredit/_feat/validate-query";
+import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that validates and transforms movie credit sort parameters into a normalised format. */
 export const MovieCreditQuerySortStageSchema = MovieCreditQueryMatchSortsSchema.transform(normaliseQuerySortValues);

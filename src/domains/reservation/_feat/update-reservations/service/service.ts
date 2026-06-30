@@ -8,16 +8,16 @@ import type {
     RefundReservationParams,
     ResetReservationExpiryParams,
     UpdateReservationNotesParams
-} from "@domains/reservation/_feat/update-reservations/service/service.types";
-import type {AdminReservation} from "@domains/reservation/_feat/fetch-customer-reservations";
+} from "@/domains/reservation/_feat/update-reservations/service/service.types";
+import type {AdminReservation} from "@/domains/reservation/_feat/fetch-customer-reservations";
 import createHttpError from "http-errors";
-import Showing from "@domains/showing/models/showing/Showing.model";
+import Showing from "@/domains/showing/models/showing/Showing.model";
 import {DateTime} from "luxon";
 
 import {
     fetchAdminReservationByID,
     fetchRequiredAdminReservation
-} from "@domains/reservation/_feat/fetch-customer-reservations/utilities";
+} from "@/domains/reservation/_feat/fetch-customer-reservations/utilities";
 
 /** Updates the administrative notes for a specific reservation. */
 export async function updateReservationNotes(

@@ -7,13 +7,13 @@ import type {
     FetchUserFavouritesConfig, IsUserFavouriteMovieReturns,
     ToggleUserFavouriteMovieReturns,
     UserFavouriteMovieConfig
-} from "@domains/users/_feat/manage-user-favourties/service/service.types";
+} from "@/domains/users/_feat/manage-user-favourties/service/service.types";
 
-import {User} from "@domains/users/model/user/User.model";
+import {User} from "@/domains/users/model/user/User.model";
 import createHttpError from "http-errors";
-import type {UserSchemaFields} from "@domains/users/model/user/User.types";
-import {Movie} from "@domains/movie/model/movie/Movie.model";
-import {fetchRequiredMovie} from "@domains/movie/_feat/fetch-movies";
+import type {UserSchemaFields} from "@/domains/users/model/user/User.types";
+import {Movie} from "@/domains/movie/model/movie/Movie.model";
+import {fetchRequiredMovie} from "@/domains/movie/_feat/fetch-movies";
 
 
 /** Returns paginated favourites for a user. */

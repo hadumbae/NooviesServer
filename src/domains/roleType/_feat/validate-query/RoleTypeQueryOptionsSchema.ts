@@ -4,10 +4,10 @@
  */
 
 import {z} from "zod";
-import {RoleTypeQueryMatchFiltersSchema} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
-import {RoleTypeQueryMatchSortsSchema} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchSortsSchema";
-import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
+import {RoleTypeQueryMatchFiltersSchema} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
+import {RoleTypeQueryMatchSortsSchema} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryMatchSortsSchema";
+import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
+import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema for RoleType query options with an aggregation transformation.

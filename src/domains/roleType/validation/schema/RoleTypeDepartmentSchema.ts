@@ -5,7 +5,7 @@
 import {z} from "zod";
 import {
     RoleTypeDepartmentConstant
-} from "@domains/roleType/validation/constants/RoleTypeDepartmentConstant";
+} from "@/domains/roleType/validation/constants/RoleTypeDepartmentConstant";
 
 /** Zod schema for validating department values against RoleTypeDepartmentConstant. */
 export const RoleTypeDepartmentSchema = z.enum(

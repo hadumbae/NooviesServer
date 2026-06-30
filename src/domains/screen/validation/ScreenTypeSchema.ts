@@ -4,7 +4,7 @@
  */
 
 import {z} from 'zod';
-import {ScreenTypeConstant} from "@domains/screen/validation/ScreenTypeConstant";
+import {ScreenTypeConstant} from "@/domains/screen/validation/ScreenTypeConstant";
 
 /**
  * Zod schema for validating cinema screen classifications.

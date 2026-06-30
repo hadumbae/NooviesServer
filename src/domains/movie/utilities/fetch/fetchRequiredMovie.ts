@@ -3,13 +3,13 @@
  * @filename fetchRequiredMovie.ts
  */
 
-import type {RequestOptions} from "@shared/types/request-options/RequestOptions";
+import type {RequestOptions} from "@/shared/types/request-options/RequestOptions";
 import {Types} from "mongoose";
 import populateQuery from "../../../../shared/utility/mongoose/populateQuery.js";
-import {Movie} from "@domains/movie/model/movie/Movie.model";
-import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
-import type {DocumentType} from "@shared/types/mongoose/DocumentType";
-import type {MovieSchemaFields} from "@domains/movie/model/movie/Movie.types";
+import {Movie} from "@/domains/movie/model/movie/Movie.model";
+import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
+import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {MovieSchemaFields} from "@/domains/movie/model/movie/Movie.types";
 
 /**
  * Parameters for fetching a required movie.

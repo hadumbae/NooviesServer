@@ -3,9 +3,9 @@
  */
 
 import type {Request, Response} from "express";
-import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
-import {createDocument} from "@shared/_feat/generic-crud/path-handlers";
-import {Genre, handleGenreDuplicateIndex} from "@domains/genre/models/genre";
+import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
+import {createDocument} from "@/shared/_feat/generic-crud/path-handlers";
+import {Genre, handleGenreDuplicateIndex} from "@/domains/genre/models/genre";
 
 /**
  * Creates a Genre document using validated body data and domain-specific error handling.

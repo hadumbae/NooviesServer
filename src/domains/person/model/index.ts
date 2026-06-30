@@ -1,5 +1,5 @@
-import {Person} from "@domains/person/model/Person.model";
-import type {PersonSchemaFields} from "@domains/person/model/Person.types";
+import {Person} from "@/domains/person/model/Person.model";
+import type {PersonSchemaFields} from "@/domains/person/model/Person.types";
 
 export {
     Person,

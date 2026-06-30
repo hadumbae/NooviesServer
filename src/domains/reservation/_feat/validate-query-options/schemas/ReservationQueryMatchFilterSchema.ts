@@ -3,9 +3,9 @@
  */
 
 import {z} from "zod";
-import {ObjectIdStringSchema} from "@shared/schema/mongoose/ObjectIdStringSchema";
-import {ReservationStatusSchema} from "@domains/reservation/validation/enums/ReservationStatusSchema";
-import {ReservationTypeSchema} from "@domains/reservation/validation/enums/ReservationTypeSchema";
+import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
+import {ReservationStatusSchema} from "@/domains/reservation/validation/enums/ReservationStatusSchema";
+import {ReservationTypeSchema} from "@/domains/reservation/validation/enums/ReservationTypeSchema";
 
 /** Zod schema for match-level reservation query filters. */
 export const ReservationQueryMatchFilterSchema = z.object({

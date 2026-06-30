@@ -5,10 +5,10 @@
 import {z} from "zod";
 import {
     RoleTypeCastCategoryConstant
-} from "@domains/roleType/validation/constants/RoleTypeCastCategoryConstant";
+} from "@/domains/roleType/validation/constants/RoleTypeCastCategoryConstant";
 import {
     RoleTypeCrewCategoryConstant
-} from "@domains/roleType/validation/constants/RoleTypeCrewCategoryConstant";
+} from "@/domains/roleType/validation/constants/RoleTypeCrewCategoryConstant";
 
 /** Zod schema for validating cast role categories against predefined constants. */
 export const RoleTypeCastCategorySchema = z.enum(RoleTypeCastCategoryConstant, {

@@ -3,10 +3,10 @@
  */
 
 import type {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {destroy, findById} from "@shared/_feat/generic-crud/path-handlers";
-import {User, type UserSchemaFields} from "@models/user";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {destroy, findById} from "@/shared/_feat/generic-crud/path-handlers";
+import {User, type UserSchemaFields} from "@/domains/users/model/user";
 
 const routes: CRUDRoute<UserSchemaFields>[] = [
     {

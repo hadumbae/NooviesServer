@@ -7,17 +7,17 @@ import type {
     FetchTheatreShowingListViewDataConfig,
     TheatreDetailsViewData,
     TheatreShowingListViewData
-} from "@domains/theatre/_feat/admin-view-data/service/service.types";
-import {Theatre, type TheatreWithVirtuals} from "@domains/theatre/model/theatre";
-import {Screen, type ScreenSchemaFields} from "@domains/screen/models/screen";
-import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud";
+} from "@/domains/theatre/_feat/admin-view-data/service/service.types";
+import {Theatre, type TheatreWithVirtuals} from "@/domains/theatre/model/theatre";
+import {Screen, type ScreenSchemaFields} from "@/domains/screen/models/screen";
+import {TheatreVirtualPopulationPaths} from "@/domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
-import {buildPaginationPipelines} from "@shared/_feat/pagination-pipelines";
+import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines";
 import type {PipelineStage} from "mongoose";
-import Showing from "@domains/showing/models/showing/Showing.model";
-import {ShowingPopulationPaths} from "@domains/showing/_feat/query-population";
-import type {PaginationReturns} from "@shared/types/PaginationReturns";
-import {ScreenVirtualPipelines} from "@domains/screen/_feat/query-population";
+import Showing from "@/domains/showing/models/showing/Showing.model";
+import {ShowingPopulationPaths} from "@/domains/showing/_feat/query-population";
+import type {PaginationReturns} from "@/shared/types/PaginationReturns";
+import {ScreenVirtualPipelines} from "@/domains/screen/_feat/query-population";
 
 /**
  * Aggregates data for the comprehensive Theatre Details dashboard.

@@ -8,7 +8,7 @@ import {type MovieLanguages, MovieLanguagesSchema} from "./MovieLanguagesSchema"
 import {
     type MovieSnapshotInputData,
     MovieSnapshotInputSchema
-} from "@domains/movie/_feat/validate-submit/MovieSnapshotInputSchema";
+} from "@/domains/movie/_feat/validate-submit/MovieSnapshotInputSchema";
 
 export {
     MovieInputBaseSchema,

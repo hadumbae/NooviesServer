@@ -2,7 +2,7 @@
  * @fileoverview Utility for generating unique identifiers for movie reviews.
  */
 
-import {generateNanoID} from "@shared/utility/generateNanoID";
+import {generateNanoID} from "@/shared/utility/generateNanoID";
 
 /** Generates a formatted, unique identifier for a movie review. */
 export function generateMovieReviewUniqueCode(): string {

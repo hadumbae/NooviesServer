@@ -2,9 +2,9 @@
  * @fileoverview Middleware factory that chains authentication and request query parsing middleware for generic CRUD operations.
  */
 
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {parseQueryMatchStage} from "@shared/_feat/middleware/parseQueryMatchStage";
-import {parseQuerySortStage} from "@shared/_feat/middleware/parseQuerySortStage";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {parseQueryMatchStage} from "@/shared/_feat/middleware/parseQueryMatchStage";
+import {parseQuerySortStage} from "@/shared/_feat/middleware/parseQuerySortStage";
 import type {ZodType, ZodTypeDef} from "zod";
 import type {RequestHandler} from "express";
 import type {PipelineStage} from "mongoose";

@@ -3,12 +3,12 @@
  * @filename crudFindBySlug.ts
  */
 
-import populateQuery from "@shared/utility/mongoose/populateQuery";
-import type {BaseModelWithSlug} from "@shared/types/schema/BaseModel";
+import populateQuery from "@/shared/utility/mongoose/populateQuery";
+import type {BaseModelWithSlug} from "@/shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
-import {fetchRequestOptions} from "@shared/_feat/fetch-request-options/utils";
-import type {FindDocumentBySlugConfig} from "@shared/_feat/generic-crud/path-handlers/find-by-slug/crudFindBySlug.types";
-import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
+import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
+import type {FindDocumentBySlugConfig} from "@/shared/_feat/generic-crud/path-handlers/find-by-slug/crudFindBySlug.types";
+import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Executes a database lookup for a document matching a specific slug string.

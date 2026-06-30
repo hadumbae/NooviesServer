@@ -14,11 +14,11 @@ import BaseCRUDController from "../../../shared/controller/base-crud-controller/
 import SeatMapQueryOptionService from "../service/query-option/SeatMapQueryOptionService.js";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type {SeatMapSchemaFields} from "../model/SeatMap.types.js";
-import type {QueryOptionTypes} from "@shared/types/query-options/QueryOptionService.types";
+import type {QueryOptionTypes} from "@/shared/types/query-options/QueryOptionService.types";
 import type {ISeatMapController, ISeatMapControllerConstructor} from "./SeatMapController.types.js";
-import type {SeatMapQueryMatchFilters} from "@domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
-import {toggleSeatMapAvailability} from "@domains/seatmap/_feat/manage-seat-maps";
-import {createShowingSeatMap} from "@domains/seatmap/_feat/manage-showing-seat-maps";
+import type {SeatMapQueryMatchFilters} from "@/domains/seatmap/_feat/validate-query/SeatMapQueryMatchFilterSchema";
+import {toggleSeatMapAvailability} from "@/domains/seatmap/_feat/manage-seat-maps";
+import {createShowingSeatMap} from "@/domains/seatmap/_feat/manage-showing-seat-maps";
 
 /**
  * SeatMap HTTP controller.

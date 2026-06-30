@@ -3,11 +3,11 @@
  */
 
 import {Router} from "express";
-import {validateRequestConfig} from "@shared/utility/schema/validators/validateRequestConfig";
-import {FetchTheatreInfoViewRouteConfigSchema} from "@domains/theatre/_feat/client-view-data/theatre-info/routeParams";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {getFetchTheatreInfoViewData} from "@domains/theatre/_feat/client-view-data/controller";
-import isAuth from "@domains/authentication/middleware/isAuth";
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
+import {FetchTheatreInfoViewRouteConfigSchema} from "@/domains/theatre/_feat/client-view-data/theatre-info/routeParams";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {getFetchTheatreInfoViewData} from "@/domains/theatre/_feat/client-view-data/controller";
+import isAuth from "@/domains/authentication/middleware/isAuth";
 
 const router = Router();
 

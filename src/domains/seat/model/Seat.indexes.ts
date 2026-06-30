@@ -2,7 +2,7 @@
  * @fileoverview Database indexing strategy for the Seat model.
  */
 
-import { SeatSchema } from "@domains/seat/model/Seat.schema";
+import { SeatSchema } from "@/domains/seat/model/Seat.schema";
 
 /**
  * Natural Key Index:

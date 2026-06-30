@@ -5,10 +5,10 @@
  */
 
 import {z} from "zod";
-import {ShowingQueryMatchFilterSchema} from "@domains/showing/_feat/validate-query/match-schemas/ShowingQueryMatchFilterSchema";
-import {ShowingQueryMatchSortSchema} from "@domains/showing/_feat/validate-query/match-schemas/ShowingQueryMatchSortSchema";
-import type {AggregateQueryOptions} from "@shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@shared/utility/filterNullishAttributes";
+import {ShowingQueryMatchFilterSchema} from "@/domains/showing/_feat/validate-query/match-schemas/ShowingQueryMatchFilterSchema";
+import {ShowingQueryMatchSortSchema} from "@/domains/showing/_feat/validate-query/match-schemas/ShowingQueryMatchSortSchema";
+import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
+import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema for Showing query options with an aggregation transformation.

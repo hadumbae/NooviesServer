@@ -2,8 +2,8 @@ import type {
     BuildCRUDRoutesParams,
     CRUDRoute,
     CRUDRouteMethods
-} from "@shared/_feat/generic-crud/routes/CRUDRoutesFactory.types";
-import {buildCRUDRoutes} from "@shared/_feat/generic-crud/routes/CRUDRoutesFactory";
+} from "@/shared/_feat/generic-crud/routes/CRUDRoutesFactory.types";
+import {buildCRUDRoutes} from "@/shared/_feat/generic-crud/routes/CRUDRoutesFactory";
 
 
 export {

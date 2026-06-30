@@ -4,8 +4,8 @@
  */
 
 import {z} from "zod";
-import {URLParamStringSchema} from "@shared/schema/url/URLParamStringSchema";
-import {ISO3166Alpha2CountryCodeSchema} from "@shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
+import {URLParamStringSchema} from "@/shared/schema/url/URLParamStringSchema";
+import {ISO3166Alpha2CountryCodeSchema} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
 
 /**
  * Zod schema defining reference filters for Showing queries.

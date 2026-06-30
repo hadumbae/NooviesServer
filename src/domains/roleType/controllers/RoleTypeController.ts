@@ -1,15 +1,15 @@
 import BaseCRUDController from "../../../shared/controller/base-crud-controller/BaseCRUDController.js";
-import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
+import type {RoleTypeSchemaFields} from "@/domains/roleType/model/RoleType.types";
 import type RoleTypeQueryOptionService from "../services/RoleTypeQueryOptionService.js";
 import type { Request } from "express";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams
-} from "@shared/controller/base-crud-controller/BaseControllerCRUDMethods";
-import type { QueryOptionTypes } from "@shared/types/query-options/QueryOptionService.types";
+} from "@/shared/controller/base-crud-controller/BaseControllerCRUDMethods";
+import type { QueryOptionTypes } from "@/shared/types/query-options/QueryOptionService.types";
 
 
-import type {RoleTypeQueryMatchFilters} from "@domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
+import type {RoleTypeQueryMatchFilters} from "@/domains/roleType/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
 
 /**
  * Constructor parameters for {@link RoleTypeController}.

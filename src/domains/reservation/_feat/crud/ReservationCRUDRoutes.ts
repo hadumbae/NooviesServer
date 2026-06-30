@@ -1,13 +1,13 @@
-import {Reservation, type ReservationSchemaFields} from "@domains/reservation/model/reservation";
-import {ReservationQueryMatchStageSchema, ReservationQuerySortStageSchema} from "@domains/reservation/_feat/validate-query-options";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {destroy, findById, findBySlug} from "@shared/_feat/generic-crud/path-handlers";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
+import {Reservation, type ReservationSchemaFields} from "@/domains/reservation/model/reservation";
+import {ReservationQueryMatchStageSchema, ReservationQuerySortStageSchema} from "@/domains/reservation/_feat/validate-query-options";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {destroy, findById, findBySlug} from "@/shared/_feat/generic-crud/path-handlers";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
 import type {Router} from "express";
-import {ReservationPopulatePaths} from "@domains/reservation/_feat/query-population";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
-import {aggregate} from "@shared/_feat/generic-aggregate";
+import {ReservationPopulatePaths} from "@/domains/reservation/_feat/query-population";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import {aggregate} from "@/shared/_feat/generic-aggregate";
 
 const modelName = Reservation.modelName;
 const matchSchema = ReservationQueryMatchStageSchema;

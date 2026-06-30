@@ -3,12 +3,12 @@ import {
     RoleTypeCastCategorySchema,
     type RoleTypeCrewCategory,
     RoleTypeCrewCategorySchema
-} from "@domains/roleType/validation/schema/RoleTypeCategorySchema";
+} from "@/domains/roleType/validation/schema/RoleTypeCategorySchema";
 import {
     type RoleTypeDepartment,
     RoleTypeDepartmentSchema
-} from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
-import {type RoleTypeInputData, RoleTypeInputSchema} from "@domains/roleType/validation/schema/RoleTypeInputSchema";
+} from "@/domains/roleType/validation/schema/RoleTypeDepartmentSchema";
+import {type RoleTypeInputData, RoleTypeInputSchema} from "@/domains/roleType/validation/schema/RoleTypeInputSchema";
 
 export {
     RoleTypeDepartmentSchema,

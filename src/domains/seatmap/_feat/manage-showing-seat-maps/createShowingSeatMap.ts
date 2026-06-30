@@ -2,12 +2,12 @@
  * @fileoverview Logic for generating and persisting the initial seat map for a specific showing.
  */
 
-import Showing from "@domains/showing/models/showing/Showing.model";
+import Showing from "@/domains/showing/models/showing/Showing.model";
 import createHttpError from "http-errors";
-import {Seat} from "@domains/seat/model";
+import {Seat} from "@/domains/seat/model";
 import {type AnyBulkWriteOperation, Types} from "mongoose";
-import type {SeatMapInputData} from "@domains/seatmap/model/SeatMap.types";
-import SeatMap from "@domains/seatmap/model/SeatMap.model";
+import type {SeatMapInputData} from "@/domains/seatmap/model/SeatMap.types";
+import SeatMap from "@/domains/seatmap/model/SeatMap.model";
 
 /** Configuration object containing the unique identifier for a showing. */
 type ShowingConfig = {

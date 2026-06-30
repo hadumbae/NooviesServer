@@ -1,7 +1,7 @@
 import {
     type MovieReviewUniqueCode,
     MovieReviewUniqueCodeSchema
-} from "@domains/movieReview/validation/review-code/MovieReviewUniqueCodeSchema";
+} from "@/domains/movieReview/validation/review-code/MovieReviewUniqueCodeSchema";
 
 export {
     MovieReviewUniqueCodeSchema,

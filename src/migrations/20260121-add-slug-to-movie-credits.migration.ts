@@ -15,10 +15,10 @@
 import 'dotenv/config';
 
 import mongoose from "mongoose";
-import connect from "@config/database.js";
+import connect from "@/shared/config/database.js";
 import generateSlug from "../shared/utility/generateSlug.js";
 import MovieCredit from "../domains/movieCredit/models/MovieCredit.model.js";
-import {Person} from "@domains/person/model";
+import {Person} from "@/domains/person/model";
 
 /**
  * Connect to the database and update missing person slugs.

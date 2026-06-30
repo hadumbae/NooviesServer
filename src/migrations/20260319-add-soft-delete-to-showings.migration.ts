@@ -11,7 +11,7 @@
  */
 
 import "dotenv/config";
-import connect from "@config/database.js";
+import connect from "@/shared/config/database.js";
 import mongoose from "mongoose";
 import Showing from "../domains/showing/models/showing/Showing.model.js";
 

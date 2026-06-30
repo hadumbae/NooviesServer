@@ -4,9 +4,9 @@
  */
 
 import {z} from "zod";
-import {ObjectIdSchema} from "@shared/schema/mongoose/ObjectIdSchema";
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
-import {ScreenTypeSchema} from "@domains/screen/validation";
+import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
+import {ScreenTypeSchema} from "@/domains/screen/validation";
 
 /**
  * Zod schema for validating the payload used to create a Screen snapshot.

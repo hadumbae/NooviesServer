@@ -5,14 +5,14 @@
 
 import {z} from "zod";
 import {DateTime} from "luxon";
-import {ObjectIdStringSchema} from "@shared/schema/mongoose/ObjectIdStringSchema";
-import {NonEmptyStringSchema} from "@shared/schema/strings/NonEmptyStringSchema";
-import {PositiveNumberSchema} from "@shared/schema/numbers/PositiveNumberSchema";
+import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
+import {PositiveNumberSchema} from "@/shared/schema/numbers/PositiveNumberSchema";
 import {ShowingStatusEnumSchema} from "./ShowingStatusEnumSchema.js";
-import {SimpleDateStringSchema} from "@shared/schema/date-time/SimpleDateStringSchema";
-import {TimeStringSchema} from "@shared/schema/date-time/TimeStringSchema";
+import {SimpleDateStringSchema} from "@/shared/schema/date-time/SimpleDateStringSchema";
+import {TimeStringSchema} from "@/shared/schema/date-time/TimeStringSchema";
 import {ShowingConfigInputSchema} from "./showing/showing-config/ShowingConfigInputSchema.js";
-import {IANATimezoneSchema} from "@shared/schema/date-time/IANATimezoneSchema";
+import {IANATimezoneSchema} from "@/shared/schema/date-time/IANATimezoneSchema";
 
 /**
  * Input schema for showing creation and updates.

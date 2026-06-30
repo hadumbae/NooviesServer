@@ -6,9 +6,9 @@
 import type {
     FetchPersonDetailsViewData,
     FetchPersonDetailsViewDataConfig
-} from "@domains/person/_feat/admin-view-data/service.types";
-import {Person} from "@domains/person/model";
-import {fetchPersonCreditStats, fetchPersonFilmography} from "@domains/movieCredit/_feat/person-credits";
+} from "@/domains/person/_feat/admin-view-data/service.types";
+import {Person} from "@/domains/person/model";
+import {fetchPersonCreditStats, fetchPersonFilmography} from "@/domains/movieCredit/_feat/person-credits";
 
 /**
  * Orchestrates parallel data fetching for a comprehensive Person profile.

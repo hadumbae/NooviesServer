@@ -4,12 +4,12 @@
  */
 
 import {Types} from "mongoose";
-import type {RequestOptions} from "@shared/types/request-options/RequestOptions.js";
-import type {MovieReviewSchemaFields} from "@domains/movieReview/model/model/MovieReview.types";
+import type {RequestOptions} from "@/shared/types/request-options/RequestOptions.js";
+import type {MovieReviewSchemaFields} from "@/domains/movieReview/model/model/MovieReview.types";
 import type {
     MovieReviewCreateInputData,
     MovieReviewUpdateInputData
-} from "@domains/movieReview/_feat/validate-submit/schemas";
+} from "@/domains/movieReview/_feat/validate-submit/schemas";
 
 /**
  * Input for fetching paginated user-owned MovieReviews.

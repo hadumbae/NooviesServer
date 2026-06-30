@@ -5,11 +5,11 @@
 
 import type {
     RequestPaginationOptions
-} from "@shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
-import type {SlugString} from "@shared/schema/strings/SlugStringSchema";
-import type {GenreSchemaFields} from "@domains/genre/models/genre";
-import type {PaginationReturns} from "@shared/types/PaginationReturns";
-import type {MovieWithGenres} from "@domains/movie/model/movie/Movie.types";
+} from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
+import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
+import type {GenreSchemaFields} from "@/domains/genre/models/genre";
+import type {PaginationReturns} from "@/shared/types/PaginationReturns";
+import type {MovieWithGenres} from "@/domains/movie/model/movie/Movie.types";
 
 /**
  * Configuration object for the `fetchGenreWithMovies` service function.

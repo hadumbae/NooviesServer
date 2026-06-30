@@ -3,15 +3,15 @@
  * Performs parallel or sequential lookups to build a unified context of Theatre, Screen, and Seats.
  */
 
-import {Theatre, type TheatreWithVirtuals} from "@domains/theatre/model/theatre";
-import {TheatreVirtualPopulationPaths} from "@domains/theatre/_feat/crud";
+import {Theatre, type TheatreWithVirtuals} from "@/domains/theatre/model/theatre";
+import {TheatreVirtualPopulationPaths} from "@/domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
-import {Screen} from "@domains/screen/models/screen";
-import {Seat} from "@domains/seat/model";
+import {Screen} from "@/domains/screen/models/screen";
+import {Seat} from "@/domains/seat/model";
 import type {
     FetchTheatreScreenDetailsViewDataConfig,
     TheatreScreenDetailsViewData
-} from "@domains/screen/_feat/view-data-admin";
+} from "@/domains/screen/_feat/view-data-admin";
 import {ScreenVirtualPipelines} from "../../query-population";
 
 /**

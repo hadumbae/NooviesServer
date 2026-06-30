@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {SlugStringSchema} from "@shared/schema/strings/SlugStringSchema";
+import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 
 /**
  * Validation schema for ensuring both theatre and screen identifiers are present and valid slugs.

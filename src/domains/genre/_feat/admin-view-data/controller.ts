@@ -7,7 +7,7 @@ import type {Request, Response} from "express";
 import {fetchGenreDetails} from "./services/service";
 import type {
     GenreDetailsViewRouteConfig
-} from "@domains/genre/_feat/admin-view-data/schemas/GenreDetailsViewRouteConfigSchema";
+} from "@/domains/genre/_feat/admin-view-data/schemas/GenreDetailsViewRouteConfigSchema";
 
 /**
  * Retrieves a detailed view of a Genre, including paginated movie results.

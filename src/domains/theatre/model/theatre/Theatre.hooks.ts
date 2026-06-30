@@ -6,11 +6,11 @@
 
 import {TheatreSchema} from "./Theatre.schema";
 import type {HydratedDocument, Query} from "mongoose";
-import {Screen} from "@domains/screen/models/screen";
+import {Screen} from "@/domains/screen/models/screen";
 import Showing from "../../../showing/models/showing/Showing.model";
 import type {TheatreSchemaFields} from "./Theatre.types";
-import generateSlug from "@shared/utility/generateSlug";
-import {Seat} from "@domains/seat/model";
+import generateSlug from "@/shared/utility/generateSlug";
+import {Seat} from "@/domains/seat/model";
 
 /**
  * Pre-validation Hook: Slug Synchronization

@@ -3,12 +3,12 @@
  * @filename crudDestroy.ts
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
 import type {Request, Response} from "express";
 import createHttpError from "http-errors";
-import isValidObjectId from "@shared/utility/mongoose/isValidObjectId";
-import type {DeleteDocumentConfig} from "@shared/_feat/generic-crud/path-handlers/delete/crudDestroy.types";
-import type {CRUDControllerHandlerConfig} from "@shared/_feat/generic-crud/types/CRUDControllerHandler";
+import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
+import type {DeleteDocumentConfig} from "@/shared/_feat/generic-crud/path-handlers/delete/crudDestroy.types";
+import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
 
 /**
  * Deletes a document by its ID after verifying its existence.

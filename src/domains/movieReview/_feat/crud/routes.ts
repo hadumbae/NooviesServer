@@ -3,15 +3,15 @@
  */
 
 import type {Router} from "express";
-import {buildCRUDRoutes, type CRUDRoute} from "@shared/_feat/generic-crud/routes";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@shared/_feat/middleware";
-import {destroy, find, findById, findBySlug, paginated} from "@shared/_feat/generic-crud/path-handlers";
-import {MovieReview, type MovieReviewSchemaFields} from "@domains/movieReview/model";
+import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {destroy, find, findById, findBySlug, paginated} from "@/shared/_feat/generic-crud/path-handlers";
+import {MovieReview, type MovieReviewSchemaFields} from "@/domains/movieReview/model";
 import {
     MovieReviewQueryMatchStageSchema,
     MovieReviewQuerySortStageSchema
-} from "@domains/movieReview/_feat/validate-query-options";
+} from "@/domains/movieReview/_feat/validate-query-options";
 
 const modelName = MovieReview.modelName;
 const matchSchema = MovieReviewQueryMatchStageSchema;

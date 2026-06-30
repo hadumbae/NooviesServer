@@ -4,8 +4,8 @@
  */
 
 import type {ZodIssue} from "zod";
-import {ZodDuplicateIndexError} from "@shared/errors/zod/ZodDuplicateIndexError";
-import {Genre} from "@domains/genre/models/genre/Genre.model";
+import {ZodDuplicateIndexError} from "@/shared/errors/zod/ZodDuplicateIndexError";
+import {Genre} from "@/domains/genre/models/genre/Genre.model";
 
 /**
  * Handles unique constraint violations for Genres.

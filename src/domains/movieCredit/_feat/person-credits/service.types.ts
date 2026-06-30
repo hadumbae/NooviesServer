@@ -3,9 +3,9 @@
  */
 
 import {Types} from "mongoose";
-import type {IMovieCredit} from "@domains/movieCredit/models/MovieCredit.interface";
-import type {RoleTypeDepartment} from "@domains/roleType/validation/schema/RoleTypeDepartmentSchema";
-import type {RoleTypeSchemaFields} from "@domains/roleType/model/RoleType.types";
+import type {IMovieCredit} from "@/domains/movieCredit/models/MovieCredit.interface";
+import type {RoleTypeDepartment} from "@/domains/roleType/validation/schema/RoleTypeDepartmentSchema";
+import type {RoleTypeSchemaFields} from "@/domains/roleType/model/RoleType.types";
 
 /**
  * Configuration for fetching statistical credit data.

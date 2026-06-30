@@ -2,8 +2,8 @@
  * @fileoverview Type definitions for the generic "Paginated" CRUD operation.
  */
 
-import type {BaseModel} from "@shared/types/schema/BaseModel";
-import type {BaseCRUDParams} from "@shared/_feat/generic-crud/types";
+import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseCRUDParams} from "@/shared/_feat/generic-crud/types";
 import type {Expression, FilterQuery} from "mongoose";
 
 /** Specific configuration for the document counting operation. */

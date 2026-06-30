@@ -3,13 +3,13 @@
  */
 
 import {Router} from "express";
-import isAuth from "@domains/authentication/middleware/isAuth";
-import asyncHandler from "@shared/utility/handlers/asyncHandler";
+import isAuth from "@/domains/authentication/middleware/isAuth";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 
 import {
     patchCancelClientReservation,
     patchCheckoutClientReservation,
-} from "@domains/reservation/_feat/update-client-reservations/controllers";
+} from "@/domains/reservation/_feat/update-client-reservations/controllers";
 
 const router = Router();
 

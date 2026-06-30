@@ -4,8 +4,8 @@
  */
 
 import {Model, model} from "mongoose";
-import type {UserSchemaFields} from "@domains/users/model/user/User.types.js";
-import {UserSchema} from "@domains/users/model/user/User.schema.js";
+import type {UserSchemaFields} from "@/domains/users/model/user/User.types.js";
+import {UserSchema} from "@/domains/users/model/user/User.schema.js";
 import "src/domains/users/model/user/User.hooks";
 
 /**

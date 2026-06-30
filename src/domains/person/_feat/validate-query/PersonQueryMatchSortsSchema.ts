@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {MongooseNumericSortSchema} from "@shared/schema/url/URLParamMongooseSortOrderSchema";
+import {MongooseNumericSortSchema} from "@/shared/schema/url/URLParamMongooseSortOrderSchema";
 
 /**
  * Validates available sort fields for Person results.
