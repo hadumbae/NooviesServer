@@ -12,7 +12,7 @@ import {ShowingVirtualPopulationPaths} from "@/domains/showing/_feat/query-popul
 import {createShowingSeatMap} from "@/domains/seatmap/_feat/manage-showing-seat-maps";
 import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/queries/ShowingSeatMapVirtualPipelines";
 import SeatMap from "@/domains/seatmap/model/SeatMap.model";
-import {Movie} from "@/domains/movie/model/movie";
+import {Movie} from "@/domains/movies/_models/movie";
 import generateSlug from "@/shared/utility/generateSlug";
 
 ShowingSchema.pre("validate", {document: true}, async function () {

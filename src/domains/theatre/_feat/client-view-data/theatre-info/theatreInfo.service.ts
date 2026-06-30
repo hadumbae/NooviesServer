@@ -6,9 +6,9 @@ import type {FetchTheatreInfoViewDataConfig, TheatreInfoViewData} from "@/domain
 import {Theatre} from "@/domains/theatre/model/theatre";
 import createHttpError from "http-errors";
 import {buildShowingLookupStage} from "@/domains/showing/_feat/aggregation";
-import {buildMovieLookupStage} from "@/domains/movie/_feat/aggregation";
+import {buildMovieLookupStage} from "@/domains/movies/_feat/aggregation";
 import {Screen} from "@/domains/screen/models/screen";
-import {MoviePopulationPipelines} from "@/domains/movie/_feat/query-population";
+import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population";
 
 /**
  * Fetches theatre details and associated screens with showings for client browsing.

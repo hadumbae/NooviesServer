@@ -5,7 +5,7 @@
 import type {ReservationType} from "@/domains/reservation/validation/enums";
 import type {ISO6391LanguageCode} from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
 import type {ReservedSeatSnapshotSchemaFields} from "@/domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.types";
-import type {MovieSnapshotSchemaFields} from "@/domains/movie/model/movie-snapshot/MovieSnapshot.types";
+import type {MovieSnapshotSchemaFields} from "@/domains/movies/_models/movie-snapshot/MovieSnapshot.types";
 import type {ScreenSnapshotSchemaFields} from "@/domains/screen/models/screen-snapshot";
 import type {TheatreSnapshotSchemaFields} from "@/domains/theatre/model/theatre-snapshot";
 

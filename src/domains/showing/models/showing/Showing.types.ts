@@ -12,7 +12,7 @@ import type {TheatreSchemaFields}
 import type {ISO6391LanguageCode}
     from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
 import type {MovieWithGenres}
-    from "@/domains/movie/model/movie/Movie.types";
+    from "@/domains/movies/_models/movie/Movie.types";
 import type {ShowingConfigSchemaFields}
     from "../showing-config/ShowingConfig.types.js";
 import type {LocationSchemaFields} from "@/shared/model/location/LocationSchemaFields";

@@ -6,12 +6,12 @@
 
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
-import {GenreCRUDRoutes} from "@/domains/genre/_feat/crud";
-import {PersonCRUDRoutes} from "@/domains/person/_feat/crud";
+import {GenreCRUDRoutes} from "@/domains/genres/_feat/crud";
+import {PersonCRUDRoutes} from "@/domains/persons/_feat/crud";
 import {ScreenCRUDRoutes} from "@/domains/screen/_feat/crud";
 import {SeatCRUDRoutes} from "@/domains/seat/_feat/crud";
 import {TheatreCRUDRoutes} from "@/domains/theatre/_feat/crud";
-import {MovieCRUDRoutes} from "@/domains/movie/_feat/crud/MovieCRUDRoutes";
+import {MovieCRUDRoutes} from "@/domains/movies/_feat/crud/MovieCRUDRoutes";
 import {RoleTypeCRUDRoutes} from "@/domains/roleType/_feat/crud";
 import {MovieCreditCRUDRoutes} from "@/domains/movieCredit/_feat/crud";
 import {ShowingCRUDRoutes} from "@/domains/showing/_feat/crud";

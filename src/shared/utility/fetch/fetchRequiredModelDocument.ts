@@ -22,7 +22,7 @@ export async function fetchRequiredModelDocument<TSchema extends ModelObject>(
     const filter = _id ? {_id} : {slug};
     const query = model.findOne(filter);
 
-    const doc = await populateQuery({query, options});
+    const doc = await populateQuery({query, config: options});
 
     if (!doc) {
         throw createHttpError(404, notFoundMessage ?? "Not Found.")

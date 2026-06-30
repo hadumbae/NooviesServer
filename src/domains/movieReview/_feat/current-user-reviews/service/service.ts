@@ -82,7 +82,7 @@ export async function createMovieReviewForCurrentUser(
 
     const query = populateQuery({
         query: MovieReview.findById(doc._id),
-        options: {...options, populatePaths: MovieReviewPopulatePaths},
+        config: {...options, populatePaths: MovieReviewPopulatePaths},
     });
 
     return query.orFail();
@@ -117,7 +117,7 @@ export async function updateMovieReviewForCurrentUser(
 
     const updatedQuery = populateQuery({
         query: MovieReview.findById(reviewID),
-        options: {...options, populatePaths: MovieReviewPopulatePaths}
+        config: {...options, populatePaths: MovieReviewPopulatePaths}
     });
 
     return updatedQuery.orFail();

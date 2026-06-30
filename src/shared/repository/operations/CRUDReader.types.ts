@@ -1,6 +1,6 @@
 import type {ModelObject} from "../../types/ModelObject.js";
 import {type FilterQuery, type SortOrder, Types} from "mongoose";
-import type {RequestOptions} from "../../types/request-options/RequestOptions.js";
+import type {QueryConfig} from "@/shared/_types/query-config/QueryConfig";
 
 /**
  * @file CRUDReader.types.ts
@@ -27,7 +27,7 @@ export type CRUDFindParams<TSchema = ModelObject> = {
     /** Query filters */
     filters?: FilterQuery<TSchema>;
     /** Request-level options */
-    options?: RequestOptions;
+    options?: QueryConfig;
 };
 
 /**
@@ -37,7 +37,7 @@ export type CRUDFindByIDParams = {
     /** Target document ObjectId */
     _id: Types.ObjectId;
     /** Request-level options */
-    options?: RequestOptions;
+    options?: QueryConfig;
 };
 
 /**
@@ -47,7 +47,7 @@ export type CRUDFindBySlugParams = {
     /** Unique slug identifier */
     slug: string;
     /** Request-level options */
-    options?: RequestOptions;
+    options?: QueryConfig;
 };
 
 /**
@@ -65,7 +65,7 @@ export type CRUDPaginationParams<TSchema = ModelObject> = {
     /** Query filters */
     filters?: FilterQuery<TSchema>;
     /** Request-level options */
-    options?: RequestOptions;
+    options?: QueryConfig;
 };
 
 /**

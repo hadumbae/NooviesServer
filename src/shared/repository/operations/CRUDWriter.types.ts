@@ -5,14 +5,14 @@
 
 import type {ModelObject} from "../../types/ModelObject.js";
 import {Types} from "mongoose";
-import type {RequestOptions} from "../../types/request-options/RequestOptions.js";
+import type {QueryConfig} from "@/shared/_types/query-config/QueryConfig";
 
 /**
  * Parameters for create operations.
  */
 export type CRUDCreateParams<TInput = unknown> = {
     data: Partial<TInput>;
-    options?: RequestOptions;
+    options?: QueryConfig;
 };
 
 /**
@@ -22,7 +22,7 @@ export type CRUDUpdateActionParams<TSchema = ModelObject, TInput = unknown> = {
     _id: Types.ObjectId;
     data: Partial<TInput>;
     unset?: Partial<TSchema>;
-    options?: RequestOptions;
+    options?: QueryConfig;
 };
 
 /**

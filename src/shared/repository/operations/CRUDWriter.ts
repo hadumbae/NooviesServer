@@ -35,7 +35,7 @@ export class CRUDWriter<TSchema extends ModelObject, TInput = unknown>
 
         const query = populateQuery({
             query: this.model.findById(doc._id),
-            options: { populate, virtuals, populatePaths },
+            config: { populate, virtuals, populatePaths },
         });
 
         return query.orFail();
@@ -68,7 +68,7 @@ export class CRUDWriter<TSchema extends ModelObject, TInput = unknown>
 
         const query = populateQuery({
             query: this.model.findById(_id),
-            options: { populate, virtuals, populatePaths },
+            config: { populate, virtuals, populatePaths },
         });
 
         return query.orFail();

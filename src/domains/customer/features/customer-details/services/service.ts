@@ -18,7 +18,7 @@ import {
     fetchRequiredCustomerByCode
 } from "@/domains/customer/features/customer-details/utils/fetchRequiredCustomerByCode"
 import {MovieWithRatingPipelines} from "@/domains/movieReview/_feat/query-population/MovieWithRatingPipelines"
-import {MoviePopulationPipelines} from "@/domains/movie/_feat/query-population"
+import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population"
 import type {PaginationReturns} from "@/shared/types/PaginationReturns"
 import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines"
 import type {PipelineStage} from "mongoose"

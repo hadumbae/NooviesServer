@@ -4,7 +4,7 @@
  */
 
 import {Types} from "mongoose";
-import type {RequestOptions} from "@/shared/types/request-options/RequestOptions.js";
+import type {QueryConfig} from "@/shared/_types/query-config/QueryConfig";
 import type {MovieReviewSchemaFields} from "@/domains/movieReview/model/model/MovieReview.types";
 import type {
     MovieReviewCreateInputData,
@@ -18,7 +18,7 @@ export type FetchPaginatedUserReviewsConfig = {
     userID: Types.ObjectId;
     page: number;
     perPage: number;
-    options?: Pick<RequestOptions, "virtuals" | "populate">
+    options?: Pick<QueryConfig, "virtuals" | "populate">
 }
 
 /**
@@ -27,7 +27,7 @@ export type FetchPaginatedUserReviewsConfig = {
 export type CreateUserMovieReviewConfig = {
     userID: Types.ObjectId;
     data: MovieReviewCreateInputData;
-    options?: Pick<RequestOptions, "populate" | "virtuals">;
+    options?: Pick<QueryConfig, "populate" | "virtuals">;
 }
 
 /**
@@ -38,7 +38,7 @@ export type UpdateUserMovieReviewConfig = {
     userID: Types.ObjectId;
     data: MovieReviewUpdateInputData;
     unset?: Partial<MovieReviewSchemaFields>;
-    options?: Pick<RequestOptions, "populate" | "virtuals">;
+    options?: Pick<QueryConfig, "populate" | "virtuals">;
 }
 
 /**

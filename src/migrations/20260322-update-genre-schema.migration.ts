@@ -6,8 +6,8 @@
 import "dotenv/config";
 import connect from "@/shared/config/database.js";
 import mongoose from "mongoose";
-import {Movie} from "@/domains/movie/model/movie/Movie.model";
-import {Genre} from "@/domains/genre/models/genre";
+import {Movie} from "@/domains/movies/_models/movie/Movie.model";
+import {Genre} from "@/domains/genres/_models/genre";
 
 /**
  * Executes the synchronization process.

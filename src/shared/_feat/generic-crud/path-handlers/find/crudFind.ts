@@ -15,7 +15,7 @@ export const findDocuments = async <TModel extends BaseModel>(
 ): Promise<TModel[]> => {
     return populateQuery({
         query: model.find(filters ?? {}).sort(sorts ?? {}),
-        options: {...options, populatePaths},
+        config: {...options, populatePaths},
     });
 };
 

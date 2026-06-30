@@ -22,7 +22,7 @@ export const findDocumentByUniqueCode = async <TModel extends BaseModelWithUniqu
 ): Promise<TModel> => {
     const query = populateQuery({
         query: model.findOne({uniqueCode}),
-        options: {...options, populatePaths},
+        config: {...options, populatePaths},
     });
 
     return query.orFail();

@@ -12,8 +12,8 @@ import type {
 import {User} from "@/domains/users/model/user/User.model";
 import createHttpError from "http-errors";
 import type {UserSchemaFields} from "@/domains/users/model/user/User.types";
-import {Movie} from "@/domains/movie/model/movie/Movie.model";
-import {fetchRequiredMovie} from "@/domains/movie/_feat/fetch-movies";
+import {Movie} from "@/domains/movies/_models/movie/Movie.model";
+import {fetchRequiredMovie} from "@/domains/movies/_feat/fetch-movies";
 
 
 /** Returns paginated favourites for a user. */

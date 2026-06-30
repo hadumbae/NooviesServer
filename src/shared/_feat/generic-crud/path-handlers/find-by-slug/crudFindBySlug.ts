@@ -20,7 +20,7 @@ export const findDocumentBySlug = async <TModel extends BaseModelWithSlug>(
 ): Promise<TModel> => {
     const query = populateQuery({
         query: model.findOne({slug}),
-        options: {...options, populatePaths},
+        config: {...options, populatePaths},
     });
 
     return query.orFail();

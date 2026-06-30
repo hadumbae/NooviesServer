@@ -31,7 +31,7 @@ export const getPaginatedDocuments = async <TModel extends BaseModel>(
 
     return populateQuery({
         query,
-        options: {...options, populatePaths},
+        config: {...options, populatePaths},
     });
 };
 

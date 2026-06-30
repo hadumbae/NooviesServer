@@ -12,7 +12,7 @@ import {ReservationTypeSchema} from "@/domains/reservation/validation/enums";
 import {ReservedSeatSnapshotInputSchema} from "@/domains/seatmap/schema/ReservedSeatSnapshotInputSchema";
 import {ScreenSnapshotInputSchema} from "@/domains/screen/_feat/validate-submit";
 import {TheatreSnapshotInputSchema} from "@/domains/theatre/validation";
-import {MovieSnapshotInputSchema} from "@/domains/movie/_feat/validate-submit";
+import {MovieSnapshotInputSchema} from "@/domains/movies/_feat/validate-submit";
 
 /** Zod validation schema for reserved showing snapshot input data. */
 export const ReservedShowingSnapshotInputSchema = z.object({

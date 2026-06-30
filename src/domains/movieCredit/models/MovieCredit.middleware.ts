@@ -9,7 +9,7 @@ import {MovieCreditSchema} from "./MovieCredit.schema.js";
 import type {HydratedDocument} from "mongoose";
 import type {IMovieCredit} from "./MovieCredit.interface.js";
 import generateSlug from "../../../shared/utility/generateSlug.js";
-import type {PersonSchemaFields} from "@/domains/person/model";
+import type {PersonSchemaFields} from "@/domains/persons/_models/person";
 
 /**
  * Pre-validation middleware.

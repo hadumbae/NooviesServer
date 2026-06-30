@@ -21,7 +21,7 @@ export const findDocumentById = async <TModel extends BaseModel>(
 ): Promise<TModel> => {
     const query = populateQuery({
         query: model.findById(_id),
-        options: {...options, populatePaths},
+        config: {...options, populatePaths},
     });
 
     return query.orFail();

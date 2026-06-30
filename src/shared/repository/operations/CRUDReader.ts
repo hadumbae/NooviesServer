@@ -51,7 +51,7 @@ export class CRUDReader<TSchema extends ModelObject>
 
         const query = populateQuery({
             query: this.model.find(filters ?? {}),
-            options: {populate, virtuals, populatePaths},
+            config: {populate, virtuals, populatePaths},
         });
 
         if (typeof limit === "number") {
@@ -77,7 +77,7 @@ export class CRUDReader<TSchema extends ModelObject>
         try {
             const query = populateQuery({
                 query: this.model.findById(_id),
-                options: {populate, virtuals, populatePaths},
+                config: {populate, virtuals, populatePaths},
             });
 
             return query.orFail();
@@ -102,7 +102,7 @@ export class CRUDReader<TSchema extends ModelObject>
         try {
             const query = populateQuery({
                 query: this.model.findOne({slug}),
-                options: {populate, virtuals, populatePaths},
+                config: {populate, virtuals, populatePaths},
             });
 
             return query.orFail();
@@ -134,7 +134,7 @@ export class CRUDReader<TSchema extends ModelObject>
 
         return populateQuery({
             query,
-            options: {populate, virtuals, populatePaths},
+            config: {populate, virtuals, populatePaths},
         });
     }
 }
