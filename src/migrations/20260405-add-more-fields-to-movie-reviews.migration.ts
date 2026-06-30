@@ -6,9 +6,9 @@
 import "dotenv/config";
 import connect from "@/shared/config/database.js";
 import mongoose from "mongoose";
-import {MovieReview} from "@/domains/movieReview/model/model/MovieReview.model";
+import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model";
 import generateSlug from "@/shared/utility/generateSlug";
-import {generateMovieReviewUniqueCode} from "@/domains/movieReview/_feat/handle-query/generateMovieReviewUniqueCode";
+import {generateMovieReviewUniqueCode} from "@/domains/movie-reviews/_feat/handle-query/generateMovieReviewUniqueCode";
 
 /**
  * Migration: Updates all existing MovieReview documents to include 'slug' and 'uniqueCode'.

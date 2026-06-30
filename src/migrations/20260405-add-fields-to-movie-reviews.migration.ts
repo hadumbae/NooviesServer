@@ -6,7 +6,7 @@
 import "dotenv/config";
 import connect from "@/shared/config/database.js";
 import mongoose from "mongoose";
-import {MovieReview} from "@/domains/movieReview/model/model/MovieReview.model";
+import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model";
 
 /**
  * Migration: Updates all existing MovieReview documents to include 'isPublic' and 'moderationLogs'.

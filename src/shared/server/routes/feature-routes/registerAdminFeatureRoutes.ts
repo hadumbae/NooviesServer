@@ -11,7 +11,7 @@ import {UIInputDataRoutes} from "@/domains/ui-inputs";
 import {GenreImageManagementRoutes} from "@/domains/genres/_feat/manage-image";
 import {MovieImageManagementRoutes} from "@/domains/movies/_feat/manage-image/routes/routes";
 import {ReservationUpdateRoutes} from "@/domains/reservations/_feat/update-reservations";
-import {CustomerMovieReviewActions} from "@/domains/movieReview/_feat/customer-review-actions";
+import {CustomerMovieReviewActions} from "@/domains/movie-reviews/_feat/customer-review-actions";
 
 /**
  * Foundation feature routes.

@@ -1,0 +1,50 @@
+/**
+ * @file Parameter contracts for current-user MovieReview services.
+ * MyMovieReviewService.types.ts
+ */
+
+import {Types} from "mongoose";
+import type {QueryConfig} from "@/shared/_types/query-config/QueryConfig";
+import type {MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/review/MovieReview.types";
+import type {
+    MovieReviewCreateInputData,
+    MovieReviewUpdateInputData
+} from "@/domains/movie-reviews/_feat/validate-submit/schemas";
+
+/**
+ * Input for fetching paginated user-owned MovieReviews.
+ */
+export type FetchPaginatedUserReviewsConfig = {
+    userID: Types.ObjectId;
+    page: number;
+    perPage: number;
+    options?: Pick<QueryConfig, "virtuals" | "populate">
+}
+
+/**
+ * Input for creating a user-owned MovieReview.
+ */
+export type CreateUserMovieReviewConfig = {
+    userID: Types.ObjectId;
+    data: MovieReviewCreateInputData;
+    options?: Pick<QueryConfig, "populate" | "virtuals">;
+}
+
+/**
+ * Input for updating a user-owned MovieReview.
+ */
+export type UpdateUserMovieReviewConfig = {
+    reviewID: Types.ObjectId;
+    userID: Types.ObjectId;
+    data: MovieReviewUpdateInputData;
+    unset?: Partial<MovieReviewSchemaFields>;
+    options?: Pick<QueryConfig, "populate" | "virtuals">;
+}
+
+/**
+ * Input for deleting a user-owned MovieReview.
+ */
+export type DeleteUserMovieReviewConfig = {
+    reviewID: Types.ObjectId;
+    userID: Types.ObjectId;
+}

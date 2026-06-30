@@ -11,19 +11,19 @@ import type {
     FetchCustomerReviewsViewDataConfig,
     FetchCustomerReviewViewDataConfig
 } from "@/domains/customer/features/customer-details/services/service.types"
-import {MovieReview} from "@/domains/movieReview/model/model/MovieReview.model"
-import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@/domains/movieReview/model/model/MovieReview.types"
+import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model"
+import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/review/MovieReview.types"
 import createHttpError from "http-errors"
 import {
     fetchRequiredCustomerByCode
 } from "@/domains/customer/features/customer-details/utils/fetchRequiredCustomerByCode"
-import {MovieWithRatingPipelines} from "@/domains/movieReview/_feat/query-population/MovieWithRatingPipelines"
+import {MovieWithRatingPipelines} from "@/domains/movie-reviews/_feat/query-population/MovieWithRatingPipelines"
 import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population"
 import type {PaginationReturns} from "@/shared/types/PaginationReturns"
 import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines"
 import type {PipelineStage} from "mongoose"
 import {Reservation} from "@/domains/reservations/_model/reservation";
-import {MovieReviewModerationLog, type MovieReviewModerationLogSchemaFields} from "@/domains/movieReview/model";
+import {MovieReviewModerationLog, type MovieReviewModerationLogSchemaFields} from "@/domains/movie-reviews/_models";
 
 /**
  * Aggregates a customer's profile details, recent reservations, and movie

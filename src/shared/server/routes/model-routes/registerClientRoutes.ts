@@ -12,7 +12,7 @@ import {TheatreSearchRoutes} from "@/domains/theatre/_feat/search-theatres";
 import {ReviewsByMovieRoutes} from "@/domains/movies/_feat/fetch-reviews-by-movie";
 import {ReserveTicketsRoutes} from "@/domains/reservations/_feat/reserve-tickets";
 import {UpdateClientReservationRoutes} from "@/domains/reservations/_feat/update-client-reservations";
-import {MyMovieReviewsRoutes} from "@/domains/movieReview/_feat/current-user-reviews";
+import {MyMovieReviewsRoutes} from "@/domains/movie-reviews/_feat/current-user-reviews";
 
 /**
  * Mounts all primary routes intended for end-user consumption.
