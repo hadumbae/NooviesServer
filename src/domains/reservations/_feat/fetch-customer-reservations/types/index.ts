@@ -1,5 +1,5 @@
-import type {AdminReservation} from "src/domains/reservations/_feat/fetch-customer-reservations/types/AdminReservation";
-import type {AdminReservationUser} from "src/domains/reservations/_feat/fetch-customer-reservations/types/AdminReservationUser";
+import type {AdminReservation} from "@/domains/reservations/_feat/fetch-customer-reservations/types/AdminReservation";
+import type {AdminReservationUser} from "@/domains/reservations/_feat/fetch-customer-reservations/types/AdminReservationUser";
 
 export type {
     AdminReservation,

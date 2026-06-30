@@ -3,8 +3,8 @@
  */
 
 import { type Model, model } from "mongoose";
-import { ReservedShowingSnapshotSchema } from "src/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.schema.js";
-import type { ReservedShowingSnapshotSchemaFields } from "src/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.types.js";
+import { ReservedShowingSnapshotSchema } from "@/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.schema.js";
+import type { ReservedShowingSnapshotSchemaFields } from "@/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.types.js";
 
 import "src/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.hooks.js";
 

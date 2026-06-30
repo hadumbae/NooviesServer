@@ -4,8 +4,8 @@
 
 import {z} from "zod";
 import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
-import {ReservationStatusSchema} from "src/domains/reservations/_validation/ReservationStatusSchema";
-import {ReservationTypeSchema} from "src/domains/reservations/_validation/ReservationTypeSchema";
+import {ReservationStatusSchema} from "@/domains/reservations/_validation/ReservationStatusSchema";
+import {ReservationTypeSchema} from "@/domains/reservations/_validation/ReservationTypeSchema";
 
 /** Zod schema for match-level reservation query filters. */
 export const ReservationQueryMatchFilterSchema = z.object({

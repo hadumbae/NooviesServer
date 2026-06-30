@@ -8,12 +8,12 @@ import type {ReservationSchemaFields, ReservationDoc} from "./Reservation.types.
 import {DateTime} from "luxon";
 import {
     generateReservationUniqueCode
-} from "src/domains/reservations/_feat/generate-reservation-code/index.js";
-import type {ReservationStatus} from "src/domains/reservations/_validation";
+} from "@/domains/reservations/_feat/generate-reservation-code/index.js";
+import type {ReservationStatus} from "@/domains/reservations/_validation";
 import SeatMap from "@/domains/seatmap/model/SeatMap.model";
 import generateSlug from "@/shared/utility/generateSlug";
 import type {PopulatedShowing} from "@/domains/showing/models/showing/Showing.types";
-import {createReservedShowingSnapshot, reserveReservationSeats} from "src/domains/reservations/_feat/reserve-tickets";
+import {createReservedShowingSnapshot, reserveReservationSeats} from "@/domains/reservations/_feat/reserve-tickets";
 
 /**
  * Mapping of reservation statuses to their mandatory audit timestamp fields.

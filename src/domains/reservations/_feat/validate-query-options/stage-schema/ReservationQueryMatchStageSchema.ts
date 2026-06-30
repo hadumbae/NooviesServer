@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {ReservationQueryMatchFilterSchema} from "src/domains/reservations/_feat/validate-query-options/schemas";
+import {ReservationQueryMatchFilterSchema} from "@/domains/reservations/_feat/validate-query-options/schemas";
 import {normaliseQueryMatchValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms raw reservation filters into a valid MongoDB match stage. */

@@ -2,9 +2,9 @@
  * @fileoverview Mongoose validation hooks for reserved showing snapshots.
  */
 
-import {ReservedShowingSnapshotSchema} from "src/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.schema.js";
+import {ReservedShowingSnapshotSchema} from "@/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.schema.js";
 import type {HydratedDocument} from "mongoose";
-import type {ReservedShowingSnapshotSchemaFields} from "src/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.types.js";
+import type {ReservedShowingSnapshotSchemaFields} from "@/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.types.js";
 
 /** Enforces consistency between reservation type and seat selection before document validation. */
 ReservedShowingSnapshotSchema.pre(

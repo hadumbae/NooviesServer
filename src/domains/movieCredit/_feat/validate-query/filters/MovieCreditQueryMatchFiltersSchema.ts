@@ -5,7 +5,7 @@
 
 import {z} from "zod";
 import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema";
-import {RoleTypeDepartmentSchema} from "@/domains/roleType/validation/schema/RoleTypeDepartmentSchema";
+import {RoleTypeDepartmentSchema} from "@/domains/role-types/_validation/schema/RoleTypeDepartmentSchema";
 import {URLParamBooleanSchema} from "@/shared/schema/url/URLParamBooleanSchema";
 import {URLParamRegexPatternSchema} from "@/shared/_feat/parse-query-string";
 import {URLParamNumberSchema} from "@/shared/schema/url/URLParamNumberSchema";

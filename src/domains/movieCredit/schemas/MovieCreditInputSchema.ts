@@ -4,7 +4,7 @@ import {PositiveNumberSchema} from "@/shared/schema/numbers/PositiveNumberSchema
 import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
 import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 import {CoercedBooleanValueSchema} from "@/shared/schema/booleans/CoercedBooleanValueSchema";
-import {RoleTypeDepartmentSchema} from "@/domains/roleType/validation/schema/RoleTypeDepartmentSchema";
+import {RoleTypeDepartmentSchema} from "@/domains/role-types/_validation/schema/RoleTypeDepartmentSchema";
 
 /**
  * Base schema for a movie credit input (common fields for both CAST and CREW)

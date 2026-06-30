@@ -3,7 +3,7 @@
  */
 
 import {Types} from "mongoose";
-import type {ReservationNotesInput} from "src/domains/reservations/_feat/update-reservations/schemas";
+import type {ReservationNotesInput} from "@/domains/reservations/_feat/update-reservations/schemas";
 import type {DurationLike} from "luxon";
 
 /** Parameters required to execute a reservation notes update operation. */

@@ -6,7 +6,7 @@
 import {Router} from "express";
 import isAuth from "@/domains/authentication/middleware/isAuth";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
-import {getFetchByUniqueCode} from "src/domains/reservations/_feat/fetch-customer-reservations/controller";
+import {getFetchByUniqueCode} from "@/domains/reservations/_feat/fetch-customer-reservations/controller";
 
 /**
  * Express Router instance for administrative Fetch operations.

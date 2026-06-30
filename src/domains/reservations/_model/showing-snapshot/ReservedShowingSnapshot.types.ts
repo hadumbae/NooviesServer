@@ -2,7 +2,7 @@
  * @fileoverview Immutable snapshot field definitions for a reserved showing.
  */
 
-import type {ReservationType} from "src/domains/reservations/_validation";
+import type {ReservationType} from "@/domains/reservations/_validation";
 import type {ISO6391LanguageCode} from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
 import type {ReservedSeatSnapshotSchemaFields} from "@/domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.types";
 import type {MovieSnapshotSchemaFields} from "@/domains/movies/_models/movie-snapshot/MovieSnapshot.types";

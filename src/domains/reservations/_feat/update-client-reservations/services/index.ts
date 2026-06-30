@@ -1,11 +1,11 @@
 import {
     cancelClientReservation,
     checkoutClientReservation
-} from "src/domains/reservations/_feat/update-client-reservations/services/service";
+} from "@/domains/reservations/_feat/update-client-reservations/services/service";
 import type {
     CancelClientReservationParams,
     CheckoutClientReservationParams
-} from "src/domains/reservations/_feat/update-client-reservations/services/service.types";
+} from "@/domains/reservations/_feat/update-client-reservations/services/service.types";
 
 export {
     checkoutClientReservation,

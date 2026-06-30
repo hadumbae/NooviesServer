@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {ReservationQueryMatchSortSchema} from "src/domains/reservations/_feat/validate-query-options/schemas";
+import {ReservationQueryMatchSortSchema} from "@/domains/reservations/_feat/validate-query-options/schemas";
 import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms raw reservation sort parameters into a Mongoose-compatible sort stage. */

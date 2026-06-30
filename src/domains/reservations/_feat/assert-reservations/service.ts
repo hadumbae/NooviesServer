@@ -2,12 +2,12 @@
  * @fileoverview Guard utilities and assertions for reservation lifecycle workflows.
  *
  */
-import type {ReservationSchemaFields} from "src/domains/reservations/_model/reservation";
+import type {ReservationSchemaFields} from "@/domains/reservations/_model/reservation";
 import {calculateDateNow} from "@/shared/utility/date/LuxonDateUtils";
 import {BookingError} from "@/shared/errors/reservations/BookingError";
 import {Types} from "mongoose";
-import {Reservation} from "src/domains/reservations/_model/reservation";
-import type {AssertReservationOwnershipConfig} from "src/domains/reservations/_feat/assert-reservations/service.types";
+import {Reservation} from "@/domains/reservations/_model/reservation";
+import type {AssertReservationOwnershipConfig} from "@/domains/reservations/_feat/assert-reservations/service.types";
 import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
 
 /**

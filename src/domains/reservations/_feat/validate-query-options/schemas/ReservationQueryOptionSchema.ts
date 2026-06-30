@@ -5,10 +5,10 @@
 import {z} from "zod";
 import {
     ReservationQueryMatchFilterSchema
-} from "src/domains/reservations/_feat/validate-query-options/schemas/ReservationQueryMatchFilterSchema";
+} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationQueryMatchFilterSchema";
 import {
     ReservationQueryMatchSortSchema
-} from "src/domains/reservations/_feat/validate-query-options/schemas/ReservationQueryMatchSortSchema";
+} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationQueryMatchSortSchema";
 
 /** Zod schema merging reservation filter and sort criteria. */
 export const ReservationQueryOptionSchema =

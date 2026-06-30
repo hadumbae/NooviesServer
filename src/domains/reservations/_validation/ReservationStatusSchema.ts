@@ -10,7 +10,7 @@
  */
 
 import { z } from "zod";
-import {ReservationStatusConstant} from "src/domains/reservations/_validation/ReservationStatusConstant";
+import {ReservationStatusConstant} from "@/domains/reservations/_validation/ReservationStatusConstant";
 
 /**
  * Reservation status validation schema.

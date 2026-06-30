@@ -2,11 +2,11 @@
  * @fileoverview Type definitions and schema field structures for the Mongoose Reservation model.
  */
 
-import type {ReservedShowingSnapshotSchemaFields} from "src/domains/reservations/_model/showing-snapshot";
+import type {ReservedShowingSnapshotSchemaFields} from "@/domains/reservations/_model/showing-snapshot";
 import {Types} from "mongoose";
 import type {ISO4217CurrencyCode} from "@/shared/schema/enums/ISO4217CurrencyCodeEnumSchema";
-import type {ReservationStatus} from "src/domains/reservations/_validation/ReservationStatusSchema";
-import type {ReservationType} from "src/domains/reservations/_validation/ReservationTypeSchema";
+import type {ReservationStatus} from "@/domains/reservations/_validation/ReservationStatusSchema";
+import type {ReservationType} from "@/domains/reservations/_validation/ReservationTypeSchema";
 import type {NonNegativeNumber} from "@/shared/schema/numbers/NonNegativeNumberSchema";
 import type {BaseModelWithSlug} from "@/shared/types/schema/BaseModel";
 import type {ModelTimestamps} from "@/shared/types/schema/ModelTimestamps";

@@ -3,9 +3,9 @@
  */
 
 import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
-import type {AdminReservation} from "src/domains/reservations/_feat/fetch-customer-reservations";
+import type {AdminReservation} from "@/domains/reservations/_feat/fetch-customer-reservations";
 import {Types} from "mongoose";
-import {Reservation} from "src/domains/reservations/_model/reservation";
+import {Reservation} from "@/domains/reservations/_model/reservation";
 
 /** Retrieves a reservation by its unique identifier with administrative-level detail. */
 export function fetchAdminReservationByID(

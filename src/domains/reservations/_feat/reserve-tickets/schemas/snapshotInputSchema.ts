@@ -8,7 +8,7 @@ import {ValidDateInstanceSchema} from "@/shared/schema/date-time/ValidDateInstan
 import {PositiveNumberSchema} from "@/shared/schema/numbers/PositiveNumberSchema";
 import {BooleanValueSchema} from "@/shared/schema/booleans/BooleanValueSchema";
 import {ISO6391LanguageCodeSchema} from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
-import {ReservationTypeSchema} from "src/domains/reservations/_validation";
+import {ReservationTypeSchema} from "@/domains/reservations/_validation";
 import {ReservedSeatSnapshotInputSchema} from "@/domains/seatmap/schema/ReservedSeatSnapshotInputSchema";
 import {ScreenSnapshotInputSchema} from "@/domains/screen/_feat/validate-submit";
 import {TheatreSnapshotInputSchema} from "@/domains/theatre/validation";

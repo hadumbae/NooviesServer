@@ -1,11 +1,11 @@
 import {
     type ReservationQuerySortStage,
     ReservationQuerySortStageSchema
-} from "src/domains/reservations/_feat/validate-query-options/stage-schema/ReservationQuerySortStageSchema";
+} from "@/domains/reservations/_feat/validate-query-options/stage-schema/ReservationQuerySortStageSchema";
 import {
     type ReservationQueryMatchStage,
     ReservationQueryMatchStageSchema
-} from "src/domains/reservations/_feat/validate-query-options/stage-schema/ReservationQueryMatchStageSchema";
+} from "@/domains/reservations/_feat/validate-query-options/stage-schema/ReservationQueryMatchStageSchema";
 
 export {
     ReservationQuerySortStageSchema,

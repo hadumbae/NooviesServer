@@ -7,11 +7,11 @@ import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes";
 import {ScreenBrowseRoutes} from "@/domains/screen/_feat/view-data-client/routes/ScreenBrowseRoutes";
 import {UserFavouritesRoutes} from "@/domains/users/_feat/manage-user-favourties/routes/routes";
-import {FetchClientReservationRoutes} from "src/domains/reservations/_feat/fetch-client-reservations/routes";
+import {FetchClientReservationRoutes} from "@/domains/reservations/_feat/fetch-client-reservations/routes";
 import {TheatreSearchRoutes} from "@/domains/theatre/_feat/search-theatres";
 import {ReviewsByMovieRoutes} from "@/domains/movies/_feat/fetch-reviews-by-movie";
-import {ReserveTicketsRoutes} from "src/domains/reservations/_feat/reserve-tickets";
-import {UpdateClientReservationRoutes} from "src/domains/reservations/_feat/update-client-reservations";
+import {ReserveTicketsRoutes} from "@/domains/reservations/_feat/reserve-tickets";
+import {UpdateClientReservationRoutes} from "@/domains/reservations/_feat/update-client-reservations";
 import {MyMovieReviewsRoutes} from "@/domains/movieReview/_feat/current-user-reviews";
 
 /**

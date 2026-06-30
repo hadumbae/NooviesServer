@@ -2,9 +2,9 @@
  * @fileoverview Service layer for administrative-level reservation retrieval and data hydration.
  */
 
-import type {FetchReservationByCodeParams} from "src/domains/reservations/_feat/fetch-customer-reservations/service/service.types";
-import type {AdminReservation} from "src/domains/reservations/_feat/fetch-customer-reservations";
-import {Reservation} from "src/domains/reservations/_model/reservation";
+import type {FetchReservationByCodeParams} from "@/domains/reservations/_feat/fetch-customer-reservations/service/service.types";
+import type {AdminReservation} from "@/domains/reservations/_feat/fetch-customer-reservations";
+import {Reservation} from "@/domains/reservations/_model/reservation";
 
 /** Retrieves a single reservation by its unique identifier and populates basic user information. */
 export const fetchByUniqueCode = async (

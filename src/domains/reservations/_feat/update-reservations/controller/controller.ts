@@ -8,7 +8,7 @@ import {
     cancelReservation, refundReservation,
     resetReservationExpiry,
     updateReservationNotes
-} from "src/domains/reservations/_feat/update-reservations/service";
+} from "@/domains/reservations/_feat/update-reservations/service";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
 
 /** Handles the partial update of a reservation's administrative notes. */

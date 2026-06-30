@@ -5,7 +5,7 @@ import {parseQueryOptions} from "@/shared/_feat/middleware";
 import {MovieQueryOptionsSchema} from "@/domains/movies/_feat/validate-query";
 import {getFetchMovieLeanData, getFetchPersonLeanData, getFetchRoleTypeLeanData} from "@/domains/ui-inputs/controller";
 import {PersonQueryOptionsSchema} from "@/domains/persons/_feat/validate-query";
-import {RoleTypeQueryOptionsSchema} from "@/domains/roleType/_feat/validate-query";
+import {RoleTypeQueryOptionsSchema} from "@/domains/role-types/_feat/validate-query";
 
 const router = Router();
 

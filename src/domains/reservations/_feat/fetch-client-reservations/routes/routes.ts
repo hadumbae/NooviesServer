@@ -6,7 +6,7 @@
 import {Router} from "express";
 import isAuth from "@/domains/authentication/middleware/isAuth";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
-import {fetchReservationsForUser} from "src/domains/reservations/_feat/fetch-client-reservations/controllers";
+import {fetchReservationsForUser} from "@/domains/reservations/_feat/fetch-client-reservations/controllers";
 
 const router = Router();
 

@@ -9,7 +9,7 @@ import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@/domain
 import type {MovieReviewUniqueCode} from "@/domains/movieReview/validation/review-code/MovieReviewUniqueCodeSchema"
 import type {RequestPaginationOptions} from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema"
 import type {PaginationReturns} from "@/shared/types/PaginationReturns"
-import type {ReservationSchemaFields} from "src/domains/reservations/_model/reservation";
+import type {ReservationSchemaFields} from "@/domains/reservations/_model/reservation";
 import type {MovieReviewModerationLogSchemaFields} from "@/domains/movieReview/model";
 
 /** Configuration parameters for fetching aggregated customer profile data. */

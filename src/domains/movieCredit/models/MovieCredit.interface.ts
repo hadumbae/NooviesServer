@@ -6,7 +6,7 @@
 
 import {Types} from "mongoose";
 import type {MovieSchemaFields} from "@/domains/movies/_models/movie/Movie.types";
-import type {RoleTypeSchemaFields} from "@/domains/roleType/model/RoleType.types";
+import type {RoleTypeSchemaFields} from "@/domains/role-types/_models/RoleType.types";
 import type {PersonSchemaFields} from "@/domains/persons/_models/person";
 
 /**

@@ -4,11 +4,11 @@
 
 import {z} from "zod";
 import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
-import {ReserveTicketInputSchema} from "src/domains/reservations/_feat/reserve-tickets/schemas";
+import {ReserveTicketInputSchema} from "@/domains/reservations/_feat/reserve-tickets/schemas";
 import {DateInstanceSchema} from "@/shared/schema/date-time/DateInstanceSchema";
 import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
 import {NonNegativeNumberSchema} from "@/shared/schema/numbers/NonNegativeNumberSchema";
-import {ReservationStatusSchema} from "src/domains/reservations/_validation";
+import {ReservationStatusSchema} from "@/domains/reservations/_validation";
 
 /** Validation schema for the internal persistence layer of a ticket reservation. */
 export const ReserveTicketPersistenceSchema =

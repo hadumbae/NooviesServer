@@ -8,7 +8,7 @@ import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
 import QueryUtils from "@/shared/services/query-utils/QueryUtils";
 import {
     fetchPaginatedUserReservations,
-} from "src/domains/reservations/_feat/fetch-client-reservations/services/service";
+} from "@/domains/reservations/_feat/fetch-client-reservations/services/service";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
 
 /**

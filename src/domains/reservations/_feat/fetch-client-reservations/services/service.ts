@@ -2,10 +2,10 @@
  * @fileoverview Service for retrieving paginated reservation history for client-side users.
  */
 
-import type {FetchPaginatedUserReservationsParams} from "src/domains/reservations/_feat/fetch-client-reservations/services/service.types";
+import type {FetchPaginatedUserReservationsParams} from "@/domains/reservations/_feat/fetch-client-reservations/services/service.types";
 import type {PaginationReturns} from "@/shared/types/PaginationReturns";
-import {Reservation, type ReservationSchemaFields} from "src/domains/reservations/_model/reservation";
-import {ReservationPopulatePaths} from "src/domains/reservations/_feat/query-population";
+import {Reservation, type ReservationSchemaFields} from "@/domains/reservations/_model/reservation";
+import {ReservationPopulatePaths} from "@/domains/reservations/_feat/query-population";
 
 /** Retrieves a paginated collection of reservations belonging to a specific user. */
 export const fetchPaginatedUserReservations = async (

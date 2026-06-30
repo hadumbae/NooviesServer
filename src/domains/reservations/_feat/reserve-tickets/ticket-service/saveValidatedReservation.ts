@@ -3,12 +3,12 @@
  */
 
 import {RequestValidationError} from "@/shared/errors/RequestValidationError";
-import {ReservationPopulatePaths} from "src/domains/reservations/_feat/query-population/ReservationPopulatePaths";
+import {ReservationPopulatePaths} from "@/domains/reservations/_feat/query-population/ReservationPopulatePaths";
 import {
     type ReserveTicketPersistenceData,
     ReserveTicketPersistenceSchema
-} from "src/domains/reservations/_feat/reserve-tickets";
-import {Reservation, type ReservationSchemaFields} from "src/domains/reservations/_model/reservation";
+} from "@/domains/reservations/_feat/reserve-tickets";
+import {Reservation, type ReservationSchemaFields} from "@/domains/reservations/_model/reservation";
 
 /** Validates the input data against the persistence schema before saving and populating the reservation document. */
 export async function saveValidatedReservation(

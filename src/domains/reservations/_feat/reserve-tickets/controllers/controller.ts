@@ -5,8 +5,8 @@
 import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
 import type {Request, Response} from "express";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
-import type {ReserveTicketInputData} from "src/domains/reservations/_feat/reserve-tickets/schemas";
-import {reserveTickets} from "src/domains/reservations/_feat/reserve-tickets/ticket-service";
+import type {ReserveTicketInputData} from "@/domains/reservations/_feat/reserve-tickets/schemas";
+import {reserveTickets} from "@/domains/reservations/_feat/reserve-tickets/ticket-service";
 
 /**
  * Creates a reservation for the authenticated user using validated request body data.

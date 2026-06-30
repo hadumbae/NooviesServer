@@ -1,4 +1,4 @@
-import {ReservationPopulatePaths} from "src/domains/reservations/_feat/query-population/ReservationPopulatePaths";
+import {ReservationPopulatePaths} from "@/domains/reservations/_feat/query-population/ReservationPopulatePaths";
 
 export {
     ReservationPopulatePaths,

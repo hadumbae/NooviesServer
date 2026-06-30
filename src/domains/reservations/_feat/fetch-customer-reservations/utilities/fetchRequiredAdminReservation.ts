@@ -4,9 +4,9 @@
 
 import {Types} from "mongoose";
 import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
-import type {AdminReservation} from "src/domains/reservations/_feat/fetch-customer-reservations";
+import type {AdminReservation} from "@/domains/reservations/_feat/fetch-customer-reservations";
 import createHttpError from "http-errors";
-import {Reservation} from "src/domains/reservations/_model/reservation";
+import {Reservation} from "@/domains/reservations/_model/reservation";
 
 /**
  * Retrieves a populated reservation by ID or throws a 404 error if it does not exist.

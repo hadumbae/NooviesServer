@@ -9,11 +9,11 @@ import {InconsistentDataError} from "@/shared/errors/InconsistentDataError";
 import {createMovieSnapshot} from "@/domains/movies/_feat/manage-snapshots/createMovieSnapshot";
 import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
 import {createReservedSeatSnapshot} from "@/domains/seatmap/utilities/snapshots/createReservedSeatSnapshot";
-import {ReservedShowingSnapshotInputSchema} from "src/domains/reservations/_feat/reserve-tickets/schemas";
+import {ReservedShowingSnapshotInputSchema} from "@/domains/reservations/_feat/reserve-tickets/schemas";
 import {createScreenSnapshot} from "@/domains/screen/_feat/build-snapshot";
 import {createTheatreSnapshot} from "@/domains/theatre/utilities";
-import type {ReservationType} from "src/domains/reservations/_validation";
-import type {ReservedShowingSnapshotSchemaFields} from "src/domains/reservations/_model/showing-snapshot";
+import type {ReservationType} from "@/domains/reservations/_validation";
+import type {ReservedShowingSnapshotSchemaFields} from "@/domains/reservations/_model/showing-snapshot";
 
 type ShowingWithReferences = Omit<ShowingSchemaFields, "movie" | "theatre" | "screen"> & {
     movie: Types.ObjectId;

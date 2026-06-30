@@ -2,7 +2,7 @@ import {
     patchCancelReservation, patchRefundReservation,
     patchResetReservationExpiry,
     patchUpdateReservationNotes
-} from "src/domains/reservations/_feat/update-reservations/controller/controller";
+} from "@/domains/reservations/_feat/update-reservations/controller/controller";
 
 export {
     patchUpdateReservationNotes,

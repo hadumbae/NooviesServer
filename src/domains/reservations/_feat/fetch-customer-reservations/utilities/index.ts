@@ -1,9 +1,9 @@
 import {
     fetchAdminReservationByID
-} from "src/domains/reservations/_feat/fetch-customer-reservations/utilities/fetchAdminReservationByID";
+} from "@/domains/reservations/_feat/fetch-customer-reservations/utilities/fetchAdminReservationByID";
 import {
     fetchRequiredAdminReservation
-} from "src/domains/reservations/_feat/fetch-customer-reservations/utilities/fetchRequiredAdminReservation";
+} from "@/domains/reservations/_feat/fetch-customer-reservations/utilities/fetchRequiredAdminReservation";
 
 export {
     fetchAdminReservationByID,

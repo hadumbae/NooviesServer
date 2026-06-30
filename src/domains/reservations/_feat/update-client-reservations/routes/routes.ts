@@ -9,7 +9,7 @@ import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {
     patchCancelClientReservation,
     patchCheckoutClientReservation,
-} from "src/domains/reservations/_feat/update-client-reservations/controllers";
+} from "@/domains/reservations/_feat/update-client-reservations/controllers";
 
 const router = Router();
 

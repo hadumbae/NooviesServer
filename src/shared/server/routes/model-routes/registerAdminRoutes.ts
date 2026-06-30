@@ -7,18 +7,10 @@
 
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
-import RoleTypeRoutes from "@/domains/roleType/routing/RoleTypeRoutes.js";
 import MovieCreditRoutes from "@/domains/movieCredit/routing/MovieCreditRoutes.js";
 import ShowingRoutes from "@/domains/showing/routing/ShowingRoutes.js";
 import SeatMapRoutes from "@/domains/seatmap/routing/SeatMapRoutes.js";
 import {CustomerViewDataRoutes} from "@/domains/customer/features/customer-details/routing";
-
-/**
- * Core metadata and foundational data configuration routes.
- */
-const setupRoutes: RouteRegistration[] = [
-    {path: "/api/v1/admin/roletypes", router: RoleTypeRoutes},
-];
 
 /**
  * Content management routes for movies, cast/crew credits, and reviews.
@@ -47,7 +39,6 @@ const customerRoutes: RouteRegistration[] = [
  */
 export function registerAdminRoutes(app: Express): void {
     const routeGroups: RouteRegistration[][] = [
-        setupRoutes,
         movieRoutes,
         showingRoutes,
         customerRoutes,
