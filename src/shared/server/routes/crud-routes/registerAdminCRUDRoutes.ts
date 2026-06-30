@@ -16,7 +16,7 @@ import {RoleTypeCRUDRoutes} from "@/domains/roleType/_feat/crud";
 import {MovieCreditCRUDRoutes} from "@/domains/movieCredit/_feat/crud";
 import {ShowingCRUDRoutes} from "@/domains/showing/_feat/crud";
 import {SeatMapCRUDRoutes} from "@/domains/seatmap/_feat/crud";
-import {ReservationCRUDRoutes} from "@/domains/reservation/_feat/crud";
+import {ReservationCRUDRoutes} from "src/domains/reservations/_feat/crud";
 import {MovieReviewCRUDRoutes} from "@/domains/movieReview/_feat/crud";
 
 /**

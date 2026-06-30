@@ -22,7 +22,7 @@ import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population"
 import type {PaginationReturns} from "@/shared/types/PaginationReturns"
 import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines"
 import type {PipelineStage} from "mongoose"
-import {Reservation} from "@/domains/reservation/model/reservation";
+import {Reservation} from "src/domains/reservations/_model/reservation";
 import {MovieReviewModerationLog, type MovieReviewModerationLogSchemaFields} from "@/domains/movieReview/model";
 
 /**

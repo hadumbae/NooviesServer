@@ -1,0 +1,28 @@
+/**
+ * @fileoverview Mongoose validation hooks for reserved showing snapshots.
+ */
+
+import {ReservedShowingSnapshotSchema} from "src/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.schema.js";
+import type {HydratedDocument} from "mongoose";
+import type {ReservedShowingSnapshotSchemaFields} from "src/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.types.js";
+
+/** Enforces consistency between reservation type and seat selection before document validation. */
+ReservedShowingSnapshotSchema.pre(
+    "validate",
+    {document: true},
+    function (this: HydratedDocument<ReservedShowingSnapshotSchemaFields>, next: () => void) {
+        if (this.reservationType === "RESERVED_SEATS") {
+            if (!Array.isArray(this.selectedSeats)) {
+                this.invalidate("selectedSeats", "Required for reserved seating.");
+            } else if (this.selectedSeats.length === 0) {
+                this.invalidate("selectedSeats", "Must be a non-empty array.");
+            }
+        }
+
+        if (this.reservationType === "GENERAL_ADMISSION" && Array.isArray(this.selectedSeats)) {
+            this.invalidate("selectedSeats", "Must not be present for general admission.");
+        }
+
+        next();
+    }
+);
