@@ -1,6 +1,5 @@
 /**
- * @file Generic controller and service for updating existing documents with conflict resolution.
- * @filename crudUpdate.ts
+ * @fileoverview Generic controller and service for updating existing documents with conflict resolution.
  */
 
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
@@ -13,15 +12,14 @@ import type {UpdateDocumentConfig} from "@/shared/_feat/generic-crud/path-handle
 import {DocumentVersionError} from "@/shared/errors/DocumentVersionError";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
 import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
+import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
 
 /**
- * Manages document retrieval, mutation, and persistence with built-in retry logic for version conflicts.
- * @param params - Comprehensive update configuration including model, data, and retry settings.
- * @returns A promise resolving to the updated and re-hydrated document.
+ * Manages document retrieval, mutation, and persistence with built-in retry logic for Mongoose version conflicts.
  */
-export const updateDocument = async <TModel extends BaseModel>(
+export async function updateDocument<TModel extends BaseModel>(
     params: UpdateDocumentConfig<TModel>
-): Promise<TModel> => {
+): Promise<TModel> {
     const {_id, model, data, unset, populatePaths, options, onDuplicateIndex, retries = 3} = params;
 
     try {
@@ -64,13 +62,11 @@ export const updateDocument = async <TModel extends BaseModel>(
 }
 
 /**
- * Factory function that generates an Express controller for document updates.
- * @param params - Configuration including the model and optional relationship paths.
- * @returns An asynchronous Express controller function.
+ * Factory function that generates an Express controller for handling document update requests.
  */
-export const update = <TModel extends BaseModel>(
-    {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
-) => {
+export function update<TModel extends BaseModel>(
+    {model, populatePaths, onDuplicateIndex}: CRUDControllerHandlerConfig<TModel>
+): ControllerAsyncFunc {
     return async (req: Request, res: Response) => {
         const data = req.validatedBody;
         const unset = req.unsetFields;
@@ -86,6 +82,7 @@ export const update = <TModel extends BaseModel>(
             unset,
             _id: itemID,
             populatePaths,
+            onDuplicateIndex,
         });
 
         return res.status(200).json(item);

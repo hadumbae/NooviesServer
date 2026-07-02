@@ -5,7 +5,7 @@
 import {RoleTypeSchema} from "./RoleType.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import type {RoleTypeSchemaFields} from "@/domains/role-types/_models/RoleType.types";
-import MovieCredit from "../../movieCredit/models/MovieCredit.model.js";
+import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 
 RoleTypeSchema.pre(
     ["find", "findOne", "findOneAndUpdate"],

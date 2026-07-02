@@ -1,8 +1,6 @@
-import {MovieClientViewDataRoutes} from "@/domains/movies/_feat/client-view-data/routes";
-
-export * from "@/domains/movies/_feat/client-view-data/schemas";
-export * from "@/domains/movies/_feat/client-view-data/utils";
-
-export {
-    MovieClientViewDataRoutes,
-}
+export * from "./routes";
+export * from "./controller";
+export * from "./movie-credits";
+export * from "./movie-reviews";
+export * from "./movie-showings";
+export * from "./movie-overview";

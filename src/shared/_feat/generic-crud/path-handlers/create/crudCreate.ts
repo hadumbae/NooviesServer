@@ -1,6 +1,5 @@
 /**
- * @file Generic controller and service for creating new documents within a Mongoose model.
- * @filename crudCreate.ts
+ * @fileoverview Generic controller and service for creating new documents within a Mongoose model.
  */
 
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
@@ -11,15 +10,14 @@ import type {CreateDocumentConfig} from "@/shared/_feat/generic-crud/path-handle
 import {isDuplicateIndexError} from "@/shared/utility/mongoose/isDuplicateIndexError";
 import {handleDuplicateIndexError} from "@/shared/utility/mongoose/handleDuplicateIndexError";
 import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
+import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
 
 /**
- * Orchestrates document instantiation, persistence, and post-creation enrichment.
- * @param params - Configuration including model, input data, and error handlers.
- * @returns A promise resolving to the fully hydrated and populated document.
+ * Instantiates, persists, and populates a new Mongoose document.
  */
-export const createDocument = async <TModel extends BaseModel>(
+export async function createDocument<TModel extends BaseModel>(
     {model, data, populatePaths, options, onDuplicateIndex}: CreateDocumentConfig<TModel>
-): Promise<TModel> => {
+): Promise<TModel> {
     try {
         const newDoc = new model(data);
         const doc = await newDoc.save();
@@ -44,13 +42,11 @@ export const createDocument = async <TModel extends BaseModel>(
 }
 
 /**
- * Factory function that generates an Express controller for document creation.
- * @param params - Configuration including the model and optional relationship paths.
- * @returns An asynchronous Express controller function.
+ * Generates an Express controller for handling document creation requests.
  */
-export const create = <TModel extends BaseModel>(
-    {model, populatePaths}: CRUDControllerHandlerConfig<TModel>
-) => {
+export function create<TModel extends BaseModel>(
+    {model, populatePaths, onDuplicateIndex}: CRUDControllerHandlerConfig<TModel>
+): ControllerAsyncFunc {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
         const data = req.validatedBody;
@@ -60,6 +56,7 @@ export const create = <TModel extends BaseModel>(
             options,
             data,
             populatePaths,
+            onDuplicateIndex,
         });
 
         return res.status(200).json(item);

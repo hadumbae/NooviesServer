@@ -1,13 +1,13 @@
 /**
- * @file Type definitions for the generic CRUD routing system.
- * @filename CRUDRoutesFactory.types.ts
+ * @fileoverview Type definitions for the generic CRUD routing system.
+ *
  */
 
 import type {BaseModel} from "@/shared/types/schema/BaseModel";
 import type {Model} from "mongoose";
 import type {PopulatePath} from "@/shared/types/mongoose/PopulatePath";
 import type {RequestHandler} from "express";
-import type {CRUDControllerHandler} from "@/shared/_feat/generic-crud/types";
+import type {CRUDControllerHandler, DuplicateIndexHandler} from "@/shared/_feat/generic-crud/types";
 
 /** Supported HTTP verbs for the generic CRUD router. */
 export type CRUDRouteMethods =
@@ -44,6 +44,9 @@ export type BuildCRUDRoutesParams<TModel extends BaseModel> = {
 
     /** Global population paths applied to all relevant handlers in this router. */
     populatePaths?: PopulatePath[];
+
+    /** Optional handler for managing MongoDB duplicate key errors. */
+    onDuplicateIndex?: DuplicateIndexHandler;
 
     /** List of route configurations to be instantiated. */
     routes: CRUDRoute<TModel>[];

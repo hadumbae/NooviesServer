@@ -4,7 +4,7 @@
  */
 
 import type {PersonSchemaFields} from "@/domains/persons/_models/person";
-import type {PersonCreditStats, RoleCreditsGroup} from "@/domains/movieCredit/_feat/person-credits";
+import type {PersonCreditStats, RoleCreditsGroup} from "@/domains/movie-credits/_feat/person-credits";
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 
 /** Configuration for fetching the combined data required for the Person Details view. */

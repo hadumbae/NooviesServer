@@ -7,17 +7,9 @@
 
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
-import MovieCreditRoutes from "@/domains/movieCredit/routing/MovieCreditRoutes.js";
 import ShowingRoutes from "@/domains/showing/routing/ShowingRoutes.js";
 import SeatMapRoutes from "@/domains/seatmap/routing/SeatMapRoutes.js";
 import {CustomerViewDataRoutes} from "@/domains/customer/features/customer-details/routing";
-
-/**
- * Content management routes for movies, cast/crew credits, and reviews.
- */
-const movieRoutes: RouteRegistration[] = [
-    {path: "/api/v1/admin/movie/credits", router: MovieCreditRoutes},
-];
 
 /**
  * Scheduling and layout routes for cinema showtimes.
@@ -39,7 +31,6 @@ const customerRoutes: RouteRegistration[] = [
  */
 export function registerAdminRoutes(app: Express): void {
     const routeGroups: RouteRegistration[][] = [
-        movieRoutes,
         showingRoutes,
         customerRoutes,
     ];

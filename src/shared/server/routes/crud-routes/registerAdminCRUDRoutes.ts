@@ -13,7 +13,7 @@ import {SeatCRUDRoutes} from "@/domains/seat/_feat/crud";
 import {TheatreCRUDRoutes} from "@/domains/theatre/_feat/crud";
 import {MovieCRUDRoutes} from "@/domains/movies/_feat/crud/MovieCRUDRoutes";
 import {RoleTypeCRUDRoutes} from "@/domains/role-types/_feat/crud";
-import {MovieCreditCRUDRoutes} from "@/domains/movieCredit/_feat/crud";
+import {MovieCreditCRUDRoutes} from "@/domains/movie-credits/_feat/crud";
 import {ShowingCRUDRoutes} from "@/domains/showing/_feat/crud";
 import {SeatMapCRUDRoutes} from "@/domains/seatmap/_feat/crud";
 import {ReservationCRUDRoutes} from "@/domains/reservations/_feat/crud";
