@@ -9,6 +9,7 @@ import type {RouteRegistration} from "@/shared/server/registerRoutes";
 import {GenreClientViewDataRoutes} from "@/domains/genres/_feat/client-view-data";
 import {TheatreClientViewDataRoutes} from "@/domains/theatre/_feat/client-view-data";
 import {MovieClientViewDataRoutes} from "@/domains/movies/_feat/client-view-data";
+import {PersonClientViewDataRoutes} from "@/domains/persons/_feat/client-view-data";
 
 /**
  * Collection of route groups related to Genre client-side views.
@@ -25,6 +26,10 @@ const setupRouteGroup: RouteRegistration[] = [
     {
         path: "/api/v1/views/desktop/movies/client",
         router: MovieClientViewDataRoutes
+    },
+    {
+        path: "/api/v1/views/desktop/persons/client",
+        router: PersonClientViewDataRoutes
     },
 ];
 

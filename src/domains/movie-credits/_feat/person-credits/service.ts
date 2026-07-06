@@ -5,7 +5,8 @@
 import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import type {
     FetchPersonCreditStatsConfig,
-    FetchPersonFilmographyConfig, PersonCreditStats,
+    FetchPersonFilmographyConfig,
+    PersonCreditStats,
     RoleCreditsGroup
 } from "@/domains/movie-credits/_feat/person-credits/service.types";
 
@@ -33,14 +34,14 @@ export async function fetchPersonCreditStats(
         },
     ]);
 
-    return data ?? { creditCount: 0, movieCount: 0 };
+    return data ?? {creditCount: 0, movieCount: 0};
 }
 
 /**
  * Retrieves movie credits for a specific person, grouped by role and sorted by release date.
  */
 export async function fetchPersonFilmography(
-    {personID, limit = 10}: FetchPersonFilmographyConfig
+    {personID, limit}: FetchPersonFilmographyConfig
 ): Promise<RoleCreditsGroup[]> {
     return MovieCredit.aggregate<RoleCreditsGroup>([
         {$match: {person: personID}},
@@ -52,11 +53,7 @@ export async function fetchPersonFilmography(
         {$unwind: "$roleType"},
 
         {
-            $setWindowFields: {
-                partitionBy: "$roleType._id",
-                sortBy: {"movie.releaseDate": -1},
-                output: {index: {$rank: {}}},
-            },
+            $sort: {"movie.releaseDate": -1},
         },
 
         {
@@ -74,7 +71,7 @@ export async function fetchPersonFilmography(
                 role: "$_id",
                 department: 1,
                 totalCredits: 1,
-                topCredits: {$slice: ["$allCredits", limit]},
+                topCredits: limit ? {$slice: ["$allCredits", limit]} : "$allCredits",
                 roleType: {$arrayElemAt: ["$allCredits.roleType", 0]}
             },
         },
