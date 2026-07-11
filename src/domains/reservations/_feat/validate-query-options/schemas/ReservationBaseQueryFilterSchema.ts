@@ -3,18 +3,18 @@
  */
 
 import {z} from "zod";
-import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
 import {ReservationStatusSchema} from "@/domains/reservations/_validation/ReservationStatusSchema";
 import {ReservationTypeSchema} from "@/domains/reservations/_validation/ReservationTypeSchema";
 import {URLParamRegexPatternSchema} from "@/shared/_feat/parse-query-string";
+import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema";
 
 /** Zod schema for validating the base query parameters of a reservation. */
 export const ReservationBaseQueryFilterSchema = z.object({
-    userID: ObjectIdStringSchema,
-    showingID: ObjectIdStringSchema,
+    userID: URLParamObjectIDSchema,
+    showingID: URLParamObjectIDSchema,
     uniqueCode: URLParamRegexPatternSchema,
-    status: ReservationStatusSchema,
-    type: ReservationTypeSchema,
+    status: ReservationStatusSchema.optional(),
+    type: ReservationTypeSchema.optional(),
 });
 
 /** Type definition for the base reservation query filters inferred from the Zod schema. */
