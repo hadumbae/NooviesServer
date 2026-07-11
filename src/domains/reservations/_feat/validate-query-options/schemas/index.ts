@@ -1,11 +1,11 @@
 import {
-    type ReservationQueryMatchSorts,
-    ReservationQueryMatchSortSchema
-} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationQueryMatchSortSchema";
+    type ReservationBaseQuerySorts,
+    ReservationBaseQuerySortSchema
+} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationBaseQuerySortSchema";
 import {
-    type ReservationQueryMatchFilters,
-    ReservationQueryMatchFilterSchema
-} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationQueryMatchFilterSchema";
+    type ReservationBaseQueryFilters,
+    ReservationBaseQueryFilterSchema
+} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationBaseQueryFilterSchema";
 import {
     type ReservationQueryOptions,
     ReservationQueryOptionSchema
@@ -13,13 +13,13 @@ import {
 
 
 export {
-    ReservationQueryMatchFilterSchema,
-    ReservationQueryMatchSortSchema,
+    ReservationBaseQueryFilterSchema,
+    ReservationBaseQuerySortSchema,
     ReservationQueryOptionSchema,
 }
 
 export type {
-    ReservationQueryMatchFilters,
-    ReservationQueryMatchSorts,
+    ReservationBaseQueryFilters,
+    ReservationBaseQuerySorts,
     ReservationQueryOptions,
 }

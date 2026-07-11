@@ -18,6 +18,9 @@ declare module "express" {
         queryMatchStage?: PipelineStage.Match;
         querySortStage?: PipelineStage.Sort;
 
+        queryFilters?: Record<string, unknown>;
+        querySorts?: Record<string, 1 | -1>;
+
         parsedParams?: unknown;
         parsedConfig?: unknown;
     }

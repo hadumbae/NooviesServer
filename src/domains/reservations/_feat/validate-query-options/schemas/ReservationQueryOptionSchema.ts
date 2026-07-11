@@ -4,15 +4,15 @@
 
 import {z} from "zod";
 import {
-    ReservationQueryMatchFilterSchema
-} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationQueryMatchFilterSchema";
+    ReservationBaseQueryFilterSchema
+} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationBaseQueryFilterSchema";
 import {
-    ReservationQueryMatchSortSchema
-} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationQueryMatchSortSchema";
+    ReservationBaseQuerySortSchema
+} from "@/domains/reservations/_feat/validate-query-options/schemas/ReservationBaseQuerySortSchema";
 
 /** Zod schema merging reservation filter and sort criteria. */
 export const ReservationQueryOptionSchema =
-    ReservationQueryMatchFilterSchema.merge(ReservationQueryMatchSortSchema);
+    ReservationBaseQueryFilterSchema.merge(ReservationBaseQuerySortSchema);
 
 /** Combined filter and sort options for reservation queries. */
 export type ReservationQueryOptions =

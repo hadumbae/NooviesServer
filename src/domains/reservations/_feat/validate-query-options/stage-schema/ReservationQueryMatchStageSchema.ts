@@ -3,11 +3,11 @@
  */
 
 import {z} from "zod";
-import {ReservationQueryMatchFilterSchema} from "@/domains/reservations/_feat/validate-query-options/schemas";
+import {ReservationBaseQueryFilterSchema} from "@/domains/reservations/_feat/validate-query-options/schemas";
 import {normaliseQueryMatchValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms raw reservation filters into a valid MongoDB match stage. */
-export const ReservationQueryMatchStageSchema = ReservationQueryMatchFilterSchema.transform(normaliseQueryMatchValues);
+export const ReservationQueryMatchStageSchema = ReservationBaseQueryFilterSchema.transform(normaliseQueryMatchValues);
 
 /** Type definition for the validated reservation query match stage. */
 export type ReservationQueryMatchStage = z.infer<typeof ReservationQueryMatchStageSchema>;

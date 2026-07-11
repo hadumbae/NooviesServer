@@ -1,35 +1,34 @@
 /**
- * @file Express controller for fetching an authenticated user's reservation history.
- * @filename controller.ts
+ * @fileoverview Controller for fetching paginated reservations for the authenticated user.
  */
 
 import type {Request, Response} from "express";
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
 import QueryUtils from "@/shared/services/query-utils/QueryUtils";
-import {
-    fetchPaginatedUserReservations,
-} from "@/domains/reservations/_feat/fetch-client-reservations/services/service";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
+import {
+    type CurrentUserReservationQueryFilters,
+    type CurrentUserReservationQuerySorts,
+    fetchPaginatedUserReservations,
+} from "@/domains/reservations/_feat/fetch-client-reservations/current-user-reservations";
 
-/**
- * Handles the retrieval of a paginated list of reservations for the current user.
- */
-export const fetchReservationsForUser: ControllerAsyncFunc = async (
-    req: Request,
-    res: Response
-): Promise<Response> => {
-    /** Retrieve the subject's ID from the security context. */
+/** Controller that retrieves and returns a paginated list of reservations for the currently authenticated user. */
+export async function fetchReservationsForUser(req: Request, res: Response): Promise<Response> {
     const userID = fetchRequestUser(req);
-
-    /** Standardize pagination parameters from the URL. */
     const pagination = QueryUtils.fetchPaginationFromQuery(req);
 
-    /** Delegate database orchestration to the service layer. */
-    const {totalItems, items} = await fetchPaginatedUserReservations({userID, pagination});
+    const filters = req.queryFilters as CurrentUserReservationQueryFilters;
+    const sorts = req.queryFilters as CurrentUserReservationQuerySorts;
+
+    const {totalItems, items} = await fetchPaginatedUserReservations({
+        userID,
+        pagination,
+        filters,
+        sorts,
+    });
 
     return res.status(200).json({
         message: "Paginated reservations for authenticated user.",
         totalItems,
         items,
     });
-};
+}

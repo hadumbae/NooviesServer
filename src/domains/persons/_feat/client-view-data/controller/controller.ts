@@ -38,7 +38,7 @@ export async function getFetchBrowsePersonViewData(
     const matchStage = req.queryMatchStage;
     const sortStage = req.querySortStage;
 
-    const data = fetchBrowsePersonViewData({
+    const data = await fetchBrowsePersonViewData({
         page,
         perPage,
         match: matchStage,
