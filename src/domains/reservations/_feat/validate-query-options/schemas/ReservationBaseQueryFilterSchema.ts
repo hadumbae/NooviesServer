@@ -14,7 +14,7 @@ export const ReservationBaseQueryFilterSchema = z.object({
     showingID: URLParamObjectIDSchema,
     uniqueCode: URLParamRegexPatternSchema,
     status: ReservationStatusSchema.optional(),
-    type: ReservationTypeSchema.optional(),
+    reservationType: ReservationTypeSchema.optional(),
 });
 
 /** Type definition for the base reservation query filters inferred from the Zod schema. */
