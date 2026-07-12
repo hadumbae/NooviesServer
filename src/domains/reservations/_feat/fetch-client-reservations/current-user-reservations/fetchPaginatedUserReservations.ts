@@ -25,7 +25,7 @@ export const fetchPaginatedUserReservations = async (
 
     const itemQuery = Reservation
         .find({...filters, user: userID})
-        .sort({dateReserved: -1, ...sorts})
+        .sort(sorts ?? {dateReserved: -1})
         .skip(perPage * (page - 1))
         .limit(perPage)
         .populate(ReservationPopulatePaths)
