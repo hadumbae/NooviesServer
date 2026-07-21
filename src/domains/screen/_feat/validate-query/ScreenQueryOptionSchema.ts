@@ -4,8 +4,8 @@
  */
 
 import {z} from "zod";
-import {ScreenQueryMatchFilterSchema} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchFilterSchema";
-import {ScreenQueryMatchSortSchema} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchSortSchema";
+import {ScreenQueryMatchFilterSchema} from "@/domains/screen/_feat/validate-query/option-schemas/ScreenQueryMatchFilterSchema";
+import {ScreenQueryMatchSortSchema} from "@/domains/screen/_feat/validate-query/option-schemas/ScreenQueryMatchSortSchema";
 import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
 import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
 

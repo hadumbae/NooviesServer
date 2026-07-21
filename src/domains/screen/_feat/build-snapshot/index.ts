@@ -1,5 +1,1 @@
-import {createScreenSnapshot} from "@/domains/screen/_feat/build-snapshot/createScreenSnapshot";
-
-export {
-    createScreenSnapshot,
-}
+export * from "@/domains/screen/_feat/build-snapshot/createScreenSnapshot";

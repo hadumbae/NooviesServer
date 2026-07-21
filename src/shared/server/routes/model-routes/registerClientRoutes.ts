@@ -5,7 +5,7 @@
 
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes";
-import {ScreenBrowseRoutes} from "@/domains/screen/_feat/view-data-client/routes/ScreenBrowseRoutes";
+import {ScreenBrowseRoutes} from "@/domains/screen/_feat/view-data-client/ScreenBrowseRoutes";
 import {UserFavouritesRoutes} from "@/domains/users/_feat/manage-user-favourties/routes/routes";
 import {FetchClientReservationRoutes} from "@/domains/reservations/_feat/fetch-client-reservations/routes";
 import {TheatreSearchRoutes} from "@/domains/theatre/_feat/search-theatres";

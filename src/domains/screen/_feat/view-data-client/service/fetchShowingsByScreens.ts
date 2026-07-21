@@ -2,13 +2,13 @@
  * @fileoverview Service for fetching screens and their associated showings for a specific theatre and date.
  */
 
-import type {ScreenWithShowings} from "@/domains/screen/models/screen/Screen.types";
+import type {ScreenWithShowings} from "@/domains/screen/_models/screen/Screen.types";
 import {getIdentifierFilter} from "@/shared/utility/getIdentifierFilter";
 import {Theatre} from "@/domains/theatre/model/theatre/Theatre.model";
 import {type PipelineStage, Types} from "mongoose";
 import {ShowingPopulationPipelines} from "@/domains/showing/queries/ShowingPopulationPipelines";
 import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/queries/ShowingSeatMapVirtualPipelines";
-import {Screen} from "@/domains/screen/models/screen/Screen.model";
+import {Screen} from "@/domains/screen/_models/screen/Screen.model";
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 
 /** Parameters for fetching showings grouped by screens. */

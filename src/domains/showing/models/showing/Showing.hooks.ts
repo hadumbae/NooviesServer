@@ -7,7 +7,7 @@ import {type HydratedDocument, type Query} from "mongoose";
 import type {ShowingSchemaFields} from "./Showing.types.js";
 import {fetchRequiredModelDocument} from "@/shared/utility/fetch/fetchRequiredModelDocument";
 import {Theatre} from "@/domains/theatre/model/theatre";
-import type {ScreenSchemaFields} from "@/domains/screen/models/screen";
+import type {ScreenSchemaFields} from "@/domains/screen/_models/screen";
 import {ShowingVirtualPopulationPaths} from "@/domains/showing/_feat/query-population";
 import {createShowingSeatMap} from "@/domains/seatmap/_feat/manage-showing-seat-maps";
 import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/queries/ShowingSeatMapVirtualPipelines";

@@ -2,7 +2,7 @@ import Showing from "../../../domains/showing/models/showing/Showing.model.js";
 import {ObjectIdStringSchema} from "../mongoose/ObjectIdStringSchema.js";
 import {Genre} from "@/domains/genres/_models/genre";
 import {Person} from "@/domains/persons/_models/person";
-import {Screen} from "@/domains/screen/models/screen";
+import {Screen} from "@/domains/screen/_models/screen";
 import {Theatre} from "@/domains/theatre/model/theatre";
 import {Seat} from "@/domains/seat/model";
 

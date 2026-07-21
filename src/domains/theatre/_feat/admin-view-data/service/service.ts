@@ -9,7 +9,7 @@ import type {
     TheatreShowingListViewData
 } from "@/domains/theatre/_feat/admin-view-data/service/service.types";
 import {Theatre, type TheatreWithVirtuals} from "@/domains/theatre/model/theatre";
-import {Screen, type ScreenSchemaFields} from "@/domains/screen/models/screen";
+import {Screen, type ScreenSchemaFields} from "@/domains/screen/_models/screen";
 import {TheatreVirtualPopulationPaths} from "@/domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
 import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines";

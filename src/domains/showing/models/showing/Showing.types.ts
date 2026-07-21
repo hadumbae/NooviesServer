@@ -4,7 +4,7 @@
 
 import {Types} from "mongoose";
 import type {ScreenSchemaFields}
-    from "@/domains/screen/models/screen/Screen.types";
+    from "@/domains/screen/_models/screen/Screen.types";
 import type {ShowingStatusCode}
     from "../../validation/ShowingStatusEnumSchema.js";
 import type {TheatreSchemaFields}

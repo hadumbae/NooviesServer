@@ -7,7 +7,7 @@ import {Theatre} from "@/domains/theatre/model/theatre";
 import createHttpError from "http-errors";
 import {buildShowingLookupStage} from "@/domains/showing/_feat/aggregation";
 import {buildMovieLookupStage} from "@/domains/movies/_feat/aggregation";
-import {Screen} from "@/domains/screen/models/screen";
+import {Screen} from "@/domains/screen/_models/screen";
 import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population";
 
 /**

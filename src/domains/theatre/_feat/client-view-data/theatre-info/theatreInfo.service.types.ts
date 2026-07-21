@@ -5,7 +5,7 @@
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import type {SimpleDateString} from "@/shared/schema/date-time/SimpleDateStringSchema";
 import type {TheatreSchemaFields} from "@/domains/theatre/model/theatre";
-import type {ScreenWithShowings} from "@/domains/screen/models/screen";
+import type {ScreenWithShowings} from "@/domains/screen/_models/screen";
 
 /** Configuration parameters for the request. */
 export type FetchTheatreInfoViewDataConfig = {

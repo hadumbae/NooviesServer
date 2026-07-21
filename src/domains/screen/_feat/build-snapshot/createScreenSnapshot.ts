@@ -1,21 +1,16 @@
 /**
- * @fileoverview Factory logic for generating immutable Screen snapshots.
- * Derived from the live Screen state to preserve historical accuracy for Showings.
+ * @fileoverview Logic for generating validated screen snapshots from existing screen documents.
  */
 
 import {Types} from "mongoose";
-import type {ScreenSnapshotSchemaFields} from "@/domains/screen/models/screen-snapshot/ScreenSnapshot.types";
-import {Screen} from "@/domains/screen/models/screen";
+import type {ScreenSnapshotSchemaFields} from "@/domains/screen/_models/screen-snapshot/ScreenSnapshot.types";
+import {Screen} from "@/domains/screen/_models/screen";
 import {DocumentNotFoundError} from "@/shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@/shared/errors/InconsistentDataError";
 import {ScreenSnapshotInputSchema} from "@/domains/screen/_feat/validate-submit";
-import {ScreenSnapshot} from "@/domains/screen/models/screen-snapshot";
+import {ScreenSnapshot} from "@/domains/screen/_models/screen-snapshot";
 
-/**
- * Generates a validated snapshot payload from a live Screen document.
- * @throws {DocumentNotFoundError} If the screenID does not point to an existing document.
- * @throws {InconsistentDataError} If the source screen data fails the snapshot schema validation.
- */
+/** Fetches a screen by ID and validates its data to create a snapshot object. */
 export async function createScreenSnapshot(
     screenID: Types.ObjectId
 ): Promise<ScreenSnapshotSchemaFields> {

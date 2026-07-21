@@ -9,7 +9,7 @@ import type {
 import Showing from "@/domains/showing/models/showing/Showing.model";
 import createHttpError from "http-errors";
 import {Theatre} from "@/domains/theatre/model/theatre";
-import {Screen} from "@/domains/screen/models/screen";
+import {Screen} from "@/domains/screen/_models/screen";
 import {ScreenPopulationPaths} from "@/domains/screen/_feat/query-population";
 import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";
 import {SeatMapPopulationPaths} from "@/domains/seatmap/_feat/query-population";

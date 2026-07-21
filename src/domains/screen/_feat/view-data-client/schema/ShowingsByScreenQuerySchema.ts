@@ -1,33 +1,19 @@
+/**
+ * @fileoverview Zod schema for validating queries that fetch showings filtered by screen and date.
+ */
+
 import {z} from "zod";
 import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
 import {SimpleDateStringSchema} from "@/shared/schema/date-time/SimpleDateStringSchema";
 import {NonNegativeNumberSchema} from "@/shared/_schema/numbers/numbers/NonNegativeNumberSchema";
 import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 
-/**
- * @file ShowingsByScreenQuery.schema.ts
- *
- * Zod schema for validating query parameters used when
- * fetching showings grouped by screen.
- *
- * Enforces:
- * - Valid MongoDB ObjectId for the theatre
- * - ISO-like date string (`YYYY-MM-DD`)
- * - Non-negative numeric limit
- */
+/** Schema for the showings by screen query parameters. */
 export const ShowingsByScreenQuerySchema = z.object({
-    /** Target theatre identifier */
     theatreID: z.union([ObjectIdSchema, SlugStringSchema], {message: "Must be an ID string or a valid slug."}),
-
-    /** Local date used to filter showings */
     dateString: SimpleDateStringSchema,
-
-    /** Maximum number of showings to return */
     limit: NonNegativeNumberSchema.optional(),
 });
 
-/**
- * Parsed and type-safe representation of
- * {@link ShowingsByScreenQuerySchema}.
- */
+/** Type definition for the showings by screen query parameters. */
 export type ShowingsByScreenQuery = z.infer<typeof ShowingsByScreenQuerySchema>;

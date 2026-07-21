@@ -6,7 +6,7 @@
 
 import {TheatreSchema} from "./Theatre.schema";
 import type {HydratedDocument, Query} from "mongoose";
-import {Screen} from "@/domains/screen/models/screen";
+import {Screen} from "@/domains/screen/_models/screen";
 import Showing from "../../../showing/models/showing/Showing.model";
 import type {TheatreSchemaFields} from "./Theatre.types";
 import generateSlug from "@/shared/utility/generateSlug";

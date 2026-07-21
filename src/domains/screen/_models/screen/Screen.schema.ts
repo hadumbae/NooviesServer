@@ -6,7 +6,7 @@
 import {Schema} from "mongoose";
 import type {ScreenSchemaFields} from "./Screen.types";
 import SlugSchemaTypeOptions from "@/shared/model/SlugSchemaTypeOptions";
-import {ScreenTypeConstant} from "@/domains/screen/validation";
+import {ScreenTypeConstant} from "@/domains/screen/_validation";
 
 /**
  * Mongoose schema for a Screen.

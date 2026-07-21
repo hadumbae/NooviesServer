@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {ScreenQueryMatchSortSchema} from "@/domains/screen/_feat/validate-query/ScreenQueryMatchSortSchema";
+import {ScreenQueryMatchSortSchema} from "@/domains/screen/_feat/validate-query/option-schemas/ScreenQueryMatchSortSchema";
 import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 
 /** Zod schema that transforms screen query sort values into a Mongoose sort pipeline stage. */
