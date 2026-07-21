@@ -8,7 +8,6 @@
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
 import ShowingRoutes from "@/domains/showing/routing/ShowingRoutes.js";
-import SeatMapRoutes from "@/domains/seatmap/routing/SeatMapRoutes.js";
 import {CustomerViewDataRoutes} from "@/domains/customer/features/customer-details/routing";
 
 /**
@@ -16,7 +15,6 @@ import {CustomerViewDataRoutes} from "@/domains/customer/features/customer-detai
  */
 const showingRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/showings", router: ShowingRoutes},
-    {path: "/api/v1/admin/seatmaps", router: SeatMapRoutes},
 ];
 
 /**

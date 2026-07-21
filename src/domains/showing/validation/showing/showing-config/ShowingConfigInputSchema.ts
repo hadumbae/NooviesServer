@@ -9,7 +9,7 @@
 
 import {z} from "zod";
 import {BooleanValueSchema}
-    from "../../../../../shared/schema/booleans/BooleanValueSchema.js";
+    from "@/shared/_schema/booleans/BooleanValueSchema.js";
 
 /**
  * Showing configuration input schema.

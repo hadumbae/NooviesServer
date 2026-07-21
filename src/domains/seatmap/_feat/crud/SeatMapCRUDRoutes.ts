@@ -12,10 +12,12 @@ import {create, destroy, find, findById, paginated, update} from "@/shared/_feat
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {aggregate} from "@/shared/_feat/generic-aggregate";
-import type {SeatMapSchemaFields} from "@/domains/seatmap/model/SeatMap.types";
-import SeatMap from "@/domains/seatmap/model/SeatMap.model";
-import {SeatMapInputSchema} from "@/domains/seatmap/schema/SeatMapInput.schema";
+import type {SeatMapSchemaFields} from "@/domains/seatmap/_model/seat-map/SeatMap.types";
+import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";
+import {SeatMapInputSchema} from "@/domains/seatmap/_feat/validate-submit/SeatMapInputSchema";
 import {SeatMapQueryOptionsSchema} from "@/domains/seatmap/_feat/validate-query";
+import {SeatMapPopulationPaths} from "@/domains/seatmap/_feat/query-population";
+import {handleDuplicateIndex} from "@/domains/seatmap/_model/seat-map/SeatMap.handlers";
 
 /**
  * CRUD route definitions for the SeatMap entity.
@@ -77,6 +79,8 @@ const routes: CRUDRoute<SeatMapSchemaFields>[] = [
 const router: Router = buildCRUDRoutes<SeatMapSchemaFields>({
     model: SeatMap,
     routes: routes,
+    populatePaths: SeatMapPopulationPaths,
+    onDuplicateIndex: handleDuplicateIndex,
 });
 
 /**

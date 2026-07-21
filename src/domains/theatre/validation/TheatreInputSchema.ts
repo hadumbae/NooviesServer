@@ -4,7 +4,7 @@
 
 import { z } from "zod";
 import { NonEmptyStringSchema } from "@/shared/schema/strings/NonEmptyStringSchema";
-import { NonNegativeNumberSchema } from "@/shared/schema/numbers/NonNegativeNumberSchema";
+import { NonNegativeNumberSchema } from "@/shared/_schema/numbers/numbers/NonNegativeNumberSchema";
 import { LocationSchema } from "@/shared/schema/theatre/Location.schema";
 
 /**

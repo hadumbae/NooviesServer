@@ -5,7 +5,7 @@
 
 import {z} from "zod";
 import {URLStringSchema} from "@/shared/schema/strings/URLStringSchema";
-import {CoercedBooleanValueSchema} from "@/shared/schema/booleans/CoercedBooleanValueSchema";
+import {CoercedBooleanValueSchema} from "@/shared/_schema/booleans/CoercedBooleanValueSchema";
 import {ISO6391LanguageCodeSchema} from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
 import {ISO3166Alpha2CountryCodeSchema} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
 import {UTCDateOnlySchema} from "@/shared/schema/date-time/UTCDateOnlySchema";

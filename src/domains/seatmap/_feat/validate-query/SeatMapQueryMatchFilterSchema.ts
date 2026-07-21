@@ -6,7 +6,7 @@
 import {z} from "zod";
 import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema";
 import {URLParamPositiveNumberSchema} from "@/shared/schema/url/URLParamPositiveNumberSchema";
-import {SeatMapStatusEnumSchema} from "@/domains/seatmap/schema/enum/SeatMapStatusEnumSchema";
+import {SeatMapStatusSchema} from "@/domains/seatmap/_validation/fields/SeatMapStatusSchema";
 
 /**
  * Zod schema defining match-level filters for SeatMap queries.
@@ -15,7 +15,7 @@ export const SeatMapQueryMatchFilterSchema = z.object({
     showing: URLParamObjectIDSchema,
     seat: URLParamObjectIDSchema,
     price: URLParamPositiveNumberSchema,
-    status: SeatMapStatusEnumSchema.optional(),
+    status: SeatMapStatusSchema.optional(),
 });
 
 /**

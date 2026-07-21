@@ -10,8 +10,8 @@ import type {
     ReserveSeatTicketData,
     ReserveTicketsParams
 } from "@/domains/reservations/_feat/reserve-tickets/ticket-service/service.types";
-import SeatMap from "@/domains/seatmap/model/SeatMap.model";
-import type {SeatMapSchemaFields} from "@/domains/seatmap/model/SeatMap.types";
+import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";
+import type {SeatMapSchemaFields} from "@/domains/seatmap/_model/seat-map/SeatMap.types";
 import {type ReserveTicketPersistenceData} from "@/domains/reservations/_feat/reserve-tickets/schemas";
 import {Seat} from "@/domains/seat/model";
 import {

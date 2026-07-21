@@ -5,7 +5,7 @@
 import createHttpError from "http-errors";
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import {Types} from "mongoose";
-import type {PositiveInteger} from "@/shared/schema/numbers/PositiveIntegerSchema";
+import type {PositiveInteger} from "@/shared/_schema/numbers/numbers/PositiveIntegerSchema";
 import {Movie, type MovieSchemaFields} from "@/domains/movies/_models/movie";
 import type {MovieCreditSchemaFields} from "@/domains/movie-credits/_models/credit/MovieCredit.types";
 import {

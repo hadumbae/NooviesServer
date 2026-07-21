@@ -6,7 +6,7 @@ import { Schema, type SchemaDefinitionProperty } from "mongoose";
 import type { ReservedShowingSnapshotSchemaFields } from "@/domains/reservations/_model/showing-snapshot/ReservedShowingSnapshot.types.js";
 import ISO6391CodeConstant from "@/shared/constants/language/ISO6391CodeConstant";
 import { MovieSnapshotSchema } from "@/domains/movies/_models/movie-snapshot/MovieSnapshot.schema";
-import { ReservedSeatSnapshotSchema } from "@/domains/seatmap/model/seat-map-snapshot/ReservedSeatSnapshot.schema";
+import { ReservedSeatSnapshotSchema } from "@/domains/seatmap/_model/seat-map-snapshot/ReservedSeatSnapshot.schema";
 import { ScreenSnapshotSchema } from "@/domains/screen/models/screen-snapshot";
 import {TheatreSnapshotSchema} from "@/domains/theatre/model/theatre-snapshot";
 import {ReservationTypeConstant} from "@/domains/reservations/_validation";

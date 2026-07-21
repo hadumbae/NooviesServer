@@ -4,7 +4,7 @@
 
 import {z} from "zod";
 import {StringValueSchema} from "@/shared/schema/strings/StringValueSchema";
-import {PositiveIntegerSchema} from "@/shared/schema/numbers/PositiveIntegerSchema";
+import {PositiveIntegerSchema} from "@/shared/_schema/numbers/numbers/PositiveIntegerSchema";
 import {MulterImageFileMimeTypeSchema} from "./MulterImageFileMimeTypeSchema";
 import {MulterImageFileBufferSchema} from "@/shared/_feat/manage-multer-images/MulterImageFileBufferSchema";
 

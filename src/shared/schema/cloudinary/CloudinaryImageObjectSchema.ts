@@ -1,5 +1,5 @@
 import {z} from "zod";
-import { PositiveNumberSchema } from "../numbers/PositiveNumberSchema.js";
+import { PositiveNumberSchema } from "@/shared/_schema/numbers/numbers/PositiveNumberSchema";
 import { URLStringSchema } from "../strings/URLStringSchema.js";
 import { NonEmptyStringSchema } from "../strings/NonEmptyStringSchema.js";
 import preprocessEmptyToUndefined from "../../utility/schema/preprocessors/preprocessEmptyToUndefined.js";

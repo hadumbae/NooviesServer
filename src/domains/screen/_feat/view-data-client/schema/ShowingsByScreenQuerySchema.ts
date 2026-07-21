@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
 import {SimpleDateStringSchema} from "@/shared/schema/date-time/SimpleDateStringSchema";
-import {NonNegativeNumberSchema} from "@/shared/schema/numbers/NonNegativeNumberSchema";
+import {NonNegativeNumberSchema} from "@/shared/_schema/numbers/numbers/NonNegativeNumberSchema";
 import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 
 /**

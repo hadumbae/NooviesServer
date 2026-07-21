@@ -3,9 +3,9 @@
  */
 
 import {type FilterQuery, Types} from "mongoose";
-import type {NonNegativeNumber} from "@/shared/schema/numbers/NonNegativeNumberSchema";
+import type {NonNegativeNumber} from "@/shared/_schema/numbers/numbers/NonNegativeNumberSchema";
 import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
-import type {PositiveInteger} from "@/shared/schema/numbers/PositiveIntegerSchema";
+import type {PositiveInteger} from "@/shared/_schema/numbers/numbers/PositiveIntegerSchema";
 import type {ISO3166Alpha2CountryCode} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
 import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
 import {generateFuzzyRegexPattern} from "@/shared/utility/regex/generateFuzzyRegexPattern";

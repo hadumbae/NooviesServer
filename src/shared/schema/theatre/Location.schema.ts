@@ -2,7 +2,7 @@ import {z} from "zod";
 import {NonEmptyStringSchema} from "../strings/NonEmptyStringSchema.js";
 import {IANATimezoneSchema} from "../date-time/IANATimezoneSchema.js";
 import {ISO3166Alpha2CountryCodeSchema} from "../enums/ISO3166Alpha2CountryCodeSchema.js";
-import {NumberValueSchema} from "../numbers/NumberValueSchema.js";
+import {NumberValueSchema} from "@/shared/_schema/numbers/numbers/NumberValueSchema";
 
 /**
  * A schema for validating longitude values.

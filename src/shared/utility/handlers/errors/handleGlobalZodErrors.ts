@@ -48,12 +48,15 @@ export const handleGlobalZodErrors = (error: unknown, res: Response) => {
     }
 
     if (error instanceof ZodError) {
-        const {message, errors} = {
-            message: "Validation failed.",
+        const payload = {
+            statusCode: "422",
+            errorCode: "form_validation_failed",
+            issue: "Validation Failed",
+            description: "Form Validation Failed. Please try again.",
             errors: error.errors
         };
 
-        res.status(422).json({message, errors});
+        res.status(422).json(payload);
         return;
     }
 

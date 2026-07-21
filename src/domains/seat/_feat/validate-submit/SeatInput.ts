@@ -5,9 +5,9 @@
 
 import { z } from 'zod';
 import { NonEmptyStringSchema } from "@/shared/schema/strings/NonEmptyStringSchema";
-import { BooleanValueSchema } from "@/shared/schema/booleans/BooleanValueSchema";
-import { PositiveNumberSchema } from "@/shared/schema/numbers/PositiveNumberSchema";
-import { NonNegativeNumberSchema } from "@/shared/schema/numbers/NonNegativeNumberSchema";
+import { BooleanValueSchema } from "@/shared/_schema/booleans/BooleanValueSchema";
+import { PositiveNumberSchema } from "@/shared/_schema/numbers/numbers/PositiveNumberSchema";
+import { NonNegativeNumberSchema } from "@/shared/_schema/numbers/numbers/NonNegativeNumberSchema";
 import { ObjectIdStringSchema } from "@/shared/schema/mongoose/ObjectIdStringSchema";
 import { SeatLayoutTypeSchema } from "@/domains/seat/validation/SeatLayoutTypeSchema";
 import {SeatTypeSchema} from "@/domains/seat/validation";

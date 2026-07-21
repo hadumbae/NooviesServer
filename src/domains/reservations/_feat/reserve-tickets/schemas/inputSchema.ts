@@ -5,7 +5,7 @@
 import {z} from "zod";
 import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
 import generateArraySchema from "@/shared/utility/schema/generateArraySchema";
-import {PositiveNumberSchema} from "@/shared/schema/numbers/PositiveNumberSchema";
+import {PositiveNumberSchema} from "@/shared/_schema/numbers/numbers/PositiveNumberSchema";
 import {ISO4217CurrencyCodeEnumSchema} from "@/shared/schema/enums/ISO4217CurrencyCodeEnumSchema";
 import {ReservationTypeConstant, ReservationTypeSchema} from "@/domains/reservations/_validation";
 

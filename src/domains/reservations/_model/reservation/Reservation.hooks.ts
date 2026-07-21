@@ -10,7 +10,7 @@ import {
     generateReservationUniqueCode
 } from "@/domains/reservations/_feat/generate-reservation-code/index.js";
 import type {ReservationStatus} from "@/domains/reservations/_validation";
-import SeatMap from "@/domains/seatmap/model/SeatMap.model";
+import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";
 import generateSlug from "@/shared/utility/generateSlug";
 import type {PopulatedShowing} from "@/domains/showing/models/showing/Showing.types";
 import {createReservedShowingSnapshot, reserveReservationSeats} from "@/domains/reservations/_feat/reserve-tickets";

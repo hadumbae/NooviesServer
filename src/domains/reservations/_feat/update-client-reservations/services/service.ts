@@ -9,7 +9,7 @@ import type {
     CheckoutClientReservationParams
 } from "@/domains/reservations/_feat/update-client-reservations/services/service.types";
 import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
-import SeatMap from "@/domains/seatmap/model/SeatMap.model";
+import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";
 import {
     assertReservationExists,
     assertReservationNotExpired,

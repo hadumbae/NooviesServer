@@ -4,7 +4,7 @@
  */
 
 import {z} from "zod";
-import {CoercedNonNegativeNumberSchema} from "@/shared/schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
+import {CoercedNonNegativeNumberSchema} from "@/shared/_schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
 import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 
 /**

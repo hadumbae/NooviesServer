@@ -7,7 +7,7 @@ import {z} from "zod";
 import {DateTime} from "luxon";
 import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
 import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
-import {PositiveNumberSchema} from "@/shared/schema/numbers/PositiveNumberSchema";
+import {PositiveNumberSchema} from "@/shared/_schema/numbers/numbers/PositiveNumberSchema";
 import {ShowingStatusEnumSchema} from "./ShowingStatusEnumSchema.js";
 import {SimpleDateStringSchema} from "@/shared/schema/date-time/SimpleDateStringSchema";
 import {TimeStringSchema} from "@/shared/schema/date-time/TimeStringSchema";

@@ -3,8 +3,8 @@
  */
 
 import {Types} from "mongoose";
-import type {SeatMapSchemaFields} from "@/domains/seatmap/model/SeatMap.types";
-import SeatMap from "@/domains/seatmap/model/SeatMap.model";
+import type {SeatMapSchemaFields} from "@/domains/seatmap/_model/seat-map/SeatMap.types";
+import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";
 import {SeatMapPopulationPaths} from "@/domains/seatmap/_feat/query-population";
 import createHttpError from "http-errors";
 

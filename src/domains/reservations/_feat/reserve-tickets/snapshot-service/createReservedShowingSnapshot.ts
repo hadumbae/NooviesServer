@@ -8,7 +8,7 @@ import {DocumentNotFoundError} from "@/shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@/shared/errors/InconsistentDataError";
 import {createMovieSnapshot} from "@/domains/movies/_feat/manage-snapshots/createMovieSnapshot";
 import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
-import {createReservedSeatSnapshot} from "@/domains/seatmap/utilities/snapshots/createReservedSeatSnapshot";
+import {createReservedSeatSnapshot} from "@/domains/seatmap/_feat/manage-snapshots/createReservedSeatSnapshot";
 import {ReservedShowingSnapshotInputSchema} from "@/domains/reservations/_feat/reserve-tickets/schemas";
 import {createScreenSnapshot} from "@/domains/screen/_feat/build-snapshot";
 import {createTheatreSnapshot} from "@/domains/theatre/utilities";

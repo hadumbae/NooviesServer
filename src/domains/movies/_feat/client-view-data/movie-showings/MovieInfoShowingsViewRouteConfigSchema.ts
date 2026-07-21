@@ -5,7 +5,7 @@
 import {StringValueSchema} from "@/shared/schema/strings/StringValueSchema";
 import {ISO3166Alpha2CountryCodeSchema} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
 import {z} from "zod";
-import {PositiveIntegerSchema} from "@/shared/schema/numbers/PositiveIntegerSchema";
+import {PositiveIntegerSchema} from "@/shared/_schema/numbers/numbers/PositiveIntegerSchema";
 import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 import {preprocessToNumber} from "@/shared/_feat/zod-preprocessors/preprocessToNumber";
 

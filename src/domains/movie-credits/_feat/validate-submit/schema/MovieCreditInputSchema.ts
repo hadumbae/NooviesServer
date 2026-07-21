@@ -5,10 +5,10 @@
 
 import {z} from "zod";
 
-import {PositiveNumberSchema} from "@/shared/schema/numbers/PositiveNumberSchema";
+import {PositiveNumberSchema} from "@/shared/_schema/numbers/numbers/PositiveNumberSchema";
 import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
 import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
-import {CoercedBooleanValueSchema} from "@/shared/schema/booleans/CoercedBooleanValueSchema";
+import {CoercedBooleanValueSchema} from "@/shared/_schema/booleans/CoercedBooleanValueSchema";
 import {RoleTypeDepartmentSchema} from "@/domains/role-types/_validation/schema/RoleTypeDepartmentSchema";
 
 /**

@@ -11,7 +11,7 @@ import type {ScreenSchemaFields} from "@/domains/screen/models/screen";
 import {ShowingVirtualPopulationPaths} from "@/domains/showing/_feat/query-population";
 import {createShowingSeatMap} from "@/domains/seatmap/_feat/manage-showing-seat-maps";
 import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/queries/ShowingSeatMapVirtualPipelines";
-import SeatMap from "@/domains/seatmap/model/SeatMap.model";
+import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";
 import {Movie} from "@/domains/movies/_models/movie";
 import generateSlug from "@/shared/utility/generateSlug";
 
