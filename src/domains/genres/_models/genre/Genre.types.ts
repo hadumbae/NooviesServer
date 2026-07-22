@@ -5,8 +5,8 @@
 
 import type {CloudinaryImageObject} from "@/shared/schema/cloudinary/CloudinaryImageObjectSchema";
 import {Types} from "mongoose";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
-import type {ModelTimestamps} from "@/shared/types/schema/ModelTimestamps";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
+import type {ModelTimestamps} from "@/shared/_types/model/ModelTimestamps";
 
 /**
  * Shape of a Genre document within MongoDB.

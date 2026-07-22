@@ -4,7 +4,7 @@
 
 import type {Model} from "mongoose";
 import type {NextFunction, Request, RequestHandler, Response} from "express";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 
 type ModelFormParams<TModel extends BaseModel> = {
     model: Model<TModel>;

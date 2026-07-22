@@ -11,7 +11,7 @@
  * - Reservation processing
  */
 
-import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
 
 /**
  * Default populate configuration for showing documents.

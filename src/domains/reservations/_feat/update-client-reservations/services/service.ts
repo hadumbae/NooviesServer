@@ -15,7 +15,7 @@ import {
     assertReservationNotExpired,
     assertReservationOwnership
 } from "@/domains/reservations/_feat/assert-reservations";
-import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";
 import type {ReservationSchemaFields} from "@/domains/reservations/_model/reservation";
 
 /**

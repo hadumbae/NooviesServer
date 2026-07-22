@@ -8,7 +8,7 @@ import type {BaseConstructorParams} from "../BaseController.js";
 import type {BaseRepository} from "../../repository/BaseRepository.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
-import type {ModelObject} from "../../types/ModelObject.js";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import {Types} from "mongoose";
 
 /**

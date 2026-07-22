@@ -6,8 +6,8 @@
  */
 
 import type {Model} from "mongoose";
-import type {PopulatePath} from "../../types/mongoose/PopulatePath.js";
-import type {ModelObject} from "../../types/ModelObject.js";
+import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import type {CRUDBaseConstructor} from "./CRUDBase.types.js";
 import {PersistenceManager} from "../managers/PersistenceManager.js";
 

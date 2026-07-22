@@ -5,7 +5,7 @@
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import type {TheatreSchemaFields} from "@/domains/theatre/model/theatre/Theatre.types";
 import type {ScreenSchemaFields} from "@/domains/screen/_models/screen";
-import type {PaginationReturns} from "@/shared/types/PaginationReturns";
+import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns";
 import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
 
 /** Configuration for fetching data for the Theatre Details administrative view. */

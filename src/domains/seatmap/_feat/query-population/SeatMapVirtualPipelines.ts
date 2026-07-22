@@ -2,7 +2,8 @@
  * @fileoverview Defines MongoDB aggregation pipelines for populating virtual seat map fields.
  */
 
-import type {VirtualPipelineStages} from "@/shared/types/mongoose/AggregatePipelineStages.js";
+
+import {VirtualPipelineStages} from "@/shared/_types/mongoose-aggregation/VirtualPipelineStages";
 
 /** Aggregation stages to join seat data and calculate final pricing for seat map entries. */
 export const SeatMapVirtualPipelines: VirtualPipelineStages = [

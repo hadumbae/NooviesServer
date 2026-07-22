@@ -2,9 +2,9 @@
  * @fileoverview Type definitions for generic CRUD controller factory handlers.
  */
 
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
-import type {PopulatePath} from "@/shared/types/mongoose/PopulatePath";
+import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
+import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
 import type {Model} from "mongoose";
 import type {DuplicateIndexHandler} from "@/shared/_feat/generic-crud/types/DuplicateIndexHandler";
 

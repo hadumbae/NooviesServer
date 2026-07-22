@@ -1,7 +1,7 @@
 /** @fileoverview Controller handlers for fetching lean, optimized data for UI inputs. */
 
 import type {Request, Response} from "express";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {FetchLeanDataConfig} from "@/domains/ui-inputs/handlers/service.types";
 import {fetchLeanMovies, fetchLeanPersons, fetchLeanRoleTypes} from "@/domains/ui-inputs/handlers/service";
 

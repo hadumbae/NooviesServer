@@ -3,7 +3,7 @@
  * @filename crudFindByUniqueCode.types.ts
  */
 
-import type {BaseModelWithUniqueCode} from "@/shared/types/schema/BaseModel";
+import type {BaseModelWithUniqueCode} from "@/shared/_types/model/BaseModel";
 import type {BaseCRUDParams} from "@/shared/_feat/generic-crud/types";
 import type {UniqueCode} from "@/shared/_schema/codes";
 

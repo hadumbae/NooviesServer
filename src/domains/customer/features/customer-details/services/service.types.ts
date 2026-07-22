@@ -8,7 +8,7 @@ import type {LeanUserSchemaFields} from "@/domains/users/model/user/User.types"
 import type {CustomerMovieReviewSummary, MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/review/MovieReview.types"
 import type {MovieReviewUniqueCode} from "@/domains/movie-reviews/_validation/review-code/MovieReviewUniqueCodeSchema"
 import type {RequestPaginationOptions} from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema"
-import type {PaginationReturns} from "@/shared/types/PaginationReturns"
+import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns"
 import type {ReservationSchemaFields} from "@/domains/reservations/_model/reservation";
 import type {MovieReviewModerationLogSchemaFields} from "@/domains/movie-reviews/_models";
 

@@ -1,20 +1,3 @@
-/**
- * @file ShowingQueryOptionService.ts
- *
- * Query option service for the Showing domain.
- *
- * Translates validated URL query parameters into Mongoose-compatible
- * query filters, sort objects, and aggregation pipeline stages.
- *
- * Responsibilities:
- * - Parse and validate query params
- * - Build native `$match` filters and `$sort` clauses
- * - Build reference-based `$lookup` filter pipelines
- * - Assemble a unified query option structure
- * - Provide population pipelines
- */
-
-import type IReferenceQueryOptionService from "../../../../shared/types/query-options/IReferenceQueryOptionService.js";
 import type {Request} from "express";
 import {
     type ShowingQueryMatchFilters,
@@ -24,36 +7,16 @@ import {
 import {RequestValidationError} from "@/shared/errors/RequestValidationError";
 import type {FilterQuery} from "mongoose";
 import filterNullishAttributes from "../../../../shared/utility/filterNullishAttributes.js";
-import type {
-    QueryOptionTypes,
-    SortQuery
-} from "@/shared/types/query-options/QueryOptionService.types";
-import type {
-    ReferenceFilterPipelineStages,
-    ReferenceSortPipelineStages
-} from "@/shared/types/mongoose/AggregatePipelineStages";
-import type {LookupMatchStageOptions} from "@/shared/types/mongoose/LookupMatchStage.types";
-import generateReferenceFilterPipelineStages
-    from "../../../../shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
+import type {QueryOptionTypes, SortQuery} from "@/shared/types/query-options/QueryOptionService.types";
+import type {LookupMatchStageOptions} from "@/shared/_types/mongoose/LookupMatchStageOptions";
+import generateReferenceFilterPipelineStages from "@/shared/utility/mongoose/generateReferenceFilterPipelineStages.js";
 import type {ShowingSchemaFields} from "../../models/showing/Showing.types.js";
+import type IReferenceQueryOptionService from "@/shared/types/query-options/IReferenceQueryOptionService.js";
 
 
-/**
- * Builds query options and aggregation pipelines for
- * Showing list and search endpoints.
- */
 export default class ShowingQueryOptionService
     implements IReferenceQueryOptionService<ShowingSchemaFields, ShowingQueryOptions, ShowingQueryMatchFilters> {
 
-    /**
-     * Parses and validates query parameters from an Express request.
-     *
-     * @param req - Express request containing raw query params
-     * @returns Validated Showing query options
-     *
-     * @throws {RequestValidationError}
-     * Thrown when validation fails
-     */
     fetchQueryParams(req: Request): ShowingQueryOptions {
         const {data, success, error} = ShowingQueryOptionSchema.safeParse(req.query);
 
@@ -68,12 +31,6 @@ export default class ShowingQueryOptionService
         return data;
     }
 
-    /**
-     * Generates match filters for native Showing fields.
-     *
-     * @param options - Validated query options
-     * @returns MongoDB `$match` filter object
-     */
     generateMatchFilters(options: ShowingQueryOptions): FilterQuery<ShowingQueryMatchFilters> {
         return filterNullishAttributes({
             movie: options.movie,
@@ -86,12 +43,6 @@ export default class ShowingQueryOptionService
         });
     }
 
-    /**
-     * Generates sort options for native Showing fields.
-     *
-     * @param options - Validated query options
-     * @returns Mongoose-compatible sort object
-     */
     generateMatchSorts(options: ShowingQueryOptions): SortQuery<ShowingSchemaFields> {
         return filterNullishAttributes({
             startTime: options.sortByStartTime,
@@ -99,12 +50,6 @@ export default class ShowingQueryOptionService
         });
     }
 
-    /**
-     * Generates reference-based filter pipeline stages.
-     *
-     * @param options - Validated query options
-     * @returns Aggregation pipeline stages for reference filtering
-     */
     generateReferenceFilters(options: ShowingQueryOptions): ReferenceFilterPipelineStages {
         const {
             movieSlug,
@@ -151,22 +96,10 @@ export default class ShowingQueryOptionService
         return generateReferenceFilterPipelineStages({stages});
     }
 
-    /**
-     * Generates reference-based sort pipeline stages.
-     *
-     * @remarks
-     * No reference-level sorting is currently supported.
-     */
     generateReferenceSorts(options: ShowingQueryOptions): ReferenceSortPipelineStages {
         return [];
     }
 
-    /**
-     * Builds the complete query option structure.
-     *
-     * @param options - Validated query options
-     * @returns Composed query options
-     */
     generateQueryOptions(options: ShowingQueryOptions): QueryOptionTypes<ShowingSchemaFields, ShowingQueryMatchFilters> {
         return {
             match: {

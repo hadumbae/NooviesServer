@@ -4,18 +4,18 @@
  * Type contracts for Showing-specific write operations.
  */
 
-import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
 import type {ShowingInput} from "../validation/ShowingInputSchema.js";
 import type {ShowingSchemaFields} from "../models/showing/Showing.types.js";
 import {Types} from "mongoose";
-import type {SimpleDateString} from "../../../shared/schema/date-time/SimpleDateStringSchema.js";
-import type {TimeString} from "../../../shared/schema/date-time/TimeStringSchema.js";
-import type {IANATimezone} from "../../../shared/schema/date-time/IANATimezoneSchema.js";
+import type {SimpleDateString} from "@/shared/schema/date-time/SimpleDateStringSchema.js";
+import type {TimeString} from "@/shared/schema/date-time/TimeStringSchema.js";
+import type {IANATimezone} from "@/shared/schema/date-time/IANATimezoneSchema.js";
 import type {
     CRUDCreateParams,
     CRUDUpdateParams,
     WriteMethods,
-} from "../../../shared/repository/operations/CRUDWriter.types.js";
+} from "@/shared/repository/operations/CRUDWriter.types.js";
 
 /**
  * Constructor options for ShowingCRUDWriter.
@@ -59,8 +59,7 @@ export type ShowingDateTimeReturns = {
  * Adds domain-aware behavior on top of generic CRUD writes.
  */
 export interface ShowingWriteMethods
-    extends WriteMethods<ShowingSchemaFields>
-{
+    extends WriteMethods<ShowingSchemaFields> {
     generateShowingSlug(movieID: string): Promise<string>;
 
     buildDate(params: BuildShowingDateParams): Date;

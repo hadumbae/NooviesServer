@@ -3,7 +3,7 @@
  * @filename crudDestroy.ts
  */
 
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {Request, Response} from "express";
 import createHttpError from "http-errors";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";

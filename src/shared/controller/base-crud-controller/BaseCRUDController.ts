@@ -7,15 +7,15 @@ import {type Request, type Response} from "express";
 import type {BaseRepository} from "../../repository/BaseRepository.js";
 import BaseController from "../BaseController.js";
 import isValidObjectId from "../../utility/mongoose/isValidObjectId.js";
-import type {PopulationPipelineStages} from "../../types/mongoose/AggregatePipelineStages.js";
 import type AggregateQueryService from "../../services/aggregate/AggregateQueryService.js";
 import type {
     BaseControllerCRUDMethods,
     BaseCRUDControllerConstructorParams,
 } from "./BaseControllerCRUDMethods.js";
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
-import type {ModelObject} from "../../types/ModelObject.js";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import type {AggregateQueryParams} from "../../services/aggregate/AggregateQueryService.types.js";
+import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
 
 /**
  * Base CRUD controller providing standardized Express handlers.

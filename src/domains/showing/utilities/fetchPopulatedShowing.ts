@@ -13,7 +13,7 @@
  * Mongoose document overhead.
  */
 
-import type {PopulatePath} from "../../../shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
 import Showing from "../models/showing/Showing.model.js";
 import {Types} from "mongoose";
 import type {PopulatedShowing} from "../models/showing/Showing.types.js";

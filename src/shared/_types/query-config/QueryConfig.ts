@@ -2,7 +2,7 @@
  * @fileoverview Defines options for configuring repository and query operations.
  */
 
-import type {PopulatePath} from "@/shared/types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
 
 /** Options that control how repository operations retrieve, enrich, and shape documents. */
 export type QueryConfig = {

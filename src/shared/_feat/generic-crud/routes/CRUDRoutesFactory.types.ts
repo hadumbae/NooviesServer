@@ -3,9 +3,9 @@
  *
  */
 
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {Model} from "mongoose";
-import type {PopulatePath} from "@/shared/types/mongoose/PopulatePath";
+import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
 import type {RequestHandler} from "express";
 import type {CRUDControllerHandler, DuplicateIndexHandler} from "@/shared/_feat/generic-crud/types";
 

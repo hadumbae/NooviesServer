@@ -4,7 +4,7 @@
  */
 
 import type {Request, Response} from "express";
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
+import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 import {fetchRequestIP} from "@/shared/utility/request/fetchRequestIP";
 import {fetchIPData} from "../services/IpApiService.js";
 

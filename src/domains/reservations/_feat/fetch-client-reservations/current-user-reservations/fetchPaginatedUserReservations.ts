@@ -3,7 +3,7 @@
  */
 
 import {Types} from "mongoose";
-import type {PaginationReturns} from "@/shared/types/PaginationReturns";
+import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns";
 import {Reservation, type ReservationSchemaFields} from "@/domains/reservations/_model/reservation";
 import {ReservationPopulatePaths} from "@/domains/reservations/_feat/query-population";
 import type {QueryPaginationParams} from "@/shared/schema/query/QueryPaginationParamsSchema";

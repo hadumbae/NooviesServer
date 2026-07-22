@@ -12,7 +12,7 @@ import type {
     ReviewDetailsByMovieReturns
 } from "./service.types";
 import type {MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/review/MovieReview.types";
-import type {PaginationReturns} from "@/shared/types/PaginationReturns";
+import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns";
 import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model";
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
 import {MovieReviewPopulatePaths} from "@/domains/movie-reviews/_feat/query-population/MovieReviewPopulatePaths";

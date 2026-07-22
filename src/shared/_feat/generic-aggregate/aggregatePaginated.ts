@@ -6,7 +6,7 @@
 
 import type {RequestOptions} from "@/shared/_feat/fetch-request-options/schemas";
 import type {PipelineStage} from "mongoose";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {AggregateBaseConfig} from "@/shared/_feat/generic-aggregate/configTypes";
 import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines";
 import type {

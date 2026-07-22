@@ -3,7 +3,7 @@
  * @filename crudSoftDelete.ts
  */
 
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {SoftDeleteDocumentConfig} from "@/shared/_feat/generic-crud/path-handlers/soft-delete/crudSoftDelete.types";
 import {InvalidMethodError} from "@/shared/errors/InvalidMethodError";
 import type {Request, Response} from "express";

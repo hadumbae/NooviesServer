@@ -4,7 +4,7 @@
  */
 
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
 import type {FindDocumentByIdConfig} from "@/shared/_feat/generic-crud/path-handlers/find-by-id/crudFindByID.types";

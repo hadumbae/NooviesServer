@@ -12,7 +12,8 @@
  * showing documents are required.
  */
 
-import type {PopulationPipelineStages} from "../../../shared/types/mongoose/AggregatePipelineStages.js";
+
+import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
 
 /**
  * Aggregation pipeline for populating core `Showing` references.

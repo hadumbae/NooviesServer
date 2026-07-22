@@ -8,9 +8,9 @@ import type {ISO4217CurrencyCode} from "@/shared/schema/enums/ISO4217CurrencyCod
 import type {ReservationStatus} from "@/domains/reservations/_validation/ReservationStatusSchema";
 import type {ReservationType} from "@/domains/reservations/_validation/ReservationTypeSchema";
 import type {NonNegativeNumber} from "@/shared/_schema/numbers/numbers/NonNegativeNumberSchema";
-import type {BaseModelWithSlug} from "@/shared/types/schema/BaseModel";
-import type {ModelTimestamps} from "@/shared/types/schema/ModelTimestamps";
-import type {ModelSoftDelete} from "@/shared/types/schema/ModelSoftDelete";
+import type {BaseModelWithSlug} from "@/shared/_types/model/BaseModel";
+import type {ModelTimestamps} from "@/shared/_types/model/ModelTimestamps";
+import type {ModelSoftDelete} from "@/shared/_types/model/ModelSoftDelete";
 
 /** Composite metadata for the Reservation model including slug, timestamps, and soft-delete fields. */
 type ReservationModelMeta = BaseModelWithSlug & ModelTimestamps & ModelSoftDelete;

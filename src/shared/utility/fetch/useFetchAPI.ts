@@ -6,7 +6,7 @@
 
 import type {URLString} from "../../schema/strings/URLStringSchema.js";
 import {executeFetch} from "./executeFetch.js";
-import type {RequestMethod} from "../../types/request-options/RequestMethods.js";
+import type {RequestMethod} from "@/shared/_types/requests/RequestMethods";
 import {handleBadResponse} from "./handleBadResponse.js";
 import {parseJSON} from "../parseJSON.js";
 import {getResponseText} from "./getResponseText.js";

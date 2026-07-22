@@ -2,7 +2,7 @@
  * @fileoverview Express controllers for handling reservation update requests.
  */
 
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
+import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 import type {Request, Response} from "express";
 import {
     cancelReservation, refundReservation,

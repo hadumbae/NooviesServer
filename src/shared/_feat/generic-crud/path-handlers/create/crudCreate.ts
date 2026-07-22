@@ -3,14 +3,14 @@
  */
 
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
 import type {CreateDocumentConfig} from "@/shared/_feat/generic-crud/path-handlers/create/crudCreate.types";
 import {isDuplicateIndexError} from "@/shared/utility/mongoose/isDuplicateIndexError";
 import {handleDuplicateIndexError} from "@/shared/utility/mongoose/handleDuplicateIndexError";
 import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
+import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 
 /**
  * Instantiates, persists, and populates a new Mongoose document.

@@ -3,7 +3,7 @@
  * CRUDWriter.types.ts
  */
 
-import type {ModelObject} from "../../types/ModelObject.js";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import {Types} from "mongoose";
 import type {QueryConfig} from "@/shared/_types/query-config/QueryConfig";
 

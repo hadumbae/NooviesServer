@@ -4,7 +4,7 @@
  */
 
 import type {URLString} from "../../schema/strings/URLStringSchema.js";
-import type {RequestMethod} from "../../types/request-options/RequestMethods.js";
+import type {RequestMethod} from "@/shared/_types/requests/RequestMethods";
 import {UseFetchError} from "../../errors/UseFetchError.js";
 
 /**

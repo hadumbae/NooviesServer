@@ -1,7 +1,7 @@
 import type {CRUDReader} from "./operations/CRUDReader.js";
 import type {CRUDWriter} from "./operations/CRUDWriter.js";
 import type {CRUDDeleter} from "./operations/CRUDDeleter.js";
-import type {ModelObject} from "../types/ModelObject.js";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import type {CRUDBaseConstructor} from "./base/CRUDBase.types.js";
 
 /**

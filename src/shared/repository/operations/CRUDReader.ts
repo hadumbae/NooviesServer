@@ -1,4 +1,4 @@
-import type {ModelObject} from "../../types/ModelObject.js";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import populateQuery from "../../utility/mongoose/populateQuery.js";
 import type {
     CRUDCountParams,

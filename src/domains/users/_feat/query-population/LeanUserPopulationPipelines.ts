@@ -2,7 +2,8 @@
  * @fileoverview Aggregation pipelines for lean User population.
  */
 
-import type {PopulationPipelineStages} from "@/shared/types/mongoose/AggregatePipelineStages.js";
+
+import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
 
 /**
  * Aggregation stages to populate a user reference with limited fields.

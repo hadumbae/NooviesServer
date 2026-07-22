@@ -8,7 +8,7 @@ import {BookingError} from "@/shared/errors/reservations/BookingError";
 import {Types} from "mongoose";
 import {Reservation} from "@/domains/reservations/_model/reservation";
 import type {AssertReservationOwnershipConfig} from "@/domains/reservations/_feat/assert-reservations/service.types";
-import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";
 
 /**
  * Retrieves a reservation document or throws a 404 error if not found.

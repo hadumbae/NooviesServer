@@ -5,7 +5,7 @@
 import {Types} from "mongoose";
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import type {QueryConfig} from "@/shared/_types";
-import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";
 import {Person, type PersonSchemaFields} from "@/domains/persons";
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
 import {fetchOrFailQuery} from "@/shared/utility/mongoose/fetchOrFailQuery";

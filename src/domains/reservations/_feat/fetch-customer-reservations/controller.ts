@@ -3,7 +3,7 @@
  */
 
 import type {Request, Response} from "express";
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes.js";
+import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 import {fetchByUniqueCode} from "@/domains/reservations/_feat/fetch-customer-reservations/service";
 
 /** Retrieves a single reservation using the unique code provided in the request parameters. */

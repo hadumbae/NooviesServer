@@ -2,7 +2,7 @@
  * @fileoverview Data access function for retrieving a single administrative reservation record.
  */
 
-import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";
 import type {AdminReservation} from "@/domains/reservations/_feat/fetch-customer-reservations";
 import {Types} from "mongoose";
 import {Reservation} from "@/domains/reservations/_model/reservation";

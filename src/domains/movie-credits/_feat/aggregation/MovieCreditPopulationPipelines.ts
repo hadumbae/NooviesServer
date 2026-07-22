@@ -2,7 +2,8 @@
  * @fileoverview Defines MongoDB aggregation pipeline stages for populating movie credit relationships.
  */
 
-import type {PopulationPipelineStages} from "@/shared/types/mongoose/AggregatePipelineStages.js";
+
+import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
 
 /** Aggregation stages to populate movie, person, and roleType references in movie credit documents. */
 export const MovieCreditPopulationPipelines: PopulationPipelineStages = [

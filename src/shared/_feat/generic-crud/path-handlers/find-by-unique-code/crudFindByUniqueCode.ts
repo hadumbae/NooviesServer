@@ -3,7 +3,7 @@
  * @filename crudFindByUniqueCode.ts
  */
 
-import type {BaseModelWithUniqueCode} from "@/shared/types/schema/BaseModel";
+import type {BaseModelWithUniqueCode} from "@/shared/_types/model/BaseModel";
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
 import type {
     FindDocumentByUniqueCodeConfig

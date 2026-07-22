@@ -3,7 +3,7 @@
  */
 
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
 import {isDuplicateIndexError} from "@/shared/utility/mongoose/isDuplicateIndexError";
@@ -12,7 +12,7 @@ import type {UpdateDocumentConfig} from "@/shared/_feat/generic-crud/path-handle
 import {DocumentVersionError} from "@/shared/errors/DocumentVersionError";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
 import type {CRUDControllerHandlerConfig} from "@/shared/_feat/generic-crud/types/CRUDControllerHandler";
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
+import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 
 /**
  * Manages document retrieval, mutation, and persistence with built-in retry logic for Mongoose version conflicts.

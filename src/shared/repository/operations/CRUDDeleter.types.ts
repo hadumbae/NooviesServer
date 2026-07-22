@@ -4,7 +4,7 @@
  */
 
 import {Types} from "mongoose";
-import type {BaseModel} from "../../types/schema/BaseModel.js";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 
 /**
  * Parameters required to identify a single document for deletion.

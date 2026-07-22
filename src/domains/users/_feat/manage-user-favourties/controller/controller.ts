@@ -4,7 +4,7 @@
  */
 
 import type {Request, Response} from 'express';
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes.js";
+import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser.js";
 import QueryUtils from "@/shared/services/query-utils/QueryUtils.js";
 import * as UserFavouriteService from "@/domains/users/_feat/manage-user-favourties/service/service";

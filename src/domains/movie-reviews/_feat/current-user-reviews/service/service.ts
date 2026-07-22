@@ -18,7 +18,7 @@ import type {
 } from "@/domains/movie-reviews/_models/review/MovieReview.types";
 import createHttpError from "http-errors";
 import {DocumentVersionError} from "@/shared/errors/DocumentVersionError.js";
-import type {PaginationReturns} from "@/shared/types/PaginationReturns.js";
+import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns";
 import {
     MovieReviewPopulationPipelines
 } from "@/domains/movie-reviews/_feat/query-population/MovieReviewPopulationPipelines.js";

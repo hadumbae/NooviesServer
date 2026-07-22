@@ -7,7 +7,7 @@ import createHttpError from "http-errors";
 import type {CRUDDestroyParams, DeleteMethods} from "./CRUDDeleter.types.js";
 import {CRUDBase} from "../base/CRUDBase.js";
 import {InvalidMethodError} from "../../errors/InvalidMethodError.js";
-import type {BaseModel} from "../../types/schema/BaseModel.js";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 
 /**
  * Service providing standard and soft-deletion logic for {@link BaseModel} entities.

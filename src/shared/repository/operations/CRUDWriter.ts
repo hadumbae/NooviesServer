@@ -3,7 +3,7 @@
  * CRUDWriter.ts
  */
 
-import type { ModelObject } from "../../types/ModelObject.js";
+import type { ModelObject } from "@/shared/_types/model/ModelObject";
 import type {
     CRUDCreateParams,
     CRUDUpdateActionParams,

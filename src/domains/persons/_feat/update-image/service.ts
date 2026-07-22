@@ -3,7 +3,7 @@
  * Handles both the replacement and removal of image assets.
  */
 
-import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";
 import type {
     RemovePersonProfileImageConfig,
     UploadPersonProfileImageConfig

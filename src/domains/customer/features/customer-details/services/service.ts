@@ -19,7 +19,7 @@ import {
 } from "@/domains/customer/features/customer-details/utils/fetchRequiredCustomerByCode"
 import {MovieWithRatingPipelines} from "@/domains/movie-reviews/_feat/query-population/MovieWithRatingPipelines"
 import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population"
-import type {PaginationReturns} from "@/shared/types/PaginationReturns"
+import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns"
 import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines"
 import type {PipelineStage} from "mongoose"
 import {Reservation} from "@/domains/reservations/_model/reservation";

@@ -4,7 +4,7 @@
  */
 
 import populateQuery from "@/shared/utility/mongoose/populateQuery";
-import type {BaseModelWithSlug} from "@/shared/types/schema/BaseModel";
+import type {BaseModelWithSlug} from "@/shared/_types/model/BaseModel";
 import type {Request, Response} from "express";
 import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
 import type {FindDocumentBySlugConfig} from "@/shared/_feat/generic-crud/path-handlers/find-by-slug/crudFindBySlug.types";

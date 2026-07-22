@@ -4,7 +4,7 @@
  * fetches based on the presence of pagination parameters in the request options.
  */
 
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {AggregateBaseConfig} from "@/shared/_feat/generic-aggregate/configTypes";
 import type {RequestOptions} from "@/shared/_feat/fetch-request-options/schemas";
 import {aggregatePaginated} from "@/shared/_feat/generic-aggregate/aggregatePaginated";

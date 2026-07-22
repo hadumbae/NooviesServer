@@ -3,10 +3,10 @@
  * @filename fetchRequiredModelDocument.ts
  */
 
-import type {FetchRequiredByIdentifierParams} from "../../types/FetchRequiredTypes.js";
-import type {ModelObject} from "../../types/ModelObject.js";
+import type {FetchRequiredByIdentifierConfig} from "src/shared/_types/fetch-utils/FetchRequiredByIdentifierConfig";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import populateQuery from "../mongoose/populateQuery.js";
-import type {DocumentType} from "../../types/mongoose/DocumentType.js";
+import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";
 import createHttpError from "http-errors";
 
 /**
@@ -17,7 +17,7 @@ import createHttpError from "http-errors";
  * @typeParam TSchema - Schema field shape for the model.
  */
 export async function fetchRequiredModelDocument<TSchema extends ModelObject>(
-    {model, _id, slug, options, notFoundMessage}: FetchRequiredByIdentifierParams<TSchema>
+    {model, _id, slug, options, notFoundMessage}: FetchRequiredByIdentifierConfig<TSchema>
 ): Promise<DocumentType<TSchema>> {
     const filter = _id ? {_id} : {slug};
     const query = model.findOne(filter);

@@ -4,12 +4,12 @@
  * pre-validated query filters, and custom aggregation pipelines.
  */
 
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {Model, PipelineStage} from "mongoose";
 import {fetchRequestOptions} from "@/shared/_feat/fetch-request-options/utils";
 import type {Request, Response} from "express";
 import {aggregateQuery} from "@/shared/_feat/generic-aggregate/aggregateQuery";
-import type {ControllerAsyncFunc} from "@/shared/types/ControllerTypes";
+import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 
 type FactoryConfig<TSchema extends BaseModel> = {
     model: Model<TSchema>;

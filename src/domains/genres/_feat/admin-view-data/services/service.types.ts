@@ -5,7 +5,7 @@
 import type {MovieSchemaFields} from "@/domains/movies/_models/movie/Movie.types";
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import type {GenreSchemaFields} from "@/domains/genres/_models/genre";
-import type {PaginationReturns} from "@/shared/types/PaginationReturns";
+import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns";
 
 /**
  * Configuration for fetching genre metadata and its associated movies.

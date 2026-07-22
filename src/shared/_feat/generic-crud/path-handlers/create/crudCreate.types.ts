@@ -2,7 +2,7 @@
  * @fileoverview Type definitions for the generic Create CRUD operation.
  */
 
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {BaseCRUDParams} from "@/shared/_feat/generic-crud/types";
 import type {RequestOptions} from "@/shared/_feat/fetch-request-options/schemas";
 

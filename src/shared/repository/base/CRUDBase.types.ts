@@ -4,9 +4,9 @@
  * Type definitions for constructing CRUD base repositories.
  */
 
-import type {ModelObject} from "../../types/ModelObject.js";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import type {Model} from "mongoose";
-import type {PopulatePath} from "../../types/mongoose/PopulatePath.js";
+import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
 import {PersistenceManager} from "../managers/PersistenceManager.js";
 
 /**

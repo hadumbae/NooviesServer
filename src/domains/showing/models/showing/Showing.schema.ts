@@ -5,17 +5,14 @@
 
 import {type Model, Schema, type SchemaDefinitionProperty} from "mongoose";
 import ShowingStatusConstant from "../../constants/ShowingStatusConstant.js";
-import ISO6391CodeConstant
-    from "../../../../shared/constants/language/ISO6391CodeConstant.js";
+import ISO6391CodeConstant from "@/shared/constants/language/ISO6391CodeConstant.js";
 import type {ShowingSchemaFields} from "./Showing.types.js";
-import SlugSchemaTypeOptions
-    from "../../../../shared/model/SlugSchemaTypeOptions.js";
-import {ShowingConfigSchema}
-    from "../showing-config/ShowingConfig.schema.js";
-import {LocationSchema} from "../../../../shared/model/location/Location.js";
-import {IsDeletedSchemaTypeOptions} from "../../../../shared/model/IsDeletedSchemaTypeOptions.js";
-import {DeletedAtSchemaTypeOptions} from "../../../../shared/model/DeletedAtSchemaTypeOptions.js";
-import type {ModelSoftDeleteMethods} from "../../../../shared/types/schema/ModelSoftDelete.js";
+import SlugSchemaTypeOptions from "@/shared/model/SlugSchemaTypeOptions.js";
+import {ShowingConfigSchema} from "../showing-config/ShowingConfig.schema.js";
+import {LocationSchema} from "@/shared/model/location/Location.js";
+import {IsDeletedSchemaTypeOptions} from "@/shared/model/IsDeletedSchemaTypeOptions.js";
+import {DeletedAtSchemaTypeOptions} from "@/shared/model/DeletedAtSchemaTypeOptions.js";
+import type {ModelSoftDeleteMethods} from "@/shared/_types/model/ModelSoftDelete";
 
 /**
  * Mongoose {@link Model} type for Showings.

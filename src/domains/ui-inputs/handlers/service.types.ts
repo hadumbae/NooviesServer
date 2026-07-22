@@ -1,7 +1,7 @@
 /** @fileoverview Type definitions for configuring lean data fetching operations. */
 
 import {type Expression, type RootFilterQuery} from "mongoose";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 
 /** Configuration for filtering and sorting lean database queries. */
 export type FetchLeanDataConfig<TModel extends BaseModel> = {

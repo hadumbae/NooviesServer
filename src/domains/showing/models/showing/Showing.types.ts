@@ -16,7 +16,7 @@ import type {MovieWithGenres}
 import type {ShowingConfigSchemaFields}
     from "../showing-config/ShowingConfig.types.js";
 import type {LocationSchemaFields} from "@/shared/model/location/LocationSchemaFields";
-import type {BaseSoftDeleteModel} from "@/shared/types/schema/BaseModel";
+import type {BaseSoftDeleteModel} from "@/shared/_types/model/BaseModel";
 
 /** Core schema fields for a theatre showing. */
 export type ShowingSchemaFields = BaseSoftDeleteModel & {

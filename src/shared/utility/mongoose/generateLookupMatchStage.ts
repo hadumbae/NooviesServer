@@ -13,7 +13,7 @@
  */
 
 import type { PipelineStage } from "mongoose";
-import type { LookupMatchStageOptions } from "../../types/mongoose/LookupMatchStage.types.js";
+import type { LookupMatchStageOptions } from "@/shared/_types/mongoose/LookupMatchStageOptions";
 
 /**
  * Generates a MongoDB `$lookup` aggregation stage with optional filtering and projection.

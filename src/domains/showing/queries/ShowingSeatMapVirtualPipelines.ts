@@ -11,7 +11,8 @@
  * Designed for read-only projection in aggregate queries.
  */
 
-import type {VirtualPipelineStages} from "@/shared/types/mongoose/AggregatePipelineStages";
+
+import {VirtualPipelineStages} from "@/shared/_types/mongoose-aggregation/VirtualPipelineStages";
 
 /**
  * Aggregation pipeline for calculating seat map statistics

@@ -1,8 +1,6 @@
-import type {
-    ReferenceFilterPipelineStages,
-} from "../../types/mongoose/AggregatePipelineStages.js";
 import generateLookupMatchStage from "./generateLookupMatchStage.js";
-import type {LookupMatchStageOptions} from "../../types/mongoose/LookupMatchStage.types.js";
+import type {LookupMatchStageOptions} from "@/shared/_types/mongoose/LookupMatchStageOptions";
+import {ReferenceFilterPipelineStages} from "@/shared/_types/mongoose-aggregation/ReferenceFilterPipelineStages";
 
 /**
  * @file generateReferenceFilterPipelineStages.ts

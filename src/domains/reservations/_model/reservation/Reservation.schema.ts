@@ -9,7 +9,7 @@ import ISO4217CurrencyCodesConstant from "../../../../shared/constants/currency/
 import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOptions.js";
 import {IsDeletedSchemaTypeOptions} from "@/shared/model/IsDeletedSchemaTypeOptions";
 import {DeletedAtSchemaTypeOptions} from "@/shared/model/DeletedAtSchemaTypeOptions";
-import type {ModelSoftDeleteMethods} from "@/shared/types/schema/ModelSoftDelete";
+import type {ModelSoftDeleteMethods} from "@/shared/_types/model/ModelSoftDelete";
 import {ReservationStatusConstant, ReservationTypeConstant} from "@/domains/reservations/_validation";
 
 /** TypeScript type representing the compiled Reservation Model. */

@@ -2,7 +2,7 @@
  * @fileoverview Router factory for generating standardized CRUD endpoints for any Mongoose model.
  */
 
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import {Router} from "express";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import type {BuildCRUDRoutesParams} from "@/shared/_feat/generic-crud/routes/CRUDRoutesFactory.types";

@@ -4,8 +4,8 @@
 
 import { Types } from "mongoose";
 import type { SeatLayoutType, SeatType } from "@/domains/seat/validation";
-import type {BaseModel} from "@/shared/types/schema/BaseModel";
-import type {ModelTimestamps} from "@/shared/types/schema/ModelTimestamps";
+import type {BaseModel} from "@/shared/_types/model/BaseModel";
+import type {ModelTimestamps} from "@/shared/_types/model/ModelTimestamps";
 
 /**
  * Type representing the persistence structure of a Seat document in MongoDB.

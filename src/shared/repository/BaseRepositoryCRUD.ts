@@ -7,7 +7,7 @@
  * independent of the underlying data layer implementation.
  */
 
-import type {ModelObject} from "../types/ModelObject.js";
+import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import type {WriteMethods} from "./operations/CRUDWriter.types.js";
 import type {DeleteMethods} from "./operations/CRUDDeleter.types.js";
 import type {ReadMethods} from "./operations/CRUDReader.types.js";

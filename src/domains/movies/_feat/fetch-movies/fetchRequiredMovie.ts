@@ -5,7 +5,7 @@
 import {Movie} from "@/domains/movies/_models/movie/Movie.model";
 import {fetchOrFailQuery} from "@/shared/utility/mongoose/fetchOrFailQuery";
 import {Types} from "mongoose";
-import type {DocumentType} from "@/shared/types/mongoose/DocumentType";
+import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";
 import type {MovieSchemaFields} from "@/domains/movies/_models/movie/Movie.types";
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import type {QueryConfig} from "@/shared/_types";
