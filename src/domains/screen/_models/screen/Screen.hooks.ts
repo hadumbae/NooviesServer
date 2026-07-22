@@ -18,7 +18,7 @@ import type { ScreenSchemaFields } from "./Screen.types";
 import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import generateSlug from "@/shared/utility/generateSlug";
 import {Theatre} from "@/domains/theatre/model/theatre";
-import {Seat} from "@/domains/seat/model";
+import {Seat} from "@/domains/seat/_models";
 
 /**
  * Document-level validation hook.

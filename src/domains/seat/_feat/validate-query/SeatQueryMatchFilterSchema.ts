@@ -9,7 +9,7 @@ import {URLParamPositiveNumberSchema} from "@/shared/schema/url/URLParamPositive
 import {URLParamBooleanSchema} from "@/shared/schema/url/URLParamBooleanSchema";
 import {URLParamNonNegativeNumberSchema} from "@/shared/schema/url/URLParamNonNegativeNumberSchema";
 import {URLParamRegexPatternSchema} from "@/shared/_feat/parse-query-string";
-import {SeatLayoutTypeSchema, SeatTypeSchema} from "@/domains/seat/validation";
+import {SeatLayoutTypeSchema, SeatTypeSchema} from "@/domains/seat/_validation";
 
 /**
  * Zod schema defining match-level filters for Seat queries.

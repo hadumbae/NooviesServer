@@ -3,7 +3,7 @@
  */
 
 import { Types } from "mongoose";
-import type { SeatLayoutType, SeatType } from "@/domains/seat/validation";
+import type { SeatLayoutType, SeatType } from "@/domains/seat/_validation";
 import type {BaseModel} from "@/shared/_types/model/BaseModel";
 import type {ModelTimestamps} from "@/shared/_types/model/ModelTimestamps";
 

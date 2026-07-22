@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {SeatTypeSchema} from "@/domains/seat/validation";
+import {SeatTypeSchema} from "@/domains/seat/_validation";
 import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 import {PositiveNumberSchema} from "@/shared/_schema/numbers/numbers/PositiveNumberSchema";
 import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";

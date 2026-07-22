@@ -7,7 +7,7 @@ import type {SeatMapSchemaFields} from "@/domains/seatmap/_model/seat-map/SeatMa
 import {ReservedSeatSnapshotInputSchema} from "@/domains/seatmap/_feat/validate-submit/ReservedSeatSnapshotInputSchema";
 import {InconsistentDataError} from "@/shared/errors/InconsistentDataError";
 import {ReservedSeatSnapshot} from "@/domains/seatmap/_model/seat-map-snapshot/ReservedSeatSnapshot.model.js";
-import type {SeatSchemaFields} from "@/domains/seat/model";
+import type {SeatSchemaFields} from "@/domains/seat/_models";
 import generateArraySchema from "@/shared/utility/schema/generateArraySchema";
 
 type SeatMapWithInfo = Omit<SeatMapSchemaFields, "seat"> & {

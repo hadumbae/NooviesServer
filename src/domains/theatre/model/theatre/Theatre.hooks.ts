@@ -10,7 +10,7 @@ import {Screen} from "@/domains/screen/_models/screen";
 import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import type {TheatreSchemaFields} from "./Theatre.types";
 import generateSlug from "@/shared/utility/generateSlug";
-import {Seat} from "@/domains/seat/model";
+import {Seat} from "@/domains/seat/_models";
 
 /**
  * Pre-validation Hook: Slug Synchronization

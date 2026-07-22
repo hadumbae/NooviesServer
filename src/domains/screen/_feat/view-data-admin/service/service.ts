@@ -7,7 +7,7 @@ import {Theatre, type TheatreWithVirtuals} from "@/domains/theatre/model/theatre
 import {TheatreVirtualPopulationPaths} from "@/domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
 import {Screen} from "@/domains/screen/_models/screen";
-import {Seat} from "@/domains/seat/model";
+import {Seat} from "@/domains/seat/_models";
 import {ScreenVirtualPipelines} from "@/domains/screen/_feat/query-population";
 import type {
     FetchTheatreScreenDetailsViewDataConfig,

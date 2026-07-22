@@ -6,7 +6,7 @@
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import type {TheatreWithVirtuals} from "@/domains/theatre/model/theatre";
 import type {ScreenSchemaFields} from "@/domains/screen/_models/screen";
-import type {SeatSchemaFields} from "@/domains/seat/model";
+import type {SeatSchemaFields} from "@/domains/seat/_models";
 
 /**
  * Configuration for identifying specific screen data within the theatre hierarchy.

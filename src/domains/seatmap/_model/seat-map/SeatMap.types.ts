@@ -5,7 +5,7 @@
 import {Types} from "mongoose";
 import type {SeatMapStatus} from "@/domains/seatmap/_validation/fields/SeatMapStatusSchema";
 import type {ShowingSchemaFields} from "@/domains/showing/_models/showing/Showing.types.js";
-import type {SeatSchemaFields} from "@/domains/seat/model";
+import type {SeatSchemaFields} from "@/domains/seat/_models";
 
 /** Input data required to create or update a seat map entry. */
 export type SeatMapInputData = {

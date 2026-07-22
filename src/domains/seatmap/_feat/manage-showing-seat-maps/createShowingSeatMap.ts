@@ -4,7 +4,7 @@
 
 import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import createHttpError from "http-errors";
-import {Seat} from "@/domains/seat/model";
+import {Seat} from "@/domains/seat/_models";
 import {type AnyBulkWriteOperation, Types} from "mongoose";
 import type {SeatMapInputData} from "@/domains/seatmap/_model/seat-map/SeatMap.types";
 import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";

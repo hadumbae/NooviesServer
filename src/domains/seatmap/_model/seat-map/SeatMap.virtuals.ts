@@ -4,7 +4,7 @@
 
 import {SeatMapSchema} from "@/domains/seatmap/_model/seat-map/SeatMap.schema.js";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
-import type {SeatSchemaFields} from "@/domains/seat/model";
+import type {SeatSchemaFields} from "@/domains/seat/_models";
 
 SeatMapSchema.virtual("finalPrice").get(function () {
     if (this.overridePrice) {

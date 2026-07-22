@@ -3,7 +3,7 @@
  */
 
 import { Types } from "mongoose";
-import type { SeatType } from "@/domains/seat/validation";
+import type { SeatType } from "@/domains/seat/_validation";
 
 /** Schema fields for the ReservedSeatSnapshot model. */
 export type ReservedSeatSnapshotSchemaFields = {

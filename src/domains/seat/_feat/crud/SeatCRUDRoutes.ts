@@ -11,7 +11,7 @@ import validateZodSchema from "@/shared/utility/schema/validators/validateZodSch
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {aggregate} from "@/shared/_feat/generic-aggregate";
 import {SeatInputSchema} from "@/domains/seat/_feat/validate-submit";
-import {Seat, type SeatSchemaFields} from "@/domains/seat/model";
+import {Seat, type SeatSchemaFields} from "@/domains/seat/_models";
 import {
     SeatQueryMatchStageSchema,
     SeatQuerySortStageSchema

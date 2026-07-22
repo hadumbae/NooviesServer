@@ -4,8 +4,8 @@
 
 import { Schema } from "mongoose";
 import SlugSchemaTypeOptions from "../../../shared/model/SlugSchemaTypeOptions.js";
-import { SeatLayoutTypeConstant, SeatTypeConstant } from "@/domains/seat/validation";
-import type {SeatSchemaFields} from "@/domains/seat/model/Seat.types";
+import { SeatLayoutTypeConstant, SeatTypeConstant } from "@/domains/seat/_validation";
+import type {SeatSchemaFields} from "@/domains/seat/_models/Seat.types";
 
 /**
  * Defines the persistence layer for seats, aisles, and stairs within a theatre screen.
