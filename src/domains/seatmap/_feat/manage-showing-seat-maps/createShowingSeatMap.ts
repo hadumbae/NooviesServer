@@ -2,7 +2,7 @@
  * @fileoverview Logic for generating and persisting the initial seat map for a specific showing.
  */
 
-import Showing from "@/domains/showing/models/showing/Showing.model";
+import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import createHttpError from "http-errors";
 import {Seat} from "@/domains/seat/model";
 import {type AnyBulkWriteOperation, Types} from "mongoose";

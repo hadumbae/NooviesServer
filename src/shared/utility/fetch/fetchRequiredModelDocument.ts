@@ -3,7 +3,7 @@
  * @filename fetchRequiredModelDocument.ts
  */
 
-import type {FetchRequiredByIdentifierConfig} from "src/shared/_types/fetch-utils/FetchRequiredByIdentifierConfig";
+import type {FetchRequiredByIdentifierConfig} from "@/shared/_types/fetch-utils/FetchRequiredByIdentifierConfig";
 import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import populateQuery from "../mongoose/populateQuery.js";
 import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";

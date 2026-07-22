@@ -3,7 +3,7 @@
  */
 
 
-import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
+import type {PopulationPipelineStages} from "@/shared/_types";
 
 /**
  * Aggregation pipeline that materializes 'screen' and 'theatre' references for Seat documents.

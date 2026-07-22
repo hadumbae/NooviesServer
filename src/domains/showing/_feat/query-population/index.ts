@@ -1,7 +1,5 @@
-import {ShowingPopulationPaths} from "@/domains/showing/_feat/query-population/ShowingPopulationPaths";
-import {ShowingVirtualPopulationPaths} from "@/domains/showing/_feat/query-population/ShowingVirtualPopulationPaths";
-
-export {
-    ShowingPopulationPaths,
-    ShowingVirtualPopulationPaths,
-}
+export * from "@/domains/showing/_feat/query-population/ShowingPopulationPipelines";
+export * from "@/domains/showing/_feat/query-population/ShowingSeatMapVirtualPipelines";
+export * from "@/domains/showing/_feat/query-population/ShowingPopulationPaths";
+export * from "@/domains/showing/_feat/query-population/ShowingVirtualPopulationPaths";
+export * from "@/domains/showing/_feat/query-population/ShowingPopulateRefs";

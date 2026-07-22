@@ -1,4 +1,4 @@
-import Showing from "../../../domains/showing/models/showing/Showing.model.js";
+import {Showing} from "@/domains/showing/_models/showing/Showing.model.js";
 import {ObjectIdStringSchema} from "../mongoose/ObjectIdStringSchema.js";
 import {Genre} from "@/domains/genres/_models/genre";
 import {Person} from "@/domains/persons/_models/person";

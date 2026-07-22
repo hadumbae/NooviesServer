@@ -6,7 +6,7 @@ import createHttpError from "http-errors";
 import {Movie, type MovieSchemaFields} from "@/domains/movies/_models/movie";
 import {MoviePopulationPaths} from "@/domains/movies/_feat/query-population";
 import {fetchShowingsForMovie} from "@/domains/movies/_feat/client-view-data/movie-showings/fetchShowingsForMovie";
-import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
+import type {ShowingSchemaFields} from "@/domains/showing/_models/showing/Showing.types";
 import type {
     MovieInfoShowingsViewRouteConfig
 } from "@/domains/movies/_feat/client-view-data/movie-showings/MovieInfoShowingsViewRouteConfigSchema";

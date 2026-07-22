@@ -3,11 +3,11 @@
  */
 
 import {Types} from "mongoose";
-import Showing from "@/domains/showing/models/showing/Showing.model";
+import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import {DocumentNotFoundError} from "@/shared/errors/DocumentNotFoundError";
 import {InconsistentDataError} from "@/shared/errors/InconsistentDataError";
 import {createMovieSnapshot} from "@/domains/movies/_feat/manage-snapshots/createMovieSnapshot";
-import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
+import type {ShowingSchemaFields} from "@/domains/showing/_models/showing/Showing.types";
 import {createReservedSeatSnapshot} from "@/domains/seatmap/_feat/manage-snapshots/createReservedSeatSnapshot";
 import {ReservedShowingSnapshotInputSchema} from "@/domains/reservations/_feat/reserve-tickets/schemas";
 import {createScreenSnapshot} from "@/domains/screen/_feat/build-snapshot";

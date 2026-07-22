@@ -1,2 +1,2 @@
-export * from "src/shared/_types/fetch-utils/FetchRequiredByIdentifierConfig";
+export * from "@/shared/_types/fetch-utils/FetchRequiredByIdentifierConfig";
 

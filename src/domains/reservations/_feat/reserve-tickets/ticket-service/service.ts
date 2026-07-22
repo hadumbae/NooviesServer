@@ -3,7 +3,7 @@
  */
 
 import {calculateFutureDate} from "@/shared/utility/date/LuxonDateUtils";
-import {fetchPopulatedShowing} from "@/domains/showing/utilities/fetchPopulatedShowing";
+import {fetchPopulatedShowing} from "@/domains/showing/_feat/fetch-showings/fetchPopulatedShowing";
 import {BookingError} from "@/shared/errors/reservations/BookingError";
 import type {
     ReserveGeneralTicketData,

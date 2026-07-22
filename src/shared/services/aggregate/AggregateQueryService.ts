@@ -35,8 +35,7 @@ import type {
     QueryReferenceOptions,
 } from "../../types/query-options/QueryOptionService.types.js";
 import type {ModelObject} from "@/shared/_types/model/ModelObject";
-import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
-import {VirtualPipelineStages} from "@/shared/_types/mongoose-aggregation/VirtualPipelineStages";
+import type {PopulationPipelineStages, VirtualPipelineStages} from "@/shared/_types";
 
 /**
  * Generic aggregation-based query service.

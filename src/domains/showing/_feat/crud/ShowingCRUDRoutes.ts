@@ -12,13 +12,13 @@ import {create, destroy, find, findById, findBySlug, paginated, update} from "@/
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {aggregate} from "@/shared/_feat/generic-aggregate";
-import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
-import Showing from "@/domains/showing/models/showing/Showing.model";
+import type {ShowingSchemaFields} from "@/domains/showing/_models/showing/Showing.types";
+import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import {ShowingQueryMatchStageSchema, ShowingQuerySortStageSchema} from "@/domains/showing/_feat/validate-query";
-import {ShowingInputSchema} from "@/domains/showing/validation/ShowingInputSchema";
+import {ShowingInputSchema} from "@/domains/showing/_feat/validate-submit/ShowingInputSchema";
 import {ShowingPopulationPaths} from "@/domains/showing/_feat/query-population";
-import {ShowingPopulationPipelines} from "@/domains/showing/queries/ShowingPopulationPipelines";
-import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/queries/ShowingSeatMapVirtualPipelines";
+import {ShowingPopulationPipelines} from "@/domains/showing/_feat/query-population/ShowingPopulationPipelines";
+import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/_feat/query-population/ShowingSeatMapVirtualPipelines";
 
 const authCRUDMiddleware = buildAuthCRUDQueryMiddleware({
     modelName: Showing.modelName,

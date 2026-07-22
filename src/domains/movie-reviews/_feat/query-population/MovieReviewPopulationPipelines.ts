@@ -3,7 +3,7 @@
  */
 
 import {MovieWithRatingPipelines} from "@/domains/movie-reviews/_feat/query-population/MovieWithRatingPipelines.js";
-import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
+import type {PopulationPipelineStages} from "@/shared/_types";
 
 /** Aggregation stages to populate movie and user details for a movie review. */
 export const MovieReviewPopulationPipelines: PopulationPipelineStages = [

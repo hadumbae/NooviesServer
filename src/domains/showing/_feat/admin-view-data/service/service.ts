@@ -1,12 +1,12 @@
 /**
- * @fileoverview Service for fetching and aggregating data for the showing admin view.
+ * @fileoverview Service for fetching and aggregating data required for the showing details admin view.
  */
 
 import type {
     FetchShowingDetailsViewDataConfig,
     ShowingDetailsViewData
 } from "@/domains/showing/_feat/admin-view-data/service/service.types";
-import Showing from "@/domains/showing/models/showing/Showing.model";
+import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import createHttpError from "http-errors";
 import {Theatre} from "@/domains/theatre/model/theatre";
 import {Screen} from "@/domains/screen/_models/screen";
@@ -17,9 +17,7 @@ import {Movie} from "@/domains/movies/_models/movie";
 import {MoviePopulationPaths} from "@/domains/movies/_feat/query-population";
 import {ShowingPopulationPaths} from "@/domains/showing/_feat/query-population";
 
-/**
- * Fetches a showing and its associated movie, theatre, screen, and seating data.
- */
+/** Fetches a showing and its associated movie, theatre, screen, and seating data. */
 export async function fetchShowingDetailsViewData(
     {slug}: FetchShowingDetailsViewDataConfig
 ): Promise<ShowingDetailsViewData> {

@@ -3,7 +3,7 @@
  */
 
 import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
-import {ShowingPopulateRefs} from "@/domains/showing/constants/ShowingPopulateRefs.js";
+import {ShowingPopulateRefs} from "@/domains/showing/_feat/query-population/ShowingPopulateRefs";
 
 /** Default population paths for Reservation queries including nested showing and seating data. */
 export const ReservationPopulatePaths: PopulatePath[] = [

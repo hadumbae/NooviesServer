@@ -6,8 +6,8 @@ import type {ScreenWithShowings} from "@/domains/screen/_models/screen/Screen.ty
 import {getIdentifierFilter} from "@/shared/utility/getIdentifierFilter";
 import {Theatre} from "@/domains/theatre/model/theatre/Theatre.model";
 import {type PipelineStage, Types} from "mongoose";
-import {ShowingPopulationPipelines} from "@/domains/showing/queries/ShowingPopulationPipelines";
-import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/queries/ShowingSeatMapVirtualPipelines";
+import {ShowingPopulationPipelines} from "@/domains/showing/_feat/query-population/ShowingPopulationPipelines";
+import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/_feat/query-population/ShowingSeatMapVirtualPipelines";
 import {Screen} from "@/domains/screen/_models/screen/Screen.model";
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 

@@ -1,5 +1,1 @@
-import {ShowingCRUDRoutes} from "@/domains/showing/_feat/crud/ShowingCRUDRoutes";
-
-export {
-    ShowingCRUDRoutes,
-}
+export * from "@/domains/showing/_feat/crud/ShowingCRUDRoutes";

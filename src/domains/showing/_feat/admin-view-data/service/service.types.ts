@@ -1,8 +1,8 @@
 /**
- * @fileoverview Defines the types for the service for fetching showing admin view data.
+ * @fileoverview Defines types for fetching and representing showing details in the admin view.
  */
 
-import type {ShowingSchemaFields} from "@/domains/showing/models/showing/Showing.types";
+import type {ShowingSchemaFields} from "@/domains/showing/_models/showing/Showing.types";
 import type {MovieSchemaFields} from "@/domains/movies/_models/movie";
 import type {SeatMapSchemaFields} from "@/domains/seatmap/_model/seat-map/SeatMap.types";
 import type {TheatreSchemaFields} from "@/domains/theatre/model/theatre";

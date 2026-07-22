@@ -3,8 +3,7 @@
  * @filename ScreenPopulationPipelines.ts
  */
 
-
-import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
+import type {PopulationPipelineStages} from "@/shared/_types";
 
 /**
  * Populates the `theatre` reference via `$lookup` and flattens the result.

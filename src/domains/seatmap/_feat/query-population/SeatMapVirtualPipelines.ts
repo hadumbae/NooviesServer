@@ -3,7 +3,7 @@
  */
 
 
-import {VirtualPipelineStages} from "@/shared/_types/mongoose-aggregation/VirtualPipelineStages";
+import type {VirtualPipelineStages} from "@/shared/_types";
 
 /** Aggregation stages to join seat data and calculate final pricing for seat map entries. */
 export const SeatMapVirtualPipelines: VirtualPipelineStages = [

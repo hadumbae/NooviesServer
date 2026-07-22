@@ -3,8 +3,8 @@
  */
 
 import type {PipelineStage} from "mongoose";
-import {ShowingPopulationPipelines} from "@/domains/showing/queries/ShowingPopulationPipelines";
-import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/queries/ShowingSeatMapVirtualPipelines";
+import {ShowingPopulationPipelines} from "@/domains/showing/_feat/query-population/ShowingPopulationPipelines";
+import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/_feat/query-population/ShowingSeatMapVirtualPipelines";
 import {Theatre} from "@/domains/theatre/model/theatre";
 import {buildTheatreLocationMatchStage} from "@/domains/theatre/_feat/aggregate";
 import type {FetchTheatreByLocationConfig, TheatreByLocationReturns} from "@/domains/theatre/_feat/search-theatres";

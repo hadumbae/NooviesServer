@@ -15,7 +15,7 @@ import type {
 import type {QueryOptionTypes} from "../../types/query-options/QueryOptionService.types.js";
 import type {ModelObject} from "@/shared/_types/model/ModelObject";
 import type {AggregateQueryParams} from "../../services/aggregate/AggregateQueryService.types.js";
-import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
+import type {PopulationPipelineStages} from "@/shared/_types";
 
 /**
  * Base CRUD controller providing standardized Express handlers.

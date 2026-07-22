@@ -5,7 +5,7 @@
 
 import {z} from "zod";
 import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema";
-import {ShowingStatusEnumSchema} from "@/domains/showing/validation/ShowingStatusEnumSchema";
+import {ShowingStatusSchema} from "@/domains/showing/_validation/fields/ShowingStatusSchema";
 import {URLParamStringSchema} from "@/shared/schema/url/URLParamStringSchema";
 import {URLParamPositiveNumberSchema} from "@/shared/schema/url/URLParamPositiveNumberSchema";
 import {SeatTypeSchema} from "@/domains/seat/validation/SeatTypeSchema";
@@ -17,7 +17,7 @@ import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 export const SeatMapQueryReferenceFilterSchema = z.object({
     movie: URLParamObjectIDSchema,
     showingSlug: SlugStringSchema.optional(),
-    showingStatus: ShowingStatusEnumSchema.optional(),
+    showingStatus: ShowingStatusSchema.optional(),
     seatRow: URLParamStringSchema,
     seatNumber: URLParamPositiveNumberSchema,
     seatType: SeatTypeSchema.optional(),

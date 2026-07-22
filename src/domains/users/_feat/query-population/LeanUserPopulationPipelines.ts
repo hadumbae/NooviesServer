@@ -3,7 +3,7 @@
  */
 
 
-import {PopulationPipelineStages} from "@/shared/_types/mongoose-aggregation/PopulationPipelineStages";
+import type {PopulationPipelineStages} from "@/shared/_types";
 
 /**
  * Aggregation stages to populate a user reference with limited fields.

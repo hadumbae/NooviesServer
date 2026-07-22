@@ -4,7 +4,8 @@
  */
 
 
-import {VirtualPipelineStages} from "@/shared/_types/mongoose-aggregation/VirtualPipelineStages";
+
+import type {VirtualPipelineStages} from "@/shared/_types";
 
 /**
  * Computes derived screen metrics from related collections.

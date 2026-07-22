@@ -14,7 +14,7 @@ import {TheatreVirtualPopulationPaths} from "@/domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
 import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines";
 import type {PipelineStage} from "mongoose";
-import Showing from "@/domains/showing/models/showing/Showing.model";
+import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import {ShowingPopulationPaths} from "@/domains/showing/_feat/query-population";
 import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns";
 import {ScreenVirtualPipelines} from "@/domains/screen/_feat/query-population";

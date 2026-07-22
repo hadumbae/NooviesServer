@@ -7,7 +7,7 @@ import {z} from "zod";
 import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema";
 import {URLParamPositiveNumberSchema} from "@/shared/schema/url/URLParamPositiveNumberSchema";
 import {URLParamBooleanSchema} from "@/shared/schema/url/URLParamBooleanSchema";
-import {ShowingStatusEnumSchema} from "@/domains/showing/validation/ShowingStatusEnumSchema";
+import {ShowingStatusSchema} from "@/domains/showing/_validation/fields/ShowingStatusSchema";
 
 /**
  * Zod schema defining match-level filters for Showing queries.
@@ -19,7 +19,7 @@ export const ShowingQueryMatchFilterSchema = z.object({
     ticketPrice: URLParamPositiveNumberSchema,
     isSpecialEvent: URLParamBooleanSchema,
     isActive: URLParamBooleanSchema,
-    status: ShowingStatusEnumSchema.optional(),
+    status: ShowingStatusSchema.optional(),
 });
 
 /**
