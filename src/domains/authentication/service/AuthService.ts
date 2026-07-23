@@ -4,7 +4,7 @@
  */
 
 import "dotenv/config";
-import {type UserRegisterInput} from "../schema/UserRegisterInputSchema.js";
+import {type UserRegisterInput} from "@/domains/authentication/_feat/register-user/UserRegisterInputSchema";
 import { RequestValidationError } from "@/shared/errors/RequestValidationError";
 import bcrypt from "bcryptjs";
 import {User} from "@/domains/users/model/user/User.model";
@@ -14,7 +14,7 @@ import {z, type ZodIssue} from "zod";
 import jwt from "jsonwebtoken";
 import type {UserCredentials} from "../types/UserCredentials.js";
 import type {UserSchemaFields} from "@/domains/users/model/user/User.types";
-import type {UserLoginInput} from "../schema/UserLoginInputSchema.js";
+import type {UserLoginInput} from "@/domains/authentication/_feat/login-user/UserLoginInputSchema";
 import type {AuthServiceMethods} from "./AuthService.types.js";
 
 /**

@@ -7,11 +7,11 @@ import validateZodSchema from "../../../shared/utility/schema/validators/validat
 import isAuth from "../middleware/isAuth.js";
 import AuthServiceProvider from "../provider/AuthServiceProvider.js";
 
-import { UserLoginInputSchema } from "../schema/UserLoginInputSchema.js";
-import { UserRegisterInputSchema } from "../schema/UserRegisterInputSchema.js";
+import { UserLoginInputSchema } from "@/domains/authentication/_feat/login-user/UserLoginInputSchema";
+import { UserRegisterInputSchema } from "@/domains/authentication/_feat/register-user/UserRegisterInputSchema";
 import validateZodSchemaAsync from "../../../shared/utility/schema/validators/validateZodSchemaAsync.js";
 
-const router: Router = ExpressRouter();
+export const router: Router = ExpressRouter();
 const { controller } = AuthServiceProvider.register();
 
 /**
@@ -71,4 +71,4 @@ router.post(
     asyncHandler(controller.toggleAdmin.bind(controller)),
 );
 
-export default router;
+

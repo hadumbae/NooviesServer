@@ -1,20 +1,18 @@
+
+
 /**
- * @file Registration utility for administrative and authentication-related API routes.
- * @filename registerAuthRoutes.ts
+ * @fileoverview Registers authentication and user management routes to the Express application.
  */
 
 import type {Express} from "express";
-import AuthRoutes from "../../../domains/authentication/routing/AuthRoutes.js";
-import UserRoutes from "../../../domains/users/routing/UserRoutes.js";
 import type {RouteRegistration} from "../registerRoutes.js";
+import UserRoutes from "../../../domains/users/routing/UserRoutes.js";
+import {ManageUsersRoutes} from "@/domains/authentication/_feat/manage-users";
 
-/**
- * Mounts administrative and authentication route modules onto the Express application.
- * @param app - The primary Express application instance.
- */
+/** Mounts authentication and user-related routers onto the provided Express instance. */
 export function registerAuthRoutes(app: Express) {
     const routes: RouteRegistration[] = [
-        {path: "/auth", router: AuthRoutes},
+        {path: "/auth", router: ManageUsersRoutes},
         {path: "/api/v1/users", router: UserRoutes},
     ];
 

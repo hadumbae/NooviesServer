@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 import createHttpError from "http-errors";
-import type { UserRegisterInput } from "../schema/UserRegisterInputSchema.js";
+import type { UserRegisterInput } from "@/domains/authentication/_feat/register-user/UserRegisterInputSchema";
 import type { AuthServiceMethods } from "../service/AuthService.types.js";
-import type { UserLoginInput } from "../schema/UserLoginInputSchema.js";
+import type { UserLoginInput } from "@/domains/authentication/_feat/login-user/UserLoginInputSchema";
 import isValidObjectId from "../../../shared/utility/mongoose/isValidObjectId.js";
 import type { AuthControllerConstructor, AuthControllerMethods } from "./AuthControllerMethods.js";
 

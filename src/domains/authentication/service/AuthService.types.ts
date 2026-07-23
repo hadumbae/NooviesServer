@@ -1,8 +1,8 @@
 import type {UserCredentials} from "../types/UserCredentials.js";
-import type {UserRegisterInput} from "../schema/UserRegisterInputSchema.js";
+import type {UserRegisterInput} from "@/domains/authentication/_feat/register-user/UserRegisterInputSchema";
 import type {UserSchemaFields} from "@/domains/users/model/user/User.types";
 import {Types} from "mongoose";
-import type {UserLoginInput} from "../schema/UserLoginInputSchema.js";
+import type {UserLoginInput} from "@/domains/authentication/_feat/login-user/UserLoginInputSchema";
 
 /**
  * Interface defining the methods available in the authentication service.
