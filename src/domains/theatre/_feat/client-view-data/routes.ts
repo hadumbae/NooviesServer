@@ -7,7 +7,7 @@ import {validateRequestConfig} from "@/shared/utility/schema/validators/validate
 import {FetchTheatreInfoViewRouteConfigSchema} from "@/domains/theatre/_feat/client-view-data/theatre-info/routeParams";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {getFetchTheatreInfoViewData} from "@/domains/theatre/_feat/client-view-data/controller";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 
 const router = Router();
 

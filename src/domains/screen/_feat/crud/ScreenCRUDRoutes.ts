@@ -5,7 +5,7 @@
 
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {aggregate} from "@/shared/_feat/generic-aggregate";

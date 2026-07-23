@@ -4,7 +4,7 @@
  */
 
 import {Router} from "express";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {fetchReservationsForUser} from "@/domains/reservations/_feat/fetch-client-reservations/controllers";
 import {parseQueryFilters, parseQuerySorts} from "@/shared/_feat";

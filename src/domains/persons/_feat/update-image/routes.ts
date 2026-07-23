@@ -1,5 +1,5 @@
 import {Router} from "express";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import {uploadImage} from "@/shared/config/image-multr";
 import {hasProfileImage} from "@/domains/persons/_feat/update-image/hasProfileImage";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";

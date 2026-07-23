@@ -5,7 +5,7 @@
  */
 
 import {Router} from "express";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {BrowseGenreWithMoviesRouteParamSchema} from "@/domains/genres/_feat/client-view-data/schemas";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";

@@ -6,7 +6,7 @@ import {Router} from "express";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import validateZodSchemaAsync from "@/shared/utility/schema/validators/validateZodSchemaAsync";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import {parseRouteParams} from "@/shared/_feat/middleware";
 import {ManageUserRouteConfigSchema} from "@/domains/authentication/_feat/manage-users/routeSchema";
 import {UserRegisterInputSchema} from "@/domains/authentication/_feat/register-user";

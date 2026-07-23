@@ -7,7 +7,7 @@
 import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import type {GenreSchemaFields} from "@/domains/genres/_models/genre/Genre.types";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";

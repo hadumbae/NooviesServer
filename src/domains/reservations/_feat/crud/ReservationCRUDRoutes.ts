@@ -3,7 +3,7 @@ import {ReservationQueryMatchStageSchema, ReservationQuerySortStageSchema} from 
 import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
 import {destroy, findById, findBySlug} from "@/shared/_feat/generic-crud/path-handlers";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import type {Router} from "express";
 import {ReservationPopulatePaths} from "@/domains/reservations/_feat/query-population";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";

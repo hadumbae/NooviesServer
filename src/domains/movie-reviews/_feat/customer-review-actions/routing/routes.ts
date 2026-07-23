@@ -3,7 +3,7 @@
  */
 
 import {Router} from "express";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {
     patchResetDisplayName,
@@ -17,7 +17,7 @@ import {
     ResetReviewDisplayNameInputSchema,
     SetReviewRatingInputSchema
 } from "@/domains/movie-reviews/_feat/customer-review-actions/validation";
-import isAdmin from "@/domains/authentication/middleware/isAdmin";
+import {isAdmin} from "@/domains/authentication/middleware/isAdmin";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {CustomerReviewIDRouteConfigSchema} from "@/domains/movie-reviews/_feat/customer-review-actions/schema";
 

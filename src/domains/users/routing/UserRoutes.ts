@@ -1,7 +1,7 @@
+import express from "express";
 import UserServiceProvider from "../provider/UserServiceProvider.js";
 import asyncHandler from "../../../shared/utility/handlers/asyncHandler.js";
-import express from "express";
-import isAuth from "../../authentication/middleware/isAuth.js";
+import {isAuth} from "@/domains/authentication/middleware/isAuth.js";
 import validateZodSchema from "../../../shared/utility/schema/validators/validateZodSchema.js";
 import {UserPasswordUpdateInputSchema} from "@/domains/users/validation/submit/UserPasswordUpdateInputSchema";
 

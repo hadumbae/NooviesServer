@@ -3,7 +3,7 @@
  */
 
 import {Router} from "express";
-import isAuth from "../../../authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import * as GenreAdminViewDataController from "./controller";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";

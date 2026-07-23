@@ -3,7 +3,7 @@
  */
 
 import {Router} from "express";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import {ReservationNotesInputSchema} from "@/domains/reservations/_feat/update-reservations/schemas";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";

@@ -1,5 +1,5 @@
 import {Router} from "express";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {parseQueryOptions} from "@/shared/_feat/middleware";
 import {MovieQueryOptionsSchema} from "@/domains/movies/_feat/validate-query";

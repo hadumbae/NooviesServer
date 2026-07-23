@@ -5,7 +5,7 @@
 
 import express, { type RequestHandler, type Router } from "express";
 import asyncHandler from "../utility/handlers/asyncHandler.js";
-import isAuth from "../../domains/authentication/middleware/isAuth.js";
+import {isAuth} from "@/domains/authentication/middleware/isAuth.js";
 import type { BaseControllerCRUDMethods } from "../controller/base-crud-controller/BaseControllerCRUDMethods.js";
 import type { BaseRouteMethods, BaseRoutePathKeys } from "./BaseRoute.types.js";
 

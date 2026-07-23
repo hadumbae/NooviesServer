@@ -6,7 +6,7 @@ import {Router} from "express";
 import {patchRemoveGenreImage, patchUpdateGenreImage} from "@/domains/genres/_feat/manage-image/controller";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {ManageGenreImageRouteConfigSchema} from "@/domains/genres/_feat/manage-image/schema/ManageGenreImageRouteConfig";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {uploadImage} from "@/shared/config/image-multr";
 import {hasGenreImage} from "@/domains/genres/_feat/manage-image/middleware/hasGenreImage";

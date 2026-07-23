@@ -3,7 +3,7 @@
  */
 
 import {Router} from "express";
-import isAuth from "@/domains/authentication/middleware/isAuth.js";
+import {isAuth} from "@/domains/authentication/middleware/isAuth.js";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {MovieInfoOverviewViewRouteConfigSchema} from "@/domains/movies/_feat/client-view-data/movie-overview";

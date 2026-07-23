@@ -4,7 +4,7 @@
  */
 
 import {Router} from "express";
-import isAuth from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {
     TheatreScreenDetailsViewRouteConfigSchema
