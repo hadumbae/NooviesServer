@@ -3,7 +3,7 @@
  */
 
 import {Types} from "mongoose";
-import type {UserRole} from "@/domains/users/validation/enum/UserRoleEnumSchema.js";
+import type {UserRole} from "@/domains/users/validation/enum/UserRoleSchema";
 import type {UserUniqueCode} from "@/domains/users/_feat/manage-user-unique-code/schemas";
 
 /** Represents the user profile information included in authentication responses. */

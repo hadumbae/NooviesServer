@@ -1,5 +1,5 @@
 /**
- * @fileoverview Express router defining endpoints for user authentication and administrative status management.
+ * @fileoverview Express router defining endpoints for user registration, authentication, and administrative status management.
  */
 
 import {Router} from "express";
@@ -11,6 +11,7 @@ import {parseRouteParams} from "@/shared/_feat/middleware";
 import {ManageUserRouteConfigSchema} from "@/domains/authentication/_feat/manage-users/routeSchema";
 import {UserRegisterInputSchema} from "@/domains/authentication/_feat/register-user";
 import {UserLoginInputSchema} from "@/domains/authentication/_feat/login-user";
+import {UserPasswordUpdateInputSchema} from "@/domains/authentication/_feat/change-user-password";
 import {
     getVerifyAdminStatus,
     postGrantAdminStatus,
@@ -39,6 +40,12 @@ router.post(
     asyncHandler(postLogoutUser),
 );
 
+router.post(
+    "/password/:userID/update",
+    [isAuth, parseRouteParams({schema: ManageUserRouteConfigSchema}), validateZodSchema(UserPasswordUpdateInputSchema)],
+    asyncHandler(postLogoutUser),
+);
+
 router.get(
     "/status/admin",
     isAuth,
@@ -57,7 +64,7 @@ router.post(
     asyncHandler(postRevokeAdminStatus),
 );
 
-/** Router instance containing authentication and user management routes. */
+/** Express router instance containing authentication and user management routes. */
 export {
     router as ManageUsersRoutes,
 };

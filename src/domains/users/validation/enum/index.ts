@@ -1,10 +1,10 @@
 import {UserRoleConstant} from "@/domains/users/validation/enum/UserRoleConstant";
-import {type UserRole, UserRoleEnumSchema} from "@/domains/users/validation/enum/UserRoleEnumSchema";
+import {type UserRole, UserRoleSchema} from "@/domains/users/validation/enum/UserRoleSchema";
 
 
 export {
     UserRoleConstant,
-    UserRoleEnumSchema,
+    UserRoleSchema,
 }
 
 export type {

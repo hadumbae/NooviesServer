@@ -5,7 +5,7 @@ import {
 import {
     type UserPasswordUpdateInput,
     UserPasswordUpdateInputSchema
-} from "@/domains/users/validation/submit/UserPasswordUpdateInputSchema";
+} from "@/domains/authentication/_feat/change-user-password/UserPasswordUpdateInputSchema";
 
 export {
     UserFavouriteMovieInputSchema,

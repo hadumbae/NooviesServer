@@ -18,11 +18,13 @@ import {ShowingCRUDRoutes} from "@/domains/showing/_feat/crud";
 import {SeatMapCRUDRoutes} from "@/domains/seatmap/_feat/crud";
 import {ReservationCRUDRoutes} from "@/domains/reservations/_feat/crud";
 import {MovieReviewCRUDRoutes} from "@/domains/movie-reviews/_feat/crud";
+import {UserCRUDRoutes} from "@/domains/users/_feat/crud";
 
 /**
  * Core metadata and foundational data configuration routes.
  */
 const setupRoutes: RouteRegistration[] = [
+    {path: "/api/v1/admin/users/crud", router: UserCRUDRoutes},
     {path: "/api/v1/admin/persons/crud", router: PersonCRUDRoutes},
     {path: "/api/v1/admin/genres/crud", router: GenreCRUDRoutes},
 

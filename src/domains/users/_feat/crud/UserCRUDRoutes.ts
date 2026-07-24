@@ -5,10 +5,22 @@
 import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
-import {destroy, findById} from "@/shared/_feat/generic-crud/path-handlers";
+import {destroy, find, findById, paginated} from "@/shared/_feat/generic-crud/path-handlers";
 import {User, type UserSchemaFields} from "@/domains/users/model/user";
 
 const routes: CRUDRoute<UserSchemaFields>[] = [
+    {
+        path: `/find`,
+        method: "get",
+        middleware: [isAuth],
+        handler: find
+    },
+    {
+        path: `/paginated`,
+        method: "get",
+        middleware: [isAuth],
+        handler: paginated,
+    },
     {
         path: `/item/:_id`,
         method: "get",
