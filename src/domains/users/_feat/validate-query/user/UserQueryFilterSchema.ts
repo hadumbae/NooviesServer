@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
+import {UserRoleSchema} from "@/domains/users/validation/fields";
 import {buildArrayOperatorSchema, URLParamRegexPatternSchema} from "@/shared/_feat/parse-query-string";
-import {UserRoleSchema} from "@/domains/users";
 import preprocessEmptyToUndefined from "@/shared/utility/schema/preprocessors/preprocessEmptyToUndefined";
 
 const roleSchema = buildArrayOperatorSchema({schema: UserRoleSchema, operator: "$all"});
