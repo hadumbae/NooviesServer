@@ -3,7 +3,7 @@
  */
 
 import { z } from "zod";
-import {UserRoleConstant} from "src/domains/users/validation/fields/UserRoleConstant";
+import {UserRoleConstant} from "@/domains/users/_const";
 
 /** Zod schema for validating user roles against predefined constants. */
 export const UserRoleSchema = z.enum(UserRoleConstant, {

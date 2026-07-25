@@ -3,8 +3,8 @@
  */
 
 import {Schema} from "mongoose";
+import {UserRoleConstant} from "@/domains/users/_const";
 import type {UserSchemaFields} from "@/domains/users/model/user/User.types.js";
-import {UserRoleConstant} from "src/domains/users/validation/fields/UserRoleConstant";
 
 /** User document schema. */
 export const UserSchema = new Schema<UserSchemaFields>({

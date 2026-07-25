@@ -2,7 +2,7 @@
  * @fileoverview Defines the schema for transforming user query sort parameters into a pipeline-ready format.
  */
 
-import {UserQuerySortSchema} from "@/domains/users/_feat/validate-query/UserQuerySortSchema";
+import {UserQuerySortSchema} from "@/domains/users/_feat/validate-query/user/UserQuerySortSchema";
 import {normaliseQuerySortValues} from "@/shared/_feat/pipeline-schema-transformers";
 import {z} from "zod";
 
