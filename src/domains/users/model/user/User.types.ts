@@ -3,7 +3,8 @@
  */
 
 import {Types} from "mongoose";
-import type {UserRole, UserUniqueCode} from "@/domains/users/_feat/manage-user-unique-code/schemas";
+import type {UserUniqueCode} from "@/domains/users/_feat/manage-user-unique-code/schemas";
+import type {UserRole} from "@/domains/users/validation";
 
 /** Represents the full shape of a User document as stored in MongoDB. */
 export type UserSchemaFields = {

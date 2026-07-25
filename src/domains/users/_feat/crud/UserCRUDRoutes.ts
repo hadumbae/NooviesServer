@@ -7,18 +7,26 @@ import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/route
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import {destroy, find, findById, paginated} from "@/shared/_feat/generic-crud/path-handlers";
 import {User, type UserSchemaFields} from "@/domains/users/model/user";
+import {UserQueryMatchStageSchema, UserQuerySortStageSchema} from "@/domains/users/_feat/validate-query";
+import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+
+const modelName = User.modelName;
+const matchSchema = UserQueryMatchStageSchema;
+const sortSchema = UserQuerySortStageSchema;
+
+const queryMiddleware = buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema});
 
 const routes: CRUDRoute<UserSchemaFields>[] = [
     {
         path: `/find`,
         method: "get",
-        middleware: [isAuth],
+        middleware: queryMiddleware,
         handler: find
     },
     {
         path: `/paginated`,
         method: "get",
-        middleware: [isAuth],
+        middleware: queryMiddleware,
         handler: paginated,
     },
     {

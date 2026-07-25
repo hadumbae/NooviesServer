@@ -44,6 +44,8 @@ export const paginated = <TModel extends BaseModel>(
         const filters = req.queryMatchStage?.$match;
         const sorts = req.querySortStage?.$sort;
 
+        console.log("Match: ", filters);
+
         const [totalItems, items] = await Promise.all([
             countDocuments<TModel>({model, filters}),
             getPaginatedDocuments<TModel>({
