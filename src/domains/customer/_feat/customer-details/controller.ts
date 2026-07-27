@@ -8,9 +8,15 @@ import {
     fetchCustomerProfileViewData,
     fetchCustomerReviewsViewData,
     fetchCustomerReviewViewData
-} from "@/domains/customer/features/customer-details/services"
-import {fetchCustomerReviewLogsViewData} from "@/domains/customer/features/customer-details/services/service"
+} from "@/domains/customer/_feat/customer-details/service"
 import {fetchRequestPaginationOptions} from "@/shared/_feat/fetch-request-options/utils"
+import {
+    fetchCustomerReviewLogsViewData
+} from "@/domains/customer/_feat/customer-details/service/fetchCustomerReviewLogsViewData";
+import type {
+    ManageCustomerReviewRouteConfig,
+    ManageCustomerRouteConfig
+} from "@/domains/customer/_feat/customer-details/schema";
 
 /**
  * Resolves a customer's full profile activity including identity,
@@ -28,10 +34,10 @@ export async function getFetchCustomerProfileViewData(req: Request, res: Respons
  * URL parameters and query strings.
  */
 export async function getFetchCustomerReviewsViewData(req: Request, res: Response): Promise<Response> {
-    const {customerCode} = req.params
+    const {userId} = req.parsedConfig as ManageCustomerRouteConfig;
     const {page, perPage} = fetchRequestPaginationOptions(req)
 
-    const data = await fetchCustomerReviewsViewData({customerCode, pagination: {page, perPage}});
+    const data = await fetchCustomerReviewsViewData({userId, pagination: {page, perPage}});
     return res.status(200).json(data)
 }
 
@@ -40,9 +46,9 @@ export async function getFetchCustomerReviewsViewData(req: Request, res: Respons
  * identifier codes.
  */
 export async function getFetchCustomerReviewViewData(req: Request, res: Response): Promise<Response> {
-    const {customerCode, reviewCode} = req.params
+    const {userId, reviewId} = req.parsedConfig as ManageCustomerReviewRouteConfig;
 
-    const data = await fetchCustomerReviewViewData({customerCode, reviewCode})
+    const data = await fetchCustomerReviewViewData({userId, reviewId})
     return res.status(200).json(data)
 }
 
@@ -50,9 +56,9 @@ export async function getFetchCustomerReviewViewData(req: Request, res: Response
  * Resolves paginated moderation audit logs for a specific movie review.
  */
 export async function getFetchCustomerReviewLogsViewData(req: Request, res: Response): Promise<Response> {
-    const {reviewCode} = req.params
+    const {reviewId} = req.parsedConfig as ManageCustomerReviewRouteConfig;
     const pagination = fetchRequestPaginationOptions(req)
 
-    const data = await fetchCustomerReviewLogsViewData({reviewCode, pagination})
+    const data = await fetchCustomerReviewLogsViewData({reviewId, pagination})
     return res.status(200).json(data)
 }

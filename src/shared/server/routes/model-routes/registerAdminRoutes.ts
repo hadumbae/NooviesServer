@@ -7,7 +7,7 @@
 
 import type {Express} from "express";
 import type {RouteRegistration} from "../../registerRoutes.js";
-import {CustomerViewDataRoutes} from "@/domains/customer/features/customer-details/routing";
+import {CustomerViewDataRoutes} from "@/domains/customer/_feat/customer-details";
 
 /**
  * CRM-specific routes for administrative customer management.

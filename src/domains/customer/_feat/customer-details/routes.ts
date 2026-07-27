@@ -9,10 +9,15 @@ import {isAuth} from "@/domains/authentication/middleware/isAuth"
 import asyncHandler from "@/shared/utility/handlers/asyncHandler"
 import {
     getFetchCustomerProfileViewData,
+    getFetchCustomerReviewLogsViewData,
     getFetchCustomerReviewsViewData,
     getFetchCustomerReviewViewData
-} from "@/domains/customer/features/customer-details/controllers"
-import {getFetchCustomerReviewLogsViewData} from "@/domains/customer/features/customer-details/controllers/controller"
+} from "@/domains/customer/_feat/customer-details/controller"
+import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
+import {
+    ManageCustomerReviewRouteConfigSchema,
+    ManageCustomerRouteConfigSchema
+} from "@/domains/customer/_feat/customer-details/schema";
 
 /**
  * Express Router instance for aggregating Customer activity and identity views.
@@ -34,8 +39,9 @@ router.get(
  * Fetches a paginated list of all reviews authored by a specific customer.
  */
 router.get(
-    "/profile-details/:customerCode/reviews",
-    [isAuth],
+    "/customer/:userID/reviews",
+    // "/profile-details/:customerCode/reviews",
+    [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewsViewData)
 )
 
@@ -44,8 +50,9 @@ router.get(
  * Retrieves the full context for a specific movie review.
  */
 router.get(
-    "/profile-details/:customerCode/review/:reviewCode",
-    [isAuth],
+    "/customer/:userID/review/:reviewId",
+    // "/profile-details/:customerCode/review/:reviewCode",
+    [isAuth, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewViewData)
 )
 
@@ -54,8 +61,9 @@ router.get(
  * Retrieves paginated moderation logs for a specific review.
  */
 router.get(
-    "/profile-details/:customerCode/review/:reviewCode/logs",
-    [isAuth],
+    "/customer/:userID/review/:reviewId/logs",
+    // "/profile-details/:customerCode/review/:reviewCode/logs",
+    [isAuth, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewLogsViewData)
 )
 

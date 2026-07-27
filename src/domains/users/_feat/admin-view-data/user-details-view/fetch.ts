@@ -16,6 +16,8 @@ type UserDetailsViewData = {
     user: UserSchemaFields;
     reviews: MovieReviewSchemaFields[];
     reservations: ReservationSchemaFields[];
+    totalReviews: number;
+    totalReservations: number;
 }
 
 /** Fetches a user document along with their recent reservations and movie reviews. */
@@ -43,11 +45,22 @@ export async function fetchUserDetailsViewData(
         .limit(reviewCount ?? 10)
         .lean();
 
-    const [reservations, reviews] = await Promise.all([reservationQuery, reviewQuery]);
+    const reviewCountQuery = MovieReview.countDocuments({user})
+    const reservationCountQuery = Reservation.countDocuments({user})
+
+
+    const [reservations, reviews, totalReviews, totalReservations] = await Promise.all([
+        reservationQuery,
+        reviewQuery,
+        reviewCountQuery,
+        reservationCountQuery,
+    ]);
 
     return {
         user,
         reviews,
         reservations,
+        totalReviews,
+        totalReservations,
     }
 }
