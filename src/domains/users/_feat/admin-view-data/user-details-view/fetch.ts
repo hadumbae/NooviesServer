@@ -4,9 +4,9 @@
 
 import {User, type UserSchemaFields} from "@/domains/users";
 import type {UserDetailsViewRouteConfig} from "@/domains/users/_feat/admin-view-data";
-import {Reservation, ReservationPopulatePaths, type ReservationSchemaFields} from "@/domains/reservations";
+import {Reservation} from "@/domains/reservations";
 import createHttpError from "http-errors";
-import {MovieReview, MovieReviewPopulatePaths, type MovieReviewSchemaFields} from "@/domains/movie-reviews";
+import {MovieReview} from "@/domains/movie-reviews";
 
 /** Configuration for the user details fetch operation. */
 type FetchConfig = UserDetailsViewRouteConfig;
@@ -14,15 +14,13 @@ type FetchConfig = UserDetailsViewRouteConfig;
 /** Composite data structure for the user details view. */
 type UserDetailsViewData = {
     user: UserSchemaFields;
-    reviews: MovieReviewSchemaFields[];
-    reservations: ReservationSchemaFields[];
     totalReviews: number;
     totalReservations: number;
 }
 
 /** Fetches a user document along with their recent reservations and movie reviews. */
 export async function fetchUserDetailsViewData(
-    {userID, reviewCount, reservationCount}: FetchConfig
+    {userID}: FetchConfig
 ): Promise<UserDetailsViewData> {
     const user = await User
         .findById(userID)
@@ -33,33 +31,16 @@ export async function fetchUserDetailsViewData(
         throw createHttpError(404, "User not found.");
     }
 
-    const reservationQuery = Reservation
-        .find({user, status: {$in: ["PAID", "RESERVED"]}})
-        .populate(ReservationPopulatePaths)
-        .limit(reservationCount ?? 10)
-        .lean();
-
-    const reviewQuery = MovieReview
-        .find({user})
-        .populate(MovieReviewPopulatePaths)
-        .limit(reviewCount ?? 10)
-        .lean();
-
     const reviewCountQuery = MovieReview.countDocuments({user})
     const reservationCountQuery = Reservation.countDocuments({user})
 
-
-    const [reservations, reviews, totalReviews, totalReservations] = await Promise.all([
-        reservationQuery,
-        reviewQuery,
+    const [totalReviews, totalReservations] = await Promise.all([
         reviewCountQuery,
         reservationCountQuery,
     ]);
 
     return {
         user,
-        reviews,
-        reservations,
         totalReviews,
         totalReservations,
     }

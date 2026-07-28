@@ -7,30 +7,53 @@ import type {
     MovieReviewModerationLogSchemaFields
 } from "@/domains/movie-reviews/_models/moderationLogs/MovieReviewModerationLog.types";
 import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model";
-import {
-    MovieReviewModerationLog
-} from "@/domains/movie-reviews/_models/moderationLogs/MovieReviewModerationLog.model";
+import {MovieReviewModerationLog} from "@/domains/movie-reviews/_models/moderationLogs/MovieReviewModerationLog.model";
 import type {
     RequestPaginationOptions
 } from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
 import {Types} from "mongoose";
+import {User, type UserSchemaFields} from "@/domains/users";
+import {MovieReviewPopulatePaths, type MovieReviewSchemaFields} from "@/domains/movie-reviews";
+import createHttpError from "http-errors";
 
 /** Configuration for retrieving the audit trail of a specific review. */
 export type FetchCustomerReviewLogsViewDataConfig = {
+    userId: Types.ObjectId;
     reviewId: Types.ObjectId;
     pagination: RequestPaginationOptions
 }
+
 /** Paginated moderation log entries for administrative oversight. */
-export type FetchCustomerReviewLogsViewData = PaginationReturns<MovieReviewModerationLogSchemaFields>
+export type FetchCustomerReviewLogsViewData = {
+    customer: UserSchemaFields;
+    review: MovieReviewSchemaFields;
+    logs: PaginationReturns<MovieReviewModerationLogSchemaFields>;
+}
 
 /**
  * Retrieves a paginated list of moderation audit logs for a specific review,
  * populating the details of the performing administrator.
  */
 export async function fetchCustomerReviewLogsViewData(
-    {reviewId, pagination: {page, perPage}}: FetchCustomerReviewLogsViewDataConfig
+    {userId, reviewId, pagination: {page, perPage}}: FetchCustomerReviewLogsViewDataConfig
 ): Promise<FetchCustomerReviewLogsViewData> {
-    const review = await MovieReview.findById(reviewId).orFail();
+    const customer = await User
+        .findById(userId)
+        .select("-password -favourites")
+        .lean();
+
+    if (!customer) {
+        throw createHttpError(404, "User Not Found.");
+    }
+
+    const review = await MovieReview
+        .findById(reviewId)
+        .populate(MovieReviewPopulatePaths)
+        .lean();
+
+    if (!review) {
+        throw createHttpError(404, "Movie Review Not Found.");
+    }
 
     const [totalItems, items] = await Promise.all([
         MovieReviewModerationLog.countDocuments({review: review._id}),
@@ -43,7 +66,8 @@ export async function fetchCustomerReviewLogsViewData(
     ]);
 
     return {
-        totalItems,
-        items,
+        customer,
+        review,
+        logs: {totalItems, items},
     }
 }

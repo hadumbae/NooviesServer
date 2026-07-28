@@ -23,10 +23,10 @@ import type {
  * reservations, and reviews.
  */
 export async function getFetchCustomerProfileViewData(req: Request, res: Response): Promise<Response> {
-    const {uniqueCode} = req.params
+    const {userId} = req.parsedConfig as ManageCustomerRouteConfig;
 
-    const data = await fetchCustomerProfileViewData({uniqueCode})
-    return res.status(200).json(data)
+    const data = await fetchCustomerProfileViewData({userId});
+    return res.status(200).json(data);
 }
 
 /**
@@ -35,10 +35,10 @@ export async function getFetchCustomerProfileViewData(req: Request, res: Respons
  */
 export async function getFetchCustomerReviewsViewData(req: Request, res: Response): Promise<Response> {
     const {userId} = req.parsedConfig as ManageCustomerRouteConfig;
-    const {page, perPage} = fetchRequestPaginationOptions(req)
+    const {page, perPage} = fetchRequestPaginationOptions(req);
 
     const data = await fetchCustomerReviewsViewData({userId, pagination: {page, perPage}});
-    return res.status(200).json(data)
+    return res.status(200).json(data);
 }
 
 /**
@@ -48,17 +48,17 @@ export async function getFetchCustomerReviewsViewData(req: Request, res: Respons
 export async function getFetchCustomerReviewViewData(req: Request, res: Response): Promise<Response> {
     const {userId, reviewId} = req.parsedConfig as ManageCustomerReviewRouteConfig;
 
-    const data = await fetchCustomerReviewViewData({userId, reviewId})
-    return res.status(200).json(data)
+    const data = await fetchCustomerReviewViewData({userId, reviewId});
+    return res.status(200).json(data);
 }
 
 /**
  * Resolves paginated moderation audit logs for a specific movie review.
  */
 export async function getFetchCustomerReviewLogsViewData(req: Request, res: Response): Promise<Response> {
-    const {reviewId} = req.parsedConfig as ManageCustomerReviewRouteConfig;
-    const pagination = fetchRequestPaginationOptions(req)
+    const {userId, reviewId} = req.parsedConfig as ManageCustomerReviewRouteConfig;
+    const pagination = fetchRequestPaginationOptions(req);
 
-    const data = await fetchCustomerReviewLogsViewData({reviewId, pagination})
-    return res.status(200).json(data)
+    const data = await fetchCustomerReviewLogsViewData({userId, reviewId, pagination});
+    return res.status(200).json(data);
 }

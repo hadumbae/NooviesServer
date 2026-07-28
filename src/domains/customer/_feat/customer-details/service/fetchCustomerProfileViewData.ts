@@ -5,17 +5,16 @@
 import type {LeanUserSchemaFields} from "@/domains/users/model/user/User.types";
 import type {ReservationSchemaFields} from "@/domains/reservations/_model/reservation/Reservation.types";
 import type {CustomerMovieReviewSummary} from "@/domains/movie-reviews/_models/review/MovieReview.types";
-import {
-    fetchRequiredCustomerByCode
-} from "@/domains/customer/_feat/customer-details/utils/fetchRequiredCustomerByCode";
 import {Reservation} from "@/domains/reservations/_model/reservation/Reservation.model";
 import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model";
 import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population/MoviePopulationPipelines";
-import type {UserUniqueCode} from "@/domains/users/_feat/manage-user-unique-code/schemas/UserUniqueCodeSchema";
+import {Types} from "mongoose";
+import {User} from "@/domains/users";
+import createHttpError from "http-errors";
 
 /** Configuration parameters for fetching aggregated customer profile data. */
 export type FetchCustomerProfileViewDataConfig = {
-    uniqueCode: UserUniqueCode
+    userId: Types.ObjectId;
     reservationCounts?: number
     reviewCounts?: number
 }
@@ -37,9 +36,10 @@ export type CustomerProfileViewData = {
  * Aggregates a customer's profile details, recent reservations, and movie reviews into a single payload.
  */
 export async function fetchCustomerProfileViewData(
-    {uniqueCode, reservationCounts = 5, reviewCounts = 5}: FetchCustomerProfileViewDataConfig
+    {userId, reservationCounts = 5, reviewCounts = 5}: FetchCustomerProfileViewDataConfig
 ): Promise<CustomerProfileViewData> {
-    const customer = await fetchRequiredCustomerByCode(uniqueCode)
+    const customer = await User.findById(userId).select("-password -roles -favourites").lean();
+    if (!customer) throw createHttpError(404, "Customer Not Found.");
 
     const [resTotal, reservations] = await Promise.all([
         Reservation.countDocuments({user: customer._id}),

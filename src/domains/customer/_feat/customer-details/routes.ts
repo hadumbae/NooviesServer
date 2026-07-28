@@ -29,8 +29,8 @@ const router = Router()
  * Resolves a customer's full profile activity.
  */
 router.get(
-    "/profile-details/:uniqueCode",
-    [isAuth],
+    "/customer/:userId",
+    [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
     asyncHandler(getFetchCustomerProfileViewData)
 )
 
@@ -39,8 +39,7 @@ router.get(
  * Fetches a paginated list of all reviews authored by a specific customer.
  */
 router.get(
-    "/customer/:userID/reviews",
-    // "/profile-details/:customerCode/reviews",
+    "/customer/:userId/reviews",
     [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewsViewData)
 )
@@ -50,8 +49,7 @@ router.get(
  * Retrieves the full context for a specific movie review.
  */
 router.get(
-    "/customer/:userID/review/:reviewId",
-    // "/profile-details/:customerCode/review/:reviewCode",
+    "/customer/:userId/review/:reviewId",
     [isAuth, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewViewData)
 )
@@ -61,8 +59,7 @@ router.get(
  * Retrieves paginated moderation logs for a specific review.
  */
 router.get(
-    "/customer/:userID/review/:reviewId/logs",
-    // "/profile-details/:customerCode/review/:reviewCode/logs",
+    "/customer/:userId/review/:reviewId/logs",
     [isAuth, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewLogsViewData)
 )
