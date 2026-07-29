@@ -1,22 +1,28 @@
 /**
- * @fileoverview Mongoose lifecycle middleware and query hooks for the User model.
+ * @fileoverview Mongoose middleware hooks for the User model to handle automatic population of virtual fields.
  */
-import {UserSchema} from "@/domains/users/model/user/User.schema";
-import type {HydratedDocument} from "mongoose";
-import type {UserSchemaFields} from "@/domains/users/model/user/User.types";
-import {generateUserUniqueCode} from "@/domains/users/_feat/manage-user-unique-code/generators";
 
-/**
- * Pre-validation middleware: Initialises core identity fields for new user documents.
- */
+import {UserSchema} from "@/domains/users/model/user/User.schema";
+import type {UserSchemaFields} from "@/domains/users";
+import type {PopulateOptions, Query} from "mongoose";
+import {populateLeanVirtuals} from "@/shared/_feat";
+
 UserSchema.pre(
-    'validate',
-    {document: true},
-    async function (this: HydratedDocument<UserSchemaFields>, next: () => void) {
-        if (this.isNew) {
-            this.uniqueCode = generateUserUniqueCode();
-        }
+    ["find", "findOne", "findOneAndUpdate"],
+    {document: false, query: true},
+    function (this: Query<any, UserSchemaFields>, next: () => void) {
+        const options: PopulateOptions[] = [
+            {path: "reviewCount"},
+            {path: "reservationCount"},
+            {path: "activeReservationCount"},
+        ];
+
+        populateLeanVirtuals({
+            query: this,
+            lean: this._mongooseOptions.lean,
+            options
+        })
 
         next();
     }
-);
+)

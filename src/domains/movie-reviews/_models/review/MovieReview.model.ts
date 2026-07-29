@@ -1,16 +1,15 @@
 /**
- * @file MovieReview model registration.
- * MovieReview.model.ts
+ * @fileoverview Registers and exports the Mongoose model for movie reviews.
  */
 
-import "src/domains/movie-reviews/_models/review/MovieReview.indexes.js";
+import "@/domains/movie-reviews/_models/review/MovieReview.indexes.js";
 import {model, Model} from "mongoose";
 import type {MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/review/MovieReview.types.js";
 import {MovieReviewSchema} from "@/domains/movie-reviews/_models/review/MovieReview.schema.js";
-import "src/domains/movie-reviews/_models/review/MovieReview.hooks";
+import "@/domains/movie-reviews/_models/review/MovieReview.hooks";
 
 /**
- * Mongoose model for MovieReview documents.
+ * The Mongoose model for interacting with the MovieReview collection.
  */
 export const MovieReview: Model<MovieReviewSchemaFields> = model<MovieReviewSchemaFields>(
     "MovieReview",

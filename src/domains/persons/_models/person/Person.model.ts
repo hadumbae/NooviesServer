@@ -5,8 +5,8 @@
 
 import {model, type Model} from "mongoose";
 import {PersonSchema} from "@/domains/persons/_models/person/Person.schema.js";
-import "src/domains/persons/_models/person/Person.middleware.js";
-import "src/domains/persons/_models/person/Person.indexes.js";
+import "@/domains/persons/_models/person/Person.middleware.js";
+import "@/domains/persons/_models/person/Person.indexes.js";
 import type {PersonSchemaFields} from "@/domains/persons/_models/person/Person.types";
 
 /**

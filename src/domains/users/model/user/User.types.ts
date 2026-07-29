@@ -5,10 +5,10 @@
 import {Types} from "mongoose";
 import type {UserUniqueCode} from "@/domains/users/_feat/manage-user-unique-code/schemas";
 import type {UserRole} from "@/domains/users/validation";
+import type {BaseModel} from "@/shared/_types";
 
 /** Represents the full shape of a User document as stored in MongoDB. */
-export type UserSchemaFields = {
-    readonly _id: Types.ObjectId;
+export type UserSchemaFields = BaseModel & {
     name: string;
     email: string;
     password: string;
