@@ -1,11 +1,10 @@
 /**
- * @fileoverview Defines Express controllers for resolving
- * aggregated customer activity and review data.
+ * @fileoverview Controller handling data retrieval requests for the customer details management feature.
  */
 
 import type {Request, Response} from "express"
 import {
-    fetchCustomerProfileViewData,
+    fetchCustomerProfileViewData, fetchCustomerReservationsViewData, fetchCustomerReservationViewData,
     fetchCustomerReviewsViewData,
     fetchCustomerReviewViewData
 } from "@/domains/customer/_feat/customer-details/service"
@@ -14,14 +13,12 @@ import {
     fetchCustomerReviewLogsViewData
 } from "@/domains/customer/_feat/customer-details/service/fetchCustomerReviewLogsViewData";
 import type {
+    ManageCustomerReservationRouteConfig,
     ManageCustomerReviewRouteConfig,
     ManageCustomerRouteConfig
 } from "@/domains/customer/_feat/customer-details/schema";
 
-/**
- * Resolves a customer's full profile activity including identity,
- * reservations, and reviews.
- */
+/** Fetches the profile view data for a specific customer. */
 export async function getFetchCustomerProfileViewData(req: Request, res: Response): Promise<Response> {
     const {userId} = req.parsedConfig as ManageCustomerRouteConfig;
 
@@ -29,10 +26,7 @@ export async function getFetchCustomerProfileViewData(req: Request, res: Respons
     return res.status(200).json(data);
 }
 
-/**
- * Fetches a paginated list of reviews authored by a specific customer based on
- * URL parameters and query strings.
- */
+/** Fetches a paginated list of reviews authored by a specific customer. */
 export async function getFetchCustomerReviewsViewData(req: Request, res: Response): Promise<Response> {
     const {userId} = req.parsedConfig as ManageCustomerRouteConfig;
     const {page, perPage} = fetchRequestPaginationOptions(req);
@@ -41,10 +35,7 @@ export async function getFetchCustomerReviewsViewData(req: Request, res: Respons
     return res.status(200).json(data);
 }
 
-/**
- * Retrieves a specific review within a customer's context using provided
- * identifier codes.
- */
+/** Fetches detailed view data for a specific customer review. */
 export async function getFetchCustomerReviewViewData(req: Request, res: Response): Promise<Response> {
     const {userId, reviewId} = req.parsedConfig as ManageCustomerReviewRouteConfig;
 
@@ -52,13 +43,28 @@ export async function getFetchCustomerReviewViewData(req: Request, res: Response
     return res.status(200).json(data);
 }
 
-/**
- * Resolves paginated moderation audit logs for a specific movie review.
- */
+/** Fetches paginated audit logs for a specific customer review. */
 export async function getFetchCustomerReviewLogsViewData(req: Request, res: Response): Promise<Response> {
     const {userId, reviewId} = req.parsedConfig as ManageCustomerReviewRouteConfig;
     const pagination = fetchRequestPaginationOptions(req);
 
     const data = await fetchCustomerReviewLogsViewData({userId, reviewId, pagination});
+    return res.status(200).json(data);
+}
+
+/** Fetches a paginated list of reservations made by a specific customer. */
+export async function getFetchCustomerReservationsViewData(req: Request, res: Response): Promise<Response> {
+    const {userId} = req.parsedConfig as ManageCustomerRouteConfig;
+    const {page, perPage} = fetchRequestPaginationOptions(req);
+
+    const data = await fetchCustomerReservationsViewData({userId, pagination: {page, perPage}});
+    return res.status(200).json(data);
+}
+
+/** Fetches detailed view data for a specific customer reservation. */
+export async function getFetchCustomerReservationViewData(req: Request, res: Response): Promise<Response> {
+    const {userId, reservationId} = req.parsedConfig as ManageCustomerReservationRouteConfig;
+
+    const data = await fetchCustomerReservationViewData({userId, reservationId});
     return res.status(200).json(data);
 }

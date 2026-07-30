@@ -7,6 +7,7 @@ import {URLParamSortOrderSchema} from "@/shared/_feat/parse-query-string";
 
 /** Zod schema for reservation query sorting options. */
 export const ReservationBaseQuerySortSchema = z.object({
+    sortByMovie: URLParamSortOrderSchema,
     sortByStatus: URLParamSortOrderSchema,
     sortByDateReserved: URLParamSortOrderSchema,
     sortByDatePaid: URLParamSortOrderSchema,

@@ -48,7 +48,7 @@ export async function fetchMovieInfoOverviewViewData(
         .lean({virtuals: true});
 
     const reviewDetails = await fetchReviewDetailsForMovie({
-        userID,
+        user: userID,
         movieID: movie._id,
         page: reviewPage,
         perPage: reviewPerPage,

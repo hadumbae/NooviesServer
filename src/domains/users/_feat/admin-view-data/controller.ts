@@ -11,7 +11,7 @@ import {
 /** Express controller that retrieves composite user data based on parsed route configuration. */
 export async function getFetchUserDetailsViewData(req: Request, res: Response): Promise<Response> {
     const {userID} = req.parsedConfig as UserDetailsViewRouteConfig;
-    const data = await fetchUserDetailsViewData({userID});
+    const data = await fetchUserDetailsViewData({user: userID});
 
     return res.status(200).json(data);
 }

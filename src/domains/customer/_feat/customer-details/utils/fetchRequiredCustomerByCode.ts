@@ -7,6 +7,7 @@ import createHttpError from "http-errors";
 import type {UserUniqueCode} from "@/domains/users/_feat/manage-user-unique-code/schemas";
 import type {DocumentType} from "@/shared/_types/mongoose/DocumentType";
 import type {LeanUserSchemaFields} from "@/domains/users/model/user/User.types";
+import {LeanUserQuerySelectFields} from "@/domains/users";
 
 /** Retrieves a customer document by their unique system code and throws a 404 error if not found. */
 export async function fetchRequiredCustomerByCode(
@@ -14,7 +15,7 @@ export async function fetchRequiredCustomerByCode(
 ): Promise<DocumentType<LeanUserSchemaFields>> {
     const customer = await User
         .findOne({uniqueCode: code})
-        .select("_id name email uniqueCode");
+        .select(LeanUserQuerySelectFields);
 
     if (!customer) {
         throw createHttpError(404, "Customer Not Found.");

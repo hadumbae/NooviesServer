@@ -6,7 +6,7 @@ import {z} from "zod";
 import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
 import {
     ManageCustomerRouteConfigSchema
-} from "@/domains/customer/_feat/customer-details/schema/ManageCustomerRouteConfigSchema";
+} from "@/domains/customer/_feat/customer-details/schema/route-config/ManageCustomerRouteConfigSchema";
 
 /** Zod schema for validating customer and review identifiers in route parameters. */
 export const ManageCustomerReviewRouteConfigSchema = ManageCustomerRouteConfigSchema.extend({

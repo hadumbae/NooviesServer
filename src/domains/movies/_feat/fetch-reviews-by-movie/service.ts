@@ -61,13 +61,13 @@ export const fetchFeaturedReviewsByMovie = async (
                 userReviews: [
                     {$match: {user: userID}},
                     {$limit: 1},
-                    addMovieReviewDetailsPipelines({userID}),
+                    addMovieReviewDetailsPipelines({user: userID}),
                     {$project: {helpfulLikes: 0}},
                     ...populationPipelines,
                 ],
                 reviews: [
                     {$match: {user: {$ne: userID}}},
-                    addMovieReviewDetailsPipelines({userID}),
+                    addMovieReviewDetailsPipelines({user: userID}),
                     {$project: {helpfulLikes: 0}},
                     {$sort: {helpfulCount: -1}},
                     {$limit: 3},
@@ -110,7 +110,7 @@ export const fetchReviewDetailsForMovie = async (
                     },
                 ],
                 items: [
-                    addMovieReviewDetailsPipelines({userID}),
+                    addMovieReviewDetailsPipelines({user: userID}),
                     {$project: {helpfulLikes: 0}},
                     {$sort: {createdAt: -1}},
                     {$skip: perPage * (page - 1)},
@@ -120,7 +120,7 @@ export const fetchReviewDetailsForMovie = async (
                 userReview: [
                     {$match: {user: userID}},
                     {$limit: 1},
-                    addMovieReviewDetailsPipelines({userID}),
+                    addMovieReviewDetailsPipelines({user: userID}),
                     {$project: {helpfulLikes: 0}},
                     ...populationPipelines,
                 ],

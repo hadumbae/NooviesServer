@@ -43,7 +43,7 @@ ShowingSchema.pre("save", {document: true}, function () {
 
 ShowingSchema.post("save", {document: true}, async function (doc: HydratedDocument<ShowingSchemaFields>) {
     if (!doc._id) return;
-    if ((doc as any)._wasNew) await createShowingSeatMap({showingID: doc._id});
+    if ((doc as any)._wasNew) await createShowingSeatMap({showing: doc._id});
 });
 
 ShowingSchema.pre(

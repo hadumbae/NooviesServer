@@ -20,7 +20,7 @@ export async function fetchReservationsForUser(req: Request, res: Response): Pro
     const sorts = req.querySorts as CurrentUserReservationQuerySorts;
 
     const {totalItems, items} = await fetchPaginatedUserReservations({
-        userID,
+        user: userID,
         pagination,
         filters,
         sorts,

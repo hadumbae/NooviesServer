@@ -36,6 +36,7 @@ type ReservationPaymentSchemaFields = {
 /** Relational associations and immutable data snapshots for the reservation. */
 type ReservationRelatedSchemaFields = {
     user: Types.ObjectId;
+    movie: Types.ObjectId;
     showing: Types.ObjectId;
     snapshot: ReservedShowingSnapshotSchemaFields;
 }

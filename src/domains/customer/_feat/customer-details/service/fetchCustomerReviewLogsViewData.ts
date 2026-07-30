@@ -12,7 +12,7 @@ import type {
     RequestPaginationOptions
 } from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
 import {Types} from "mongoose";
-import {User, type UserSchemaFields} from "@/domains/users";
+import {LeanUserQuerySelectFields, User, type UserSchemaFields} from "@/domains/users";
 import {MovieReviewPopulatePaths, type MovieReviewSchemaFields} from "@/domains/movie-reviews";
 import createHttpError from "http-errors";
 
@@ -62,7 +62,7 @@ export async function fetchCustomerReviewLogsViewData(
             .sort({createdAt: -1})
             .skip(perPage * (page - 1))
             .limit(perPage)
-            .populate({path: "admin", select: "_id name email uniqueCode"})
+            .populate({path: "admin", select: LeanUserQuerySelectFields})
     ]);
 
     return {

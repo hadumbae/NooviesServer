@@ -48,7 +48,7 @@ export async function getFeaturedReviewsByMovie(
 
     const data = await BrowseMovieDetailsService.fetchFeaturedReviewsByMovie({
         movieID,
-        userID,
+        user: userID,
         options,
     });
 
@@ -71,7 +71,7 @@ export async function getReviewDetailsByMovie(
     const options = QueryUtils.fetchOptionsFromQuery(req);
 
     const data = await BrowseMovieDetailsService.fetchReviewDetailsForMovie({
-        userID,
+        user: userID,
         movieID,
         page,
         perPage,

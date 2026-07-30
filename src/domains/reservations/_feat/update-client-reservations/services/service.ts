@@ -27,7 +27,7 @@ export async function checkoutClientReservation(
 ): Promise<DocumentType<ReservationSchemaFields>> {
     const reservation = await assertReservationExists(reservationID);
 
-    assertReservationOwnership({userID, reservation});
+    assertReservationOwnership({user: userID, reservation});
     assertReservationNotExpired(reservation);
 
     if (reservation.status !== "RESERVED") {
@@ -54,7 +54,7 @@ export async function cancelClientReservation(
     {userID, reservationID}: CancelClientReservationParams
 ): Promise<DocumentType<ReservationSchemaFields>> {
     const reservation = await assertReservationExists(reservationID);
-    assertReservationOwnership({userID, reservation});
+    assertReservationOwnership({user: userID, reservation});
 
     const {status: resStatus, reservationType: resType, selectedSeating} = reservation;
 

@@ -3,7 +3,7 @@
  */
 
 import createHttpError from "http-errors";
-import {type LeanUserSchemaFields, User} from "@/domains/users";
+import {LeanUserQuerySelectFields, type LeanUserSchemaFields, User} from "@/domains/users";
 import {MovieReview, type MovieReviewSchemaFields,} from "@/domains/movie-reviews/_models";
 import {MovieWithRatingPipelines} from "@/domains/movie-reviews/_feat";
 import {Types} from "mongoose";
@@ -24,7 +24,7 @@ export type CustomerReviewViewData = {
 export async function fetchCustomerReviewViewData(
     {userId, reviewId}: FetchCustomerReviewViewDataConfig
 ): Promise<CustomerReviewViewData> {
-    const customer = await User.findById(userId).select("_id name email uniqueCode");
+    const customer = await User.findById(userId).select(LeanUserQuerySelectFields);
     if (!customer) throw createHttpError(404, "Customer Not Found.");
 
     const [review] = await MovieReview.aggregate<MovieReviewSchemaFields>([

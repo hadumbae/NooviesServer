@@ -17,4 +17,10 @@ export const ReservationPopulatePaths: PopulatePath[] = [
             path: "seat",
         },
     },
+    {
+        path: "movie",
+        populate: {
+            path: "genres",
+        },
+    },
 ];

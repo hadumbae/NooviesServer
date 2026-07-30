@@ -1,69 +1,62 @@
 /**
- * @fileoverview Defines the router configuration for customer-specific data
- * aggregation views. Maps HTTP endpoints to controllers for fetching
- * profiles, reviews, and moderation logs.
+ * @fileoverview Defines the Express routes for the customer details administrative view.
  */
 
 import {Router} from "express"
 import {isAuth} from "@/domains/authentication/middleware/isAuth"
 import asyncHandler from "@/shared/utility/handlers/asyncHandler"
 import {
-    getFetchCustomerProfileViewData,
+    getFetchCustomerProfileViewData, getFetchCustomerReservationsViewData, getFetchCustomerReservationViewData,
     getFetchCustomerReviewLogsViewData,
     getFetchCustomerReviewsViewData,
     getFetchCustomerReviewViewData
 } from "@/domains/customer/_feat/customer-details/controller"
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {
+    ManageCustomerReservationRouteConfigSchema,
     ManageCustomerReviewRouteConfigSchema,
     ManageCustomerRouteConfigSchema
 } from "@/domains/customer/_feat/customer-details/schema";
 
-/**
- * Express Router instance for aggregating Customer activity and identity views.
- */
 const router = Router()
 
-/**
- * GET /profile-details/:uniqueCode
- * Resolves a customer's full profile activity.
- */
 router.get(
     "/customer/:userId",
     [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
     asyncHandler(getFetchCustomerProfileViewData)
-)
+);
 
-/**
- * GET /profile-details/:customerCode/reviews
- * Fetches a paginated list of all reviews authored by a specific customer.
- */
 router.get(
     "/customer/:userId/reviews",
     [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewsViewData)
-)
+);
 
-/**
- * GET /profile-details/:customerCode/review/:reviewCode
- * Retrieves the full context for a specific movie review.
- */
 router.get(
     "/customer/:userId/review/:reviewId",
     [isAuth, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewViewData)
-)
+);
 
-/**
- * GET /profile-details/:customerCode/review/:reviewCode/logs
- * Retrieves paginated moderation logs for a specific review.
- */
 router.get(
     "/customer/:userId/review/:reviewId/logs",
     [isAuth, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewLogsViewData)
-)
+);
 
+router.get(
+    "/customer/:userId/reservations",
+    [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
+    asyncHandler(getFetchCustomerReservationsViewData)
+);
+
+router.get(
+    "/customer/:userId/reservations/:reviewId",
+    [isAuth, validateRequestConfig({schema: ManageCustomerReservationRouteConfigSchema})],
+    asyncHandler(getFetchCustomerReservationViewData)
+);
+
+/** Express router for customer administration data fetching. */
 export {
     router as CustomerAdminViewDataRoutes
 }

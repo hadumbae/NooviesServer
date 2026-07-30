@@ -5,6 +5,7 @@
 import type {FetchReservationByCodeParams} from "@/domains/reservations/_feat/fetch-customer-reservations/service/service.types";
 import type {AdminReservation} from "@/domains/reservations/_feat/fetch-customer-reservations";
 import {Reservation} from "@/domains/reservations/_model/reservation";
+import {LeanUserQuerySelectFields} from "@/domains/users";
 
 /** Retrieves a single reservation by its unique identifier and populates basic user information. */
 export const fetchByUniqueCode = async (
@@ -12,6 +13,6 @@ export const fetchByUniqueCode = async (
 ): Promise<AdminReservation | null> => {
     return Reservation
         .findOne({uniqueCode})
-        .populate({path: "user", select: "_id name email uniqueCode"})
+        .populate({path: "user", select: LeanUserQuerySelectFields})
         .lean<AdminReservation>();
 }

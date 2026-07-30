@@ -5,7 +5,7 @@
 import {type PipelineStage, Types} from "mongoose";
 import {type CustomerMovieReviewSummary, MovieReview} from "@/domains/movie-reviews";
 import type {PaginationReturns} from "@/shared/_types/pagination";
-import {type LeanUserSchemaFields, User} from "@/domains/users";
+import {LeanUserQuerySelectFields, type LeanUserSchemaFields, User} from "@/domains/users";
 import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population";
 import {buildPaginationPipelines} from "@/shared/_feat/pagination-pipelines";
 import type {RequestPaginationOptions} from "@/shared/_feat/fetch-request-options";
@@ -29,7 +29,7 @@ export type FetchCustomerReviewsViewData = {
 export async function fetchCustomerReviewsViewData(
     {userId, pagination: {page, perPage}}: FetchCustomerReviewsViewDataConfig
 ): Promise<FetchCustomerReviewsViewData> {
-    const customer = await User.findById(userId).select("_id name email uniqueCode");
+    const customer = await User.findById(userId).select(LeanUserQuerySelectFields);
     if (!customer) throw createHttpError(404, "Customer Not Found.");
 
     const reviewInnerStages: PipelineStage.FacetPipelineStage[] = [

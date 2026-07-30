@@ -28,6 +28,13 @@ export const ReservationSchema = new Schema<
         required: [true, "Required for reservation."],
     },
 
+    /** Denormalised reference to the specific Movie being shown. */
+    movie: {
+        type: Schema.Types.ObjectId,
+        ref: "Movie",
+        required: [true, "Required for reservation."],
+    },
+
     /** Reference to the specific Showing event being booked. */
     showing: {
         type: Schema.Types.ObjectId,

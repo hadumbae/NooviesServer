@@ -92,7 +92,7 @@ export async function createMovieReviewForCurrentUser(
 export async function updateMovieReviewForCurrentUser(
     {userID, reviewID, data, unset, options}: UpdateUserMovieReviewConfig
 ): Promise<MovieReviewSchemaFields> {
-    const isOwner = checkMovieReviewOwnership({userID, reviewID});
+    const isOwner = checkMovieReviewOwnership({user: userID, reviewID});
     if (!isOwner) throw createHttpError(403, "Invalid User, Can Only Update Owned Review.");
 
     const docToUpdate = await MovieReview.findById(reviewID).orFail();
@@ -129,7 +129,7 @@ export async function deleteMovieReviewForCurrentUser(
 ): Promise<void> {
     const review = await MovieReview.findById(reviewID).orFail();
 
-    const isOwner = checkMovieReviewOwnership({userID, reviewID});
+    const isOwner = checkMovieReviewOwnership({user: userID, reviewID});
     if (!isOwner) throw createHttpError(403, "Invalid User, Can Only Delete Owned Review.");
 
     await review.deleteOne();

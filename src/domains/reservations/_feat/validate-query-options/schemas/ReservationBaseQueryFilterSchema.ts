@@ -10,8 +10,9 @@ import {URLParamObjectIDSchema} from "@/shared/schema/url/URLParamObjectIDSchema
 
 /** Zod schema for validating the base query parameters of a reservation. */
 export const ReservationBaseQueryFilterSchema = z.object({
-    userID: URLParamObjectIDSchema,
-    showingID: URLParamObjectIDSchema,
+    movie: URLParamObjectIDSchema,
+    user: URLParamObjectIDSchema,
+    showing: URLParamObjectIDSchema,
     uniqueCode: URLParamRegexPatternSchema,
     status: ReservationStatusSchema.optional(),
     reservationType: ReservationTypeSchema.optional(),
