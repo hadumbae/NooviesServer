@@ -1,7 +1,2 @@
-import {registerClientViewDataRoutes} from "@/shared/server/routes/view-data/registerClientViewDataRoutes";
-import {registerAdminViewDataRoutes} from "@/shared/server/routes/view-data/registerAdminViewDataRoutes";
-
-export {
-    registerClientViewDataRoutes,
-    registerAdminViewDataRoutes,
-}
+export * from "@/shared/server/routes/view-data/registerClientViewDataRoutes";
+export * from "@/shared/server/routes/view-data/registerAdminViewDataRoutes";

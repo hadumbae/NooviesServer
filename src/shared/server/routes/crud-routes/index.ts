@@ -1,5 +1,1 @@
-import {registerAdminCRUDRoutes} from "@/shared/server/routes/crud-routes/registerAdminCRUDRoutes";
-
-export {
-    registerAdminCRUDRoutes,
-}
+export * from "@/shared/server/routes/crud-routes/registerAdminCRUDRoutes";

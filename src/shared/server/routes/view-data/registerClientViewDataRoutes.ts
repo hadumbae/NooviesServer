@@ -10,6 +10,7 @@ import {GenreClientViewDataRoutes} from "@/domains/genres/_feat/client-view-data
 import {TheatreClientViewDataRoutes} from "@/domains/theatre/_feat/client-view-data";
 import {MovieClientViewDataRoutes} from "@/domains/movies/_feat/client-view-data";
 import {PersonClientViewDataRoutes} from "@/domains/persons/_feat/client-view-data";
+import {TheatreScreenClientViewDataRoutes} from "@/domains/screen";
 
 /**
  * Collection of route groups related to Genre client-side views.
@@ -17,19 +18,23 @@ import {PersonClientViewDataRoutes} from "@/domains/persons/_feat/client-view-da
 const setupRouteGroup: RouteRegistration[] = [
     {
         path: "/api/v1/views/desktop/client/genres",
-        router: GenreClientViewDataRoutes
+        router: GenreClientViewDataRoutes,
     },
     {
         path: "/api/v1/views/desktop/client/theatres",
-        router: TheatreClientViewDataRoutes
+        router: TheatreClientViewDataRoutes,
+    },
+    {
+        path: "/api/v1/views/desktop/client/theatre-screens",
+        router: TheatreScreenClientViewDataRoutes,
     },
     {
         path: "/api/v1/views/desktop/movies/client",
-        router: MovieClientViewDataRoutes
+        router: MovieClientViewDataRoutes,
     },
     {
         path: "/api/v1/views/desktop/persons/client",
-        router: PersonClientViewDataRoutes
+        router: PersonClientViewDataRoutes,
     },
 ];
 

@@ -1,5 +1,2 @@
-import {registerAdminFeatureRoutes} from "@/shared/server/routes/feature-routes/registerAdminFeatureRoutes";
+export * from "@/shared/server/routes/feature-routes/registerClientFeaturesRoutes";
 
-export {
-    registerAdminFeatureRoutes,
-}

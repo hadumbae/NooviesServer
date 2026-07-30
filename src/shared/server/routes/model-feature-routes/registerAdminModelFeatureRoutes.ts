@@ -48,7 +48,7 @@ const customerRoutes: RouteRegistration[] = [
 /**
  * Mounts all administrative feature-specific routers into the provided Express application instance.
  */
-export function registerAdminFeatureRoutes(app: Express): void {
+export function registerAdminModelFeatureRoutes(app: Express): void {
     const routeGroups: RouteRegistration[][] = [
         setupRoutes,
         reservationRoutes,

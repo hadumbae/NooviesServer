@@ -1,16 +1,12 @@
 /**
- * @file Registration utility for routes that interface with external third-party APIs and services.
- * @filename registerExternalRoutes.ts
+ * @fileoverview Registers external API routes for the Express application.
  */
 
 import type {Express} from "express";
 import type {RouteRegistration} from "../registerRoutes.js";
 import {IpApiRoutes} from "../../../domains/external/ipapi/routing/IpApiRoutes.js";
 
-/**
- * Mounts routes that act as proxies or integrators for external service providers.
- * @param app - The primary Express application instance.
- */
+/** Configures the Express application with routes for external service integrations. */
 export function registerExternalRoutes(app: Express) {
     const routes: RouteRegistration[] = [
         {path: "/api/v1/ext/ip-geo", router: IpApiRoutes},

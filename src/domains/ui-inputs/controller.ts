@@ -2,8 +2,10 @@
 
 import type {Request, Response} from "express";
 import type {BaseModel} from "@/shared/_types/model/BaseModel";
-import type {FetchLeanDataConfig} from "@/domains/ui-inputs/handlers/service.types";
-import {fetchLeanMovies, fetchLeanPersons, fetchLeanRoleTypes} from "@/domains/ui-inputs/handlers/service";
+import type {FetchLeanDataConfig} from "@/domains/ui-inputs/handlers/fetchLeanDataConfig";
+import {fetchPersonsForInputs} from "@/domains/ui-inputs/handlers/fetchPersonsForInputs";
+import {fetchRoleTypesForInputs} from "@/domains/ui-inputs/handlers/fetchRoleTypesForInputs";
+import {fetchMoviesForInputs} from "@/domains/ui-inputs/handlers/fetchMoviesForInputs";
 
 /** Function signature for services that retrieve lean model data based on filters and sorts. */
 export type LeanDataHandler<TModel extends BaseModel> = (config: FetchLeanDataConfig<TModel>) => Promise<TModel[]>;
@@ -20,6 +22,6 @@ export const handleLeanData = <TModel extends BaseModel>(
 };
 
 /** Express handler for retrieving lean movie data. */
-export const getFetchMovieLeanData = handleLeanData(fetchLeanMovies);
-export const getFetchPersonLeanData = handleLeanData(fetchLeanPersons);
-export const getFetchRoleTypeLeanData = handleLeanData(fetchLeanRoleTypes);
+export const getFetchMovieLeanData = handleLeanData(fetchMoviesForInputs);
+export const getFetchPersonLeanData = handleLeanData(fetchPersonsForInputs);
+export const getFetchRoleTypeLeanData = handleLeanData(fetchRoleTypesForInputs);

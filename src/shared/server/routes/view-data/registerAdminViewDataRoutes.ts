@@ -10,11 +10,16 @@ import {TheatreAdminViewDataRoutes} from "@/domains/theatre/_feat/admin-view-dat
 import {TheatreScreenAdminViewDataRoutes} from "@/domains/screen/_feat/view-data-admin";
 import {ShowingAdminViewDataRoutes} from "@/domains/showing/_feat/admin-view-data";
 import {UserAdminViewDataRoutes} from "@/domains/users/_feat/admin-view-data";
+import {CustomerAdminViewDataRoutes} from "@/domains/customer/_feat/customer-details";
 
 const userRouteGroups: RouteRegistration[] = [
     {
         path: "/api/v1/views/desktop/admin/users",
         router: UserAdminViewDataRoutes,
+    },
+    {
+        path: "/api/v1/views/desktop/admin/customers",
+        router: CustomerAdminViewDataRoutes,
     },
 ];
 

@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express, { type Express } from 'express';
 import handleGlobalErrors from "../utility/handlers/handleGlobalErrors.js";
 import registerParsers from "./registerParsers.js";
-import registerRoutes from "./registerRoutes.js";
+import {registerRoutes} from "./registerRoutes.js";
 import registerCORS from "./registerCORS.js";
 import registerGraphQL from "./registerGraphQL.js";
 

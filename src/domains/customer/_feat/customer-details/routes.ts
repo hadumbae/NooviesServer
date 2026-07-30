@@ -65,5 +65,5 @@ router.get(
 )
 
 export {
-    router as CustomerViewDataRoutes
+    router as CustomerAdminViewDataRoutes
 }

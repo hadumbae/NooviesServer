@@ -1,43 +1,36 @@
 /**
- * @file Main entry point for API route orchestration and registration.
- * @filename registerRoutes.ts
+ * @fileoverview Centralized registration of all application routes for the Express server.
  */
 
 import type {Express, Router} from "express";
-import {registerAuthRoutes} from "./routes/registerAuthRoutes.js";
-import {registerExternalRoutes} from "./routes/registerExternalRoutes.js";
-import {registerAdminRoutes, registerClientRoutes} from "@/shared/server/routes/model-routes";
-import {registerAdminCRUDRoutes} from "@/shared/server/routes/crud-routes";
-import {registerAdminFeatureRoutes} from "@/shared/server/routes/feature-routes";
-import {registerAdminViewDataRoutes, registerClientViewDataRoutes} from "@/shared/server/routes/view-data";
+import {
+    registerAdminCRUDRoutes,
+    registerAdminModelFeatureRoutes, registerAdminViewDataRoutes,
+    registerAuthRoutes, registerClientFeaturesRoutes,
+    registerClientModelFeatureRoutes, registerClientViewDataRoutes, registerDataRoutes, registerExternalRoutes
+} from "@/shared/server/routes";
 
-/**
- * Standard descriptor for mapping a URL segment to an Express router.
- */
+
+/** Represents a route path and its associated Express router. */
 export type RouteRegistration = {
-    /** The base URL prefix for all endpoints within the attached router. */
     path: string;
-
-    /** The Express router instance containing the route definitions. */
     router: Router;
 };
 
-/**
- * Bootstraps the entire routing table by delegating to specialized registration utilities.
- * @param app - The primary Express application instance.
- */
-export default function registerRoutes(app: Express) {
+/** Orchestrates the registration of all application route modules onto the Express instance. */
+export function registerRoutes(app: Express) {
     registerAuthRoutes(app);
+    registerDataRoutes(app);
+    registerExternalRoutes(app);
 
-    registerAdminRoutes(app);
-    registerClientRoutes(app);
+    registerClientFeaturesRoutes(app);
 
     registerAdminCRUDRoutes(app);
 
-    registerAdminFeatureRoutes(app);
+    registerAdminModelFeatureRoutes(app);
+    registerClientModelFeatureRoutes(app);
 
     registerAdminViewDataRoutes(app);
     registerClientViewDataRoutes(app);
 
-    registerExternalRoutes(app);
 }

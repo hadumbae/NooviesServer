@@ -10,5 +10,5 @@ router.get(
 );
 
 export {
-    router as ScreenBrowseRoutes,
+    router as TheatreScreenClientViewDataRoutes,
 }

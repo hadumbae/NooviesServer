@@ -1,5 +1,3 @@
-
-
 /**
  * @fileoverview Registers authentication and user management routes to the Express application.
  */
