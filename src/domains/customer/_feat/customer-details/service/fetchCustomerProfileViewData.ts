@@ -1,25 +1,25 @@
 /**
- * @fileoverview Service for aggregating customer profile, reservation, and review data for the profile view.
+ * @fileoverview Service to fetch and aggregate data for the customer profile view.
  */
 
 import type {LeanUserSchemaFields} from "@/domains/users/model/user/User.types";
 import type {ReservationSchemaFields} from "@/domains/reservations/_model/reservation/Reservation.types";
-import type {CustomerMovieReviewSummary} from "@/domains/movie-reviews/_models/review/MovieReview.types";
+import type {MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/review/MovieReview.types";
 import {Reservation} from "@/domains/reservations/_model/reservation/Reservation.model";
 import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model";
-import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population/MoviePopulationPipelines";
 import {Types} from "mongoose";
 import {User} from "@/domains/users";
 import createHttpError from "http-errors";
+import {MovieReviewPopulatePaths} from "@/domains/movie-reviews";
 
-/** Configuration parameters for fetching aggregated customer profile data. */
+/** Configuration options for fetching customer profile data. */
 export type FetchCustomerProfileViewDataConfig = {
     userId: Types.ObjectId;
     reservationCounts?: number
     reviewCounts?: number
 }
 
-/** Aggregated data structure representing a comprehensive view of a customer's activity. */
+/** The aggregated data structure for the customer profile view. */
 export type CustomerProfileViewData = {
     customer: LeanUserSchemaFields
     reservation: {
@@ -28,45 +28,43 @@ export type CustomerProfileViewData = {
     }
     review: {
         total: number
-        items: CustomerMovieReviewSummary[]
+        items: MovieReviewSchemaFields[]
     }
 }
 
-/**
- * Aggregates a customer's profile details, recent reservations, and movie reviews into a single payload.
- */
+/** Fetches a customer's profile, recent reservations, and recent reviews. */
 export async function fetchCustomerProfileViewData(
     {userId, reservationCounts = 5, reviewCounts = 5}: FetchCustomerProfileViewDataConfig
 ): Promise<CustomerProfileViewData> {
-    const customer = await User.findById(userId).select("-password -roles -favourites").lean();
-    if (!customer) throw createHttpError(404, "Customer Not Found.");
+    const customer = await User
+        .findById(userId)
+        .select("-password -roles -favourites")
+        .lean();
 
-    const [resTotal, reservations] = await Promise.all([
-        Reservation.countDocuments({user: customer._id}),
-        Reservation
-            .find({user: customer._id})
-            .sort({createdAt: -1})
-            .limit(reservationCounts),
-    ])
+    if (!customer) {
+        throw createHttpError(404, "Customer Not Found.");
+    }
 
-    const revTotal = await MovieReview.countDocuments({user: customer._id})
-    const reviews = await MovieReview.aggregate<CustomerMovieReviewSummary>([
-        {$match: {user: customer._id}},
-        {$sort: {createdAt: -1}},
-        {$limit: reviewCounts},
-        {
-            $lookup: {
-                from: "movies",
-                localField: "movie",
-                foreignField: "_id",
-                as: "movie",
-                pipeline: MoviePopulationPipelines,
-            },
-        },
-        {$unwind: "$movie"},
-        {$addFields: {helpfulCount: {$size: "$helpfulLikes"}}},
-        {$project: {helpfulLikes: 0}},
-    ])
+    const reservationCountQuery = Reservation.countDocuments({user: customer._id});
+    const reviewCountQuery = MovieReview.countDocuments({user: customer._id})
+
+    const reservationQuery = Reservation
+        .find({user: customer._id})
+        .sort({createdAt: -1})
+        .limit(reservationCounts);
+
+    const reviewQuery = MovieReview
+        .find({user: customer._id})
+        .sort({createdAt: -1})
+        .limit(reviewCounts)
+        .populate(MovieReviewPopulatePaths);
+
+    const [resTotal, revTotal, reservations, reviews] = await Promise.all([
+        reservationCountQuery,
+        reviewCountQuery,
+        reservationQuery,
+        reviewQuery,
+    ]);
 
     return {
         customer,
