@@ -3,9 +3,9 @@
  */
 
 import {Schema} from "mongoose";
-import {UserRoleConstant} from "@/domains/users/_const";
+import {UserRoleConstant, UserStatusConstant} from "@/domains/users/_const";
 import type {UserSchemaFields} from "@/domains/users/model/user/User.types.js";
-import type {UserRole} from "@/domains/users";
+import type {UserRole} from "@/domains/users/validation/fields/UserRoleSchema";
 
 /** User document schema. */
 export const UserSchema = new Schema<UserSchemaFields>({
@@ -72,7 +72,7 @@ export const UserSchema = new Schema<UserSchemaFields>({
 
     status: {
         type: String,
-        enum: {values: UserRoleConstant, message: "Must be a valid user status."},
+        enum: {values: UserStatusConstant, message: "Must be a valid user status."},
         default: "ACTIVE",
         required: [true, "`Status` is required."],
     },

@@ -29,7 +29,7 @@ export async function loginUser(
         throw createHttpError(404, "User not found!");
     }
 
-    const {_id, name, email, roles, password, uniqueCode} = user;
+    const {_id, name, email, roles, password, uniqueCode, status} = user;
 
     const isValid = await bcrypt.compare(inputPassword, password);
 
@@ -40,7 +40,7 @@ export async function loginUser(
 
     const userDetails = {
         isAdmin: roles.includes("ADMIN"),
-        user: {_id, roles, name, email, uniqueCode},
+        user: {_id, roles, name, email, uniqueCode, status},
     };
 
     const token: string = jwt.sign(userDetails, process.env.JWT_SECRET!, {expiresIn: "72h"});
