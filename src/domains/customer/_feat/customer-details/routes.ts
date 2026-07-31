@@ -51,7 +51,7 @@ router.get(
 );
 
 router.get(
-    "/customer/:userId/reservations/:reviewId",
+    "/customer/:userId/reservations/:reservationId",
     [isAuth, validateRequestConfig({schema: ManageCustomerReservationRouteConfigSchema})],
     asyncHandler(getFetchCustomerReservationViewData)
 );
