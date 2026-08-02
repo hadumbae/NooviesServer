@@ -3,8 +3,8 @@
  */
 
 import {z} from "zod";
-import {UserRoleUpdateActionConstant} from "@/domains/users/_const";
-import {UserModerationLogActionSchema} from "@/domains/users/validation/fields/moderation/UserModerationLogActionSchema";
+import {UserRoleUpdateActionConstant} from "@/domains/users/_feat/manage-user-roles/const";
+import {UserModerationLogActionSchema} from "@/domains/users/validation/fields/moderation";
 
 /** Zod schema validating subset actions specifically authorised for changing user roles. */
 export const UserRoleUpdateActionSchema = UserModerationLogActionSchema.extract(UserRoleUpdateActionConstant);

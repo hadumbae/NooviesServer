@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {UserSuspensionUpdateActionConstant} from "@/domains/users/_const";
+import {UserSuspensionUpdateActionConstant} from "@/domains/users/_feat/manage-user-suspension/const";
 import {
     UserModerationLogActionSchema
 } from "@/domains/users/validation/fields/moderation/UserModerationLogActionSchema";

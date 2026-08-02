@@ -1,0 +1,2 @@
+export * from "@/domains/users/_feat/manage-user-suspension/schema/UserSuspensionUpdateActionSchema";
+export * from "@/domains/users/_feat/manage-user-suspension/schema/UserSuspensionUpdateInputSchema";
