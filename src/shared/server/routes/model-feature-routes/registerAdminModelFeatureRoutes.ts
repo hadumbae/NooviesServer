@@ -12,6 +12,7 @@ import {GenreImageManagementRoutes} from "@/domains/genres/_feat/manage-image";
 import {MovieImageManagementRoutes} from "@/domains/movies/_feat/manage-image/routes/routes";
 import {ReservationUpdateRoutes} from "@/domains/reservations/_feat/update-reservations";
 import {CustomerMovieReviewActions} from "@/domains/movie-reviews/_feat/customer-review-actions";
+import {ManageUserRolesRoutes, ManageUserSuspensionRoutes} from "@/domains/users";
 
 /**
  * Foundation feature routes.
@@ -45,6 +46,11 @@ const customerRoutes: RouteRegistration[] = [
     {path: "/api/v1/admin/customers/feat/review-actions", router: CustomerMovieReviewActions},
 ];
 
+const userRoutes: RouteRegistration[] = [
+    {path: "/api/v1/admin/users/feat/manage-roles", router: ManageUserRolesRoutes},
+    {path: "/api/v1/admin/users/feat/manage-suspension", router: ManageUserSuspensionRoutes},
+];
+
 /**
  * Mounts all administrative feature-specific routers into the provided Express application instance.
  */
@@ -54,6 +60,7 @@ export function registerAdminModelFeatureRoutes(app: Express): void {
         reservationRoutes,
         customerRoutes,
         creditRoutes,
+        userRoutes,
     ];
 
     for (const routes of routeGroups) {
