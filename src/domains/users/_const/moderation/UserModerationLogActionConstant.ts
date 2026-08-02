@@ -9,4 +9,5 @@ export const UserModerationLogActionConstant = [
     "user_role_revoke_admin",
     "user_registered",
     "user_suspended",
+    "user_lift_suspension",
 ] as const;
