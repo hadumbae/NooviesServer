@@ -7,10 +7,11 @@ import createHttpError from "http-errors";
 import {type UserModerationLogSchemaFields} from "@/domains/users/model/moderation-log";
 import {User, type UserSchemaFields,} from "@/domains/users/model/user";
 import {LeanUserQuerySelectFields} from "@/domains/users/_feat/query-population";
-import {type UserSuspensionUpdateInputData} from "@/domains/users/_feat/manage-user-suspension/schema";
+import {saveUserModerationLog} from "@/domains/users/_feat/user-moderation";
 import {
-    saveUserSuspensionUpdateModerationLog
-} from "@/domains/users/_feat/manage-user-suspension/service/saveUserSuspensionUpdateModerationLog";
+    type UserSuspensionUpdateAction,
+    type UserSuspensionUpdateInputData
+} from "@/domains/users/_feat/manage-user-suspension/schema";
 
 /** Configuration parameters required to suspend a user. */
 type SuspendUserConfig = {
@@ -31,13 +32,18 @@ type SuspendUserReturns = {
 export async function suspendUser(
     {adminID, userID, data: {action, message}}: SuspendUserConfig
 ): Promise<SuspendUserReturns> {
-    const user = await User.findById(userID).select(LeanUserQuerySelectFields);
-    if (!user) throw createHttpError(404, "User not found!");
+    const user = await User
+        .findOne({_id: userID, status: "ACTIVE"})
+        .select(LeanUserQuerySelectFields);
+
+    if (!user) {
+        throw createHttpError(404, "User not found!");
+    }
 
     user.status = "SUSPENDED";
     await user.save();
 
-    const log = await saveUserSuspensionUpdateModerationLog({
+    const log = await saveUserModerationLog<UserSuspensionUpdateAction>({
         user: userID,
         admin: adminID,
         message,

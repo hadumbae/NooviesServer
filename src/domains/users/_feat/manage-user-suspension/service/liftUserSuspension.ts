@@ -7,10 +7,11 @@ import createHttpError from "http-errors";
 import {type UserModerationLogSchemaFields} from "@/domains/users/model/moderation-log";
 import {User, type UserSchemaFields,} from "@/domains/users/model/user";
 import {LeanUserQuerySelectFields} from "@/domains/users/_feat/query-population";
-import {type UserSuspensionUpdateInputData} from "@/domains/users/_feat/manage-user-suspension/schema";
+import {saveUserModerationLog} from "@/domains/users/_feat/user-moderation";
 import {
-    saveUserSuspensionUpdateModerationLog
-} from "@/domains/users/_feat/manage-user-suspension/service/saveUserSuspensionUpdateModerationLog";
+    type UserSuspensionUpdateAction,
+    type UserSuspensionUpdateInputData
+} from "@/domains/users/_feat/manage-user-suspension/schema";
 
 /** Configuration parameters required to lift a user suspension. */
 type LiftSuspensionConfig = {
@@ -35,12 +36,14 @@ export async function liftUserSuspension(
         .findOne({_id: userID, status: "SUSPENDED"})
         .select(LeanUserQuerySelectFields);
 
-    if (!user) throw createHttpError(404, "User not found!");
+    if (!user) {
+        throw createHttpError(404, "User not found!");
+    }
 
     user.status = "ACTIVE";
     await user.save();
 
-    const log = await saveUserSuspensionUpdateModerationLog({
+    const log = await saveUserModerationLog<UserSuspensionUpdateAction>({
         user: userID,
         admin: adminID,
         message,

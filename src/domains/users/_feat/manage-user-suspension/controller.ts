@@ -5,7 +5,7 @@
 import type {Request, Response} from "express";
 import type {ManageUserSuspensionRouteConfig} from "@/domains/users/_feat/manage-user-suspension/route-config";
 import {liftUserSuspension, suspendUser} from "@/domains/users/_feat/manage-user-suspension/service";
-import type {UserSuspensionUpdateInputData} from "@/domains/users";
+import type {UserSuspensionUpdateInputData} from "@/domains/users/_feat/manage-user-suspension/schema";
 
 /**
  * Express controller that suspends a user account and logs the related action metadata.
