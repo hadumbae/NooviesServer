@@ -8,12 +8,12 @@ import {isAuth, ManageUserRouteConfigSchema} from "@/domains/authentication";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {UserSuspensionUpdateInputSchema} from "@/domains/users/_feat/manage-user-suspension/schema";
-import {patchLiftUserSuspension, patchSuspendUser} from "@/domains/users/_feat/manage-user-suspension/controller";
+import {patchUnsuspendUser, patchSuspendUser} from "@/domains/users/_feat/manage-user-suspension/controller";
 
 const router = Router();
 
 router.patch(
-    "user/:userId/suspend",
+    "/user/:userId/suspend",
     [
         isAuth,
         validateZodSchema(UserSuspensionUpdateInputSchema),
@@ -23,13 +23,13 @@ router.patch(
 );
 
 router.patch(
-    "user/:userId/lift-suspension",
+    "/user/:userId/unsuspend",
     [
         isAuth,
         validateZodSchema(UserSuspensionUpdateInputSchema),
         validateRequestConfig({schema: ManageUserRouteConfigSchema}),
     ],
-    asyncHandler(patchLiftUserSuspension),
+    asyncHandler(patchUnsuspendUser),
 );
 
 /** Express router instance containing user suspension administration endpoints. */

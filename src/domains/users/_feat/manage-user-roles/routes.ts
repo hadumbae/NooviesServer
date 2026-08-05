@@ -16,7 +16,7 @@ import {
 const router = Router();
 
 router.patch(
-    "user/:userId/role/admin/grant",
+    "/user/:userId/role/admin/grant",
     [
         isAuth,
         validateZodSchema(UserRoleUpdateInputSchema),
@@ -26,7 +26,7 @@ router.patch(
 );
 
 router.patch(
-    "user/:userId/role/admin/revoke",
+    "/user/:userId/role/admin/revoke",
     [
         isAuth,
         validateZodSchema(UserRoleUpdateInputSchema),

@@ -5,5 +5,5 @@
 /** Tuple array containing the authoritative set of available user suspension update actions. */
 export const UserSuspensionUpdateActionConstant = [
     "user_suspended",
-    "user_lift_suspension",
+    "user_unsuspended",
 ] as const;

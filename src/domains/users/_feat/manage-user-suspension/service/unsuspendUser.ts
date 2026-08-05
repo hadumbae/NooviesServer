@@ -29,7 +29,7 @@ type LiftSuspensionReturns = {
 /**
  * Reverts a user's status from suspended to active and creates an associated record in the moderation log history.
  */
-export async function liftUserSuspension(
+export async function unsuspendUser(
     {adminID, userID, data: {action, message}}: LiftSuspensionConfig
 ): Promise<LiftSuspensionReturns> {
     const user = await User
