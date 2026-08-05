@@ -12,7 +12,9 @@ import {GenreImageManagementRoutes} from "@/domains/genres/_feat/manage-image";
 import {MovieImageManagementRoutes} from "@/domains/movies/_feat/manage-image/routes/routes";
 import {ReservationUpdateRoutes} from "@/domains/reservations/_feat/update-reservations";
 import {CustomerMovieReviewActions} from "@/domains/movie-reviews/_feat/customer-review-actions";
-import {ManageUserRolesRoutes, ManageUserSuspensionRoutes} from "@/domains/users";
+import {ManageUserRolesRoutes} from "@/domains/users/_feat/manage-user-roles";
+import {ManageUserSuspensionRoutes} from "@/domains/users/_feat/manage-user-suspension";
+import {ManageUserStatusRoutes} from "@/domains/users/_feat/manage-user-status";
 
 /**
  * Foundation feature routes.
@@ -47,6 +49,7 @@ const customerRoutes: RouteRegistration[] = [
 ];
 
 const userRoutes: RouteRegistration[] = [
+    {path: "/api/v1/admin/users/feat/manage-status", router: ManageUserStatusRoutes},
     {path: "/api/v1/admin/users/feat/manage-roles", router: ManageUserRolesRoutes},
     {path: "/api/v1/admin/users/feat/manage-suspension", router: ManageUserSuspensionRoutes},
 ];

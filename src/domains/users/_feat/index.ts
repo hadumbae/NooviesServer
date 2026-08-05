@@ -2,6 +2,7 @@ export * from "./admin-view-data";
 export * from "./crud";
 export * from "./manage-user-favourties";
 export * from "./manage-user-roles";
+export * from "./manage-user-status";
 export * from "./manage-user-suspension";
 export * from "./manage-user-unique-code";
 export * from "./query-population";
