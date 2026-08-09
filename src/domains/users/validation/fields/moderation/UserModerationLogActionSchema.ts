@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import {ZodEnumParamHandler} from "src/shared/_feat";
+import {ZodEnumParamHandler} from "@/shared/_feat";
 import {UserModerationLogActionConstant} from "@/domains/users/_const/moderation";
 
 /** Zod schema for validating moderation log action codes. */
