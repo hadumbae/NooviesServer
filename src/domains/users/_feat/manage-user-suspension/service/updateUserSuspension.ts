@@ -1,9 +1,10 @@
 /**
- * @fileoverview Service function handling the lifting of a user suspension and logging the corresponding event.
+ * @fileoverview Service function for updating a user's suspension status and recording a moderation log.
  */
 
 import {Types} from "mongoose";
 import createHttpError from "http-errors";
+import type {UserStatus} from "@/domains/users/validation/fields";
 import {type UserModerationLogSchemaFields} from "@/domains/users/model/moderation-log";
 import {User, type UserSchemaFields,} from "@/domains/users/model/user";
 import {LeanUserQuerySelectFields} from "@/domains/users/_feat/query-population";
@@ -13,34 +14,38 @@ import {
     type UserSuspensionUpdateInputData
 } from "@/domains/users/_feat/manage-user-suspension/schema";
 
-/** Configuration parameters required to lift a user suspension. */
-type LiftSuspensionConfig = {
+/** Configuration options required to update a user's suspension status. */
+type SuspensionConfig = {
     adminID: Types.ObjectId;
     userID: Types.ObjectId;
     data: UserSuspensionUpdateInputData;
 };
 
-/** The reactivated user details and the created moderation log entry. */
-type LiftSuspensionReturns = {
+/** Return values containing the updated user document and the associated moderation log record. */
+type SuspensionReturns = {
     user: UserSchemaFields;
     log: UserModerationLogSchemaFields;
 };
 
 /**
- * Reverts a user's status from suspended to active and creates an associated record in the moderation log history.
+ * Updates the suspension status of a user and creates a moderation log entry.
  */
-export async function unsuspendUser(
-    {adminID, userID, data: {action, message}}: LiftSuspensionConfig
-): Promise<LiftSuspensionReturns> {
+export async function updateUserSuspension(
+    {adminID, userID, data: {suspend, action, message}}: SuspensionConfig
+): Promise<SuspensionReturns> {
+    const [fromStatus, toStatus]: [UserStatus, UserStatus] = suspend
+        ? ["ACTIVE", "SUSPENDED"]
+        : ["SUSPENDED", "ACTIVE"];
+
     const user = await User
-        .findOne({_id: userID, status: "SUSPENDED"})
+        .findOne({_id: userID, status: fromStatus})
         .select(LeanUserQuerySelectFields);
 
     if (!user) {
         throw createHttpError(404, "User not found!");
     }
 
-    user.status = "ACTIVE";
+    user.status = toStatus;
     await user.save();
 
     const log = await saveUserModerationLog<UserSuspensionUpdateAction>({

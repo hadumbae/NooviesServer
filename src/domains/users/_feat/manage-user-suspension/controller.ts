@@ -4,37 +4,19 @@
 
 import type {Request, Response} from "express";
 import type {ManageUserSuspensionRouteConfig} from "@/domains/users/_feat/manage-user-suspension/route-config";
-import {unsuspendUser, suspendUser} from "@/domains/users/_feat/manage-user-suspension/service";
+import {updateUserSuspension} from "@/domains/users/_feat/manage-user-suspension/service";
 import type {UserSuspensionUpdateInputData} from "@/domains/users/_feat/manage-user-suspension/schema";
 
 /**
- * Express controller that suspends a user account and logs the related action metadata.
+ * Express controller that updates a user account suspension status and logs the moderation outcome.
  */
-export async function patchSuspendUser(
+export async function patchUpdateUserSuspension(
     req: Request, res: Response,
 ): Promise<Response> {
     const {userId} = req.parsedConfig as ManageUserSuspensionRouteConfig;
     const data = req.validatedBody as UserSuspensionUpdateInputData;
 
-    const {user, log} = await suspendUser({
-        userID: userId,
-        adminID: req.authUserID!,
-        data,
-    });
-
-    return res.status(200).json({user, log});
-}
-
-/**
- * Express controller that lifts an active user account suspension and logs the restoration action metadata.
- */
-export async function patchUnsuspendUser(
-    req: Request, res: Response,
-): Promise<Response> {
-    const {userId} = req.parsedConfig as ManageUserSuspensionRouteConfig;
-    const data = req.validatedBody as UserSuspensionUpdateInputData;
-
-    const {user, log} = await unsuspendUser({
+    const {user, log} = await updateUserSuspension({
         userID: userId,
         adminID: req.authUserID!,
         data,
