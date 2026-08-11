@@ -6,7 +6,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {aggregate} from "@/shared/_feat/generic-aggregate";
 import {Screen, type ScreenSchemaFields} from "@/domains/screen/_models/screen";
@@ -40,14 +40,14 @@ const routes: CRUDRoute<ScreenSchemaFields>[] = [
         /** Basic retrieval based on query filters. */
         path: "/find",
         method: "get",
-        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        middleware: buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval for UI tables and infinite scrolls. */
         path: "/paginated",
         method: "get",
-        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        middleware: buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -101,7 +101,7 @@ const router: Router = buildCRUDRoutes<ScreenSchemaFields>({
  */
 router.get(
     "/query",
-    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+    buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({
         model: Screen,
         virtualsPipelines: ScreenVirtualPipelines,

@@ -5,7 +5,7 @@
 import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {destroy, find, findById, findBySlug, paginated} from "@/shared/_feat/generic-crud/path-handlers";
 import {MovieReview, type MovieReviewSchemaFields} from "@/domains/movie-reviews/_models";
 import {
@@ -33,13 +33,13 @@ const routes: CRUDRoute<MovieReviewSchemaFields>[] = [
     {
         path: "/find",
         method: "get",
-        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        middleware: buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         path: "/paginated",
         method: "get",
-        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        middleware: buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {

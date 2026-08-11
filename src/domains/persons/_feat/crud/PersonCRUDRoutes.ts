@@ -7,7 +7,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import {Person, type PersonSchemaFields} from "@/domains/persons/_models/person";
@@ -28,14 +28,14 @@ const routes: CRUDRoute<PersonSchemaFields>[] = [
         /** Basic retrieval of records based on query filters. */
         path: "/find",
         method: "get",
-        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        middleware: buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval for administrative data tables. */
         path: "/paginated",
         method: "get",
-        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        middleware: buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -89,7 +89,7 @@ const router: Router = buildCRUDRoutes<PersonSchemaFields>({
  */
 router.get(
     "/query",
-    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+    buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({model: Person})),
 );
 

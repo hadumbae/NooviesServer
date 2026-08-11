@@ -1,6 +1,6 @@
 import {Reservation, type ReservationSchemaFields} from "@/domains/reservations/_model/reservation";
 import {ReservationQueryMatchStageSchema, ReservationQuerySortStageSchema} from "@/domains/reservations/_feat/validate-query-options";
-import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {destroy, findById, findBySlug} from "@/shared/_feat/generic-crud/path-handlers";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
@@ -42,7 +42,7 @@ const router: Router = buildCRUDRoutes<ReservationSchemaFields>({
 
 router.get(
     "/query",
-    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+    buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({model: Reservation})),
 );
 

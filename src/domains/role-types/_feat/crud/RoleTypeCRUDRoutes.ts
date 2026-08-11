@@ -5,7 +5,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {create, destroy, find, findById, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -27,14 +27,14 @@ const routes: CRUDRoute<RoleTypeSchemaFields>[] = [
         /** Basic retrieval of roles based on name or department. */
         path: "/find",
         method: "get",
-        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        middleware: buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
         handler: find
     },
     {
         /** Paginated retrieval for administrative role-management tables. */
         path: "/paginated",
         method: "get",
-        middleware: buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+        middleware: buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
         handler: paginated
     },
     {
@@ -80,7 +80,7 @@ const router: Router = buildCRUDRoutes<RoleTypeSchemaFields>({
  */
 router.get(
     "/query",
-    buildAuthCRUDQueryMiddleware({modelName, matchSchema, sortSchema}),
+    buildAuthCRUDQueryStageMiddleware({modelName, matchSchema, sortSchema}),
     asyncHandler(aggregate({model: RoleTypeModel})),
 );
 

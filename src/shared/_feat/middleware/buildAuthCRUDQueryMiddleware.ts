@@ -1,28 +1,33 @@
 /**
- * @fileoverview Middleware factory that chains authentication and request query parsing middleware for generic CRUD operations.
+ * @fileoverview Factory function for creating authenticated CRUD query parsing middleware stacks.
  */
 
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
-import {parseQueryMatchStage} from "@/shared/_feat/middleware/parseQueryMatchStage";
-import {parseQuerySortStage} from "@/shared/_feat/middleware/parseQuerySortStage";
 import type {ZodType, ZodTypeDef} from "zod";
 import type {RequestHandler} from "express";
-import type {PipelineStage} from "mongoose";
+import {parseQueryFilters, parseQuerySorts} from "@/shared/_feat";
 
-/** Props configuration for the CRUD query middleware factory. */
-type MiddlewareConfig = {
+type MiddlewareConfig<
+    TFilters extends Record<string, unknown>,
+    TSorts extends Record<string, 1 | -1>
+> = {
     modelName: string;
-    matchSchema: ZodType<PipelineStage.Match, ZodTypeDef, unknown>;
-    sortSchema: ZodType<PipelineStage.Sort, ZodTypeDef, unknown>;
+    filterSchema: ZodType<TFilters, ZodTypeDef, unknown>;
+    sortSchema: ZodType<TSorts, ZodTypeDef, unknown>;
 };
 
-/** Returns an array of request handlers for authentication, query matching, and sorting operations. */
-export function buildAuthCRUDQueryMiddleware(
-    {modelName, matchSchema, sortSchema}: MiddlewareConfig
+/**
+ * Constructs an array of Express middleware handlers for authentication, query filter parsing, and query sort parsing.
+ */
+export function buildAuthCRUDQueryMiddleware<
+    TFilters extends Record<string, unknown>,
+    TSorts extends Record<string, 1 | -1>
+>(
+    {modelName, filterSchema, sortSchema}: MiddlewareConfig<TFilters, TSorts>
 ): RequestHandler[] {
     return [
         isAuth,
-        parseQueryMatchStage({schema: matchSchema, modelName}),
-        parseQuerySortStage({schema: sortSchema, modelName}),
+        parseQueryFilters({schema: filterSchema, modelName}),
+        parseQuerySorts({schema: sortSchema, modelName}),
     ];
 }

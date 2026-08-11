@@ -7,7 +7,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
-import {buildAuthCRUDQueryMiddleware} from "@/shared/_feat/middleware";
+import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -20,7 +20,7 @@ import {ShowingPopulationPaths} from "@/domains/showing/_feat/query-population";
 import {ShowingPopulationPipelines} from "@/domains/showing/_feat/query-population/ShowingPopulationPipelines";
 import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/_feat/query-population/ShowingSeatMapVirtualPipelines";
 
-const authCRUDMiddleware = buildAuthCRUDQueryMiddleware({
+const authCRUDMiddleware = buildAuthCRUDQueryStageMiddleware({
     modelName: Showing.modelName,
     matchSchema: ShowingQueryMatchStageSchema,
     sortSchema: ShowingQuerySortStageSchema,
