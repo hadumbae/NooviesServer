@@ -3,6 +3,7 @@
  */
 
 import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
+import {LeanUserQuerySelectFields} from "@/domains/users";
 
 /** Population configuration for related MovieReview fields. */
 export const MovieReviewPopulatePaths: PopulatePath[] = [
@@ -12,6 +13,6 @@ export const MovieReviewPopulatePaths: PopulatePath[] = [
     },
     {
         path: "user",
-        select: "_id name uniqueCode"
+        select: LeanUserQuerySelectFields
     }
 ];

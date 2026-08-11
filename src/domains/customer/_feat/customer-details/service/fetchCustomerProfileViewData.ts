@@ -8,7 +8,7 @@ import type {MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/revi
 import {Reservation} from "@/domains/reservations/_model/reservation/Reservation.model";
 import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model";
 import {Types} from "mongoose";
-import {User} from "@/domains/users";
+import {LeanUserQuerySelectFields, User} from "@/domains/users";
 import createHttpError from "http-errors";
 import {MovieReviewPopulatePaths} from "@/domains/movie-reviews";
 
@@ -38,7 +38,7 @@ export async function fetchCustomerProfileViewData(
 ): Promise<CustomerProfileViewData> {
     const customer = await User
         .findById(userId)
-        .select("-password -roles -favourites")
+        .select(LeanUserQuerySelectFields)
         .lean();
 
     if (!customer) {

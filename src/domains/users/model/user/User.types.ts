@@ -20,5 +20,5 @@ export type UserSchemaFields = BaseModel & {
 /** A lightweight version of the User fields containing only public identity data. */
 export type LeanUserSchemaFields = Omit<
     UserSchemaFields,
-    "password" | "roles" | "favourites"
+    "password" | "favourites"
 >;
