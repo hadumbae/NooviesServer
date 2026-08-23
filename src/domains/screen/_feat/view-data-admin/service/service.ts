@@ -8,17 +8,17 @@ import {TheatreVirtualPopulationPaths} from "@/domains/theatre/_feat/crud";
 import createHttpError from "http-errors";
 import {Screen} from "@/domains/screen/_models/screen";
 import {Seat} from "@/domains/seat/_models";
-import {ScreenVirtualPipelines} from "@/domains/screen/_feat/query-population";
 import type {
     FetchTheatreScreenDetailsViewDataConfig,
     TheatreScreenDetailsViewData
 } from "@/domains/screen/_feat/view-data-admin/service/service.types";
+import {Showing, ShowingPopulationPaths} from "@/domains/showing";
 
 /**
  * Fetches the complete dataset for managing a specific screen.
  */
 export async function fetchTheatreScreenDetailsViewData(
-    {theatreSlug, screenSlug}: FetchTheatreScreenDetailsViewDataConfig
+    {theatreSlug, screenSlug, recentShowingsCount}: FetchTheatreScreenDetailsViewDataConfig
 ): Promise<TheatreScreenDetailsViewData> {
     const theatre = await Theatre
         .findOne({slug: theatreSlug})
@@ -29,10 +29,9 @@ export async function fetchTheatreScreenDetailsViewData(
         throw createHttpError(404, "Theatre not found!");
     }
 
-    const [screen] = await Screen.aggregate([
-        {$match: {slug: screenSlug}},
-        ...ScreenVirtualPipelines,
-    ]);
+    const screen = await Screen
+        .findOne({theatre: theatre._id, slug: screenSlug})
+        .lean({virtuals: true});
 
     if (!screen) {
         throw createHttpError(404, "Screen not found!");
@@ -43,9 +42,17 @@ export async function fetchTheatreScreenDetailsViewData(
         .populate(["screen", "theatre"])
         .lean();
 
+    const recentShowings = await Showing
+        .find({theatre: theatre._id, screen: screen._id})
+        .sort({startTime: 1})
+        .limit(recentShowingsCount ?? 10)
+        .populate(ShowingPopulationPaths)
+        .lean({virtuals: true});
+
     return {
         theatre,
         screen,
         seats,
+        recentShowings,
     };
 }

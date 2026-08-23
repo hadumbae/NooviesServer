@@ -4,6 +4,7 @@
 
 import {z} from "zod";
 import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
+import {PositiveIntegerSchema} from "@/shared/_schema";
 
 /**
  * Validation schema for ensuring both theatre and screen identifiers are present and valid slugs.
@@ -11,6 +12,7 @@ import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 export const TheatreScreenDetailsViewRouteConfigSchema = z.object({
     theatreSlug: SlugStringSchema,
     screenSlug: SlugStringSchema,
+    recentShowingsCount: PositiveIntegerSchema.min(20, "`recentShowingsCount` must not exceed 20.").optional().catch(10),
 });
 
 /**

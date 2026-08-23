@@ -4,7 +4,7 @@
  * redundant data in MongoDB.
  */
 
-import { ScreenSchema } from "./Screen.schema";
+import {ScreenSchema} from "./Screen.schema";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 /**
@@ -15,6 +15,10 @@ ScreenSchema.virtual("futureShowingCount", {
     localField: "_id",
     foreignField: "screen",
     count: true,
+    match: {
+        status: {$in: ["SCHEDULED", "SOLD_OUT"]},
+        startTime: {$gte: new Date()},
+    },
 });
 
 /**

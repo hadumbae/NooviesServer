@@ -15,9 +15,7 @@ import {fetchTheatreScreenDetailsViewData} from "@/domains/screen/_feat/view-dat
 export async function getFetchTheatreScreenDetailsViewData(
     req: Request, res: Response
 ): Promise<Response> {
-    const {theatreSlug, screenSlug} = req.parsedConfig as TheatreScreenDetailsViewRouteConfig;
-
-    const data = await fetchTheatreScreenDetailsViewData({theatreSlug, screenSlug});
-
+    const {theatreSlug, screenSlug, recentShowingsCount} = req.parsedConfig as TheatreScreenDetailsViewRouteConfig;
+    const data = await fetchTheatreScreenDetailsViewData({theatreSlug, screenSlug, recentShowingsCount});
     return res.status(200).json(data);
 }
