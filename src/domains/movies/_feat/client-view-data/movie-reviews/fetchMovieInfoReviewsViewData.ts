@@ -4,9 +4,11 @@ import {Types} from "mongoose";
 import {Movie, type MovieSchemaFields} from "@/domains/movies/_models";
 import {MoviePopulationPaths} from "@/domains/movies/_feat/query-population";
 import {
-    fetchReviewDetailsForMovie,
     type ReviewDetailsByMovieReturns
 } from "@/domains/movies/_feat/fetch-reviews-by-movie";
+import {
+    fetchReviewDetailsForMovie
+} from "@/domains/movies/_feat/fetch-reviews-by-movie/service/fetchReviewDetailsForMovie";
 
 export type FetchMovieInfoReviewsViewDataConfig = {
     userID: Types.ObjectId;

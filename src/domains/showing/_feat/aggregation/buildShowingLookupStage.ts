@@ -9,7 +9,7 @@ import type {LookupStageConfig} from "@/shared/_feat/aggregation";
  * Builds a MongoDB $lookup stage for the showings collection.
  */
 export function buildShowingLookupStage(
-    {innerStages, localField = "showing", foreignField = "_id", as = "showing"}: LookupStageConfig = {}
+    {innerStages = [], localField = "showing", foreignField = "_id", as = "showing"}: LookupStageConfig = {}
 ): PipelineStage.Lookup {
     return (
         {

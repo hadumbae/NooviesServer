@@ -4,10 +4,12 @@
 
 import type { LocationTarget } from "@/shared/schema/features/location-query-options/LocationQueryOptions.types";
 import type {TheatreWithShowings} from "@/domains/theatre/model/theatre";
+import type {ISO3166Alpha2CountryCode} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
 
 /** Props for the fetchTheatresByLocation service function. */
 export type FetchTheatreByLocationConfig = {
     target?: LocationTarget;
+    country?: ISO3166Alpha2CountryCode;
     page: number;
     perPage: number;
     limit?: number;

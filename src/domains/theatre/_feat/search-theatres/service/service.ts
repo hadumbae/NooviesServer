@@ -14,7 +14,7 @@ import type {LookupPipelineStages} from "@/shared/_types";
  * Aggregates theatres matching a location target, including their upcoming scheduled showings and seat maps.
  */
 export async function fetchTheatresByLocation(
-    {target, page = 1, perPage = 20, limit: showingLimit}: FetchTheatreByLocationConfig,
+    {target, country, page = 1, perPage = 20, limit: showingLimit}: FetchTheatreByLocationConfig,
 ): Promise<TheatreByLocationReturns> {
     const limitedPerPage = Math.min(perPage, 20);
 
@@ -28,8 +28,8 @@ export async function fetchTheatresByLocation(
 
     const pipelines: PipelineStage[] = [
         ...(
-            target
-                ? [buildTheatreLocationMatchStage(target)]
+            target || country
+                ? [buildTheatreLocationMatchStage({target, country})]
                 : []
         ),
         {

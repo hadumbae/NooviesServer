@@ -28,6 +28,7 @@ export const MovieReviewPopulationPipelines: PopulationPipelineStages = [
                         _id: 1,
                         name: 1,
                         uniqueCode: 1,
+                        status: 1,
                     },
                 }
             ],

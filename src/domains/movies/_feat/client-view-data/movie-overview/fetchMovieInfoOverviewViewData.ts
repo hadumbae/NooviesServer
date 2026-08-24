@@ -9,12 +9,14 @@ import type {PositiveInteger} from "@/shared/_schema/numbers/numbers/PositiveInt
 import {Movie, type MovieSchemaFields} from "@/domains/movies/_models/movie";
 import type {MovieCreditSchemaFields} from "@/domains/movie-credits/_models/credit/MovieCredit.types";
 import {
-    fetchReviewDetailsForMovie,
     type ReviewDetailsByMovieReturns
 } from "@/domains/movies/_feat/fetch-reviews-by-movie";
 import {MoviePopulationPaths} from "@/domains/movies/_feat/query-population";
 import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import {MovieCreditPopulationPaths} from "@/domains/movie-credits/_feat/query-population";
+import {
+    fetchReviewDetailsForMovie
+} from "@/domains/movies/_feat/fetch-reviews-by-movie/service/fetchReviewDetailsForMovie";
 
 /** Configuration parameters for fetching movie information view data. */
 export type FetchMovieInfoOverviewViewDataConfig = {
@@ -48,7 +50,7 @@ export async function fetchMovieInfoOverviewViewData(
         .lean({virtuals: true});
 
     const reviewDetails = await fetchReviewDetailsForMovie({
-        user: userID,
+        userID: userID,
         movieID: movie._id,
         page: reviewPage,
         perPage: reviewPerPage,

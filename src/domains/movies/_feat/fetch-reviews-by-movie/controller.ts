@@ -1,14 +1,16 @@
 /**
- * @file Movie review browse HTTP handlers.
- * MovieBrowseController.ts
+ * @fileoverview Express controller handlers for retrieving movie reviews.
  */
 
 import type {Request, Response} from "express";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
 import QueryUtils from "@/shared/services/query-utils/QueryUtils";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
-import * as BrowseMovieDetailsService
-    from "@/domains/movies/_feat/fetch-reviews-by-movie/service";
+import {
+    fetchFeaturedReviewsByMovie,
+    fetchPaginatedReviewsByMovie,
+    fetchReviewDetailsForMovie
+} from "@/domains/movies/_feat/fetch-reviews-by-movie/service";
 
 /**
  * Handles paginated movie review retrieval.
@@ -22,7 +24,7 @@ export async function getReviewsByMovie(
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const options = QueryUtils.fetchOptionsFromQuery(req);
 
-    const data = await BrowseMovieDetailsService.fetchPaginatedReviewsByMovie({
+    const data = await fetchPaginatedReviewsByMovie({
         movieID,
         page,
         perPage,
@@ -46,9 +48,9 @@ export async function getFeaturedReviewsByMovie(
     const movieID = isValidObjectId(_id);
     const options = QueryUtils.fetchOptionsFromQuery(req);
 
-    const data = await BrowseMovieDetailsService.fetchFeaturedReviewsByMovie({
+    const data = await fetchFeaturedReviewsByMovie({
         movieID,
-        user: userID,
+        userID,
         options,
     });
 
@@ -56,8 +58,7 @@ export async function getFeaturedReviewsByMovie(
 }
 
 /**
- * Handles paginated movie review retrieval with aggregate stats
- * and the requesting user's review.
+ * Handles paginated movie review retrieval with aggregate stats and the requesting user's review.
  */
 export async function getReviewDetailsByMovie(
     req: Request, res: Response
@@ -70,8 +71,8 @@ export async function getReviewDetailsByMovie(
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const options = QueryUtils.fetchOptionsFromQuery(req);
 
-    const data = await BrowseMovieDetailsService.fetchReviewDetailsForMovie({
-        user: userID,
+    const data = await fetchReviewDetailsForMovie({
+        userID,
         movieID,
         page,
         perPage,
