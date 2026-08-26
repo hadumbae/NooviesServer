@@ -12,6 +12,7 @@ import {LocationSchema} from "@/shared/model/location/Location.js";
 import {IsDeletedSchemaTypeOptions} from "@/shared/model/IsDeletedSchemaTypeOptions.js";
 import {DeletedAtSchemaTypeOptions} from "@/shared/model/DeletedAtSchemaTypeOptions.js";
 import type {ModelSoftDeleteMethods} from "@/shared/_types/model/ModelSoftDelete";
+import {IANAZone} from "luxon";
 
 /** Mongoose model type for the Showing collection including soft-delete methods. */
 export type ShowingModel = Model<ShowingSchemaFields, {}, ModelSoftDeleteMethods<ShowingSchemaFields>>;
@@ -22,37 +23,32 @@ const LanguageDefinition: SchemaDefinitionProperty = {
     required: [true, "Required."],
 };
 
-/** Schema definition for movie showings, managing schedules, pricing, and technical configurations. */
+/** Mongoose schema definition for movie showings. */
 export const ShowingSchema = new Schema<ShowingSchemaFields, ShowingModel, ModelSoftDeleteMethods<ShowingSchemaFields>>(
     {
-        /** Reference to the "Movie" collection. */
         movie: {
             type: Schema.Types.ObjectId,
             ref: "Movie",
             required: true,
         },
 
-        /** Reference to the "Theatre" collection. */
         theatre: {
             type: Schema.Types.ObjectId,
             ref: "Theatre",
             required: true,
         },
 
-        /** Reference to the "Screen" collection. */
         screen: {
             type: Schema.Types.ObjectId,
             ref: "Screen",
             required: true,
         },
 
-        /** Commencement time. Anchor for {@link endTime} validation. */
         startTime: {
             type: Date,
             required: [true, "Start Time is required."],
         },
 
-        /** Must be strictly later than {@link startTime}. */
         endTime: {
             type: Date,
             default: null,
@@ -64,17 +60,23 @@ export const ShowingSchema = new Schema<ShowingSchemaFields, ShowingModel, Model
             },
         },
 
-        /** Cost per seat via {@link Number}. */
+        timezone: {
+            type: String,
+            required: [true, "`Timezone` is required."],
+            validate: {
+                validator: (value: any) => IANAZone.isValidZone(value),
+                message: (props: any) => `Invalid timezone. Received: ${props.value}`,
+            },
+        },
+
         ticketPrice: {
             type: Number,
             min: [0.01, "Ticket Price must be greater than 0."],
             required: true,
         },
 
-        /** Audio {@link LanguageDefinition}. */
         language: LanguageDefinition,
 
-        /** Caption/subtitle {@link LanguageDefinition} array. */
         subtitleLanguages: {
             type: [LanguageDefinition],
             validate: {
@@ -86,7 +88,6 @@ export const ShowingSchema = new Schema<ShowingSchemaFields, ShowingModel, Model
             required: [true, "Subtitle languages are required."],
         },
 
-        /** Operational state via {@link ShowingStatusConstant}. */
         status: {
             type: String,
             enum: {
@@ -96,26 +97,20 @@ export const ShowingSchema = new Schema<ShowingSchemaFields, ShowingModel, Model
             required: [true, "Status is required."],
         },
 
-        /** Feature flags via {@link ShowingConfigSchema}. */
         config: {
             type: ShowingConfigSchema,
             required: [true, "Config is required."],
         },
 
-        /** Embedded {@link LocationSchema}. */
         location: LocationSchema,
 
-        /** {@link SlugSchemaTypeOptions} */
         slug: SlugSchemaTypeOptions,
 
-        /** Soft-delete flag via {@link IsDeletedSchemaTypeOptions}. */
         isDeleted: IsDeletedSchemaTypeOptions,
 
-        /** Soft-delete audit via {@link DeletedAtSchemaTypeOptions}. */
         deletedAt: DeletedAtSchemaTypeOptions,
     },
     {
-        /** Standard {@link ModelTimestamps}. */
         timestamps: true,
     }
 );

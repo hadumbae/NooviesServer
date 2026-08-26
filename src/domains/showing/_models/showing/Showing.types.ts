@@ -17,11 +17,13 @@ import type {ShowingConfigSchemaFields}
     from "@/domains/showing/_models/showing-config/ShowingConfig.types.js";
 import type {LocationSchemaFields} from "@/shared/model/location/LocationSchemaFields";
 import type {BaseSoftDeleteModel} from "@/shared/_types/model/BaseModel";
+import type {IANATimezone} from "@/shared/schema/date-time/IANATimezoneSchema";
 
 /** Core schema fields for a theatre showing. */
 export type ShowingSchemaFields = BaseSoftDeleteModel & {
     startTime: Date;
     endTime?: Date | null;
+    timezone: IANATimezone;
     ticketPrice: number;
     language: ISO6391LanguageCode;
     subtitleLanguages: ISO6391LanguageCode[];

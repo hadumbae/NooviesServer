@@ -20,6 +20,7 @@ export const ShowingInputSchema = z.object({
 
     endAtDate: SimpleDateStringSchema.optional(),
     endAtTime: TimeStringSchema.optional(),
+    timezone: IANATimezoneSchema,
 
     ticketPrice: PositiveNumberSchema,
 
@@ -34,7 +35,6 @@ export const ShowingInputSchema = z.object({
     screen: ObjectIdStringSchema,
 
     status: ShowingStatusSchema,
-    localTimezone: IANATimezoneSchema,
 
     config: ShowingConfigInputSchema,
 }).superRefine((values, ctx) => {
@@ -60,18 +60,19 @@ export const ShowingInputSchema = z.object({
             });
         }
     }
-}).transform(({startAtTime, startAtDate, endAtTime, endAtDate, localTimezone, ...values}) => {
+}).transform(({startAtTime, startAtDate, endAtTime, endAtDate, timezone, ...values}) => {
     const startTime = DateTime
-        .fromISO(`${startAtDate}T${startAtTime}`, {zone: localTimezone})
+        .fromISO(`${startAtDate}T${startAtTime}`, {zone: timezone})
         .toUTC()
         .toJSDate();
 
     const endTime = (endAtDate && endAtTime)
-        ? DateTime.fromISO(`${endAtDate}T${endAtTime}`, {zone: localTimezone}).toUTC().toJSDate()
+        ? DateTime.fromISO(`${endAtDate}T${endAtTime}`, {zone: timezone}).toUTC().toJSDate()
         : null;
 
     return {
         ...values,
+        timezone,
         startTime,
         endTime,
     }
