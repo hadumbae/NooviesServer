@@ -39,7 +39,7 @@ ReservationSchema.pre("validate", async function (this: HydratedDocument<Reserva
             ticketCount: this.ticketCount,
             pricePaid: this.pricePaid,
             selectedSeating: this.selectedSeating,
-            showing: this.showing,
+            showingID: this.showing,
         });
 
         await this.populate({path: "showing", populate: {path: "movie"}});

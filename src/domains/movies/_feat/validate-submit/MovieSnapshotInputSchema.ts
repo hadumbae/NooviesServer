@@ -16,7 +16,7 @@ import {ISO3166Alpha2CountryCodeSchema} from "@/shared/schema/enums/ISO3166Alpha
 /** Zod schema for validating movie snapshot input data. */
 export const MovieSnapshotInputSchema = z.object({
     title: MovieTitleSchema,
-    originalTitle: MovieTitleSchema,
+    originalTitle: MovieTitleSchema.optional(),
     tagline: MovieTaglineSchema,
     posterURL: URLStringSchema.optional().nullable(),
     releaseDate: DateInstanceSchema.optional().nullable(),

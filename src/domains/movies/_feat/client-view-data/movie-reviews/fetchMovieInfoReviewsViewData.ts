@@ -33,7 +33,7 @@ export async function fetchMovieInfoReviewsViewData(
     if (!movie) throw createHttpError(404, "Movie not found.");
 
     const reviewDetails = await fetchReviewDetailsForMovie({
-        user: userID,
+        userID,
         movieID: movie._id,
         page,
         perPage,

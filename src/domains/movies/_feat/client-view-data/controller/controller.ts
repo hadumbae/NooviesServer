@@ -68,7 +68,7 @@ export async function getFetchMovieInfoOverviewViewData(req: Request, res: Respo
 
     const data = await fetchMovieInfoOverviewViewData({
         slug,
-        user: userID,
+        userID,
         reviewPage,
         reviewPerPage,
     });
@@ -85,7 +85,7 @@ export async function getFetchMovieInfoReviewsViewData(req: Request, res: Respon
 
     const data = await fetchMovieInfoReviewsViewData({
         slug,
-        user: userID,
+        userID,
         page: reviewPage,
         perPage: reviewPerPage,
     });

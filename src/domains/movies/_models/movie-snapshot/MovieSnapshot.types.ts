@@ -7,7 +7,7 @@ import type { ISO3166Alpha2CountryCode } from "@/shared/schema/enums/ISO3166Alph
 /** Immutable snapshot of a movie at a specific point in time. */
 export type MovieSnapshotSchemaFields = {
     title: string;
-    originalTitle: string;
+    originalTitle?: string;
     tagline?: string | null;
     posterURL?: string | null;
     genres: string[];

@@ -19,7 +19,7 @@ export const getFavouriteMovies: ControllerAsyncFunc = async (
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
 
     const paginatedMovies = await UserFavouriteService.fetchUserFavourites({
-        user: userID,
+        userID,
         page: page ?? 1,
         perPage: perPage ?? 10,
     });
@@ -35,7 +35,7 @@ export const getIsFavouriteMovie: ControllerAsyncFunc = async (
     const {movieID} = req.params;
 
     const mID = isValidObjectId(movieID);
-    const isFavRes = await UserFavouriteService.isUserFavouriteMovie({user: userID, movieID: mID});
+    const isFavRes = await UserFavouriteService.isUserFavouriteMovie({userID, movieID: mID});
 
     return res.status(200).json(isFavRes);
 }
@@ -48,7 +48,7 @@ export const patchToggleUserMovieFavourite: ControllerAsyncFunc = async (
     const {movieID} = req.validatedBody as UserFavouriteMovieInput;
 
     const {added, message} = await UserFavouriteService.toggleCurrentUserFavouriteMovie({
-        user: userID,
+        userID,
         movieID,
     });
 

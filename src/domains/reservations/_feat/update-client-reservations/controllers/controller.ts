@@ -17,7 +17,7 @@ export async function patchCheckoutClientReservation(req: Request, res: Response
     const reservationID = isValidObjectId(resID);
 
     const reservation = await checkoutClientReservation({
-        user: userID,
+        userID,
         reservationID,
     });
 
@@ -34,7 +34,7 @@ export async function patchCancelClientReservation(req: Request, res: Response,)
     const reservationID = isValidObjectId(resID);
 
     const reservation = await cancelClientReservation({
-        user: userID,
+        userID,
         reservationID: reservationID
     });
 

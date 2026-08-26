@@ -12,6 +12,7 @@ import {ReservationTypeConstant, ReservationTypeSchema} from "@/domains/reservat
 /** Base checkout submission schema providing shared structural validation. */
 export const ReserveTicketInputBaseSchema = z.object({
     showing: ObjectIdSchema,
+    movie: ObjectIdSchema,
     ticketCount: PositiveNumberSchema,
     currency: ISO4217CurrencyCodeEnumSchema,
     reservationType: ReservationTypeSchema,

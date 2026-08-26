@@ -18,7 +18,7 @@ export const postReserveTickets: ControllerAsyncFunc = async (
     const userID = fetchRequestUser(req);
 
     const data = req.validatedBody as ReserveTicketInputData;
-    const reservation = await reserveTickets({user: userID, inputData: data});
+    const reservation = await reserveTickets({userID, inputData: data});
 
     return res.status(200).json(reservation);
 };

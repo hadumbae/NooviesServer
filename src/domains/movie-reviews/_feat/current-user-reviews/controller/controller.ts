@@ -38,7 +38,7 @@ export async function getFetchCurrentUserMovieReviewList(
     const {populate, virtuals} = QueryUtils.fetchOptionsFromQuery(req);
 
     const data = await MyMovieReviewService.fetchCurrentUserMovieReviewList({
-        user: userID,
+        userID,
         page,
         perPage,
         options: {populate, virtuals},
@@ -61,7 +61,7 @@ export async function postCreateMovieReviewForCurrentUser(
     const data = req.validatedBody as MovieReviewCreateInputData;
 
     const review = await MyMovieReviewService.createMovieReviewForCurrentUser({
-        user: userID,
+        userID,
         data,
         options: {populate, virtuals},
     });
@@ -85,7 +85,7 @@ export async function patchUpdateMovieReviewForCurrentUser(
     const unset = req.unsetFields;
 
     const review = await MyMovieReviewService.updateMovieReviewForCurrentUser({
-        user: userID,
+        userID,
         reviewID,
         data,
         unset,
@@ -107,7 +107,7 @@ export async function deleteRemoveMovieReviewForCurrentUser(
     const {reviewID} = req.parsedConfig as MyReviewIDRouteConfig;
 
     await MyMovieReviewService.deleteMovieReviewForCurrentUser({
-        user: userID,
+        userID,
         reviewID,
     });
 
