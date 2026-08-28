@@ -2,7 +2,7 @@
  * @fileoverview Data fetching logic for the user details administrative view.
  */
 
-import {User, type UserSchemaFields} from "@/domains/users";
+import {LeanUserQuerySelectFields, User, type UserSchemaFields} from "@/domains/users";
 import type {UserDetailsViewRouteConfig} from "@/domains/users/_feat/admin-view-data";
 import {Reservation} from "@/domains/reservations";
 import createHttpError from "http-errors";
@@ -24,7 +24,7 @@ export async function fetchUserDetailsViewData(
 ): Promise<UserDetailsViewData> {
     const user = await User
         .findById(userID)
-        .select("-password -favourites")
+        .select(LeanUserQuerySelectFields)
         .lean();
 
     if (!user) {

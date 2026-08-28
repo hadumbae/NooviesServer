@@ -39,7 +39,7 @@ export async function fetchCustomerReviewLogsViewData(
 ): Promise<FetchCustomerReviewLogsViewData> {
     const customer = await User
         .findById(userId)
-        .select("-password -favourites")
+        .select(LeanUserQuerySelectFields)
         .lean();
 
     if (!customer) {
