@@ -11,7 +11,6 @@ import type {ShowingSchemaFields} from "@/domains/showing/_models/showing/Showin
 import {createReservedSeatSnapshot} from "@/domains/seatmap/_feat/manage-snapshots/createReservedSeatSnapshot";
 import {ReservedShowingSnapshotInputSchema} from "@/domains/reservations/_feat/reserve-tickets/schemas";
 import {createScreenSnapshot} from "@/domains/screen/_feat/build-snapshot";
-import {createTheatreSnapshot} from "@/domains/theatre/utilities";
 import type {ReservationType} from "@/domains/reservations/_validation";
 import type {ReservedShowingSnapshotSchemaFields} from "@/domains/reservations/_model/showing-snapshot";
 
@@ -46,17 +45,23 @@ export async function createReservedShowingSnapshot(
         });
     }
 
-    const {movie, theatre, screen} = showing as ShowingWithReferences;
+    const {movie, screen, theatreSnapshot} = showing as ShowingWithReferences;
+
+    const [movieSnapshot, screenSnapshot, seatSnapshot] = await Promise.all([
+        createMovieSnapshot(movie),
+        createScreenSnapshot(screen),
+        createReservedSeatSnapshot(selectedSeating),
+    ])
 
     const {data, success, error} = ReservedShowingSnapshotInputSchema.safeParse({
         ...showing,
         pricePaid,
         ticketCount,
         reservationType,
-        movie: await createMovieSnapshot(movie),
-        theatre: await createTheatreSnapshot(theatre),
-        screen: await createScreenSnapshot(screen),
-        selectedSeats: await createReservedSeatSnapshot(selectedSeating),
+        theatre: theatreSnapshot,
+        movie: movieSnapshot,
+        screen: screenSnapshot,
+        selectedSeats: seatSnapshot,
     });
 
     if (!success) {

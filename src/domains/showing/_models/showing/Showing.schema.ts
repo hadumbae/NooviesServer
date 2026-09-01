@@ -2,7 +2,7 @@
  * @fileoverview Defines the Mongoose schema and model for movie showings.
  */
 
-import {type Model, Schema, type SchemaDefinitionProperty} from "mongoose";
+import {Schema, type SchemaDefinitionProperty} from "mongoose";
 import {ShowingStatusConstant} from "@/domains/showing/_validation/fields/ShowingStatusConstant";
 import ISO6391CodeConstant from "@/shared/constants/language/ISO6391CodeConstant.js";
 import type {ShowingSchemaFields} from "./Showing.types.js";
@@ -14,6 +14,7 @@ import {DeletedAtSchemaTypeOptions} from "@/shared/model/DeletedAtSchemaTypeOpti
 import type {ModelSoftDeleteMethods} from "@/shared/_types/model/ModelSoftDelete";
 import {IANAZone} from "luxon";
 import type {SoftDeleteSchemaModel} from "@/shared/_types";
+import {TheatreSnapshotSchema} from "@/domains/theatre/model/theatre-snapshot";
 
 /** Mongoose model type for the Showing collection including soft-delete methods. */
 export type ShowingModel = SoftDeleteSchemaModel<ShowingSchemaFields>;
@@ -87,6 +88,12 @@ export const ShowingSchema = new Schema<ShowingSchemaFields, ShowingModel, Model
                 message: "Must be a non-empty array of ISO-639-1 codes.",
             },
             required: [true, "Subtitle languages are required."],
+        },
+
+        theatreSnapshot: {
+            type: TheatreSnapshotSchema,
+            immutable: true,
+            required: [true, "Theatre snapshot is required."],
         },
 
         status: {

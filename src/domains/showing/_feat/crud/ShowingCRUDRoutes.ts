@@ -8,17 +8,26 @@ import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
-import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
+import {
+    create,
+    destroy,
+    find,
+    findById,
+    findBySlug,
+    paginated,
+    update
+} from "@/shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {aggregate} from "@/shared/_feat/generic-aggregate";
 import type {ShowingSchemaFields} from "@/domains/showing/_models/showing/Showing.types";
 import {Showing} from "@/domains/showing/_models/showing/Showing.model";
 import {ShowingQueryMatchStageSchema, ShowingQuerySortStageSchema} from "@/domains/showing/_feat/validate-query";
-import {ShowingInputSchema} from "@/domains/showing/_feat/validate-submit/ShowingInputSchema";
+import {type ShowingInput, ShowingInputSchema} from "@/domains/showing/_feat/validate-submit/ShowingInputSchema";
 import {ShowingPopulationPaths} from "@/domains/showing/_feat/query-population";
 import {ShowingPopulationPipelines} from "@/domains/showing/_feat/query-population/ShowingPopulationPipelines";
 import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/_feat/query-population/ShowingSeatMapVirtualPipelines";
+import {buildShowingDerivedFields} from "@/domains/showing/_feat/crud/buildShowingDerivedFields";
 
 const authCRUDMiddleware = buildAuthCRUDQueryStageMiddleware({
     modelName: Showing.modelName,
@@ -80,10 +89,11 @@ const routes: CRUDRoute<ShowingSchemaFields>[] = [
 ];
 
 /** Orchestrates the creation of the router using the generic CRUD utility factory. */
-const router: Router = buildCRUDRoutes<ShowingSchemaFields>({
+const router: Router = buildCRUDRoutes<ShowingSchemaFields, ShowingInput>({
     model: Showing,
     routes: routes,
     populatePaths: ShowingPopulationPaths,
+    deriveData: buildShowingDerivedFields,
 });
 
 /** Advanced aggregation endpoint for complex scheduling lookups. */

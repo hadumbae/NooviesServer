@@ -19,7 +19,7 @@ export async function createDocument<TModel extends BaseModel>(
     {model, data, populatePaths, options, onDuplicateIndex, deriveData}: CreateDocumentConfig<TModel>
 ): Promise<TModel> {
     try {
-        const derived = deriveData ? deriveData(data) : {};
+        const derived = deriveData ? await deriveData(data) : {};
         const newDoc = new model({...data, ...derived});
         const doc = await newDoc.save();
 

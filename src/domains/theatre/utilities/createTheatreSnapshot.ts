@@ -1,13 +1,5 @@
 /**
- * @file createTheatreSnapshot.ts
- *
- * Factory function for creating an immutable theatre snapshot.
- *
- * @remarks
- * Resolves the current Theatre document and validates it against
- * the snapshot input schema before producing a write-once snapshot.
- * Used to preserve historical integrity for reservations, tickets,
- * and audit records.
+ * @fileoverview Utility function for creating immutable snapshots of theatre documents for audit and historical tracking.
  */
 
 import {Types} from "mongoose";
@@ -17,19 +9,7 @@ import {DocumentNotFoundError} from "@/shared/errors/DocumentNotFoundError";
 import {Theatre} from "@/domains/theatre/model/theatre";
 import {TheatreSnapshot, type TheatreSnapshotSchemaFields} from "@/domains/theatre/model/theatre-snapshot";
 
-/**
- * Create an immutable snapshot of a theatre at a specific point in time.
- *
- * @param theatreID - ObjectId of the theatre to snapshot.
- *
- * @returns A validated theatre snapshot schema instance.
- *
- * @throws {@link DocumentNotFoundError}
- * Thrown if the theatre cannot be found.
- *
- * @throws {@link InconsistentDataError}
- * Thrown if the theatre data violates snapshot schema invariants.
- */
+/** Creates an immutable validated snapshot of a theatre at a specific point in time. */
 export async function createTheatreSnapshot(
     theatreID: Types.ObjectId
 ): Promise<TheatreSnapshotSchemaFields> {

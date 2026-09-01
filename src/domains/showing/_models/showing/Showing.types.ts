@@ -3,21 +3,16 @@
  */
 
 import {Types} from "mongoose";
-import type {ScreenSchemaFields}
-    from "@/domains/screen/_models/screen/Screen.types";
-import type {ShowingStatusCode}
-    from "@/domains/showing/_validation/fields/ShowingStatusSchema";
-import type {TheatreSchemaFields}
-    from "@/domains/theatre/model/theatre";
-import type {ISO6391LanguageCode}
-    from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
-import type {MovieWithGenres}
-    from "@/domains/movies/_models/movie/Movie.types";
-import type {ShowingConfigSchemaFields}
-    from "@/domains/showing/_models/showing-config/ShowingConfig.types.js";
+import type {ScreenSchemaFields} from "@/domains/screen/_models/screen/Screen.types";
+import type {ShowingStatusCode} from "@/domains/showing/_validation/fields/ShowingStatusSchema";
+import type {TheatreSchemaFields} from "@/domains/theatre/model/theatre";
+import type {ISO6391LanguageCode} from "@/shared/schema/enums/ISO6391LanguageCodeSchema";
+import type {MovieWithGenres} from "@/domains/movies/_models/movie/Movie.types";
+import type {ShowingConfigSchemaFields} from "@/domains/showing/_models/showing-config/ShowingConfig.types.js";
 import type {LocationSchemaFields} from "@/shared/model/location/LocationSchemaFields";
 import type {BaseSoftDeleteModel} from "@/shared/_types/model/BaseModel";
 import type {IANATimezone} from "@/shared/schema/date-time/IANATimezoneSchema";
+import type {TheatreSnapshotSchemaFields} from "@/domains/theatre/model/theatre-snapshot";
 
 /** Core schema fields for a theatre showing. */
 export type ShowingSchemaFields = BaseSoftDeleteModel & {
@@ -34,6 +29,7 @@ export type ShowingSchemaFields = BaseSoftDeleteModel & {
     config: ShowingConfigSchemaFields;
     location: LocationSchemaFields;
     slug: string;
+    theatreSnapshot: TheatreSnapshotSchemaFields;
 }
 
 /** Representation of a showing with joined theatre, screen, and movie details. */

@@ -4,7 +4,6 @@
 
 import {z} from "zod";
 import {DateTime} from "luxon";
-import {ObjectIdStringSchema} from "@/shared/schema/mongoose/ObjectIdStringSchema";
 import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 import {PositiveNumberSchema} from "@/shared/_schema/numbers/numbers/PositiveNumberSchema";
 import {ShowingStatusSchema} from "@/domains/showing/_validation/fields/ShowingStatusSchema";
@@ -12,6 +11,7 @@ import {SimpleDateStringSchema} from "@/shared/schema/date-time/SimpleDateString
 import {TimeStringSchema} from "@/shared/schema/date-time/TimeStringSchema";
 import {ShowingConfigInputSchema} from "@/domains/showing/_feat/validate-submit/ShowingConfigInputSchema";
 import {IANATimezoneSchema} from "@/shared/schema/date-time/IANATimezoneSchema";
+import {ObjectIdSchema} from "@/shared/schema/mongoose/ObjectIdSchema";
 
 /** Schema for validating showing input and transforming date strings into UTC JS Dates. */
 export const ShowingInputSchema = z.object({
@@ -30,9 +30,9 @@ export const ShowingInputSchema = z.object({
         .array(NonEmptyStringSchema)
         .nonempty({message: "Must not be empty."}),
 
-    movie: ObjectIdStringSchema,
-    theatre: ObjectIdStringSchema,
-    screen: ObjectIdStringSchema,
+    movie: ObjectIdSchema,
+    theatre: ObjectIdSchema,
+    screen: ObjectIdSchema,
 
     status: ShowingStatusSchema,
 
