@@ -11,6 +11,14 @@ import {TheatreScreenAdminViewDataRoutes} from "@/domains/screen/_feat/view-data
 import {ShowingAdminViewDataRoutes} from "@/domains/showing/_feat/admin-view-data";
 import {UserAdminViewDataRoutes} from "@/domains/users/_feat/admin-view-data";
 import {CustomerAdminViewDataRoutes} from "@/domains/customer/_feat/customer-details";
+import {AdminDashboardRoutes} from "@/domains/dashboard";
+
+const pageRouteGroups: RouteRegistration[] = [
+    {
+        path: "/api/v1/views/desktop/admin/dashboard",
+        router: AdminDashboardRoutes,
+    },
+];
 
 const userRouteGroups: RouteRegistration[] = [
     {
@@ -52,6 +60,7 @@ const showingRouteGroups: RouteRegistration[] = [
 /** Registers all admin-facing view data route groups to the Express application. */
 export function registerAdminViewDataRoutes(app: Express) {
     const routeGroups: RouteRegistration[][] = [
+        pageRouteGroups,
         userRouteGroups,
         setupRouteGroups,
         showingRouteGroups,
