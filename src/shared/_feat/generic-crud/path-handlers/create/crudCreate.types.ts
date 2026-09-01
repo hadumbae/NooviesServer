@@ -11,4 +11,5 @@ export type CreateDocumentConfig<TModel extends BaseModel, TInput = unknown> =
     Omit<BaseCRUDParams<TModel>, "options"> & {
     data: Partial<TInput>;
     options?: Pick<RequestOptions, "populate" | "virtuals">;
+    deriveData?: (data: Partial<TInput>) => Promise<Partial<TModel>> | Partial<TModel>;
 };

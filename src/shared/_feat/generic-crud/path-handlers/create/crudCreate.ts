@@ -16,10 +16,11 @@ import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTy
  * Instantiates, persists, and populates a new Mongoose document.
  */
 export async function createDocument<TModel extends BaseModel>(
-    {model, data, populatePaths, options, onDuplicateIndex}: CreateDocumentConfig<TModel>
+    {model, data, populatePaths, options, onDuplicateIndex, deriveData}: CreateDocumentConfig<TModel>
 ): Promise<TModel> {
     try {
-        const newDoc = new model(data);
+        const derived = deriveData ? deriveData(data) : {};
+        const newDoc = new model({...data, ...derived});
         const doc = await newDoc.save();
 
         const query = populateQuery({
@@ -44,8 +45,8 @@ export async function createDocument<TModel extends BaseModel>(
 /**
  * Generates an Express controller for handling document creation requests.
  */
-export function create<TModel extends BaseModel>(
-    {model, populatePaths, onDuplicateIndex}: CRUDControllerHandlerConfig<TModel>
+export function create<TModel extends BaseModel, TInput = unknown>(
+    {model, populatePaths, onDuplicateIndex, deriveData}: CRUDControllerHandlerConfig<TModel, TInput>
 ): ControllerAsyncFunc {
     return async (req: Request, res: Response) => {
         const options = fetchRequestOptions(req);
@@ -57,6 +58,7 @@ export function create<TModel extends BaseModel>(
             data,
             populatePaths,
             onDuplicateIndex,
+            deriveData,
         });
 
         return res.status(200).json(item);

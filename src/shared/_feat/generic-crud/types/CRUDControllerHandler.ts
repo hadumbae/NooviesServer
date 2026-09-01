@@ -9,10 +9,11 @@ import type {Model} from "mongoose";
 import type {DuplicateIndexHandler} from "@/shared/_feat/generic-crud/types/DuplicateIndexHandler";
 
 /** Configuration parameters for generating a specific CRUD controller. */
-export type CRUDControllerHandlerConfig<TModel extends BaseModel> = {
+export type CRUDControllerHandlerConfig<TModel extends BaseModel, TInput = unknown> = {
     model: Model<TModel>;
     populatePaths?: PopulatePath[];
     onDuplicateIndex?: DuplicateIndexHandler;
+    deriveData?: (data: Partial<TInput>) => Promise<Partial<TModel>> | Partial<TModel>;
 }
 
 /** Function signature for generating standardized CRUD route handlers. */
