@@ -10,8 +10,8 @@ import type {BuildCRUDRoutesParams} from "@/shared/_feat/generic-crud/routes/CRU
 /**
  * Generates an Express Router by mapping generic CRUD handlers to HTTP methods.
  */
-export const buildCRUDRoutes = <TModel extends BaseModel = BaseModel>(
-    {model, populatePaths, onDuplicateIndex, routes, deriveData}: BuildCRUDRoutesParams<TModel>
+export const buildCRUDRoutes = <TModel extends BaseModel = BaseModel, TInput = unknown>(
+    {model, populatePaths, onDuplicateIndex, routes, deriveData}: BuildCRUDRoutesParams<TModel, TInput>
 ) => {
     const router = Router();
 
