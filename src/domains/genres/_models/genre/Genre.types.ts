@@ -18,4 +18,5 @@ export type GenreSchemaFields = BaseModel & ModelTimestamps & {
     slug: string;
     image?: CloudinaryImageObject | null;
     movieCount: number;
+    isFeatured: boolean;
 };

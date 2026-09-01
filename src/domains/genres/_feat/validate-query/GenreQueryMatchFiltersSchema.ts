@@ -1,19 +1,16 @@
 /**
- * @file Zod schema for direct genre field matching from URL parameters.
- * @filename GenreQueryMatchFiltersSchema.ts
+ * @fileoverview Zod schema and inferred type for direct genre field matching from URL parameters.
  */
 
 import {z} from "zod";
 import {URLParamStringSchema} from "@/shared/schema/url/URLParamStringSchema";
+import {URLParamBooleanSchema} from "@/shared/schema/url/URLParamBooleanSchema";
 
-/**
- * Validates the raw filterable fields for Genres.
- * ---
- */
+/** Schema for validating raw filterable URL query fields for genres. */
 export const GenreQueryMatchFiltersSchema = z.object({
-    /** Optional filter by genre name (e.g., "Action", "Sci-Fi"). */
-    name: URLParamStringSchema
+    name: URLParamStringSchema,
+    isFeatured: URLParamBooleanSchema,
 });
 
-/** Inferred TypeScript type for raw genre filter parameters. */
+/** Inferred type for raw genre filter parameters. */
 export type GenreQueryMatchFilters = z.infer<typeof GenreQueryMatchFiltersSchema>;

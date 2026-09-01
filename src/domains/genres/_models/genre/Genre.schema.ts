@@ -40,5 +40,10 @@ export const GenreSchema = new Schema<GenreSchemaFields>({
         },
     },
 
+    isFeatured: {
+        type: Boolean,
+        default: false,
+    },
+
     slug: SlugSchemaTypeOptions,
 }, {timestamps: true});

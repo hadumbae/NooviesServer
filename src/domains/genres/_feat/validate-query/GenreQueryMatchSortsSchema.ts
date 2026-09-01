@@ -1,6 +1,5 @@
 /**
- * @file Zod schema for defining genre-specific sorting logic from URL parameters.
- * @filename GenreQueryMatchSortsSchema.ts
+ * @fileoverview Zod schema and inferred type for genre sorting option parameters.
  */
 
 import {z} from "zod";
@@ -8,14 +7,10 @@ import {
     MongooseNumericSortSchema,
 } from "@/shared/schema/url/URLParamMongooseSortOrderSchema";
 
-/**
- * Validates the available sort keys for Genre queries.
- * ---
- */
+/** Schema for validating sort key parameters for genre queries. */
 export const GenreQueryMatchSortsSchema = z.object({
-    /** Sort order for the genre name field. */
     sortByName: MongooseNumericSortSchema.optional(),
 });
 
-/** Inferred TypeScript type for genre sort parameters. */
+/** Inferred type for genre query sort options. */
 export type GenreQueryMatchSorts = z.infer<typeof GenreQueryMatchSortsSchema>;
