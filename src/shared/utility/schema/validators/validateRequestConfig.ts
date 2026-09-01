@@ -28,6 +28,8 @@ export function validateRequestConfig<TData = unknown>(params: ValidationParams<
         const {data, error, success} = schema.safeParse(raw);
 
         if (!success) {
+            console.log("Validation Error: ", error?.errors[0].path);
+
             throw new BadRequestError({
                 message: errorMessage ?? "Invalid request parameters or query.",
                 errors: error?.errors ?? [],

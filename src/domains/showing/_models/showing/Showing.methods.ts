@@ -3,13 +3,10 @@
  */
 
 import {ShowingSchema} from "./Showing.schema.js";
-import type {HydratedDocument} from "mongoose";
-import type {ShowingSchemaFields} from "./Showing.types.js";
+import {createSoftDeleteHandler, createSoftDeleteRestoreHandler} from "@/shared/_feat";
 
 /** Performs a soft delete by setting the isDeleted flag and recording the timestamp. */
-ShowingSchema.methods.softDelete = function (this: HydratedDocument<ShowingSchemaFields>) {
-    this.isDeleted = true;
-    this.deletedAt = new Date;
+ShowingSchema.methods.softDelete = createSoftDeleteHandler();
 
-    return this.save();
-}
+/** Restores a soft-deleted showing by clearing the isDeleted flag and deletion timestamp. */
+ShowingSchema.methods.restore = createSoftDeleteRestoreHandler();

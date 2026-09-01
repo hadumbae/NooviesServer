@@ -3,7 +3,7 @@
  */
 
 import type { Request, Response } from "express";
-import type {FetchTheatreInfoViewRouteConfig} from "src/domains/theatre/_feat/client-view-data/theatre-info/FetchTheatreInfoViewRouteConfigSchema";
+import type {FetchTheatreInfoViewRouteConfig} from "@/domains/theatre/_feat/client-view-data/theatre-info/FetchTheatreInfoViewRouteConfigSchema";
 
 import {
     fetchTheatreInfoViewData

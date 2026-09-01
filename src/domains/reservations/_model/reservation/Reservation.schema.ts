@@ -11,9 +11,10 @@ import {IsDeletedSchemaTypeOptions} from "@/shared/model/IsDeletedSchemaTypeOpti
 import {DeletedAtSchemaTypeOptions} from "@/shared/model/DeletedAtSchemaTypeOptions";
 import type {ModelSoftDeleteMethods} from "@/shared/_types/model/ModelSoftDelete";
 import {ReservationStatusConstant, ReservationTypeConstant} from "@/domains/reservations/_validation";
+import type {SoftDeleteSchemaModel} from "@/shared/_types";
 
 /** TypeScript type representing the compiled Reservation Model. */
-export type ReservationModel = Model<ReservationSchemaFields, {}, ModelSoftDeleteMethods<ReservationSchemaFields>>;
+export type ReservationModel = SoftDeleteSchemaModel<ReservationSchemaFields>
 
 /** Mongoose schema representing a booking transaction. */
 export const ReservationSchema = new Schema<

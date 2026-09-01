@@ -10,6 +10,7 @@ export const ReservationPopulatePaths: PopulatePath[] = [
     {
         path: "showing",
         populate: ShowingPopulateRefs as PopulatePath[],
+        options: {getSoftDeleted: true}
     },
     {
         path: "selectedSeating",

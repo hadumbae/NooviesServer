@@ -18,6 +18,17 @@ import {SeatMapInputSchema} from "@/domains/seatmap/_feat/validate-submit/SeatMa
 import {SeatMapQueryOptionsSchema} from "@/domains/seatmap/_feat/validate-query";
 import {SeatMapPopulationPaths} from "@/domains/seatmap/_feat/query-population";
 import {handleDuplicateIndex} from "@/domains/seatmap/_model/seat-map/SeatMap.handlers";
+import {verifyReferencesExist} from "@/shared/_feat";
+import {Seat} from "@/domains/seat";
+import {Showing} from "@/domains/showing";
+
+const hasReferences = verifyReferencesExist({
+    statusCode: 422,
+    refs: [
+        {key: "seat", model: Seat},
+        {key: "showing", model: Showing},
+    ]
+});
 
 /**
  * CRUD route definitions for the SeatMap entity.
@@ -47,7 +58,7 @@ const routes: CRUDRoute<SeatMapSchemaFields>[] = [
         /** Manual creation of a seat map entry (typically handled by automated scheduling logic). */
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchema(SeatMapInputSchema)],
+        middleware: [isAuth, validateZodSchema(SeatMapInputSchema), hasReferences],
         handler: create
     },
     {
@@ -61,7 +72,7 @@ const routes: CRUDRoute<SeatMapSchemaFields>[] = [
         /** Update of a seat's availability, status, or pricing for a specific showing. */
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchema(SeatMapInputSchema)],
+        middleware: [isAuth, validateZodSchema(SeatMapInputSchema), hasReferences],
         handler: update
     },
     {

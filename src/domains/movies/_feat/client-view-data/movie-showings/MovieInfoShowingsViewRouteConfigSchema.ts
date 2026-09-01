@@ -8,14 +8,15 @@ import {z} from "zod";
 import {PositiveIntegerSchema} from "@/shared/_schema/numbers/numbers/PositiveIntegerSchema";
 import {SlugStringSchema} from "@/shared/schema/strings/SlugStringSchema";
 import {preprocessToNumber} from "@/shared/_feat/zod-preprocessors/preprocessToNumber";
+import {preprocessOptionalField} from "@/shared/_feat";
 
 /** Schema for movie showing route parameters including location and pagination. */
 export const MovieInfoShowingsViewRouteConfigSchema = z.object({
     slug: SlugStringSchema,
-    near: StringValueSchema.max(250, "Must be 250 characters or less.").optional(),
-    country: ISO3166Alpha2CountryCodeSchema,
-    page: preprocessToNumber(PositiveIntegerSchema),
-    perPage: preprocessToNumber(PositiveIntegerSchema),
+    near: preprocessOptionalField(StringValueSchema.max(250, "Must be 250 characters or less.")),
+    country: preprocessOptionalField(ISO3166Alpha2CountryCodeSchema).default("US"),
+    page: preprocessToNumber(PositiveIntegerSchema.optional()).optional().default(1),
+    perPage: preprocessToNumber(PositiveIntegerSchema.optional()).optional().default(10),
 });
 
 /** Type definition for the movie info showings view route configuration. */
