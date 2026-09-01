@@ -1,6 +1,5 @@
 /**
  * @fileoverview Type definitions for the generic CRUD routing system.
- *
  */
 
 import type {BaseModel} from "@/shared/_types/model/BaseModel";
@@ -16,38 +15,19 @@ export type CRUDRouteMethods =
     | "patch"
     | "delete";
 
-/**
- * Definition for a single generic endpoint within a CRUD factory.
- */
+/** Definition for a single generic endpoint within a CRUD factory. */
 export type CRUDRoute<TModel extends BaseModel = BaseModel> = {
-    /** The HTTP method to be used for the route. */
     method: CRUDRouteMethods;
-
-    /** The relative URL path for the endpoint. */
     path: string;
-
-    /** * An array of Express middleware (e.g., Auth, Validation) to execute
-     * before the main handler.
-     */
     middleware: RequestHandler[];
-
-    /** The higher-order function that generates the actual controller logic. */
     handler: CRUDControllerHandler<TModel>;
 };
 
-/**
- * Parameter contract for the {@link buildCRUDRoutes} factory function.
- */
-export type BuildCRUDRoutesParams<TModel extends BaseModel> = {
-    /** The Mongoose model instance associated with these routes. */
+/** Parameter contract for the buildCRUDRoutes factory function. */
+export type BuildCRUDRoutesParams<TModel extends BaseModel, TInput = unknown> = {
     model: Model<TModel>;
-
-    /** Global population paths applied to all relevant handlers in this router. */
     populatePaths?: PopulatePath[];
-
-    /** Optional handler for managing MongoDB duplicate key errors. */
     onDuplicateIndex?: DuplicateIndexHandler;
-
-    /** List of route configurations to be instantiated. */
     routes: CRUDRoute<TModel>[];
-}
+    deriveData?: (data: Partial<TInput>) => Promise<Partial<TModel>> | Partial<TModel>;
+};
