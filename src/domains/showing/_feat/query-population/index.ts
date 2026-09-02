@@ -1,3 +1,4 @@
+export * from "@/domains/showing/_feat/query-population/ShowingSummarySelect";
 export * from "@/domains/showing/_feat/query-population/ShowingPopulationPipelines";
 export * from "@/domains/showing/_feat/query-population/ShowingSeatMapVirtualPipelines";
 export * from "@/domains/showing/_feat/query-population/ShowingPopulationPaths";
