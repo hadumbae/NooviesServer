@@ -1,7 +1,5 @@
 /**
- * @fileoverview Centralized registration for public-facing "View Data" routes.
- * Aggregates domain-specific route groups (Genres, Movies) and mounts them
- * under specialized "desktop-client" API prefixes.
+ * @fileoverview Centralized registration for public-facing desktop client view data routes.
  */
 
 import type {Express} from "express";
@@ -11,10 +9,15 @@ import {TheatreClientViewDataRoutes} from "@/domains/theatre/_feat/client-view-d
 import {MovieClientViewDataRoutes} from "@/domains/movies/_feat/client-view-data";
 import {PersonClientViewDataRoutes} from "@/domains/persons/_feat/client-view-data";
 import {TheatreScreenClientViewDataRoutes} from "@/domains/screen";
+import {HomepageRoutes} from "@/domains/homepage/_feat";
 
-/**
- * Collection of route groups related to Genre client-side views.
- */
+const pageRouteGroups: RouteRegistration[] = [
+    {
+        path: "/api/v1/views/desktop/client/home",
+        router: HomepageRoutes,
+    }
+];
+
 const setupRouteGroup: RouteRegistration[] = [
     {
         path: "/api/v1/views/desktop/client/genres",
@@ -38,11 +41,10 @@ const setupRouteGroup: RouteRegistration[] = [
     },
 ];
 
-/**
- * Registers all client-facing view data routes into the main Express application.
- */
+/** Registers all desktop client view data route groups into the Express application instance. */
 export function registerClientViewDataRoutes(app: Express) {
     const routeGroups: RouteRegistration[][] = [
+        pageRouteGroups,
         setupRouteGroup,
     ];
 
