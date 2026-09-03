@@ -36,6 +36,7 @@ export async function fetchHomepageViewData(
         .select(MovieSummarySelect)
         .sort({releaseDate: -1})
         .limit(recentCount)
+        .populate("genres")
         .lean();
 
     const genreStubs = await Genre
@@ -50,6 +51,7 @@ export async function fetchHomepageViewData(
             .sort({releaseDate: -1})
             .select(MovieSummarySelect)
             .limit(movieCount)
+            .populate("genres")
             .lean(),
     })));
 
@@ -67,6 +69,7 @@ export async function fetchHomepageViewData(
         .select(ShowingSummarySelect)
         .sort({startTime: 1})
         .limit(upcomingCount)
+        .populate({path: "movie", select: MovieSummarySelect, populate: {path: "genres"}})
         .lean();
 
     const generalData = {
@@ -79,7 +82,7 @@ export async function fetchHomepageViewData(
     if (!user) return {...generalData, reservations: [],}
 
     const reservations = await Reservation
-        .find({user, "snapshot.startTime": {$gt: now}, status: {$in: ["RESERVED", "PAID"]}})
+        .find({user, "snapshot.startTime": {$gt: now}, status: {$in: ["PENDING", "RESERVED", "PAID"]}})
         .select(ReservationSummarySelect)
         .sort({"snapshot.startTime": 1})
         .limit(reservationCount)
