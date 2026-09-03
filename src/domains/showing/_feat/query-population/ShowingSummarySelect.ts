@@ -13,4 +13,6 @@ export const ShowingSummarySelect = [
     "theatreSnapshot",
     "config",
     "slug",
+    "language",
+    "subtitleLanguages",
 ];

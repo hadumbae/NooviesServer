@@ -9,7 +9,7 @@ import {isAuth} from "@/domains/authentication/middleware/isAuth";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {
     TheatresByLocationRouteConfigSchema
-} from "@/domains/theatre/_feat/search-theatres/schemas/TheatresByLocationRouteConfigSchema";
+} from "src/domains/theatre/_feat/search-theatres/fetch-by-location/TheatresByLocationRouteConfigSchema";
 
 const router = Router();
 

@@ -1,5 +1,5 @@
 /**
- * @fileoverview Type definitions for the Showing model.
+ * @fileoverview Type definitions for the Showing domain model and its populated variants.
  */
 
 import {Types} from "mongoose";
@@ -42,4 +42,10 @@ export type PopulatedShowing = Omit<ShowingSchemaFields, "theatre" | "screen" | 
 /** Representation of a showing with joined movie details. */
 export type ShowingWithMovie = Omit<ShowingSchemaFields, "movie"> & {
     movie: MovieWithGenres;
+}
+
+/** Representation of a theatre showing with joined movie and screen details. */
+export type TheatreShowingSchema = Omit<ShowingSchemaFields, "movie" | "screen"> & {
+    movie: MovieWithGenres;
+    screen: ScreenSchemaFields;
 }

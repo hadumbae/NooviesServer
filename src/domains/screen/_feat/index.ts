@@ -1,5 +1,6 @@
 export * from "./build-snapshot"
 export * from "./crud"
+export * from "./fetch-theatre-screens"
 export * from "./query-population"
 export * from "./validate-query"
 export * from "./validate-submit"

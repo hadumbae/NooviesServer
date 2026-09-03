@@ -1,14 +1,25 @@
-/**
- * @fileoverview Service for location-based theatre searches with scheduled movie showings.
- */
-
-import type {PipelineStage} from "mongoose";
-import {ShowingPopulationPipelines} from "@/domains/showing/_feat/query-population/ShowingPopulationPipelines";
-import {ShowingSeatMapVirtualPipelines} from "@/domains/showing/_feat/query-population/ShowingSeatMapVirtualPipelines";
-import {Theatre} from "@/domains/theatre/model/theatre";
-import {buildTheatreLocationMatchStage} from "@/domains/theatre/_feat/aggregate";
-import type {FetchTheatreByLocationConfig, TheatreByLocationReturns} from "@/domains/theatre/_feat/search-theatres";
+import {Theatre, type TheatreWithShowings} from "@/domains/theatre/model/theatre";
 import type {LookupPipelineStages} from "@/shared/_types";
+import {ShowingPopulationPipelines, ShowingSeatMapVirtualPipelines} from "@/domains/showing";
+import type {PipelineStage} from "mongoose";
+import {buildTheatreLocationMatchStage} from "@/domains/theatre/_feat/aggregate";
+import type {ISO3166Alpha2CountryCode} from "@/shared/schema/enums/ISO3166Alpha2CountryCodeSchema";
+import type {LocationTarget} from "@/shared/schema/features/location-query-options/LocationQueryOptions.types";
+
+/** Props for the fetchTheatresByLocation service function. */
+export type FetchTheatreByLocationConfig = {
+    target?: LocationTarget;
+    country?: ISO3166Alpha2CountryCode;
+    page: number;
+    perPage: number;
+    limit?: number;
+};
+
+/** Paginated result set containing theatres with their associated movie showings. */
+export type TheatreByLocationReturns = {
+    items: TheatreWithShowings[];
+    totalItems: number;
+};
 
 /**
  * Aggregates theatres matching a location target, including their upcoming scheduled showings and seat maps.

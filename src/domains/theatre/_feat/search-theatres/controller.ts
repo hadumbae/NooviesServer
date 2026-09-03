@@ -3,10 +3,10 @@
  */
 
 import type { Request, Response } from "express";
-import { fetchTheatresByLocation } from "@/domains/theatre/_feat/search-theatres/service/service";
 import type {
     TheatresByLocationRouteConfig
-} from "@/domains/theatre/_feat/search-theatres/schemas/TheatresByLocationRouteConfigSchema";
+} from "@/domains/theatre/_feat/search-theatres/fetch-by-location/TheatresByLocationRouteConfigSchema";
+import {fetchTheatresByLocation} from "@/domains/theatre/_feat/search-theatres/fetch-by-location/fetchTheatresByLocation";
 
 /**
  * Handles incoming requests to retrieve theatres and their upcoming showings based on location and pagination parameters.

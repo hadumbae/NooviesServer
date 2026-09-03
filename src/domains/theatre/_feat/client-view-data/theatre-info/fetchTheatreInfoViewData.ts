@@ -1,25 +1,44 @@
-import {Theatre} from "@/domains/theatre/model/theatre/Theatre.model";
+/**
+ * @fileoverview Service function and types for aggregating theatre details, screen schedules, and upcoming movie showtimes.
+ */
+
 import createHttpError from "http-errors";
-import {buildShowingLookupStage} from "@/domains/showing/_feat/aggregation/buildShowingLookupStage";
-import {buildMovieLookupStage} from "@/domains/movies/_feat/aggregation/buildMovieLookupStage";
-import {MoviePopulationPipelines} from "@/domains/movies/_feat/query-population/MoviePopulationPipelines";
-import {Screen} from "@/domains/screen/_models/screen/Screen.model";
-import type {TheatreSchemaFields} from "@/domains/theatre/model/theatre";
-import type {ScreenWithShowings} from "@/domains/screen";
+import {Theatre, type TheatreSchemaFields} from "@/domains/theatre/model/theatre";
 import type {SlugString} from "@/shared/schema/strings/SlugStringSchema";
 import type {SimpleDateString} from "@/shared/schema/date-time/SimpleDateStringSchema";
+import {type MovieSchemaFields} from "@/domains/movies/_models/movie";
+import {type ScreenSchemaFields, type ScreenWithShowings} from "@/domains/screen/_models/screen";
+import {fetchTheatreScreensWithShowings} from "@/domains/screen/_feat/fetch-theatre-screens/screens-with-showings";
 
-/** Configuration parameters for the request. */
+import {
+    Showing,
+    ShowingSummarySelect,
+    TheatreShowingPopulationPaths,
+    type TheatreShowingSchema
+} from "@/domains/showing";
+
+/** Configuration parameters for the fetchTheatreInfoViewData request. */
 export type FetchTheatreInfoViewDataConfig = {
     theatreSlug: SlugString;
-    localDateString?: SimpleDateString;
+    localDateString: SimpleDateString;
     limit?: number;
 };
 
-/** Representation of the combined theatre and screen data. */
+type TheatreScreenShowingGroup = {
+    screen: ScreenSchemaFields;
+    showings: TheatreShowingSchema[];
+}
+
+type TheatreMovieShowtimes = {
+    movie: MovieSchemaFields;
+    screens: TheatreScreenShowingGroup[];
+}
+
+/** Composite data structure containing information and schedule details for the theatre view. */
 export type TheatreInfoViewData = {
     theatre: TheatreSchemaFields;
     screens: ScreenWithShowings[];
+    upcoming: TheatreMovieShowtimes[];
 };
 
 /**
@@ -31,42 +50,50 @@ export async function fetchTheatreInfoViewData(
     const theatre = await Theatre.findOne({slug: theatreSlug}).lean({virtuals: true});
     if (!theatre) throw createHttpError(404, "Theatre not found!");
 
-    console.log("Local Date String:", localDateString);
-
-
-    const screenShowingsStage = buildShowingLookupStage({
-        localField: "_id",
-        foreignField: "screen",
-        as: "showings",
-        innerStages: [
-            {
-                $addFields: {
-                    localDate: {
-                        $dateToString: {
-                            date: "$startTime",
-                            timezone: theatre.location.timezone,
-                            format: "%Y-%m-%d",
-                        },
-                    },
-                },
-            },
-            {$match: {localDate: localDateString}},
-            {$sort: {startTime: 1}},
-            {$limit: limit},
-            buildMovieLookupStage({as: "movie", innerStages: MoviePopulationPipelines}),
-            {$unwind: "$movie"},
-        ],
+    const screens = await fetchTheatreScreensWithShowings({
+        theatreID: theatre._id,
+        timezone: theatre.location.timezone,
+        localDateString,
+        limit,
     });
 
-    const screens = await Screen.aggregate([
-        {$match: {theatre: theatre._id}},
-        {$sort: {name: 1}},
-        {$limit: 50},
-        screenShowingsStage,
-    ]);
+    const now = new Date();
+    const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7);
+
+    const showings = await Showing
+        .find({startTime: {$gt: now, $lte: endOfWeek}})
+        .select(ShowingSummarySelect)
+        .sort({startTime: 1})
+        .populate<TheatreShowingSchema>(TheatreShowingPopulationPaths)
+        .lean();
+
+    const upcoming: TheatreMovieShowtimes[] = [];
+
+    for (const showing of showings) {
+        const movieGroup = upcoming.find((movieItem) => showing.movie._id.equals(movieItem.movie._id));
+
+        if (!movieGroup) {
+            const screenItem = {screen: showing.screen, showings: [showing]};
+            upcoming.push({movie: showing.movie, screens: [screenItem]});
+            continue;
+        }
+
+        const screenGroup = movieGroup.screens.find((screenItem) => showing.screen._id.equals(screenItem.screen._id));
+
+        if (!screenGroup) {
+            movieGroup.screens.push({screen: showing.screen, showings: [showing]});
+            movieGroup.screens.sort((a, b) => a.screen.name.localeCompare(b.screen.name));
+            continue;
+        }
+
+        screenGroup.showings.push(showing);
+        // No sorting for showings.
+        // Ensure query includes sorting by `startTime`.
+    }
 
     return {
         theatre,
         screens,
+        upcoming,
     };
 }
