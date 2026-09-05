@@ -16,7 +16,6 @@ export async function getFetchTheatreInfoViewData(
     req: Request, res: Response
 ): Promise<Response> {
     const {theatreSlug, localDateString, limit} = req.parsedConfig as FetchTheatreInfoViewRouteConfig;
-    console.log("Local Date String:", localDateString);
 
     const data = await fetchTheatreInfoViewData({theatreSlug, localDateString, limit});
     return res.status(200).json(data);

@@ -4,7 +4,9 @@
 
 import type {ZodIssue} from "zod";
 import {ZodDuplicateIndexError} from "@/shared/errors/zod/ZodDuplicateIndexError";
-import MovieCreditModel from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {
+    MovieCredit as MovieCreditModel
+} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 
 /**
  * Maps database duplicate key errors to specific Zod validation issues for movie credits.

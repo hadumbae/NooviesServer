@@ -1,15 +1,9 @@
 /**
- * @file ISO4217CurrencyCodesConstant.ts
- *
- * @description
- * Immutable list of supported ISO 4217 currency codes.
- *
- * Used as the canonical source for currency validation and enum construction
- * (e.g. Zod schemas) to ensure consistency across pricing, payments, and
- * reservation-related domains.
+ * @fileoverview Constant array containing ISO 4217 three-letter currency codes.
  */
 
-export default [
+/** List of supported ISO 4217 currency codes. */
+export const ISO4217CurrencyCodesConstant = [
     "AED",
     "AFN",
     "ALL",

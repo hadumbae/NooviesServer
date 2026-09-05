@@ -1,8 +1,10 @@
 import {Schema} from "mongoose";
 import type {LocationSchemaFields} from "./LocationSchemaFields.js";
-import {CoordinateSchema} from "../coordinate/Coordinate.js";
+import {CoordinateSchema} from "src/shared/model/coordinate/Coordinate.schema";
 import {IANAZone} from "luxon";
-import ISO3166Alpha2CodeConstant from "../../constants/country/ISO3166Alpha2CodeConstant.js";
+import {
+    ISO3166Alpha2CodeConstant
+} from "../../constants/country/ISO3166Alpha2CodeConstant.js";
 
 /**
  * Mongoose schema for embedding a physical location into documents.

@@ -1,5 +1,5 @@
 import {z} from "zod";
-import ISO6391CodeConstant from "../../constants/language/ISO6391CodeConstant.js";
+import {ISO6391CodeConstant} from "../../constants/language/ISO6391CodeConstant.js";
 
 /**
  * Schema for validating ISO 639-1 language codes.

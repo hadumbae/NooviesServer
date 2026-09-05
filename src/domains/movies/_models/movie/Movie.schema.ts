@@ -4,8 +4,10 @@
 
 import {Schema} from "mongoose";
 import {CloudinaryImageSchema} from "@/shared/model/cloudinary-image/CloudinaryImage.js";
-import ISO6391CodeConstant from "@/shared/constants/language/ISO6391CodeConstant.js";
-import ISO3166Alpha2CodeConstant from "@/shared/constants/country/ISO3166Alpha2CodeConstant.js";
+import {ISO6391CodeConstant} from "@/shared/constants/language/ISO6391CodeConstant.js";
+import {
+    ISO3166Alpha2CodeConstant
+} from "@/shared/constants/country/ISO3166Alpha2CodeConstant.js";
 import {URLStringSchema} from "@/shared/schema/strings/URLStringSchema.js";
 import type {MovieSchemaFields} from "@/domains/movies/_models/movie/Movie.types.js";
 

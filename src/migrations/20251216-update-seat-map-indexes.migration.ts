@@ -11,7 +11,7 @@
  */
 
 import mongoose from "mongoose";
-import connect from "@/shared/config/database.js";
+import {connect} from "@/shared/config/database.js";
 import {SeatMap} from "@/domains/seatmap/_model/seat-map/SeatMap.model";
 
 connect()

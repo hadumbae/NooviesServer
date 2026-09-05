@@ -7,7 +7,7 @@ import {z} from "zod";
 import {MovieQueryFiltersSchema} from "@/domains/movies/_feat/validate-query/MovieQueryFiltersSchema";
 import {MovieQuerySortsSchema} from "@/domains/movies/_feat/validate-query/MovieQuerySortsSchema";
 import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {filterNullishAttributes} from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema for Movie query options with an aggregation transformation.

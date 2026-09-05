@@ -4,7 +4,7 @@
 
 import "dotenv/config";
 import mongoose from "mongoose";
-import connect from "@/shared/config/database.js";
+import {connect} from "@/shared/config/database.js";
 import {Showing} from "@/domains/showing";
 import {Theatre} from "@/domains/theatre/model/theatre";
 

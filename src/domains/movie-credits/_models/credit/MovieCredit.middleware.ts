@@ -6,7 +6,7 @@
 import {MovieCreditSchema} from "@/domains/movie-credits/_models/credit/MovieCredit.schema.js";
 import type {HydratedDocument} from "mongoose";
 import type {MovieCreditSchemaFields} from "@/domains/movie-credits/_models/credit/MovieCredit.types";
-import generateSlug from "@/shared/utility/generateSlug.js";
+import {generateSlug} from "@/shared/utility/generateSlug.js";
 import type {PersonSchemaFields} from "@/domains/persons/_models/person";
 
 MovieCreditSchema.pre(

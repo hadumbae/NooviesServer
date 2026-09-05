@@ -1,5 +1,7 @@
 import { z } from "zod";
-import ISO3166Alpha2CodeConstant from "../../constants/country/ISO3166Alpha2CodeConstant.js";
+import {
+    ISO3166Alpha2CodeConstant
+} from "../../constants/country/ISO3166Alpha2CodeConstant.js";
 
 /**
  * Schema representing a valid ISO 3166-1 alpha-2 country code.

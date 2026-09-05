@@ -21,7 +21,7 @@ import validateZodSchema from "@/shared/utility/schema/validators/validateZodSch
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {aggregate} from "@/shared/_feat/generic-aggregate";
 import type {MovieCreditSchemaFields} from "@/domains/movie-credits/_models/credit/MovieCredit.types";
-import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {MovieCredit} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import {
     MovieCreditQueryMatchStageSchema,
     MovieCreditQuerySortStageSchema

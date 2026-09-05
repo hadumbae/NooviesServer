@@ -6,8 +6,10 @@
 import {Schema} from "mongoose";
 import type {PersonSchemaFields} from "@/domains/persons/_models/person/Person.types";
 import {CloudinaryImageSchema} from "@/shared/model/cloudinary-image/CloudinaryImage";
-import ISO3166Alpha2CodeConstant from "@/shared/constants/country/ISO3166Alpha2CodeConstant.js";
-import SlugSchemaTypeOptions from "@/shared/model/SlugSchemaTypeOptions.js";
+import {
+    ISO3166Alpha2CodeConstant
+} from "@/shared/constants/country/ISO3166Alpha2CodeConstant.js";
+import {SlugSchemaTypeOptions} from "@/shared/model/SlugSchemaTypeOptions.js";
 
 /**
  * Stores core identity, birth data, and media assets for people in the movie domain.

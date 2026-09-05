@@ -1,4 +1,9 @@
-export default {
+/**
+ * @fileoverview Map of ISO 3166-1 alpha-2 country codes to their corresponding English country names.
+ */
+
+/** Maps ISO 3166-1 alpha-2 country codes to their localized display labels. */
+export const ISO3166Alpha2CountryLabelMap = {
     "AF": "Afghanistan",
     "AX": "Åland Islands",
     "AL": "Albania",

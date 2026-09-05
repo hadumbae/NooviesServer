@@ -5,7 +5,7 @@
 
 import {Schema} from "mongoose";
 import type {ScreenSchemaFields} from "./Screen.types";
-import SlugSchemaTypeOptions from "@/shared/model/SlugSchemaTypeOptions";
+import {SlugSchemaTypeOptions} from "@/shared/model/SlugSchemaTypeOptions";
 import {ScreenTypeConstant} from "@/domains/screen/_validation";
 
 /**

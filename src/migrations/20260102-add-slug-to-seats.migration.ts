@@ -13,8 +13,8 @@
 import 'dotenv/config';
 
 import mongoose from "mongoose";
-import connect from "@/shared/config/database.js";
-import generateSlug from "../shared/utility/generateSlug.js";
+import {connect} from "@/shared/config/database.js";
+import {generateSlug} from "@/shared/utility/generateSlug.js";
 import {Seat} from "@/domains/seat/_models";
 
 connect().then(async () => {

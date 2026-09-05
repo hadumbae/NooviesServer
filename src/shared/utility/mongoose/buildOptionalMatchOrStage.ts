@@ -7,7 +7,7 @@
  * match clauses, allowing dynamic query composition without branching.
  */
 
-import filterNullishAttributes from "../filterNullishAttributes.js";
+import {filterNullishAttributes} from "../filterNullishAttributes.js";
 import type {PipelineStage} from "mongoose";
 
 /**

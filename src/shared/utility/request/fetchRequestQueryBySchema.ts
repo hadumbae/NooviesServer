@@ -5,7 +5,7 @@
 
 import type {Request} from "express";
 import {z, ZodObject, type ZodRawShape} from "zod";
-import InvalidRequestQueryError from "../../errors/InvalidRequestQueryError";
+import {InvalidRequestQueryError} from "../../errors/InvalidRequestQueryError";
 
 /**
  * Parameters for query validation.

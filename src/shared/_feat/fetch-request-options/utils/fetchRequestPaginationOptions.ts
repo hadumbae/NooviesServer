@@ -8,7 +8,7 @@ import {
     type RequestPaginationOptions,
     RequestPaginationOptionsSchema
 } from "@/shared/_feat/fetch-request-options/schemas/RequestPaginationOptionsSchema";
-import InvalidRequestQueryError from "@/shared/errors/InvalidRequestQueryError";
+import {InvalidRequestQueryError} from "@/shared/errors/InvalidRequestQueryError";
 
 /**
  * Parses and validates incoming request query parameters into a structured pagination object.

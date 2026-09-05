@@ -21,8 +21,6 @@ export async function updateGenreImage(
         await removeCloudinaryImage({public_id: genre.image.public_id});
     }
 
-    console.log("Buffer: ", image.buffer)
-
     genre.image = await uploadCloudinaryImage({image: image as Express.Multer.File});
     await genre.save();
 

@@ -2,7 +2,7 @@
  * @fileoverview Service for aggregating a person's filmography.
  */
 
-import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {MovieCredit} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import type {
     FetchPersonCreditStatsConfig,
     FetchPersonFilmographyConfig,

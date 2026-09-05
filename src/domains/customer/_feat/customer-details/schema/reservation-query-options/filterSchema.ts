@@ -3,7 +3,7 @@
  */
 
 import {z} from "zod";
-import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {filterNullishAttributes} from "@/shared/utility/filterNullishAttributes";
 import {ReservationBaseQueryFilterSchema} from "@/domains/reservations/_feat/validate-query-options";
 
 /** Zod schema for filtering customer reservations. */

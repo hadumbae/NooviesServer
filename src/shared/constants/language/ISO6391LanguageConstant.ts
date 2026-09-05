@@ -1,4 +1,9 @@
-export default {
+/**
+ * @fileoverview Map of ISO 639-1 two-letter language codes to their English language names.
+ */
+
+/** Maps ISO 639-1 language codes to their localized display names. */
+export const ISO6391LanguageConstant = {
     "aa": "Afar",
     "ab": "Abkhazian",
     "ae": "Avestan",

@@ -7,7 +7,7 @@ import {z} from "zod";
 import {ScreenQueryMatchFilterSchema} from "@/domains/screen/_feat/validate-query/option-schemas/ScreenQueryMatchFilterSchema";
 import {ScreenQueryMatchSortSchema} from "@/domains/screen/_feat/validate-query/option-schemas/ScreenQueryMatchSortSchema";
 import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {filterNullishAttributes} from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema with a transformation layer for Screen aggregation.

@@ -1,5 +1,5 @@
 import { type RefinementCtx, z } from "zod";
-import ImageTypeConstant from "../../constants/ImageTypeConstant.js";
+import {ImageTypeConstant} from "../../constants/ImageTypeConstant.js";
 import isMulterFile from "./file-upload/isMulterFile.js";
 
 /**

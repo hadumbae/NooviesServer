@@ -3,7 +3,7 @@
  */
 
 import type { HydratedDocument } from "mongoose";
-import generateSlug from "../../../shared/utility/generateSlug.js";
+import {generateSlug} from "@/shared/utility/generateSlug.js";
 import { SeatSchema } from "./Seat.schema.js";
 import type {SeatSchemaFields} from "@/domains/seat/_models/Seat.types";
 

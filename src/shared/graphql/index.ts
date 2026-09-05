@@ -1,5 +1,1 @@
-import resolvers from "./resolvers.js";
-
-export default {
-    resolvers
-}
+export * from "./resolvers.js";

@@ -2,7 +2,7 @@
  * @fileoverview Service function for removing an image from Cloudinary storage using its public ID.
  */
 
-import cloudinary from "@/shared/config/cloudinary";
+import {Cloudinary} from "@/shared/config/cloudinary";
 
 type RemoveImageConfig = {
     public_id: string;
@@ -12,5 +12,5 @@ type RemoveImageConfig = {
  * Deletes an image asset from Cloudinary using the provided public ID.
  */
 export async function removeCloudinaryImage({public_id}: RemoveImageConfig): Promise<void> {
-    await cloudinary.uploader.destroy(public_id);
+    await Cloudinary.uploader.destroy(public_id);
 }

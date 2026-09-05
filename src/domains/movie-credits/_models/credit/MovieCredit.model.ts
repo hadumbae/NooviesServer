@@ -9,6 +9,5 @@ import {MovieCreditSchema} from "@/domains/movie-credits/_models/credit/MovieCre
 import "./MovieCredit.middleware.js";
 
 /** Mongoose model for MovieCredit documents representing cast or crew roles in a movie. */
-const MovieCredit: Model<MovieCreditSchemaFields> = model<MovieCreditSchemaFields>("MovieCredit", MovieCreditSchema);
+export const MovieCredit: Model<MovieCreditSchemaFields> = model<MovieCreditSchemaFields>("MovieCredit", MovieCreditSchema);
 
-export default MovieCredit;

@@ -5,7 +5,7 @@
 
 import {Schema} from "mongoose";
 import type {MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/review/MovieReview.types.js";
-import SlugSchemaTypeOptions from "@/shared/model/SlugSchemaTypeOptions";
+import {SlugSchemaTypeOptions} from "@/shared/model/SlugSchemaTypeOptions";
 
 /** Mongoose schema for storing and validating user-submitted movie reviews. */
 export const MovieReviewSchema = new Schema<MovieReviewSchemaFields>({

@@ -7,7 +7,7 @@ import {MovieReviewSchema} from "@/domains/movie-reviews/_models/review/MovieRev
 import type {HydratedDocument} from "mongoose";
 import type {MovieReviewSchemaFields} from "@/domains/movie-reviews/_models/review/MovieReview.types";
 import {generateMovieReviewUniqueCode} from "@/domains/movie-reviews/_feat/handle-query/generateMovieReviewUniqueCode";
-import generateSlug from "@/shared/utility/generateSlug";
+import {generateSlug} from "@/shared/utility/generateSlug";
 
 MovieReviewSchema.pre(
     "validate",

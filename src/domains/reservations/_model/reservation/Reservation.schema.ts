@@ -2,11 +2,11 @@
  * @fileoverview Mongoose schema definition and model type for the Reservation domain.
  */
 
-import {type Model, Schema} from "mongoose";
+import {Schema} from "mongoose";
 import {ReservedShowingSnapshotSchema} from "@/domains/reservations/_model/showing-snapshot";
 import type {ReservationSchemaFields} from "./Reservation.types.js";
-import ISO4217CurrencyCodesConstant from "../../../../shared/constants/currency/ISO4217CurrencyCodesConstant.js";
-import SlugSchemaTypeOptions from "../../../../shared/model/SlugSchemaTypeOptions.js";
+import {ISO4217CurrencyCodesConstant} from "@/shared/constants/currency/ISO4217CurrencyCodesConstant.js";
+import {SlugSchemaTypeOptions} from "@/shared/model/SlugSchemaTypeOptions.js";
 import {IsDeletedSchemaTypeOptions} from "@/shared/model/IsDeletedSchemaTypeOptions";
 import {DeletedAtSchemaTypeOptions} from "@/shared/model/DeletedAtSchemaTypeOptions";
 import type {ModelSoftDeleteMethods} from "@/shared/_types/model/ModelSoftDelete";

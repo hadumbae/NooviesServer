@@ -7,7 +7,7 @@ import {GenreSchema} from "./Genre.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import {Movie} from "@/domains/movies/_models/movie/Movie.model";
 import type {GenreSchemaFields} from "./Genre.types.js";
-import generateSlug from "../../../../shared/utility/generateSlug.js";
+import {generateSlug} from "@/shared/utility/generateSlug.js";
 
 /**
  * Synchronizes the URL slug whenever the genre name is modified.

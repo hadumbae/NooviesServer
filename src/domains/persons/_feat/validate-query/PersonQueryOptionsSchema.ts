@@ -5,7 +5,7 @@
 
 import {z} from "zod";
 import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {filterNullishAttributes} from "@/shared/utility/filterNullishAttributes";
 import {PersonQueryMatchFiltersSchema} from "@/domains/persons/_feat/validate-query/PersonQueryMatchFiltersSchema";
 import {PersonQueryMatchSortsSchema} from "@/domains/persons/_feat/validate-query/PersonQueryMatchSortsSchema";
 

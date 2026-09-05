@@ -4,7 +4,7 @@
 
 import type {Request, Response} from "express";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
-import QueryUtils from "@/shared/services/query-utils/QueryUtils";
+import {QueryUtils} from "@/shared/services/query-utils/QueryUtils";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
 import {
     fetchFeaturedReviewsByMovie,

@@ -4,12 +4,12 @@
  */
 
 import "dotenv/config";
-import connect from "@/shared/config/database.js";
+import {connect} from "@/shared/config/database.js";
 import mongoose from "mongoose";
 import {Reservation} from "@/domains/reservations/_model/reservation";
 import {Showing} from "@/domains/showing/_models/showing/Showing.model.js";
 import createHttpError from "http-errors";
-import generateSlug from "../shared/utility/generateSlug.js";
+import {generateSlug} from "@/shared/utility/generateSlug.js";
 import type {PopulatedShowing} from "@/domains/showing/_models/showing/Showing.types";
 
 /**

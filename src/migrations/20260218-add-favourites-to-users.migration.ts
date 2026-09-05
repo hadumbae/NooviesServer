@@ -4,7 +4,7 @@
  */
 
 import "dotenv/config";
-import connect from "@/shared/config/database.js";
+import {connect} from "@/shared/config/database.js";
 import {User} from "@/domains/users/model/user/User.model";
 import mongoose from "mongoose";
 

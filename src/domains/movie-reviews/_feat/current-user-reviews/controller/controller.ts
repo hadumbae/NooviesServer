@@ -4,7 +4,7 @@
  */
 
 import type {Request, Response} from "express";
-import QueryUtils from "@/shared/services/query-utils/QueryUtils.js";
+import {QueryUtils} from "@/shared/services/query-utils/QueryUtils.js";
 import * as MyMovieReviewService from "@/domains/movie-reviews/_feat/current-user-reviews/service";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser.js";
 import type {

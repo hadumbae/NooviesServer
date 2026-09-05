@@ -1,4 +1,9 @@
-export default [
+/**
+ * @fileoverview Constant array containing standard ISO 3166-1 alpha-2 two-letter country codes.
+ */
+
+/** List of supported ISO 3166-1 alpha-2 country codes. */
+export const ISO3166Alpha2CodeConstant = [
     "AF",
     "AX",
     "AL",

@@ -3,7 +3,7 @@
  */
 
 import type {Request, Response} from "express";
-import QueryUtils from "@/shared/services/query-utils/QueryUtils";
+import {QueryUtils} from "@/shared/services/query-utils/QueryUtils";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
 import {
     type CurrentUserReservationQueryFilters,

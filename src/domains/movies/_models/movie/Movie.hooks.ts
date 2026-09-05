@@ -7,8 +7,8 @@ import {MovieSchema} from "@/domains/movies/_models/movie/Movie.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
 import {Showing} from "@/domains/showing/_models/showing/Showing.model.js";
 import type {MovieSchemaFields} from "@/domains/movies/_models/movie/Movie.types.js";
-import generateSlug from "@/shared/utility/generateSlug.js";
-import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {generateSlug} from "@/shared/utility/generateSlug.js";
+import {MovieCredit} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import {Movie} from "@/domains/movies/_models/movie/Movie.model.js";
 import {Genre} from "@/domains/genres/_models/genre";
 

@@ -4,7 +4,7 @@
 
 import {Types} from "mongoose";
 import type {MovieCreditSchemaFields} from "@/domains/movie-credits/_models/credit/MovieCredit.types";
-import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {MovieCredit} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import type {RoleTypeCastCategory, RoleTypeCrewCategory} from "@/domains/role-types/_validation/schema/RoleTypeCategorySchema";
 
 /** Credits grouped by their specific role type category. */

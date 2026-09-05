@@ -12,7 +12,7 @@ import {
     type ReviewDetailsByMovieReturns
 } from "@/domains/movies/_feat/fetch-reviews-by-movie";
 import {MoviePopulationPaths} from "@/domains/movies/_feat/query-population";
-import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {MovieCredit} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import {MovieCreditPopulationPaths} from "@/domains/movie-credits/_feat/query-population";
 import {
     fetchReviewDetailsForMovie

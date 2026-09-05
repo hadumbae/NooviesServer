@@ -8,8 +8,8 @@
 
 import {PersonSchema} from "@/domains/persons/_models/person/Person.schema.js";
 import type {HydratedDocument, Query} from "mongoose";
-import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
-import generateSlug from "@/shared/utility/generateSlug.js";
+import {MovieCredit} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {generateSlug} from "@/shared/utility/generateSlug.js";
 import type {PersonSchemaFields} from "@/domains/persons/_models/person/Person.types";
 
 /**

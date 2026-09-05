@@ -1,7 +1,12 @@
+/**
+ * @fileoverview Database connection utility for establishing and managing MongoDB connections using Mongoose.
+ */
+
 import mongoose from "mongoose";
 let isConnected = false;
 
-const connect = async () => {
+/** Establishes a connection to the MongoDB database using environment configuration. */
+export const connect = async () => {
     if (isConnected) {
         console.log("Already connected to MongoDB.");
     }
@@ -18,5 +23,3 @@ const connect = async () => {
         console.error("Database Connection Failed", e.message);
     }
 }
-
-export default connect;

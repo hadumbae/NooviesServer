@@ -1,6 +1,6 @@
 import "dotenv/config";
 import mongoose from "mongoose";
-import connect from "@/shared/config/database.js";
+import {connect} from "@/shared/config/database.js";
 import {User} from "@/domains/users";
 
 connect()

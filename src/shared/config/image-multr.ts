@@ -1,7 +1,7 @@
 import multer, {type FileFilterCallback} from "multer";
 import {type Request} from "express";
 import createHttpError from "http-errors";
-import ImageTypeConstant from "../constants/ImageTypeConstant.js";
+import {ImageTypeConstant} from "../constants/ImageTypeConstant.js";
 
 /**
  * A Set of allowed MIME types for uploaded image files.

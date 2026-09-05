@@ -1,5 +1,5 @@
 import type {IANATimezone} from "../../schema/date-time/IANATimezoneSchema.js";
-import type ICoordinate from "../coordinate/ICoordinate.js";
+import type {CoordinateSchemaFields} from "@/shared/model/coordinate/Coordinate.types";
 import type {ISO3166Alpha2CountryCode} from "../../schema/enums/ISO3166Alpha2CountryCodeSchema.js";
 
 /**
@@ -39,5 +39,5 @@ export interface LocationSchemaFields {
     /**
      * Optional GeoJSON Point for precise geolocation.
      */
-    coordinates?: ICoordinate;
+    coordinates?: CoordinateSchemaFields;
 }

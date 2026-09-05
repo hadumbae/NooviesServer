@@ -4,7 +4,7 @@
  */
 
 import {z} from "zod";
-import ImageTypeConstant from "@/shared/constants/ImageTypeConstant";
+import {ImageTypeConstant} from "@/shared/constants/ImageTypeConstant";
 import isMulterFile from "@/shared/utility/schema/file-upload/isMulterFile";
 
 /**

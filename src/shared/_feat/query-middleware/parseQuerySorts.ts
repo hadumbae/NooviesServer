@@ -4,7 +4,7 @@
 
 import {type ZodType, type ZodTypeDef} from "zod";
 import type {NextFunction, Request, RequestHandler, Response} from "express";
-import InvalidRequestQueryError from "@/shared/errors/InvalidRequestQueryError";
+import {InvalidRequestQueryError} from "@/shared/errors/InvalidRequestQueryError";
 
 type ParseConfig<TOutput extends Record<string, 1 | -1>> = {
     schema: ZodType<TOutput, ZodTypeDef, unknown>;

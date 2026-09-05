@@ -4,10 +4,10 @@
  */
 
 import "dotenv/config";
-import connect from "@/shared/config/database.js";
+import {connect} from "@/shared/config/database.js";
 import mongoose from "mongoose";
 import {MovieReview} from "@/domains/movie-reviews/_models/review/MovieReview.model";
-import generateSlug from "@/shared/utility/generateSlug";
+import {generateSlug} from "@/shared/utility/generateSlug";
 import {generateMovieReviewUniqueCode} from "@/domains/movie-reviews/_feat/handle-query/generateMovieReviewUniqueCode";
 
 /**

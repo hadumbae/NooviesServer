@@ -7,7 +7,7 @@ import type {
     BrowsePersonsQueryMatchStage,
     BrowsePersonsQuerySortStage
 } from "@/domains/persons/_feat/client-view-data/browse-persons";
-import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {MovieCredit} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import type {PaginationReturns} from "@/shared/_types/pagination/PaginationReturns";
 import {Types} from "mongoose";
 

@@ -15,9 +15,9 @@
 import 'dotenv/config';
 
 import mongoose from "mongoose";
-import connect from "@/shared/config/database.js";
-import generateSlug from "../shared/utility/generateSlug.js";
-import MovieCredit from "@/domains/movie-credits/_models/credit/MovieCredit.model";
+import {connect} from "@/shared/config/database.js";
+import {generateSlug} from "@/shared/utility/generateSlug.js";
+import {MovieCredit} from "@/domains/movie-credits/_models/credit/MovieCredit.model";
 import {Person} from "@/domains/persons/_models/person";
 
 /**

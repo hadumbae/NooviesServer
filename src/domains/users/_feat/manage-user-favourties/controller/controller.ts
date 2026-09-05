@@ -6,7 +6,7 @@
 import type {Request, Response} from 'express';
 import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser.js";
-import QueryUtils from "@/shared/services/query-utils/QueryUtils.js";
+import {QueryUtils} from "@/shared/services/query-utils/QueryUtils.js";
 import * as UserFavouriteService from "@/domains/users/_feat/manage-user-favourties/service/service";
 import type {UserFavouriteMovieInput} from "@/domains/users/validation/submit/UserFavouriteMovieInputSchema";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId.js";

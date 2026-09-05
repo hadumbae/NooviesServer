@@ -4,7 +4,7 @@
 
 import {ReservationBaseQueryFilterSchema} from "@/domains/reservations/_feat/validate-query-options";
 import {z} from "zod";
-import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {filterNullishAttributes} from "@/shared/utility/filterNullishAttributes";
 
 /** Zod schema for filtering reservations associated with the current user. */
 export const CurrentUserReservationQueryFilterSchema = ReservationBaseQueryFilterSchema

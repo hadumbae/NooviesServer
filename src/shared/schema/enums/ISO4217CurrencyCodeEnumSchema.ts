@@ -9,7 +9,9 @@
  */
 
 import { z } from "zod";
-import ISO4217CurrencyCodesConstant from "../../constants/currency/ISO4217CurrencyCodesConstant.js";
+import {
+    ISO4217CurrencyCodesConstant
+} from "../../constants/currency/ISO4217CurrencyCodesConstant.js";
 
 /**
  * ISO 4217 currency code validation schema.

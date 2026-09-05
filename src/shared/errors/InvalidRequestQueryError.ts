@@ -1,22 +1,15 @@
 /**
- * @file Error for invalid query option parameters.
- * InvalidQueryOptionError.ts
+ * @fileoverview Custom error class representing validation failures in query options.
  */
 
 import type {ZodIssue} from "zod";
 
-/**
- * Constructor parameters for InvalidQueryOptionError.
- */
 type ErrorConstructor = {
     message?: string;
     modelName?: string;
     errors: ZodIssue[];
 }
 
-/**
- * JSON representation returned by InvalidQueryOptionError.
- */
 type JSONReturns = {
     errorType: "ERR_INVALID_QUERY_OPTIONS"
     message?: string;
@@ -25,9 +18,9 @@ type JSONReturns = {
 }
 
 /**
- * Error representing invalid query option parameters.
+ * Custom error thrown when query option parameters fail runtime schema validation.
  */
-export default class InvalidRequestQueryError extends Error {
+export class InvalidRequestQueryError extends Error {
     public readonly errorType = "ERR_INVALID_QUERY_OPTIONS" as const;
     public readonly modelName?: string;
     public readonly errors: ZodIssue[];
@@ -42,16 +35,10 @@ export default class InvalidRequestQueryError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 
-    /**
-     * Returns a formatted error summary.
-     */
     toString(): string {
         return `[INVALID] Invalid Query Options (Error Count : ${this.errors.length})`;
     }
 
-    /**
-     * Serializes the error for HTTP responses.
-     */
     toJSON(): JSONReturns {
         return {
             errorType: this.errorType,

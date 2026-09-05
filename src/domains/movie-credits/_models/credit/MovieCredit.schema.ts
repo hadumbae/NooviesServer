@@ -9,7 +9,7 @@ import type {MovieCreditSchemaFields} from "@/domains/movie-credits/_models/cred
 import {
     RoleTypeDepartmentConstant
 } from "@/domains/role-types/_validation/constants/RoleTypeDepartmentConstant";
-import SlugSchemaTypeOptions from "@/shared/model/SlugSchemaTypeOptions.js";
+import {SlugSchemaTypeOptions} from "@/shared/model/SlugSchemaTypeOptions.js";
 
 /**
  * Shared schema definition for CAST-only boolean fields.

@@ -1,4 +1,9 @@
-export default [
+/**
+ * @fileoverview Constant array containing ISO 639-1 two-letter language codes.
+ */
+
+/** List of supported ISO 639-1 language codes. */
+export const ISO6391CodeConstant = [
     'ab',
     'aa',
     'af',

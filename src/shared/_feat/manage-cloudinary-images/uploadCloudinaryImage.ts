@@ -6,7 +6,7 @@ import {
     type CloudinaryImageObject,
     CloudinaryImageObjectSchema
 } from "@/shared/schema/cloudinary/CloudinaryImageObjectSchema";
-import cloudinary from "@/shared/config/cloudinary";
+import {Cloudinary} from "@/shared/config/cloudinary";
 import {RequestValidationError} from "@/shared/errors/RequestValidationError";
 import type {MulterImageFile} from "@/shared/_feat/manage-multer-images";
 
@@ -27,7 +27,7 @@ export async function uploadCloudinaryImage(
 
     const uploadFile = `data:image/png;base64,${imageBase64}`;
     const uploadOptions = {folder: 'propertypulse'};
-    const response = await cloudinary.uploader.upload(uploadFile, uploadOptions);
+    const response = await Cloudinary.uploader.upload(uploadFile, uploadOptions);
 
     const {error, success, data} = CloudinaryImageObjectSchema.safeParse(response);
 

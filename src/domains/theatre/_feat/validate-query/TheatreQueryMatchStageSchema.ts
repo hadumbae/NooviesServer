@@ -4,7 +4,7 @@
 
 import {z} from "zod";
 import {TheatreQueryMatchFilterSchema} from "@/domains/theatre/_feat/validate-query/TheatreQueryMatchFilterSchema";
-import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {filterNullishAttributes} from "@/shared/utility/filterNullishAttributes";
 
 /** Zod schema that transforms theatre query match values into a Mongoose match pipeline stage. */
 export const TheatreQueryMatchStageSchema = TheatreQueryMatchFilterSchema.transform(values => ({

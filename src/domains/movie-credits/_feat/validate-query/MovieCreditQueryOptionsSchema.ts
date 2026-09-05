@@ -6,7 +6,7 @@
 
 import {z} from "zod";
 import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {filterNullishAttributes} from "@/shared/utility/filterNullishAttributes";
 import {MovieCreditQueryMatchFiltersSchema} from "@/domains/movie-credits/_feat/validate-query/filters";
 import {MovieCreditQueryMatchSortsSchema} from "@/domains/movie-credits/_feat/validate-query/sorting";
 

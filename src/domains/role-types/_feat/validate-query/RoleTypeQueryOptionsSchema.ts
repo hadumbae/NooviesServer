@@ -7,7 +7,7 @@ import {z} from "zod";
 import {RoleTypeQueryMatchFiltersSchema} from "@/domains/role-types/_feat/validate-query/RoleTypeQueryMatchFiltersSchema";
 import {RoleTypeQueryMatchSortsSchema} from "@/domains/role-types/_feat/validate-query/RoleTypeQueryMatchSortsSchema";
 import type {AggregateQueryOptions} from "@/shared/_feat/generic-aggregate";
-import filterNullishAttributes from "@/shared/utility/filterNullishAttributes";
+import {filterNullishAttributes} from "@/shared/utility/filterNullishAttributes";
 
 /**
  * Composite Zod schema for RoleType query options with an aggregation transformation.

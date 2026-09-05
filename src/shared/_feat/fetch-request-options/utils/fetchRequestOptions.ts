@@ -5,7 +5,7 @@
 
 import type {Request} from "express";
 import {type RequestOptions, RequestOptionsSchema} from "@/shared/_feat/fetch-request-options/schemas";
-import InvalidRequestQueryError from "@/shared/errors/InvalidRequestQueryError";
+import {InvalidRequestQueryError} from "@/shared/errors/InvalidRequestQueryError";
 
 /**
  * Parses and validates incoming request query parameters into a structured configuration object.
