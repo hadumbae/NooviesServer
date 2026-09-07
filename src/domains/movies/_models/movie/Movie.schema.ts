@@ -127,6 +127,12 @@ export const MovieSchema: Schema<MovieSchemaFields> = new Schema<MovieSchemaFiel
         default: null,
     },
 
+    /** Banner image asset (Cloudinary). */
+    bannerImage: {
+        type: CloudinaryImageSchema,
+        default: null,
+    },
+
     /** Trailer URL. */
     trailerURL: {
         type: String,

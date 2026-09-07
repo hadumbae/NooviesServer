@@ -26,6 +26,7 @@ export type MovieSchemaFields = {
     languages: ISO6391LanguageCode[];
     subtitles: ISO6391LanguageCode[];
     posterImage?: CloudinaryImageObject | null;
+    bannerImage?: CloudinaryImageObject | null;
     trailerURL?: URLString | null;
     genres: (Types.ObjectId | GenreSchemaFields)[];
     isAvailable?: boolean;

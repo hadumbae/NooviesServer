@@ -1,6 +1,6 @@
 import {Schema} from "mongoose";
 import type {LocationSchemaFields} from "./LocationSchemaFields.js";
-import {CoordinateSchema} from "src/shared/model/coordinate/Coordinate.schema";
+import {CoordinateSchema} from "@/shared/model/coordinate/Coordinate.schema";
 import {IANAZone} from "luxon";
 import {
     ISO3166Alpha2CodeConstant

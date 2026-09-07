@@ -9,7 +9,7 @@ import {FetchAdminReservationRoutes} from "@/domains/reservations/_feat/fetch-cu
 import {PersonCreditRoutes} from "@/domains/movie-credits/_feat/person-credits";
 import {UIInputDataRoutes} from "@/domains/ui-inputs";
 import {GenreImageManagementRoutes} from "@/domains/genres/_feat/manage-image";
-import {MovieImageManagementRoutes} from "@/domains/movies/_feat/manage-image/routes/routes";
+import {MovieImageManagementRoutes} from "@/domains/movies/_feat/manage-image/routes";
 import {ReservationUpdateRoutes} from "@/domains/reservations/_feat/update-reservations";
 import {CustomerMovieReviewActions} from "@/domains/movie-reviews/_feat/customer-review-actions";
 import {ManageUserRolesRoutes} from "@/domains/users/_feat/manage-user-roles";
