@@ -5,7 +5,7 @@
 import type {Request, Response} from "express";
 import type {UserRegisterInput} from "@/domains/authentication/_feat/register-user/UserRegisterInputSchema";
 import createHttpError from "http-errors";
-import {registerUser} from "@/domains/authentication/_feat/register-user/regiserUser";
+import {registerUser} from "src/domains/authentication/_feat/register-user/registerUser";
 
 /** Registers a new user account and returns a success message. */
 export async function postRegisterUser(req: Request, res: Response): Promise<Response> {
