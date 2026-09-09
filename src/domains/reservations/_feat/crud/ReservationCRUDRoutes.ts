@@ -4,6 +4,7 @@ import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {destroy, findById, findBySlug} from "@/shared/_feat/generic-crud/path-handlers";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import type {Router} from "express";
 import {ReservationPopulatePaths} from "@/domains/reservations/_feat/query-population";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -29,7 +30,7 @@ const routes: CRUDRoute<ReservationSchemaFields>[] = [
     {
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

@@ -7,6 +7,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {
     create,
@@ -55,7 +56,7 @@ const routes: CRUDRoute<ShowingSchemaFields>[] = [
         /** Creation of a new showtime entry. */
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchema(ShowingInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(ShowingInputSchema)],
         handler: create
     },
     {
@@ -76,14 +77,14 @@ const routes: CRUDRoute<ShowingSchemaFields>[] = [
         /** Update of showtime details (e.g., status changes, price updates, or time shifts). */
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchema(ShowingInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(ShowingInputSchema)],
         handler: update
     },
     {
         /** Cancellation/Removal of a scheduled showing. */
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

@@ -3,7 +3,7 @@
  */
 
 import {Router} from "express";
-import {isAuth} from "@/domains/authentication/_middleware";
+import {isAdmin, isAuth} from "@/domains/authentication/_middleware";
 import {parseRouteParams} from "@/shared/_feat/middleware";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
@@ -55,13 +55,13 @@ router.get(
 
 router.post(
     "/status/admin/:userId/grant",
-    [isAuth, parseRouteParams({schema: ManageUserRouteConfigSchema})],
+    [isAuth, isAdmin, parseRouteParams({schema: ManageUserRouteConfigSchema})],
     asyncHandler(postGrantAdminStatus),
 );
 
 router.post(
     "/status/admin/:userId/revoke",
-    [isAuth, parseRouteParams({schema: ManageUserRouteConfigSchema})],
+    [isAuth, isAdmin, parseRouteParams({schema: ManageUserRouteConfigSchema})],
     asyncHandler(postRevokeAdminStatus),
 );
 

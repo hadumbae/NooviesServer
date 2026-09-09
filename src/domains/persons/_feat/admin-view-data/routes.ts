@@ -5,6 +5,7 @@
 
 import {Router} from "express";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {PersonDetailsViewRouteConfigSchema} from "@/domains/persons/_feat/admin-view-data/routeSchemas";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -17,7 +18,7 @@ const router = Router();
 
 router.get(
     '/item/:slug/person-details',
-    [isAuth, validateRequestConfig({schema: PersonDetailsViewRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: PersonDetailsViewRouteConfigSchema})],
     asyncHandler(getFetchPersonDetailsViewData),
 );
 

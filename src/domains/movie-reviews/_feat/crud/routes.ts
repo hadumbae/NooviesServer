@@ -5,6 +5,7 @@
 import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {destroy, find, findById, findBySlug, paginated} from "@/shared/_feat/generic-crud/path-handlers";
 import {MovieReview, type MovieReviewSchemaFields} from "@/domains/movie-reviews/_models";
@@ -45,7 +46,7 @@ const routes: CRUDRoute<MovieReviewSchemaFields>[] = [
     {
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

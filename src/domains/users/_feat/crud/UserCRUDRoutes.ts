@@ -5,6 +5,7 @@
 import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {destroy, find, findById, paginated} from "@/shared/_feat/generic-crud/path-handlers";
 import {User, type UserSchemaFields} from "@/domains/users/model/user";
 import {UserQueryMatchStageSchema, UserQuerySortStageSchema} from "@/domains/users/_feat/validate-query";
@@ -38,7 +39,7 @@ const routes: CRUDRoute<UserSchemaFields>[] = [
     {
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

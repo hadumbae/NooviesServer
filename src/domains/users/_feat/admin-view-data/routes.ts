@@ -3,7 +3,7 @@
  */
 
 import {Router} from "express";
-import {isAuth} from "@/domains/authentication";
+import {isAdmin, isAuth} from "@/domains/authentication";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {UserDetailsViewRouteConfigSchema} from "@/domains/users/_feat/admin-view-data/user-details-view";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -13,7 +13,7 @@ const router = Router();
 
 router.get(
     "/details/:userID",
-    [isAuth, validateRequestConfig({schema: UserDetailsViewRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: UserDetailsViewRouteConfigSchema})],
     asyncHandler(getFetchUserDetailsViewData),
 );
 

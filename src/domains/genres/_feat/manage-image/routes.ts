@@ -7,6 +7,7 @@ import {patchRemoveGenreImage, patchUpdateGenreImage} from "@/domains/genres/_fe
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {ManageGenreImageRouteConfigSchema} from "@/domains/genres/_feat/manage-image/schema/ManageGenreImageRouteConfig";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {uploadImage} from "@/shared/config/image-multr";
 import {hasGenreImage} from "@/domains/genres/_feat/manage-image/middleware/hasGenreImage";
@@ -17,6 +18,7 @@ router.patch(
     "/item/:_id/image/update",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: ManageGenreImageRouteConfigSchema}),
         uploadImage.single("image"),
         hasGenreImage,
@@ -28,6 +30,7 @@ router.patch(
     "/item/:_id/image/remove",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: ManageGenreImageRouteConfigSchema}),
     ],
     asyncHandler(patchRemoveGenreImage),

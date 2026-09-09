@@ -4,6 +4,7 @@
 
 import {Router} from "express"
 import {isAuth} from "@/domains/authentication/_middleware/isAuth"
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin"
 import asyncHandler from "@/shared/utility/handlers/asyncHandler"
 import {
     getFetchCustomerProfileViewData, getFetchCustomerReservationsViewData, getFetchCustomerReservationViewData,
@@ -22,37 +23,37 @@ const router = Router()
 
 router.get(
     "/customer/:userId",
-    [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
     asyncHandler(getFetchCustomerProfileViewData)
 );
 
 router.get(
     "/customer/:userId/reviews",
-    [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewsViewData)
 );
 
 router.get(
     "/customer/:userId/review/:reviewId",
-    [isAuth, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewViewData)
 );
 
 router.get(
     "/customer/:userId/review/:reviewId/logs",
-    [isAuth, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: ManageCustomerReviewRouteConfigSchema})],
     asyncHandler(getFetchCustomerReviewLogsViewData)
 );
 
 router.get(
     "/customer/:userId/reservations",
-    [isAuth, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: ManageCustomerRouteConfigSchema})],
     asyncHandler(getFetchCustomerReservationsViewData)
 );
 
 router.get(
     "/customer/:userId/reservations/:reservationId",
-    [isAuth, validateRequestConfig({schema: ManageCustomerReservationRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: ManageCustomerReservationRouteConfigSchema})],
     asyncHandler(getFetchCustomerReservationViewData)
 );
 

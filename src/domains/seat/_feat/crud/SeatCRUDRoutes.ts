@@ -5,6 +5,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {buildAuthCRUDQueryStageMiddleware, buildUnsetFields} from "@/shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
@@ -41,7 +42,7 @@ const routes: CRUDRoute<SeatSchemaFields>[] = [
         /** Creation of a new Screen instance. */
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchema(SeatInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(SeatInputSchema)],
         handler: create
     },
     {
@@ -64,6 +65,7 @@ const routes: CRUDRoute<SeatSchemaFields>[] = [
         method: "patch",
         middleware: [
             isAuth,
+            isAdmin,
             validateZodSchema(SeatInputSchema),
             buildUnsetFields({
                 model: Seat,
@@ -76,7 +78,7 @@ const routes: CRUDRoute<SeatSchemaFields>[] = [
         /** Permanent deletion of a Screen record. */
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

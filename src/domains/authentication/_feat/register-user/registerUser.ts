@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import {User, type UserSchemaFields} from "@/domains/users/model/user";
 import {checkIfEmailExists} from "@/domains/authentication/_feat/register-user/checkIfEmailExists";
 import type {UserRegisterInput} from "@/domains/authentication/_feat/register-user/UserRegisterInputSchema";
+import {generateUserUniqueCode} from "@/domains/users";
 
 /** Configuration object containing the user registration data. */
 type RegisterConfig = {
@@ -21,9 +22,15 @@ export async function registerUser(
     await checkIfEmailExists(email);
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    const uniqueCode = generateUserUniqueCode();
+
     return User.create({
         name,
         email,
         password: hashedPassword,
+        uniqueCode,
+        status: "ACTIVE",
+        roles: ["USER"],
+        favourites: []
     });
 }

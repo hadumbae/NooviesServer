@@ -7,6 +7,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
@@ -44,7 +45,7 @@ const routes: CRUDRoute<MovieSchemaFields>[] = [
         /** Creation of a new Movie record. */
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchema(MovieInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(MovieInputSchema)],
         handler: create
     },
     {
@@ -65,14 +66,14 @@ const routes: CRUDRoute<MovieSchemaFields>[] = [
         /** Partial update of an existing Movie's metadata (e.g. availability, title, genres). */
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchema(MovieInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(MovieInputSchema)],
         handler: update
     },
     {
         /** Permanent deletion of a Movie record. */
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

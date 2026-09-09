@@ -1,5 +1,6 @@
 import {Router} from "express";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {ShowingDetailsViewRouteConfigSchema} from "@/domains/showing/_feat/admin-view-data";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -9,7 +10,7 @@ const router = Router();
 
 router.get(
     "/item/:slug/details",
-    [isAuth, validateRequestConfig({schema: ShowingDetailsViewRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: ShowingDetailsViewRouteConfigSchema})],
     asyncHandler(getFetchShowingDetailsViewData),
 );
 

@@ -8,6 +8,7 @@ import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import type {GenreSchemaFields} from "@/domains/genres/_models/genre/Genre.types";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -42,7 +43,7 @@ const routes: CRUDRoute<GenreSchemaFields>[] = [
     {
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchema(GenreInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(GenreInputSchema)],
         handler: genreCreate
     },
     {
@@ -60,13 +61,13 @@ const routes: CRUDRoute<GenreSchemaFields>[] = [
     {
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchema(GenreInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(GenreInputSchema)],
         handler: genreUpdate
     },
     {
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

@@ -4,6 +4,7 @@
 
 import {Router} from "express";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import {ReservationNotesInputSchema} from "@/domains/reservations/_feat/update-reservations/schemas";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -22,6 +23,7 @@ routes.patch(
     "/update/:_id/notes",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: IDRouteConfigSchema}),
         validateZodSchema(ReservationNotesInputSchema),
     ],
@@ -32,6 +34,7 @@ routes.patch(
     "/update/:_id/expiry",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: IDRouteConfigSchema}),
     ],
     asyncHandler(patchResetReservationExpiry),
@@ -41,6 +44,7 @@ routes.patch(
     "/update/:_id/cancel",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: IDRouteConfigSchema}),
         validateZodSchema(ReservationNotesInputSchema),
     ],
@@ -51,6 +55,7 @@ routes.patch(
     "/update/:_id/refund",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: IDRouteConfigSchema}),
         validateZodSchema(ReservationNotesInputSchema),
     ],

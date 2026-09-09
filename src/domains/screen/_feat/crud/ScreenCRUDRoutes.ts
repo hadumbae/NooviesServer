@@ -6,6 +6,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {aggregate} from "@/shared/_feat/generic-aggregate";
@@ -54,7 +55,7 @@ const routes: CRUDRoute<ScreenSchemaFields>[] = [
         /** Creation of a new Screen instance. */
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchemaAsync(ScreenInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchemaAsync(ScreenInputSchema)],
         handler: create
     },
     {
@@ -75,14 +76,14 @@ const routes: CRUDRoute<ScreenSchemaFields>[] = [
         /** Partial update of an existing Screen record. */
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchemaAsync(ScreenInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchemaAsync(ScreenInputSchema)],
         handler: update
     },
     {
         /** Permanent deletion of a Screen record. */
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

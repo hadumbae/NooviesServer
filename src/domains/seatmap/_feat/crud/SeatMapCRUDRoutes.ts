@@ -7,6 +7,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {parseQueryOptions} from "@/shared/_feat/middleware";
 import {create, destroy, find, findById, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
@@ -58,7 +59,7 @@ const routes: CRUDRoute<SeatMapSchemaFields>[] = [
         /** Manual creation of a seat map entry (typically handled by automated scheduling logic). */
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchema(SeatMapInputSchema), hasReferences],
+        middleware: [isAuth, isAdmin, validateZodSchema(SeatMapInputSchema), hasReferences],
         handler: create
     },
     {
@@ -72,14 +73,14 @@ const routes: CRUDRoute<SeatMapSchemaFields>[] = [
         /** Update of a seat's availability, status, or pricing for a specific showing. */
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchema(SeatMapInputSchema), hasReferences],
+        middleware: [isAuth, isAdmin, validateZodSchema(SeatMapInputSchema), hasReferences],
         handler: update
     },
     {
         /** Permanent removal of a seat mapping entry. */
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

@@ -4,6 +4,7 @@
 
 import {Router} from "express";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import {
     TheatreScreenDetailsViewRouteConfigSchema
@@ -25,19 +26,19 @@ const router = Router();
 
 router.get(
     '/item/:theatreSlug/screen/:screenSlug/details',
-    [isAuth, validateRequestConfig({schema: TheatreScreenDetailsViewRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: TheatreScreenDetailsViewRouteConfigSchema})],
     asyncHandler(getFetchTheatreScreenDetailsViewData)
 );
 
 router.get(
     '/item/:slug/details',
-    [isAuth, validateRequestConfig({schema: TheatreDetailsViewRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: TheatreDetailsViewRouteConfigSchema})],
     asyncHandler(getFetchTheatreDetailsViewData)
 );
 
 router.get(
     '/item/:slug/showings/list',
-    [isAuth, validateRequestConfig({schema: TheatreShowingListRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: TheatreShowingListRouteConfigSchema})],
     asyncHandler(getFetchTheatreShowingListViewData)
 );
 

@@ -4,6 +4,7 @@
 
 import {Router} from "express";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import * as GenreAdminViewDataController from "./controller";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
@@ -19,7 +20,7 @@ const router = Router();
  */
 router.get(
     "/item/:slug/details",
-    [isAuth, validateRequestConfig({schema: GenreDetailsViewRouteConfigSchema})],
+    [isAuth, isAdmin, validateRequestConfig({schema: GenreDetailsViewRouteConfigSchema})],
     asyncHandler(GenreAdminViewDataController.getFetchGenreDetailsViewData),
 );
 

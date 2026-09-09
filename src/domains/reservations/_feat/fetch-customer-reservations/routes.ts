@@ -5,6 +5,7 @@
 
 import {Router} from "express";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {getFetchByUniqueCode} from "@/domains/reservations/_feat/fetch-customer-reservations/controller";
 
@@ -18,7 +19,7 @@ const routes = Router();
  */
 routes.get(
     "/fetch-by-code/:code",
-    [isAuth],
+    [isAuth, isAdmin],
     asyncHandler(getFetchByUniqueCode)
 );
 

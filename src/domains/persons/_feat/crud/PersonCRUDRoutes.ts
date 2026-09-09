@@ -7,6 +7,7 @@
 import {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {buildAuthCRUDQueryStageMiddleware} from "@/shared/_feat/middleware";
 import {create, destroy, find, findById, findBySlug, paginated, update} from "@/shared/_feat/generic-crud/path-handlers";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
@@ -42,7 +43,7 @@ const routes: CRUDRoute<PersonSchemaFields>[] = [
         /** Creation of a new Person record. */
         path: `/item`,
         method: "post",
-        middleware: [isAuth, validateZodSchema(PersonInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(PersonInputSchema)],
         handler: create
     },
     {
@@ -63,14 +64,14 @@ const routes: CRUDRoute<PersonSchemaFields>[] = [
         /** Partial update of an existing Person record. */
         path: `/item/:_id`,
         method: "patch",
-        middleware: [isAuth, validateZodSchema(PersonInputSchema)],
+        middleware: [isAuth, isAdmin, validateZodSchema(PersonInputSchema)],
         handler: update
     },
     {
         /** Permanent deletion of a Person record. */
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

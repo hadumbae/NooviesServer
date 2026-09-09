@@ -5,6 +5,7 @@
 import type {Router} from "express";
 import {buildCRUDRoutes, type CRUDRoute} from "@/shared/_feat/generic-crud/routes";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import {destroy, find, paginated} from "@/shared/_feat/generic-crud/path-handlers";
 import {
     UserModerationLogQueryMatchStageSchema,
@@ -35,7 +36,7 @@ const routes: CRUDRoute<UserModerationLogSchemaFields>[] = [
     {
         path: `/item/:_id`,
         method: "delete",
-        middleware: [isAuth],
+        middleware: [isAuth, isAdmin],
         handler: destroy
     },
 ];

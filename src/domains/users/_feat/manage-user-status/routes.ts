@@ -3,7 +3,7 @@
  */
 
 import {Router} from "express";
-import {isAuth} from "@/domains/authentication";
+import {isAdmin, isAuth} from "@/domains/authentication";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
@@ -17,6 +17,7 @@ router.patch(
     "/user/:userId/status/update",
     [
         isAuth,
+        isAdmin,
         validateZodSchema(UserStatusUpdateInputSchema),
         validateRequestConfig({schema: ManageUserStatusRouteConfigSchema}),
     ],

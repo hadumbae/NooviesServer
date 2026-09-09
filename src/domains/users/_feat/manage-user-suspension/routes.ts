@@ -4,7 +4,7 @@
 
 import {Router} from "express";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
-import {isAuth} from "@/domains/authentication/_middleware";
+import {isAdmin, isAuth} from "@/domains/authentication/_middleware";
 import {ManageUserRouteConfigSchema} from "@/domains/authentication/_feat/manage-users";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
 import {validateRequestConfig} from "@/shared/utility/schema/validators/validateRequestConfig";
@@ -19,6 +19,7 @@ router.patch(
     "/user/:userId/suspension/update",
     [
         isAuth,
+        isAdmin,
         validateZodSchema(UserSuspensionUpdateInputSchema),
         validateRequestConfig({schema: ManageUserRouteConfigSchema}),
     ],

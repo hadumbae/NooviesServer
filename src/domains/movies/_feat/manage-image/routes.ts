@@ -5,6 +5,7 @@
 import {Router} from "express";
 import {uploadImage} from "@/shared/config/image-multr";
 import {isAuth} from "@/domains/authentication/_middleware/isAuth";
+import {isAdmin} from "@/domains/authentication/_middleware/isAdmin";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {
     patchRemoveMovieBannerImage,
@@ -20,6 +21,7 @@ router.patch(
     "/item/:_id/poster-image/update",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: ManageMovieImageRouteConfigSchema}),
         uploadImage.single("image"),
         hasMovieImage,
@@ -31,6 +33,7 @@ router.patch(
     "/item/:_id/banner-image/update",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: ManageMovieImageRouteConfigSchema}),
         uploadImage.single("image"),
         hasMovieImage,
@@ -42,6 +45,7 @@ router.patch(
     "/item/:_id/poster-image/remove",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: ManageMovieImageRouteConfigSchema}),
     ],
     asyncHandler(patchRemoveMoviePosterImage),
@@ -51,6 +55,7 @@ router.patch(
     "/item/:_id/banner-image/remove",
     [
         isAuth,
+        isAdmin,
         validateRequestConfig({schema: ManageMovieImageRouteConfigSchema}),
     ],
     asyncHandler(patchRemoveMovieBannerImage),
