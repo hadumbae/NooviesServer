@@ -3,8 +3,8 @@
  */
 
 import {Types} from "mongoose";
-import {User, type UserSchemaFields} from "@/domains/users/model/user";
 import createHttpError from "http-errors";
+import {User, type UserSchemaFields} from "@/domains/users/model/user";
 
 /** Toggles the ADMIN role on a user document and persists the change. */
 export async function toggleAdminStatus(userID: Types.ObjectId): Promise<UserSchemaFields> {

@@ -3,23 +3,24 @@
  */
 
 import {Router} from "express";
-import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
-import asyncHandler from "@/shared/utility/handlers/asyncHandler";
-import validateZodSchemaAsync from "@/shared/utility/schema/validators/validateZodSchemaAsync";
-import {isAuth} from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/_middleware";
 import {parseRouteParams} from "@/shared/_feat/middleware";
+import asyncHandler from "@/shared/utility/handlers/asyncHandler";
+import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
+import validateZodSchemaAsync from "@/shared/utility/schema/validators/validateZodSchemaAsync";
 import {ManageUserRouteConfigSchema} from "@/domains/authentication/_feat/manage-users/routeSchema";
-import {UserRegisterInputSchema} from "@/domains/authentication/_feat/register-user";
-import {UserLoginInputSchema} from "@/domains/authentication/_feat/login-user";
-import {UserPasswordUpdateInputSchema} from "@/domains/authentication/_feat/change-user-password";
+import {postRegisterUser, UserRegisterInputSchema} from "@/domains/authentication/_feat/register-user";
+import {postLoginUser, UserLoginInputSchema} from "@/domains/authentication/_feat/login-user";
+import {
+    postChangeUserPassword,
+    UserPasswordUpdateInputSchema
+} from "@/domains/authentication/_feat/change-user-password";
+import {postLogoutUser} from "@/domains/authentication/_feat/logout-user";
 import {
     getVerifyAdminStatus,
     postGrantAdminStatus,
-    postLoginUser,
-    postLogoutUser,
-    postRegisterUser,
     postRevokeAdminStatus
-} from "@/domains/authentication/_feat/manage-users/controller";
+} from "@/domains/authentication/_feat/toggle-admin-status";
 
 const router = Router();
 
@@ -43,7 +44,7 @@ router.post(
 router.post(
     "/password/:userID/update",
     [isAuth, parseRouteParams({schema: ManageUserRouteConfigSchema}), validateZodSchema(UserPasswordUpdateInputSchema)],
-    asyncHandler(postLogoutUser),
+    asyncHandler(postChangeUserPassword),
 );
 
 router.get(

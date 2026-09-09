@@ -2,10 +2,10 @@
  * @fileoverview Handles the logic for registering a new user in the system.
  */
 
-import type {UserRegisterInput} from "@/domains/authentication/_feat/register-user/UserRegisterInputSchema";
-import {User, type UserSchemaFields} from "@/domains/users/model/user";
 import bcrypt from "bcryptjs";
-import {checkIfEmailExists} from "@/domains/authentication/_feat";
+import {User, type UserSchemaFields} from "@/domains/users/model/user";
+import {checkIfEmailExists} from "@/domains/authentication/_feat/register-user/checkIfEmailExists";
+import type {UserRegisterInput} from "@/domains/authentication/_feat/register-user/UserRegisterInputSchema";
 
 /** Configuration object containing the user registration data. */
 type RegisterConfig = {

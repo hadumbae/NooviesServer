@@ -4,7 +4,7 @@
 
 import {Router} from "express";
 import {uploadImage} from "@/shared/config/image-multr";
-import {isAuth} from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/_middleware/isAuth";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import {
     patchRemoveMovieBannerImage,

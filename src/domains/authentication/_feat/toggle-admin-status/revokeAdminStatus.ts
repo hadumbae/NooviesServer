@@ -3,8 +3,8 @@
  */
 
 import {Types} from "mongoose";
-import {User, type UserSchemaFields} from "@/domains/users/model/user";
 import createHttpError from "http-errors";
+import {User, type UserSchemaFields} from "@/domains/users/model/user";
 
 /** Removes the ADMIN role from a user identified by their ID. */
 export async function revokeAdminStatus(userID: Types.ObjectId): Promise<UserSchemaFields> {

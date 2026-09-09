@@ -3,9 +3,9 @@
  */
 
 import {z} from "zod";
-import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema.js";
-import {PasswordStringSchema} from "@/shared/schema/strings/PasswordStringSchema";
 import {EmailSchema} from "@/shared/schema/strings/EmailSchema";
+import {PasswordStringSchema} from "@/shared/schema/strings/PasswordStringSchema";
+import {NonEmptyStringSchema} from "@/shared/schema/strings/NonEmptyStringSchema";
 
 /** Zod schema for validating user registration requests, including password confirmation matching. */
 export const UserRegisterInputSchema = z.object({

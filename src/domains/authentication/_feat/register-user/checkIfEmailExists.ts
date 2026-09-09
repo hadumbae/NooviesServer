@@ -2,8 +2,8 @@
  * @fileoverview Utility function to verify if a user email already exists in the database.
  */
 
-import {User} from "@/domains/users/model/user";
 import {z, type ZodIssue} from "zod";
+import {User} from "@/domains/users/model/user";
 import {RequestValidationError} from "@/shared/errors/RequestValidationError";
 
 /** Checks for email uniqueness and throws a validation error if the email is taken. */

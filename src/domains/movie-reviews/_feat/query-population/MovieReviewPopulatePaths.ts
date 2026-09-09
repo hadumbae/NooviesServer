@@ -3,7 +3,7 @@
  */
 
 import type {PopulatePath} from "@/shared/_types/mongoose/PopulatePath";
-import {LeanUserQuerySelectFields} from "@/domains/users";
+import {LeanUserQuerySelectFields} from "@/domains/users/_feat/query-population/LeanUserQuerySelectFields";
 
 /** Population configuration for related MovieReview fields. */
 export const MovieReviewPopulatePaths: PopulatePath[] = [

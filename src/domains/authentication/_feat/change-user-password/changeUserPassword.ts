@@ -12,24 +12,24 @@ import type {
 
 /** Data required to update a user password. */
 export type PasswordUpdateData = {
-    authUserID: Types.ObjectId;
-    userID: Types.ObjectId;
+    authUserId?: Types.ObjectId;
+    userId: Types.ObjectId;
     data: UserPasswordUpdateInput;
 };
 
 /** Validates the session and updates the user's password with a new hash. */
 export async function updateUserPassword(params: PasswordUpdateData) {
-    const {authUserID, userID, data} = params;
+    const {authUserId, userId, data} = params;
 
     // --- UNAUTHORISED ---
 
-    if (!authUserID || !userID || authUserID !== userID) {
+    if (!authUserId || !userId || authUserId !== userId) {
         throw createHttpError(401, "Unauthorized.");
     }
 
     // --- GET USER ---
 
-    const user = await User.findById(userID);
+    const user = await User.findById(userId);
 
     if (!user) {
         throw createHttpError(404, "User Not Found.");

@@ -2,7 +2,7 @@
  * @fileoverview Factory function for creating authenticated CRUD query parsing middleware stacks.
  */
 
-import {isAuth} from "@/domains/authentication/middleware/isAuth";
+import {isAuth} from "@/domains/authentication/_middleware/isAuth";
 import type {ZodType, ZodTypeDef} from "zod";
 import type {RequestHandler} from "express";
 import {parseQueryFilters, parseQuerySorts} from "@/shared/_feat";

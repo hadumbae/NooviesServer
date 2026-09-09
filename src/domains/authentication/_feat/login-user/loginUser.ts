@@ -1,16 +1,15 @@
 /**
  * @fileoverview Handles user authentication by validating credentials and generating a JWT.
- *
  */
 
 import type {UserLoginInput} from "@/domains/authentication/_feat/login-user/UserLoginInputSchema";
-import type {UserCredentials} from "@/domains/authentication/types/UserCredentials";
 import {User} from "@/domains/users/model/user";
 import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
 import {RequestValidationError} from "@/shared/errors/RequestValidationError";
 import type {ZodIssue} from "zod";
 import jwt from "jsonwebtoken";
+import {AuthTokenPayloadSchema, type AuthUserCredentials} from "@/domains/authentication";
 
 type LoginConfig = {
     data: UserLoginInput;
@@ -22,7 +21,7 @@ type LoginConfig = {
  */
 export async function loginUser(
     {data: {email: inputEmail, password: inputPassword}}: LoginConfig
-): Promise<UserCredentials> {
+): Promise<AuthUserCredentials> {
     const user = await User.findOne({email: inputEmail});
 
     if (!user) {
@@ -31,6 +30,10 @@ export async function loginUser(
 
     const {_id, name, email, roles, password, uniqueCode, status} = user;
 
+    if (status !== "ACTIVE") {
+        throw createHttpError(401, "User is suspended/inactive!");
+    }
+
     const isValid = await bcrypt.compare(inputPassword, password);
 
     if (!isValid) {
@@ -38,15 +41,20 @@ export async function loginUser(
         throw new RequestValidationError({message: "Authentication failed.", errors: [error as ZodIssue]});
     }
 
-    const userDetails = {
+    const {data: payload, success} = AuthTokenPayloadSchema.safeParse({
         isAdmin: roles.includes("ADMIN"),
         user: {_id, roles, name, email, uniqueCode, status},
-    };
+        status,
+    });
 
-    const token: string = jwt.sign(userDetails, process.env.JWT_SECRET!, {expiresIn: "72h"});
+    if (!success) {
+        throw createHttpError(500, "Unable to generate credentials. Please try again.");
+    }
+
+    const token: string = jwt.sign(payload, process.env.JWT_SECRET!, {expiresIn: "72h"});
 
     return {
-        ...userDetails,
+        ...payload,
         token
     };
 }
