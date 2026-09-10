@@ -4,7 +4,7 @@
 
 import type {Request, Response} from "express";
 import {QueryUtils} from "@/shared/services/query-utils/QueryUtils";
-import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
+import {fetchRequestUserId} from "@/shared/utility/request/fetchRequestUserId";
 import {
     type CurrentUserReservationQueryFilters,
     type CurrentUserReservationQuerySorts,
@@ -13,7 +13,7 @@ import {
 
 /** Controller that retrieves and returns a paginated list of reservations for the currently authenticated user. */
 export async function fetchReservationsForUser(req: Request, res: Response): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const pagination = QueryUtils.fetchPaginationFromQuery(req);
 
     const filters = req.queryFilters as CurrentUserReservationQueryFilters;

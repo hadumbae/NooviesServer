@@ -22,7 +22,7 @@ export function checkAuth(req: Request, res: Response, next: NextFunction) {
     }
 
     req.authUserID = Types.ObjectId.createFromHexString(user._id.toString());
-    req.authUserAdmin = isAdmin;
+    req.authUserIsAdmin = isAdmin;
 
     next();
 }

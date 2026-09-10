@@ -4,7 +4,7 @@
 
 import type {Request, Response} from "express";
 import {MoviePopulationPaths} from "@/domains/movies/_feat/query-population";
-import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
+import {fetchRequestUserId} from "@/shared/utility/request/fetchRequestUserId";
 import {fetchRequiredMovie} from "@/domains/movies/_feat/fetch-movies";
 import {
     fetchMovieInfoCreditsViewData,
@@ -63,7 +63,7 @@ export async function getFetchMovieInfoShowingsViewData(req: Request, res: Respo
 
 /** Fetches composite data required for the movie information view. */
 export async function getFetchMovieInfoOverviewViewData(req: Request, res: Response): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {slug, reviewPage = 1, reviewPerPage = 3} = req.parsedConfig as MovieInfoOverviewViewRouteConfig;
 
     const data = await fetchMovieInfoOverviewViewData({
@@ -80,7 +80,7 @@ export async function getFetchMovieInfoOverviewViewData(req: Request, res: Respo
 
 /** Fetches paginated review data for a specific movie. */
 export async function getFetchMovieInfoReviewsViewData(req: Request, res: Response): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {slug, reviewPage, reviewPerPage} = req.parsedConfig as MovieInfoReviewsViewRouteConfig;
 
     const data = await fetchMovieInfoReviewsViewData({

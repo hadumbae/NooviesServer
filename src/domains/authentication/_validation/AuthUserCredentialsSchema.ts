@@ -8,7 +8,7 @@ import {AuthTokenPayloadSchema} from "@/domains/authentication/_validation/AuthT
 
 /** Zod validation schema for user credentials containing token payload and session token. */
 export const AuthUserCredentialsSchema = AuthTokenPayloadSchema.extend({
-    token: StringValueSchema,
+    authHash: StringValueSchema,
 });
 
 /** Represents user authentication credentials derived from AuthUserCredentialsSchema. */

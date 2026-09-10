@@ -2,14 +2,14 @@
  * @fileoverview Handles user authentication by validating credentials and generating a JWT.
  */
 
+import type {ZodIssue} from "zod";
+import bcrypt from "bcryptjs";
+import createHttpError from "http-errors";
 import type {UserLoginInput} from "@/domains/authentication/_feat/login-user/UserLoginInputSchema";
 import {User} from "@/domains/users/model/user";
-import createHttpError from "http-errors";
-import bcrypt from "bcryptjs";
 import {RequestValidationError} from "@/shared/errors/RequestValidationError";
-import type {ZodIssue} from "zod";
-import jwt from "jsonwebtoken";
-import {AuthTokenPayloadSchema, type AuthUserCredentials} from "@/domains/authentication";
+import {type AuthUserCredentials} from "@/domains/authentication";
+import {generateAuthenticationPayload} from "@/domains/authentication/_feat/login-user/generateAuthenticationPayload";
 
 type LoginConfig = {
     data: UserLoginInput;
@@ -23,16 +23,10 @@ export async function loginUser(
     {data: {email: inputEmail, password: inputPassword}}: LoginConfig
 ): Promise<AuthUserCredentials> {
     const user = await User.findOne({email: inputEmail});
+    if (!user) throw createHttpError(404, "User not found!");
 
-    if (!user) {
-        throw createHttpError(404, "User not found!");
-    }
-
-    const {_id, name, email, roles, password, uniqueCode, status} = user;
-
-    if (status !== "ACTIVE") {
-        throw createHttpError(401, "User is suspended/inactive!");
-    }
+    const {password, status} = user;
+    if (status !== "ACTIVE") throw createHttpError(401, "User is suspended/inactive!");
 
     const isValid = await bcrypt.compare(inputPassword, password);
 
@@ -41,20 +35,5 @@ export async function loginUser(
         throw new RequestValidationError({message: "Authentication failed.", errors: [error as ZodIssue]});
     }
 
-    const {data: payload, success} = AuthTokenPayloadSchema.safeParse({
-        isAdmin: roles.includes("ADMIN"),
-        user: {_id, roles, name, email, uniqueCode, status},
-        status,
-    });
-
-    if (!success) {
-        throw createHttpError(500, "Unable to generate credentials. Please try again.");
-    }
-
-    const token: string = jwt.sign(payload, process.env.JWT_SECRET!, {expiresIn: "72h"});
-
-    return {
-        ...payload,
-        token
-    };
+    return generateAuthenticationPayload({user});
 }

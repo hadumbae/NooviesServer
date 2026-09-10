@@ -1,22 +1,18 @@
 /**
- * @file Request-scoped authentication utilities.
+ * @fileoverview Utility function for retrieving the authenticated user document from an Express request context.
  */
 
-import type {Request} from 'express'
-import {Types} from "mongoose";
+import type {Request} from "express";
+import {User} from "@/domains/users";
 import createHttpError from "http-errors";
 
-/**
- * Retrieves the authenticated user's identifier from the request.
- *
- * @throws HttpError
- * If no authenticated user is present.
- */
-export const fetchRequestUser = (req: Request): Types.ObjectId => {
-    const userID = req.authUserID;
+/** Fetches the active user's document from the database using the request's authenticated user ID. */
+export async function fetchRequestUser(req: Request) {
+    const {authUserID} = req;
+    if (!authUserID) throw createHttpError(401, "Login Required.");
 
-    if (!userID) {
-        throw createHttpError(403, "Unauthorized. Please log in.");
-    }
-    return userID;
+    const user = await User.findById(authUserID);
+    if (!user) throw createHttpError(401, "Improper credentials. Please try again.");
+
+    return user;
 }

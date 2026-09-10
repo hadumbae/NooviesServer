@@ -4,7 +4,7 @@
 
 import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
 import type {Request, Response} from "express";
-import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
+import {fetchRequestUserId} from "@/shared/utility/request/fetchRequestUserId";
 import type {ReserveTicketInputData} from "@/domains/reservations/_feat/reserve-tickets/schemas";
 import {reserveTickets} from "@/domains/reservations/_feat/reserve-tickets/ticket-service";
 
@@ -15,7 +15,7 @@ export const postReserveTickets: ControllerAsyncFunc = async (
     req: Request,
     res: Response
 ): Promise<Response> => {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
 
     const data = req.validatedBody as ReserveTicketInputData;
     const reservation = await reserveTickets({userID, inputData: data});

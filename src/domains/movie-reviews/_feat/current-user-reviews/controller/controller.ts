@@ -6,7 +6,7 @@
 import type {Request, Response} from "express";
 import {QueryUtils} from "@/shared/services/query-utils/QueryUtils.js";
 import * as MyMovieReviewService from "@/domains/movie-reviews/_feat/current-user-reviews/service";
-import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser.js";
+import {fetchRequestUserId} from "@/shared/utility/request/fetchRequestUserId";
 import type {
     MovieReviewCreateInputData,
     MovieReviewUpdateInputData
@@ -33,7 +33,7 @@ export async function getFetchCurrentUserMovieReview(
 export async function getFetchCurrentUserMovieReviewList(
     req: Request, res: Response
 ): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
     const {populate, virtuals} = QueryUtils.fetchOptionsFromQuery(req);
 
@@ -55,7 +55,7 @@ export async function getFetchCurrentUserMovieReviewList(
 export async function postCreateMovieReviewForCurrentUser(
     req: Request, res: Response
 ): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {populate, virtuals} = QueryUtils.fetchOptionsFromQuery(req);
 
     const data = req.validatedBody as MovieReviewCreateInputData;
@@ -77,7 +77,7 @@ export async function postCreateMovieReviewForCurrentUser(
 export async function patchUpdateMovieReviewForCurrentUser(
     req: Request, res: Response
 ): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {populate, virtuals} = QueryUtils.fetchOptionsFromQuery(req);
     const {reviewID} = req.parsedConfig as MyReviewIDRouteConfig;
 
@@ -103,7 +103,7 @@ export async function patchUpdateMovieReviewForCurrentUser(
 export async function deleteRemoveMovieReviewForCurrentUser(
     req: Request, res: Response
 ): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {reviewID} = req.parsedConfig as MyReviewIDRouteConfig;
 
     await MyMovieReviewService.deleteMovieReviewForCurrentUser({

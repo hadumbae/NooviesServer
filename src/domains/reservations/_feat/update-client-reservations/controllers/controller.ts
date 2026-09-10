@@ -4,14 +4,14 @@
 
 import type {Request, Response} from "express";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
-import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
+import {fetchRequestUserId} from "@/shared/utility/request/fetchRequestUserId";
 import {cancelClientReservation, checkoutClientReservation} from "@/domains/reservations/_feat/update-client-reservations/services";
 
 /**
  * Finalizes a pending reservation hold for a client.
  */
 export async function patchCheckoutClientReservation(req: Request, res: Response): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
 
     const {resID} = req.params;
     const reservationID = isValidObjectId(resID);
@@ -28,7 +28,7 @@ export async function patchCheckoutClientReservation(req: Request, res: Response
  * Processes a user-initiated cancellation of an existing reservation.
  */
 export async function patchCancelClientReservation(req: Request, res: Response,): Promise<Response> {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
 
     const {resID} = req.params;
     const reservationID = isValidObjectId(resID);

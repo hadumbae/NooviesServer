@@ -5,7 +5,7 @@
 import type {Request, Response} from "express";
 import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId";
 import {QueryUtils} from "@/shared/services/query-utils/QueryUtils";
-import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
+import {fetchRequestUserId} from "@/shared/utility/request/fetchRequestUserId";
 import {
     fetchFeaturedReviewsByMovie,
     fetchPaginatedReviewsByMovie,
@@ -44,7 +44,7 @@ export async function getFeaturedReviewsByMovie(
 ): Promise<Response> {
     const {_id} = req.params;
 
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const movieID = isValidObjectId(_id);
     const options = QueryUtils.fetchOptionsFromQuery(req);
 
@@ -65,7 +65,7 @@ export async function getReviewDetailsByMovie(
 ): Promise<Response> {
     const {_id} = req.params;
 
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const movieID = isValidObjectId(_id);
 
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);

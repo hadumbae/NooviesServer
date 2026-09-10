@@ -10,19 +10,22 @@ import {decodeAuthToken} from "@/domains/authentication/_middleware/decodeAuthTo
 /**
  * Express middleware that validates the JWT session and hydrates the request with user identity. */
 export function isAuth(req: Request, res: Response, next: NextFunction) {
-    const {authToken: token} = req.cookies;
-    if (!token) {
+    const {authToken} = req.cookies;
+    if (!authToken) {
         throw createHttpError(401, "Authentication required: No token provided.");
     }
 
-    const {user, isAdmin, status} = decodeAuthToken(token);
+    const {user, isAdmin, status} = decodeAuthToken(authToken);
 
     if (status !== "ACTIVE") {
         throw createHttpError(401, "Invalid User. Please contact support.");
     }
 
+    req.isLoggedIn = true;
+    req.authToken = authToken;
+
     req.authUserID = Types.ObjectId.createFromHexString(user._id.toString());
-    req.authUserAdmin = isAdmin;
+    req.authUserIsAdmin = isAdmin;
     req.authUserStatus = status;
 
     next();

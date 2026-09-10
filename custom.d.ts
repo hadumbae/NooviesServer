@@ -5,8 +5,12 @@ import type {UserStatus} from "@/domains/users/validation/fields/UserStatusSchem
 declare module "express" {
     export interface Request {
         authUserID?: Types.ObjectId;
-        authUserAdmin?: boolean;
+        authUserIsAdmin?: boolean;
         authUserStatus?: UserStatus;
+
+        isLoggedIn?: boolean;
+        authToken?: string;
+        refreshToken?: string;
 
         validatedBody?: any;
         validatedParams?: Record<any, any>;

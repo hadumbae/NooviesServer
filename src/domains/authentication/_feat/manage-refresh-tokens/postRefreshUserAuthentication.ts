@@ -1,26 +1,19 @@
 /**
- * @fileoverview Express controller for authenticating users and managing login sessions.
+ * @fileoverview Express route controller for handling user authentication session refreshes and cookie rotation.
  */
 
-import type {Request, Response} from "express";
-import createHttpError from "http-errors";
-import {loginUser} from "@/domains/authentication/_feat/login-user/loginUser";
-import type {UserLoginInput} from "@/domains/authentication/_feat/login-user/UserLoginInputSchema";
-import {createRefreshToken} from "@/domains/authentication/_feat/manage-refresh-tokens";
-import {fetchRequestIP} from "@/shared/utility/request/fetchRequestIP";
+import type {Request, Response} from 'express'
+import {
+    updateUserAuthCredentials
+} from "@/domains/authentication/_feat/manage-refresh-tokens/updateUserAuthCredentials";
+import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser";
+import {fetchRequestAuthentication} from "@/shared/_feat/request-data";
 import {convertToMilliseconds, getEnvVariables} from "@/shared/_feat";
 import {DateTime} from "luxon";
+import {fetchRequestIP} from "@/shared/utility/request/fetchRequestIP";
 
-/** Authenticates a user and sets an HTTP-only JWT cookie. */
-export async function postLoginUser(req: Request, res: Response): Promise<Response> {
-    const userIp = fetchRequestIP(req);
-
-    const data = req.validatedBody as UserLoginInput;
-    if (!data) throw createHttpError(400, "Missing Request Data.");
-
-    const {user, authHash} = await loginUser({data});
-    const {issuedToken} = await createRefreshToken({userID: user._id, userIp})
-
+/** Handles session token rotation and updates authentication cookies for the requesting user. */
+export async function postRefreshUserAuthentication(req: Request, res: Response) {
     const {
         REFRESH_EXPIRY_DURATION,
         REFRESH_TOKEN_LIFETIME,
@@ -28,12 +21,20 @@ export async function postLoginUser(req: Request, res: Response): Promise<Respon
         REQUIRE_SECURE_COOKIES,
     } = getEnvVariables();
 
+    const {refreshToken: incomingToken} = fetchRequestAuthentication(req);
+    const ipAddress = fetchRequestIP(req);
+
+    const {user, issuedToken, authHash} = await updateUserAuthCredentials({
+        user: await fetchRequestUser(req),
+        incomingToken,
+        ipAddress
+    });
+
     const refreshBy = DateTime.now().plus({minute: REFRESH_EXPIRY_DURATION}).toJSDate();
     const refreshTokenLife =  convertToMilliseconds({value: REFRESH_TOKEN_LIFETIME, from: "days"});
     const authTokenLife = convertToMilliseconds({value: CREDENTIALS_EXPIRY_DURATION, from: "minutes"});
 
     return res
-        .status(200)
         .cookie("hasAuthToken", true, {secure: REQUIRE_SECURE_COOKIES, maxAge: authTokenLife})
         .cookie("refreshBy", refreshBy, {secure: REQUIRE_SECURE_COOKIES, maxAge: refreshTokenLife})
         .cookie("authToken", authHash, {httpOnly: true, secure: REQUIRE_SECURE_COOKIES, maxAge: authTokenLife})

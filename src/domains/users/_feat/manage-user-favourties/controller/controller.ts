@@ -5,7 +5,7 @@
 
 import type {Request, Response} from 'express';
 import type {ControllerAsyncFunc} from "@/shared/_types/controllers/ControllerTypes";
-import {fetchRequestUser} from "@/shared/utility/request/fetchRequestUser.js";
+import {fetchRequestUserId} from "@/shared/utility/request/fetchRequestUserId";
 import {QueryUtils} from "@/shared/services/query-utils/QueryUtils.js";
 import * as UserFavouriteService from "@/domains/users/_feat/manage-user-favourties/service/service";
 import type {UserFavouriteMovieInput} from "@/domains/users/validation/submit/UserFavouriteMovieInputSchema";
@@ -15,7 +15,7 @@ import isValidObjectId from "@/shared/utility/mongoose/isValidObjectId.js";
 export const getFavouriteMovies: ControllerAsyncFunc = async (
     req: Request, res: Response
 ): Promise<Response> => {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {page, perPage} = QueryUtils.fetchPaginationFromQuery(req);
 
     const paginatedMovies = await UserFavouriteService.fetchUserFavourites({
@@ -31,7 +31,7 @@ export const getFavouriteMovies: ControllerAsyncFunc = async (
 export const getIsFavouriteMovie: ControllerAsyncFunc = async (
     req: Request, res: Response
 ): Promise<Response> => {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {movieID} = req.params;
 
     const mID = isValidObjectId(movieID);
@@ -44,7 +44,7 @@ export const getIsFavouriteMovie: ControllerAsyncFunc = async (
 export const patchToggleUserMovieFavourite: ControllerAsyncFunc = async (
     req: Request, res: Response
 ): Promise<Response> => {
-    const userID = fetchRequestUser(req);
+    const userID = fetchRequestUserId(req);
     const {movieID} = req.validatedBody as UserFavouriteMovieInput;
 
     const {added, message} = await UserFavouriteService.toggleCurrentUserFavouriteMovie({

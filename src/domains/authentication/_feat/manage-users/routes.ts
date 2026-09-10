@@ -3,7 +3,7 @@
  */
 
 import {Router} from "express";
-import {isAdmin, isAuth} from "@/domains/authentication/_middleware";
+import {hasRefreshToken, isAdmin, isAuth} from "@/domains/authentication/_middleware";
 import {parseRouteParams} from "@/shared/_feat/middleware";
 import asyncHandler from "@/shared/utility/handlers/asyncHandler";
 import validateZodSchema from "@/shared/utility/schema/validators/validateZodSchema";
@@ -21,6 +21,9 @@ import {
     postGrantAdminStatus,
     postRevokeAdminStatus
 } from "@/domains/authentication/_feat/toggle-admin-status";
+import {
+    postRefreshUserAuthentication
+} from "@/domains/authentication/_feat/manage-refresh-tokens/postRefreshUserAuthentication";
 
 const router = Router();
 
@@ -39,6 +42,12 @@ router.post(
 router.post(
     "/logout",
     asyncHandler(postLogoutUser),
+);
+
+router.post(
+    "/refresh",
+    [isAuth, hasRefreshToken],
+    asyncHandler(postRefreshUserAuthentication),
 );
 
 router.post(
