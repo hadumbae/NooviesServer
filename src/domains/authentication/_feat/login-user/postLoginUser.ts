@@ -28,7 +28,7 @@ export async function postLoginUser(req: Request, res: Response): Promise<Respon
         REQUIRE_SECURE_COOKIES,
     } = getEnvVariables();
 
-    const refreshBy = DateTime.now().plus({minute: REFRESH_EXPIRY_DURATION}).toJSDate();
+    const refreshBy = DateTime.now().setZone("UTC").plus({minute: REFRESH_EXPIRY_DURATION}).toISO();
     const refreshTokenLife =  convertToMilliseconds({value: REFRESH_TOKEN_LIFETIME, from: "days"});
     const authTokenLife = convertToMilliseconds({value: CREDENTIALS_EXPIRY_DURATION, from: "minutes"});
 

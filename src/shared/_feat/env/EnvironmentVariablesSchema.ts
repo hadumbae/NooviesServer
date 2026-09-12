@@ -7,23 +7,23 @@ import {IANATimezoneSchema} from "@/shared/schema/date-time/IANATimezoneSchema";
 import {CoercedNumberValueSchema} from "@/shared/_schema/numbers/coerced-number/CoercedNumberValueSchema";
 import {StringValueSchema} from "@/shared/schema/strings/StringValueSchema";
 import {CoercedPositiveNumberSchema} from "@/shared/_schema/numbers/coerced-number/CoercedPositiveNumberSchema";
-import {BooleanValueSchema} from "@/shared/_schema/booleans/BooleanValueSchema";
 import {IpSchema} from "@/shared/schema/strings/IPSchema";
 import {CoercedNonNegativeNumberSchema} from "@/shared/_schema/numbers/coerced-number/CoercedNonNegativeNumberSchema";
+import {CoercedBooleanValueSchema} from "@/shared/_schema/booleans/CoercedBooleanValueSchema";
 
 /** Zod validation schema for application environment variables. */
 export const EnvironmentVariablesSchema = z.object({
     PORT: CoercedNumberValueSchema,
-    TZ: IANATimezoneSchema,
+    TZ: z.union([IANATimezoneSchema, z.literal("UTC")]),
     MONGO_DB_STRING: StringValueSchema,
     CLOUDINARY_CLOUD_NAME: StringValueSchema,
     CLOUDINARY_API_KEY: StringValueSchema,
     CLOUDINARY_API_SECRET: StringValueSchema,
-    USE_MOCKED_IP: BooleanValueSchema,
+    USE_MOCKED_IP: CoercedBooleanValueSchema,
     MOCKED_CLIENT_IP: IpSchema,
     IPIFY_KEY: StringValueSchema,
     JWT_SECRET: StringValueSchema,
-    REQUIRE_SECURE_COOKIES: BooleanValueSchema,
+    REQUIRE_SECURE_COOKIES: CoercedBooleanValueSchema,
     PAGINATION_PAGE_DEFAULT: CoercedPositiveNumberSchema.catch(1),
     PAGINATION_PER_PAGE_DEFAULT: CoercedPositiveNumberSchema.catch(10),
     CREDENTIALS_EXPIRY_DURATION: CoercedPositiveNumberSchema.catch(15),

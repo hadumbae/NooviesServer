@@ -14,13 +14,13 @@ type TokenConfig = {
 
 /** Generates a validated authentication payload along with a signed JWT session token. */
 export function generateAuthenticationPayload(
-    {user: {_id, roles, name, email, uniqueCode, status}}: TokenConfig
+    {user: {_id, name, email, uniqueCode, status, roles}}: TokenConfig
 ): AuthUserCredentials {
     const {CREDENTIALS_EXPIRY_DURATION} = getEnvVariables();
 
     const {data: payload, success} = AuthTokenPayloadSchema.safeParse({
         isAdmin: roles.includes("ADMIN"),
-        user: {_id, roles, name, email, uniqueCode, status},
+        user: {_id, name, email, uniqueCode, status, roles},
         status,
     });
 

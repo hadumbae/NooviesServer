@@ -14,5 +14,6 @@ export async function postLogoutUser(req: Request, res: Response): Promise<Respo
         .clearCookie("hasAuthToken")
         .clearCookie("authToken")
         .clearCookie("refreshToken")
+        .clearCookie("refreshBy")
         .json({message: "Logged out."});
 }
